@@ -171,8 +171,9 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-ui);
 .pop .trb button,.trbtn{font:600 13px/1 var(--f-ui);border:1.5px solid var(--jade);background:var(--jade-soft);color:var(--jade);border-radius:99px;padding:7px 12px;cursor:pointer}
 .pop .trb button:hover,.trbtn:hover{background:var(--jade);color:var(--paper)}
 .tr{display:flex;flex-direction:column;gap:6px;background:var(--sun-soft);border-radius:12px;padding:10px 12px;max-height:240px;overflow:auto}
-.tr .zhs{order:2;font:13px/1.5 var(--f-zh);color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.tr .gl{order:3}
+.tr .src{font-size:12px;color:var(--muted)}
+.tr .zsrc{width:100%;font:15px/1.5 var(--f-zh);border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--paper);color:var(--ink);resize:vertical}
+.tr .re{font:600 12px/1 var(--f-ui);border:0;background:var(--jade);color:var(--paper);border-radius:99px;padding:6px 10px;cursor:pointer}
 .tr .vi{font:500 15px/1.55 var(--f-ui);color:var(--ink)}
 .tr .gl{font-size:12px;color:var(--muted)} .tr .gl a{color:var(--jade)}
 .trpage{display:flex;flex-direction:column;gap:10px;background:var(--sun-soft);border-radius:14px;padding:14px 16px}
@@ -367,9 +368,12 @@ function finishLines(lines){
   lines.forEach((L,i)=>{
     const e=ext[i], pe=ext[i-1];
     let brk=i===0||L.gap;
-    if(!brk&&e&&pe&&L.par==null){
-      if(e.x0-left>e.h*1.2) brk=true;
-      else if(pe.x1<right-pe.h*2.5&&/[。！？!?：:]$/.test(lines[i-1].t.trim())) brk=true;
+    if(!brk&&e&&pe){
+      if(e.x0-left>e.h*1.2&&e.x0-pe.x0>e.h*0.8) brk=true;            // indented first line
+      else {                                                       // previous line (or heading) stops short of its column's edge
+        const colR=Math.max(...xs.filter(o=>Math.abs(o.x0-pe.x0)<pe.h*3).map(o=>o.x1));
+        if(pe.x1<colR-pe.h*2.5) brk=true;
+      }
     }
     if(L.par!=null&&i>0&&L.par!==lines[i-1].par) brk=true;
     if(brk) par++;
@@ -461,7 +465,7 @@ function render(sec,page){
         const b=boxes[ci]; if(!b||!isCJK(c)) return;
         html+='<span class="hs" data-l="'+li+'" data-i="'+ci+'" style="left:'+(b.x/W*100).toFixed(3)+'%;top:'+(b.y/H*100).toFixed(3)+'%;width:'+(b.w/W*100).toFixed(3)+'%;height:'+(b.h/H*100).toFixed(3)+'%"></span>';
         const p=L.py[ci]; if(!p||!p.p||(L.nolabel&&L.nolabel[ci])) return;
-        items.push({cx:b.x+b.w/2,y:b.y,w:b.w,p});
+        items.push({cx:b.x+b.w/2,y:b.y,w:b.w,p,li,ci});
       });
       items.sort((a,b)=>a.cx-b.cx);
       // one font size per line; a label too wide for the space over its character is narrowed, never shrunk
@@ -471,7 +475,7 @@ function render(sec,page){
         const l=k?it.cx-items[k-1].cx:Infinity, r=k<items.length-1?items[k+1].cx-it.cx:Infinity;
         const room=Math.min(l,r,it.w*3)*0.94, nat=emWidth(it.p.p)*fs;
         const sx=Math.max(0.5,Math.min(1,room/nat));
-        html+='<span class="pl t'+it.p.n+'" style="left:'+(it.cx/W*100).toFixed(3)+'%;top:'+((top-lh*0.04)/H*100).toFixed(3)+'%;font-size:'+(fs/W*100).toFixed(3)+'cqw'+(sx<1?';--sx:'+sx.toFixed(3):'')+'">'+esc(it.p.p)+'</span>';
+        html+='<span class="pl t'+it.p.n+'" data-l="'+it.li+'" data-i="'+it.ci+'" style="left:'+(it.cx/W*100).toFixed(3)+'%;top:'+((top-lh*0.04)/H*100).toFixed(3)+'%;font-size:'+(fs/W*100).toFixed(3)+'cqw'+(sx<1?';--sx:'+sx.toFixed(3):'')+'">'+esc(it.p.p)+'</span>';
       });
     });
     ov.innerHTML=html;
@@ -542,10 +546,10 @@ function fillPop(el,L,li,ci,sec,loading){
       return '<span><b>'+esc(c)+'</b>'+esc(m&&m.h?m.h:(p||''))+'</span>';
     }).join('')+'</div>';
   }
-  h+='<div class="trb"><button type="button" data-tr="s">Dịch câu này</button><button type="button" data-tr="p">Dịch cả đoạn</button></div><div class="tr" hidden></div>';
+  h+='<div class="trb"><button type="button" data-tr="c">Dịch cụm này</button><button type="button" data-tr="s">Dịch cả câu</button><button type="button" data-tr="p">Dịch cả đoạn</button></div><div class="tr" hidden></div>';
   pop.innerHTML=h; place(el);
   pop.querySelectorAll('[data-tr]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();pinned=true;
-    const pg=PAGES[sec.dataset.p]; const {text}=b.dataset.tr==='s'?sentenceAt(pg,li,ci):paragraphAt(pg,li);
+    const pg=PAGES[sec.dataset.p]; const k=b.dataset.tr, {text}=k==='p'?paragraphAt(pg,li):sentenceAt(pg,li,ci,k==='c');
     showTr(pop.querySelector('.tr'),text,el);});
 }
 /* ======================= translation ======================= */
@@ -562,13 +566,13 @@ function joinWithPos(ls){
   return {text,starts};
 }
 function paragraphAt(pg,li){ return {text:joinLines(paraLines(pg,li))}; }
-function sentenceAt(pg,li,ci){
+function sentenceAt(pg,li,ci,clause){
   const ls=paraLines(pg,li), {text,starts}=joinWithPos(ls);
   const pos=Math.max(0,Math.min(text.length-1,starts[ls.indexOf(pg.lines[li])]+ci));
-  const END=/[。！？!?…]/;
+  const END=clause?/[。！？!?…，,；;：:、]/:/[。！？!?…]/;
   let a=pos; while(a>0&&!END.test(text[a-1])) a--;
   let b=pos; while(b<text.length&&!END.test(text[b])) b++;
-  while(b<text.length&&/[。！？!?…”"』」）)]/.test(text[b])) b++;
+  while(b<text.length&&(clause?/[。！？!?…”"』」）)，,；;：:、]/:/[。！？!?…”"』」）)]/).test(text[b])) b++;
   return {text:text.slice(a,b).trim()};
 }
 const trCache=new Map();
@@ -596,12 +600,18 @@ const gLink=t=>'https://translate.google.com/?sl=zh-CN&tl=vi&op=translate&text='
 async function showTr(box,text,el){
   box.hidden=false;
   if(!text){box.innerHTML='<div class="gl">Không tìm thấy câu để dịch.</div>';return;}
-  box.innerHTML='<div class="zhs"></div><div class="vi">Đang dịch…</div><div class="gl"><a target="_blank" rel="noopener">Mở trong Google Dịch</a></div>';
-  box.querySelector('.zhs').textContent=text; box.querySelector('a').href=gLink(text);
+  box.innerHTML='<div class="vi">Đang dịch…</div><label class="src">Chữ gốc (đọc sai thì sửa rồi bấm Dịch lại):</label><textarea class="zsrc" rows="2"></textarea><div class="gl"><button type="button" class="re">Dịch lại</button> · <a target="_blank" rel="noopener">Mở trong Google Dịch</a></div>';
+  const ta=box.querySelector('.zsrc'), vi=box.querySelector('.vi'), a=box.querySelector('a');
+  ta.value=text; ta.rows=Math.min(5,Math.max(2,Math.ceil(text.length/18)));
+  const run=async()=>{
+    const t=ta.value.trim(); a.href=gLink(t); vi.textContent='Đang dịch…';
+    try{ vi.textContent=await translate(t); }
+    catch(e){ vi.textContent='Chưa dịch được (mạng hoặc dịch vụ dịch đang bận). Bấm "Mở trong Google Dịch".'; }
+    if(el&&!pop.hidden&&innerWidth>600) place(el);
+  };
+  box.querySelector('.re').onclick=ev=>{ev.stopPropagation();run();};
   if(el) place(el);
-  try{ box.querySelector('.vi').textContent=await translate(text); }
-  catch(e){ box.querySelector('.vi').textContent='Chưa dịch được (mạng hoặc dịch vụ dịch đang bận). Bấm "Mở trong Google Dịch" bên dưới.'; }
-  if(el&&!pop.hidden) place(el);
+  await run();
 }
 async function translatePage(sec){
   const pg=PAGES[sec.dataset.p]; if(!pg) return;
@@ -621,7 +631,7 @@ async function translatePage(sec){
   }
 }
 function place(el){
-  pop.hidden=false;
+  pop.hidden=false; popAnchor=el;
   pop.querySelector('.x').onclick=hidePop;
   if(innerWidth<=600){pop.style.left='';pop.style.top='';return;}
   const r=el.getBoundingClientRect(), pw=pop.offsetWidth, ph=pop.offsetHeight;
@@ -649,7 +659,13 @@ document.addEventListener('click',e=>{
   else if(pop.contains(e.target)) pinned=true;
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')hidePop();});
-addEventListener('scroll',()=>{ if(!pop.hidden&&innerWidth>600) hidePop(); },{passive:true});
+let popAnchor=null;
+addEventListener('scroll',()=>{
+  if(pop.hidden||innerWidth<=600) return;
+  if(!pinned){ hidePop(); return; }
+  // a pinned popup follows its character; it closes once the character scrolls out of view
+  if(popAnchor&&popAnchor.isConnected){ const r=popAnchor.getBoundingClientRect(); if(r.bottom<0||r.top>innerHeight) hidePop(); else place(popAnchor); }
+},{passive:true});
 document.addEventListener('pointermove',e=>{
   if(e.pointerType!=='mouse'||pinned||pop.hidden) return;
   if(!target(e)&&!pop.contains(e.target)){ clearTimeout(hoverT); hoverT=setTimeout(()=>{ if(!pinned&&!pop.matches(':hover')) hidePop(); },200); }
