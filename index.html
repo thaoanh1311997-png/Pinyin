@@ -128,11 +128,14 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-ui);
 .hs{position:absolute;cursor:pointer;border-radius:3px}
 .hs:hover,.hs.on{background:color-mix(in srgb,var(--sun) 45%,transparent)}
 .pl{position:absolute;transform:translate(-50%,-100%);white-space:nowrap;pointer-events:none;
-  font-family:var(--f-ui);font-weight:600;line-height:1;color:var(--py);background:var(--pill);border-radius:3px;padding:0 .12em;letter-spacing:-.01em}
+  font-family:var(--f-ui);font-weight:600;line-height:1;color:#0a6e58;letter-spacing:-.02em;
+  text-shadow:0 0 2px #fff,0 0 2px #fff,0 0 3px #fff,0 0 4px #fff}
+/* the book page is always a light image, so its pinyin colours stay fixed in both themes */
+.tones .pl.t1{color:#1660c2} .tones .pl.t2{color:#1f8a30} .tones .pl.t3{color:#b06400} .tones .pl.t4{color:#c62828}
 .fig.cover .hs{background:transparent}
 .hide-py .pl{visibility:hidden}
-.tones .pl.t1,.tones rt.t1{color:var(--t1)} .tones .pl.t2,.tones rt.t2{color:var(--t2)}
-.tones .pl.t3,.tones rt.t3{color:var(--t3)} .tones .pl.t4,.tones rt.t4{color:var(--t4)}
+.tones rt.t1{color:var(--t1)} .tones rt.t2{color:var(--t2)}
+.tones rt.t3{color:var(--t3)} .tones rt.t4{color:var(--t4)}
 @media (prefers-reduced-motion:no-preference){.fig.fresh .pl{animation:pop .5s ease-out both}}
 @keyframes pop{from{opacity:0;transform:translate(-50%,-60%)}}
 
@@ -316,7 +319,7 @@ function pyOf(t){ // per-character readings using sentence context
 }
 
 /* ======================= view state ======================= */
-let mode='book';
+let mode=matchMedia('(max-width:720px)').matches?'text':'book';
 function applyView(){
   document.documentElement.style.setProperty('--zh-size',$('size').value+'px');
   document.documentElement.style.setProperty('--zoom',$('zoom').value/100);
@@ -366,28 +369,69 @@ function makeSection(title,num,kind){
 }
 function setLoading(sec,msg){sec.querySelector('.view.text').innerHTML='<p class="empty">'+esc(msg)+'</p>';sec.querySelector('.view.text').hidden=false;}
 
+const med=a=>{a=a.slice().sort((x,y)=>x-y);return a.length?a[a.length>>1]:0;};
+/* Redraw the page with extra room above every text line, so pinyin never sits on the line above.
+   Returns the new canvas and a copy of the boxes moved to their new place. */
+function stretch(canvas,lines){
+  const rows=[];
+  lines.forEach((L,li)=>{
+    const bs=L.boxes.filter((b,k)=>b&&isCJK(L.t[k])); if(!bs.length) return;
+    const top=Math.min(...bs.map(b=>b.y)), bot=Math.max(...bs.map(b=>b.y+b.h)), h=med(bs.map(b=>b.h));
+    rows.push({lis:[li],top,bot,h});
+  });
+  rows.sort((a,b)=>a.top-b.top);
+  const merged=[];
+  for(const r of rows){
+    const p=merged[merged.length-1];
+    if(p&&r.top<p.bot-Math.min(p.h,r.h)*0.5){p.lis.push(...r.lis);p.top=Math.min(p.top,r.top);p.bot=Math.max(p.bot,r.bot);p.h=Math.max(p.h,r.h);}
+    else merged.push({...r});
+  }
+  let prevBot=0, extra=0;
+  for(const r of merged){ r.cut=Math.floor(Math.max(prevBot,r.top-r.h*0.06)); r.gap=Math.round(r.h*0.62); extra+=r.gap; prevBot=r.bot; }
+  const out=document.createElement('canvas'); out.width=canvas.width; out.height=canvas.height+extra;
+  const ctx=out.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,out.width,out.height);
+  let off=0, from=0;
+  const shift=new Map();
+  for(const r of merged){
+    if(r.cut>from) ctx.drawImage(canvas,0,from,canvas.width,r.cut-from,0,from+off,canvas.width,r.cut-from);
+    from=Math.max(from,r.cut); off+=r.gap;
+    r.lis.forEach(li=>shift.set(li,{off,gap:r.gap}));
+  }
+  if(canvas.height>from) ctx.drawImage(canvas,0,from,canvas.width,canvas.height-from,0,from+off,canvas.width,canvas.height-from);
+  const moved=lines.map((L,li)=>{const s=shift.get(li)||{off:0,gap:0};return {gap:s.gap,boxes:L.boxes.map(b=>b?{x:b.x,y:b.y+s.off,w:b.w,h:b.h}:null)};});
+  return {canvas:out,moved};
+}
+const mctx=document.createElement('canvas').getContext('2d'); const emCache={};
+function emWidth(t){ // width of a pinyin label in em, measured with the label font
+  if(emCache[t]) return emCache[t];
+  mctx.font='600 100px "Be Vietnam Pro",system-ui,sans-serif';
+  return emCache[t]=Math.max(0.8,mctx.measureText(t).width/100*1.02);
+}
 function render(sec,page){
   const id=PAGES.push(page)-1; sec.dataset.p=id; page.sec=sec;
   const old=sec.querySelector('.view.book'); if(old) old.remove();
   const tv=sec.querySelector('.view.text'); tv.innerHTML=''; tv.dataset.done='';
-  if(page.img){
+  if(page.canvas){
+    const {canvas,moved}=stretch(page.canvas,page.lines);
+    page.canvas=null;
     const v=document.createElement('div'); v.className='view book';
     const sc=document.createElement('div'); sc.className='scroller';
     const fig=document.createElement('figure'); fig.className='fig fresh';
-    const img=document.createElement('img'); img.alt='Trang sách'; img.src=page.img; img.decoding='async';
+    const img=document.createElement('img'); img.alt='Trang sách'; img.decoding='async';
+    img.style.aspectRatio=canvas.width+' / '+canvas.height;
+    canvas.toBlob(bl=>{img.src=URL.createObjectURL(bl);},'image/jpeg',0.88);
     const ov=document.createElement('div'); ov.className='ov';
-    const W=page.W,H=page.H; let html='';
-    const med=a=>{a=a.slice().sort((x,y)=>x-y);return a.length?a[a.length>>1]:0;};
+    const W=canvas.width,H=canvas.height; let html='';
     page.lines.forEach((L,li)=>{
-      const cb=L.boxes.filter((b,k)=>b&&isCJK(L.t[k]));
+      const boxes=moved[li].boxes, gap=moved[li].gap;
+      const cb=boxes.filter((b,k)=>b&&isCJK(L.t[k]));
       const pitch=med(cb.map(b=>b.w)), lh=med(cb.map(b=>b.h));
       L.t.split('').forEach((c,ci)=>{
-        const b=L.boxes[ci]; if(!b||!isCJK(c)) return;
-        const left=b.x/W*100, top=b.y/H*100, w=b.w/W*100, h=b.h/H*100;
-        html+='<span class="hs" data-l="'+li+'" data-i="'+ci+'" style="left:'+left.toFixed(3)+'%;top:'+top.toFixed(3)+'%;width:'+w.toFixed(3)+'%;height:'+h.toFixed(3)+'%"></span>';
+        const b=boxes[ci]; if(!b||!isCJK(c)) return;
+        html+='<span class="hs" data-l="'+li+'" data-i="'+ci+'" style="left:'+(b.x/W*100).toFixed(3)+'%;top:'+(b.y/H*100).toFixed(3)+'%;width:'+(b.w/W*100).toFixed(3)+'%;height:'+(b.h/H*100).toFixed(3)+'%"></span>';
         const p=L.py[ci]; if(!p||!p.p) return;
-        const fs=Math.min(lh*0.36,pitch*1.75/Math.max(3,p.p.length))/W*100;
-        html+='<span class="pl t'+p.n+'" style="left:'+((b.x+b.w/2)/W*100).toFixed(3)+'%;top:'+((b.y-b.h*0.04)/H*100).toFixed(3)+'%;font-size:'+fs.toFixed(3)+'cqw">'+esc(p.p)+'</span>';
+        const fs=Math.min(lh*0.44,gap*0.85,Math.max(pitch,b.w)*0.98/emWidth(p.p))/W*100;
+        html+='<span class="pl t'+p.n+'" style="left:'+((b.x+b.w/2)/W*100).toFixed(3)+'%;top:'+((b.y-lh*0.03)/H*100).toFixed(3)+'%;font-size:'+fs.toFixed(3)+'cqw">'+esc(p.p)+'</span>';
       });
     });
     ov.innerHTML=html;
@@ -568,10 +612,11 @@ async function ocrCanvas(canvas){
       const chars=[];
       for(const wd of (ln.words||[])){
         if(chars.length) chars.push({c:' ',b:null});
-        for(const sy of (wd.symbols||[])){
-          const sb=sy.bbox;
-          for(const c of [...(sy.text||'')]) chars.push({c,b:{x:sb.x0,y:lb.y0,w:Math.max(1,sb.x1-sb.x0),h:lh}});
-        }
+        // spread each word box over its characters (symbol boxes are often off for Chinese)
+        const wb=wd.bbox, cs=[...(wd.text||'')].filter(c=>!/\s/.test(c));
+        const wt=cs.map(c=>isCJKP(c)?1:0.55), tw=wt.reduce((a,b)=>a+b,0)||1;
+        let cx=wb.x0; const unit=(wb.x1-wb.x0)/tw;
+        cs.forEach((c,k)=>{const cw=wt[k]*unit; chars.push({c,b:{x:cx,y:lb.y0,w:Math.max(1,cw),h:lh}}); cx+=cw;});
       }
       const cl=tidy(chars); const t=cl.map(x=>x.c).join('');
       if(!t) continue;
@@ -605,8 +650,13 @@ async function textLines(page,vp){
     const chars=[]; let end=null;
     for(const p of R.parts){
       if(end!=null&&p.x-end>R.fh*0.8) chars.push({c:' ',b:null});
-      const cs=[...p.s], cw=(p.w||p.fh*cs.length)/cs.length;
-      cs.forEach((c,i)=>chars.push({c,b:{x:p.x+i*cw,y:p.y-p.fh*0.88,w:cw,h:p.fh}}));
+      // full-width characters are one font-size wide; the rest share what is left of the run
+      const cs=[...p.s], full=cs.filter(isCJKP).length, rest=cs.length-full;
+      const W0=p.w||p.fh*cs.length;
+      let fw=p.fh, ow=rest?Math.max(0,(W0-full*fw)/rest):0;
+      if(!rest||ow<p.fh*0.15){ fw=W0/Math.max(1,full+rest*0.5); ow=fw*0.5; }
+      let cx=p.x;
+      cs.forEach(c=>{const cw=isCJKP(c)?fw:ow; chars.push({c,b:{x:cx,y:p.y-p.fh*0.88,w:cw,h:p.fh}}); cx+=cw;});
       end=p.x+(p.w||0);
     }
     const cl=tidy(chars); const t=cl.map(x=>x.c).join('');
@@ -656,7 +706,8 @@ async function doImage(f,job){
   const sec=makeSection(f.name,null,'ocr'); $('out').appendChild(sec); setLoading(sec,'Đang đọc chữ trong ảnh…');
   status('Đang đọc chữ trong ảnh '+f.name+'…');
   const lines=finishLines(await ocrCanvas(c));
-  render(sec,{lines,W:c.width,H:c.height,img:url});
+  URL.revokeObjectURL(url);
+  render(sec,{lines,canvas:c});
 }
 async function doPdf(f,job,multi){
   if(!window.pdfjsLib) throw new Error('Không tải được bộ đọc PDF (kiểm tra mạng).');
@@ -682,20 +733,19 @@ async function doPdf(f,job,multi){
     let lines=$('forceOcr').checked?[]:await textLines(page,vp);
     const useOcr=cjkCount(lines)<5;
     const sec=makeSection((multi?f.name+' · ':'')+'Trang '+p,p,useOcr?'ocr':'text'); $('out').appendChild(sec);
-    const imgUrl=await new Promise(r=>c.toBlob(bl=>r(URL.createObjectURL(bl)),'image/jpeg',0.86));
     if(useOcr){
       setLoading(sec,'Đang đọc chữ từ ảnh trang này…');
       status('Trang '+p+' / '+to+': đang đọc chữ từ ảnh…',done);
       lines=await ocrCanvas(c);
     }
-    render(sec,{lines:finishLines(lines),W:c.width,H:c.height,img:imgUrl});
+    render(sec,{lines:finishLines(lines),canvas:c});
     page.cleanup();
   }
 }
 
 /* ======================= example page (drawn, so it works before any file) ======================= */
 async function example(){
-  const W=1000,H=620, c=document.createElement('canvas'); c.width=W; c.height=H;
+  const W=1000,H=680, c=document.createElement('canvas'); c.width=W; c.height=H;
   const ctx=c.getContext('2d');
   try{await document.fonts.load('40px "Noto Sans SC"','学');}catch(e){}
   ctx.fillStyle='#fffdf7'; ctx.fillRect(0,0,W,H);
@@ -703,10 +753,10 @@ async function example(){
   const fam='"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif';
   const rows=[
     {t:'第十二课　我在银行工作',size:46,y:110,color:'#0e7c66'},
-    {t:'我叫王丽，今年二十五岁。',size:36,y:230,gap:true},
-    {t:'大学毕业以后，我在一家银行工作。',size:36,y:320},
-    {t:'虽然工作很忙，但是我觉得很有意思。',size:36,y:410},
-    {t:'周末我常常跟朋友一起去公园散步。',size:36,y:500}
+    {t:'我叫王丽，今年二十五岁。',size:36,y:240,gap:true},
+    {t:'大学毕业以后，我在一家银行工作。',size:36,y:345},
+    {t:'虽然工作很忙，但是我觉得很有意思。',size:36,y:450},
+    {t:'周末我常常跟朋友一起去公园散步。',size:36,y:555}
   ];
   const lines=[];
   for(const r of rows){
@@ -716,15 +766,14 @@ async function example(){
       const w=ctx.measureText(ch).width;
       ctx.fillText(ch,x,r.y);
       boxes.push({x,y:r.y-r.size*0.88,w,h:r.size*1.05});
-      x+=w;
+      x+=w+(r.size>40?6:5);
     }
     lines.push({t:r.t,gap:!!r.gap,boxes});
   }
   ctx.fillStyle='#9aa8a2'; ctx.font='400 18px '+fam; ctx.fillText('— 第 1 页 —',W/2-50,H-30);
-  const url=await new Promise(r=>c.toBlob(b=>r(URL.createObjectURL(b)),'image/png'));
   const sec=makeSection('Trang ví dụ · rê chuột hoặc chạm vào chữ',null,'demo'); sec.querySelector('.ttl').textContent='Trang ví dụ · thử rê chuột hoặc chạm vào chữ';
   $('out').appendChild(sec);
-  render(sec,{lines:finishLines(lines),W,H,img:url});
+  render(sec,{lines:finishLines(lines),canvas:c});
 }
 
 /* ======================= paste box ======================= */
