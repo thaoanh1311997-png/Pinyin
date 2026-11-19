@@ -167,6 +167,18 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-ui);
 .pop .chars b{font:500 16px var(--f-zh);color:var(--ink);margin-right:4px}
 .pop .x{position:absolute;top:6px;right:8px;border:0;background:transparent;color:var(--muted);font-size:22px;line-height:1;cursor:pointer;padding:6px}
 .pop .src{font-size:11px;color:var(--muted)}
+.pop .trb{display:flex;gap:8px;flex-wrap:wrap;border-top:1px dashed var(--line);padding-top:8px}
+.pop .trb button,.trbtn{font:600 13px/1 var(--f-ui);border:1.5px solid var(--jade);background:var(--jade-soft);color:var(--jade);border-radius:99px;padding:7px 12px;cursor:pointer}
+.pop .trb button:hover,.trbtn:hover{background:var(--jade);color:var(--paper)}
+.tr{display:flex;flex-direction:column;gap:6px;background:var(--sun-soft);border-radius:12px;padding:10px 12px;max-height:240px;overflow:auto}
+.tr .zhs{order:2;font:13px/1.5 var(--f-zh);color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tr .gl{order:3}
+.tr .vi{font:500 15px/1.55 var(--f-ui);color:var(--ink)}
+.tr .gl{font-size:12px;color:var(--muted)} .tr .gl a{color:var(--jade)}
+.trpage{display:flex;flex-direction:column;gap:10px;background:var(--sun-soft);border-radius:14px;padding:14px 16px}
+.trpage h3{margin:0;font:600 15px var(--f-display)}
+.trpage p{margin:0;font:16px/1.65 var(--f-ui)}
+.trpage .gl{font-size:12px;color:var(--muted)} .trpage .gl a{color:var(--jade)}
 @media (max-width:600px){.pop{left:10px!important;right:10px;top:auto!important;bottom:calc(10px + env(safe-area-inset-bottom,0px));width:auto}}
 
 .paste textarea{width:100%;min-height:84px;font:18px/1.5 var(--f-zh);padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)}
@@ -230,7 +242,7 @@ footer a{color:inherit}
   <div id="out"></div>
 
   <section class="page paste">
-    <div class="page-head"><h2>Hoặc dán chữ Hán vào đây</h2></div>
+    <div class="page-head"><h2>Hoặc dán chữ Hán vào đây</h2><div class="acts"><button class="trbtn" type="button" id="pasteTr">Dịch sang tiếng Việt</button></div></div>
     <textarea id="paste" placeholder="Dán đoạn văn tiếng Trung…">我觉得学汉语很有意思。</textarea>
     <div class="text" id="pasteOut"></div>
   </section>
@@ -239,13 +251,13 @@ footer a{color:inherit}
     <summary>Mẹo sử dụng</summary>
     <ul>
       <li><b>Trang sách</b> hiện pinyin đè lên ảnh trang gốc. Trên điện thoại, kéo thanh <b>Phóng trang</b> hoặc chuyển sang <b>Chữ to</b> cho dễ đọc.</li>
-      <li>Rê chuột (máy tính) hoặc chạm (điện thoại) vào chữ để xem nghĩa của cả từ, âm Hán Việt và nghĩa từng chữ.</li>
+      <li>Rê chuột (máy tính) hoặc chạm (điện thoại) vào chữ để xem nghĩa của cả từ, âm Hán Việt và nghĩa từng chữ. Trong ô nghĩa có nút <b>Dịch câu này</b> và <b>Dịch cả đoạn</b>; đầu mỗi trang có nút <b>Dịch cả trang</b>.</li>
       <li>PDF scan phải đọc chữ từ ảnh, khoảng 5–15 giây mỗi trang. Lần đầu tải dữ liệu chữ Hán (~2 MB) và từ điển (~3 MB), các lần sau nhanh hơn.</li>
       <li>Nên chọn khoảng trang cần học (ví dụ 12 đến 20) thay vì cả cuốn sách.</li>
       <li>Chữ đọc từ ảnh đôi khi sai, nhất là ảnh mờ. Pinyin chọn theo ngữ cảnh nên chữ nhiều âm (行, 长, 得) thỉnh thoảng bị ghi sai, xem lại nghĩa trong ô từ điển.</li>
     </ul>
   </details>
-  <footer>Nghĩa tiếng Việt: từ điển <a href="https://github.com/ph0ngp/CVDICT" target="_blank" rel="noopener">CVDICT</a> (CC BY-SA 4.0) · Âm Hán Việt: hanviet-pinyin-words · Mọi xử lý chạy trong trình duyệt, file không bị gửi đi đâu.</footer>
+  <footer>Nghĩa tiếng Việt: từ điển <a href="https://github.com/ph0ngp/CVDICT" target="_blank" rel="noopener">CVDICT</a> (CC BY-SA 4.0) · Âm Hán Việt: hanviet-pinyin-words · File PDF chỉ xử lý trong trình duyệt, không gửi đi đâu. Khi bấm Dịch, câu/đoạn đó được gửi tới Google Dịch.</footer>
 </div>
 
 <div class="pop" id="pop" hidden role="dialog" aria-label="Nghĩa của từ"></div>
@@ -347,18 +359,36 @@ try{const s=JSON.parse(localStorage.getItem('pyv2')||'{}');
    page = {lines:[{t, gap, boxes:[{x,y,w,h}|null per char]}], W, H, img}
 */
 const PAGES=[];
-function finishLines(lines){ for(const L of lines){ L.py=pyOf(L.t); L.segs=null; } return lines; }
+function finishLines(lines){
+  // paragraphs: a blank gap, an indented first line, or a previous line that stops short of the margin
+  const ext=lines.map(L=>{const bs=L.boxes.filter(Boolean);return bs.length?{x0:Math.min(...bs.map(b=>b.x)),x1:Math.max(...bs.map(b=>b.x+b.w)),h:bs.map(b=>b.h).sort((a,b)=>a-b)[bs.length>>1]}:null;});
+  const xs=ext.filter(Boolean), left=xs.length?Math.min(...xs.map(e=>e.x0)):0, right=xs.length?Math.max(...xs.map(e=>e.x1)):0;
+  let par=-1;
+  lines.forEach((L,i)=>{
+    const e=ext[i], pe=ext[i-1];
+    let brk=i===0||L.gap;
+    if(!brk&&e&&pe&&L.par==null){
+      if(e.x0-left>e.h*1.2) brk=true;
+      else if(pe.x1<right-pe.h*2.5&&/[。！？!?：:]$/.test(lines[i-1].t.trim())) brk=true;
+    }
+    if(L.par!=null&&i>0&&L.par!==lines[i-1].par) brk=true;
+    if(brk) par++;
+    L.par=par; L.py=pyOf(L.t); L.segs=null;
+  });
+  return lines;
+}
 function lineSegs(L){ if(!L.segs||L.segsDict!==!!DICT){L.segs=segment(L.t);L.segsDict=!!DICT;} return L.segs; }
 
 function makeSection(title,num,kind){
   const sec=document.createElement('section'); sec.className='page';
-  sec.innerHTML='<div class="page-head"><h2>'+(num!=null?'<span class="num"></span>':'')+'<span class="ttl"></span></h2><div class="acts"><span class="chip"></span><button class="btn" data-a="copy">Chép chữ</button></div></div>'+
+  sec.innerHTML='<div class="page-head"><h2>'+(num!=null?'<span class="num"></span>':'')+'<span class="ttl"></span></h2><div class="acts"><span class="chip"></span><button class="trbtn" data-a="tr">Dịch cả trang</button><button class="btn" data-a="copy">Chép chữ</button></div></div>'+
     '<div class="view text"></div>';
   if(num!=null) sec.querySelector('.num').textContent=num;
   sec.querySelector('.ttl').textContent=title;
   const chip=sec.querySelector('.chip');
   chip.textContent=kind==='ocr'?'Đọc từ ảnh':kind==='demo'?'Ví dụ':'Chữ trong PDF';
   if(kind==='ocr')chip.classList.add('ocr'); if(kind==='demo')chip.classList.add('demo-chip');
+  sec.querySelector('[data-a=tr]').onclick=()=>translatePage(sec);
   sec.querySelector('[data-a=copy]').onclick=async e=>{
     const pg=PAGES[sec.dataset.p]; const txt=pg?pg.lines.map(l=>l.t).join('\n'):'';
     try{await navigator.clipboard.writeText(txt);e.target.textContent='Đã chép';}
@@ -484,7 +514,9 @@ function lookup(el){
 }
 async function showPop(el){
   const {sec,L,li,ci}=lookup(el);
-  const key=sec.dataset.p+':'+li+':'+ci; popKey=key;
+  const key=sec.dataset.p+':'+li+':'+ci;
+  if(popKey===key&&!pop.hidden&&pop.querySelector('.trb')) return;
+  popKey=key;
   if(!DICT){ fillPop(el,L,li,ci,sec,true); await loadDict(); if(popKey!==key) return; }
   fillPop(el,L,li,ci,sec,false);
 }
@@ -510,7 +542,83 @@ function fillPop(el,L,li,ci,sec,loading){
       return '<span><b>'+esc(c)+'</b>'+esc(m&&m.h?m.h:(p||''))+'</span>';
     }).join('')+'</div>';
   }
+  h+='<div class="trb"><button type="button" data-tr="s">Dịch câu này</button><button type="button" data-tr="p">Dịch cả đoạn</button></div><div class="tr" hidden></div>';
   pop.innerHTML=h; place(el);
+  pop.querySelectorAll('[data-tr]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();pinned=true;
+    const pg=PAGES[sec.dataset.p]; const {text}=b.dataset.tr==='s'?sentenceAt(pg,li,ci):paragraphAt(pg,li);
+    showTr(pop.querySelector('.tr'),text,el);});
+}
+/* ======================= translation ======================= */
+function paraLines(pg,li){ const p=pg.lines[li].par; return pg.lines.filter(L=>L.par===p); }
+function joinLines(ls){ return joinWithPos(ls).text; }
+// join a paragraph's lines, remembering where each line starts in the joined text
+function joinWithPos(ls){
+  let text=''; const starts=[];
+  for(const L of ls){
+    const lead=L.t.length-L.t.trimStart().length, body=L.t.trim();
+    if(text&&/[A-Za-z0-9,.]/.test(text.slice(-1))&&/[A-Za-z0-9]/.test(body[0]||'')) text+=' ';
+    starts.push(text.length-lead); text+=body;
+  }
+  return {text,starts};
+}
+function paragraphAt(pg,li){ return {text:joinLines(paraLines(pg,li))}; }
+function sentenceAt(pg,li,ci){
+  const ls=paraLines(pg,li), {text,starts}=joinWithPos(ls);
+  const pos=Math.max(0,Math.min(text.length-1,starts[ls.indexOf(pg.lines[li])]+ci));
+  const END=/[。！？!?…]/;
+  let a=pos; while(a>0&&!END.test(text[a-1])) a--;
+  let b=pos; while(b<text.length&&!END.test(text[b])) b++;
+  while(b<text.length&&/[。！？!?…”"』」）)]/.test(text[b])) b++;
+  return {text:text.slice(a,b).trim()};
+}
+const trCache=new Map();
+function chunks(t,max){ const out=[]; let cur=''; for(const piece of t.split(/(?<=[。！？!?；;\n])/)){ if((cur+piece).length>max&&cur){out.push(cur);cur='';} cur+=piece; } if(cur) out.push(cur); return out.flatMap(c=>c.length>max?c.match(new RegExp('[\\s\\S]{1,'+max+'}','g')):[c]); }
+async function viaGoogle(t){
+  const r=await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=zh-CN&tl=vi&dt=t&q='+encodeURIComponent(t));
+  if(!r.ok) throw new Error('g'+r.status);
+  const d=await r.json(); return d[0].map(x=>x[0]).join('');
+}
+async function viaMyMemory(t){
+  const r=await fetch('https://api.mymemory.translated.net/get?langpair=zh-CN|vi&q='+encodeURIComponent(t));
+  if(!r.ok) throw new Error('m'+r.status);
+  const d=await r.json(); if(d.responseStatus!==200&&d.responseStatus!=='200') throw new Error('m'+d.responseStatus);
+  return d.responseData.translatedText;
+}
+async function translate(text){
+  text=text.trim(); if(!text) return '';
+  if(trCache.has(text)) return trCache.get(text);
+  let out;
+  try{ out=(await Promise.all(chunks(text,1500).map(viaGoogle))).join(' '); }
+  catch(e){ out=(await Promise.all(chunks(text,450).map(viaMyMemory))).join(' '); }
+  trCache.set(text,out); return out;
+}
+const gLink=t=>'https://translate.google.com/?sl=zh-CN&tl=vi&op=translate&text='+encodeURIComponent(t.slice(0,4500));
+async function showTr(box,text,el){
+  box.hidden=false;
+  if(!text){box.innerHTML='<div class="gl">Không tìm thấy câu để dịch.</div>';return;}
+  box.innerHTML='<div class="zhs"></div><div class="vi">Đang dịch…</div><div class="gl"><a target="_blank" rel="noopener">Mở trong Google Dịch</a></div>';
+  box.querySelector('.zhs').textContent=text; box.querySelector('a').href=gLink(text);
+  if(el) place(el);
+  try{ box.querySelector('.vi').textContent=await translate(text); }
+  catch(e){ box.querySelector('.vi').textContent='Chưa dịch được (mạng hoặc dịch vụ dịch đang bận). Bấm "Mở trong Google Dịch" bên dưới.'; }
+  if(el&&!pop.hidden) place(el);
+}
+async function translatePage(sec){
+  const pg=PAGES[sec.dataset.p]; if(!pg) return;
+  let panel=sec.querySelector('.trpage');
+  if(panel){ panel.remove(); sec.querySelector('[data-a=tr]').textContent='Dịch cả trang'; return; }
+  panel=document.createElement('div'); panel.className='trpage';
+  panel.innerHTML='<h3>Bản dịch tiếng Việt</h3>';
+  sec.appendChild(panel); sec.querySelector('[data-a=tr]').textContent='Ẩn bản dịch';
+  const pars=[...new Set(pg.lines.map(L=>L.par))].map(p=>joinLines(pg.lines.filter(L=>L.par===p))).filter(t=>[...t].some(isCJK));
+  if(!pars.length){ panel.insertAdjacentHTML('beforeend','<p>Không có chữ Hán để dịch.</p>'); return; }
+  const ps=pars.map(t=>{const p=document.createElement('p');p.textContent='Đang dịch…';panel.appendChild(p);return [p,t];});
+  const gl=document.createElement('div'); gl.className='gl'; gl.innerHTML='Bản dịch máy (Google Dịch), chỉ để tham khảo · <a target="_blank" rel="noopener">Mở cả trang trong Google Dịch</a>';
+  gl.querySelector('a').href=gLink(pars.join('\n\n')); panel.appendChild(gl);
+  for(const [p,t] of ps){
+    try{ p.textContent=await translate(t); }
+    catch(e){ p.textContent='Chưa dịch được đoạn này. Bấm "Mở cả trang trong Google Dịch" bên dưới.'; }
+  }
 }
 function place(el){
   pop.hidden=false;
@@ -536,8 +644,9 @@ document.addEventListener('pointerout',e=>{
 pop.addEventListener('pointerleave',e=>{ if(e.pointerType==='mouse'&&!pinned) hidePop(); });
 document.addEventListener('click',e=>{
   const el=target(e);
-  if(el){ pinned=true; showPop(el); return; }
+  if(el){ clearTimeout(hoverT); pinned=true; showPop(el); return; }
   if(!pop.hidden && !pop.contains(e.target)) hidePop();
+  else if(pop.contains(e.target)) pinned=true;
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')hidePop();});
 addEventListener('scroll',()=>{ if(!pop.hidden&&innerWidth>600) hidePop(); },{passive:true});
@@ -678,8 +787,9 @@ async function ocrCanvas(canvas){
   const {data}=await w.recognize(canvas);
   const G=grayOf(canvas);
   const lines=[]; let lastBottom=null,lastH=0;
+  let parNo=0;
   for(const par of (data.paragraphs||[])){
-    let first=true;
+    let first=true; parNo++;
     for(const ln of par.lines){
       const lb=ln.bbox, lh=lb.y1-lb.y0;
       const chars=[];
@@ -698,7 +808,7 @@ async function ocrCanvas(canvas){
       if(!t) continue;
       if(![...t].some(isCJK)&&ln.confidence<55) continue;
       const gap=first&&lastBottom!=null&&(lb.y0-lastBottom)>Math.max(lh,lastH)*0.9;
-      lines.push({t,gap,boxes:cl.map(x=>x.b),nolabel:cl.map(x=>!!x.nolabel)}); lastBottom=lb.y1; lastH=lh; first=false;
+      lines.push({t,gap,par:parNo,boxes:cl.map(x=>x.b),nolabel:cl.map(x=>!!x.nolabel)}); lastBottom=lb.y1; lastH=lh; first=false;
     }
   }
   return lines;
@@ -856,13 +966,19 @@ async function example(){
 const paste=$('paste'); let pasteSec=null;
 function renderPaste(){
   const out=$('pasteOut');
-  const lines=finishLines(paste.value.split(/\n/).map(t=>({t,gap:false,boxes:[]})));
+  const lines=finishLines(paste.value.split(/\n/).map((t,i)=>({t,gap:false,par:i,boxes:[]})));
   if(!pasteSec){ pasteSec=out.closest('section'); }
   let id=pasteSec.dataset.p;
   if(id==null){ id=PAGES.push({lines})-1; pasteSec.dataset.p=id; } else PAGES[id]={lines};
   out.innerHTML=textHTML(lines);
 }
-paste.addEventListener('input',renderPaste);
+paste.addEventListener('input',()=>{renderPaste();const o=pasteSec.querySelector('.trpage');if(o){o.remove();$('pasteTr').textContent='Dịch sang tiếng Việt';}});
+$('pasteTr').onclick=async()=>{
+  let panel=pasteSec.querySelector('.trpage'); if(panel){panel.remove();$('pasteTr').textContent='Dịch sang tiếng Việt';return;}
+  panel=document.createElement('div'); panel.className='trpage'; panel.innerHTML='<p>Đang dịch…</p><div class="gl"><a target="_blank" rel="noopener">Mở trong Google Dịch</a></div>';
+  panel.querySelector('a').href=gLink(paste.value); pasteSec.appendChild(panel); $('pasteTr').textContent='Ẩn bản dịch';
+  try{ panel.querySelector('p').textContent=await translate(paste.value); }catch(e){ panel.querySelector('p').textContent='Chưa dịch được. Bấm "Mở trong Google Dịch".'; }
+};
 
 /* ======================= inputs ======================= */
 const drop=$('drop');
