@@ -127,7 +127,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-ui);
 .ov{position:absolute;inset:0}
 .hs{position:absolute;cursor:pointer;border-radius:3px}
 .hs:hover,.hs.on{background:color-mix(in srgb,var(--sun) 45%,transparent)}
-.pl{position:absolute;transform:translate(-50%,-100%);white-space:nowrap;pointer-events:none;
+.pl{position:absolute;transform:translate(-50%,-100%) scaleX(var(--sx,1));transform-origin:50% 100%;white-space:nowrap;pointer-events:none;
   font-family:var(--f-ui);font-weight:600;line-height:1;color:#0a6e58;letter-spacing:-.02em;
   text-shadow:0 0 2px #fff,0 0 2px #fff,0 0 3px #fff,0 0 4px #fff}
 /* the book page is always a light image, so its pinyin colours stay fixed in both themes */
@@ -137,7 +137,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-ui);
 .tones rt.t1{color:var(--t1)} .tones rt.t2{color:var(--t2)}
 .tones rt.t3{color:var(--t3)} .tones rt.t4{color:var(--t4)}
 @media (prefers-reduced-motion:no-preference){.fig.fresh .pl{animation:pop .5s ease-out both}}
-@keyframes pop{from{opacity:0;transform:translate(-50%,-60%)}}
+@keyframes pop{from{opacity:0;transform:translate(-50%,-60%) scaleX(var(--sx,1))}}
 
 /* big-text view */
 .text{min-width:0;font-family:var(--f-zh);font-size:var(--zh-size);line-height:2.2;overflow-wrap:anywhere}
@@ -387,7 +387,7 @@ function stretch(canvas,lines){
     else merged.push({...r});
   }
   let prevBot=0, extra=0;
-  for(const r of merged){ r.cut=Math.floor(Math.max(prevBot,r.top-r.h*0.06)); r.gap=Math.round(r.h*0.62); extra+=r.gap; prevBot=r.bot; }
+  for(const r of merged){ r.cut=Math.floor(Math.max(prevBot,r.top-r.h*0.06)); r.gap=Math.round(r.h*0.8); extra+=r.gap; prevBot=r.bot; }
   const out=document.createElement('canvas'); out.width=canvas.width; out.height=canvas.height+extra;
   const ctx=out.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,out.width,out.height);
   let off=0, from=0;
@@ -425,13 +425,23 @@ function render(sec,page){
     page.lines.forEach((L,li)=>{
       const boxes=moved[li].boxes, gap=moved[li].gap;
       const cb=boxes.filter((b,k)=>b&&isCJK(L.t[k]));
-      const pitch=med(cb.map(b=>b.w)), lh=med(cb.map(b=>b.h));
+      const lh=med(cb.map(b=>b.h));
+      const items=[];
       L.t.split('').forEach((c,ci)=>{
         const b=boxes[ci]; if(!b||!isCJK(c)) return;
         html+='<span class="hs" data-l="'+li+'" data-i="'+ci+'" style="left:'+(b.x/W*100).toFixed(3)+'%;top:'+(b.y/H*100).toFixed(3)+'%;width:'+(b.w/W*100).toFixed(3)+'%;height:'+(b.h/H*100).toFixed(3)+'%"></span>';
-        const p=L.py[ci]; if(!p||!p.p) return;
-        const fs=Math.min(lh*0.44,gap*0.85,Math.max(pitch,b.w)*0.98/emWidth(p.p))/W*100;
-        html+='<span class="pl t'+p.n+'" style="left:'+((b.x+b.w/2)/W*100).toFixed(3)+'%;top:'+((b.y-lh*0.03)/H*100).toFixed(3)+'%;font-size:'+fs.toFixed(3)+'cqw">'+esc(p.p)+'</span>';
+        const p=L.py[ci]; if(!p||!p.p||(L.nolabel&&L.nolabel[ci])) return;
+        items.push({cx:b.x+b.w/2,y:b.y,w:b.w,p});
+      });
+      items.sort((a,b)=>a.cx-b.cx);
+      // one font size per line; a label too wide for the space over its character is narrowed, never shrunk
+      const fs=Math.min(lh*0.5,gap*0.78);
+      const top=items.length?Math.min(...items.map(i=>i.y)):0;
+      items.forEach((it,k)=>{
+        const l=k?it.cx-items[k-1].cx:Infinity, r=k<items.length-1?items[k+1].cx-it.cx:Infinity;
+        const room=Math.min(l,r,it.w*3)*0.94, nat=emWidth(it.p.p)*fs;
+        const sx=Math.max(0.5,Math.min(1,room/nat));
+        html+='<span class="pl t'+it.p.n+'" style="left:'+(it.cx/W*100).toFixed(3)+'%;top:'+((top-lh*0.04)/H*100).toFixed(3)+'%;font-size:'+(fs/W*100).toFixed(3)+'cqw'+(sx<1?';--sx:'+sx.toFixed(3):'')+'">'+esc(it.p.p)+'</span>';
       });
     });
     ov.innerHTML=html;
@@ -601,9 +611,72 @@ function tidy(chars){ // drop spaces between CJK chars, collapse others
   while(out.length&&out[out.length-1].c===' ')out.pop();
   return out;
 }
+/* Find where each glyph really is: scan the ink in a text-line band, column by column. */
+function grayOf(canvas){
+  const W=canvas.width,H=canvas.height, d=canvas.getContext('2d').getImageData(0,0,W,H).data, g=new Uint8Array(W*H);
+  for(let i=0,j=0;j<g.length;i+=4,j++) g[j]=(d[i]*3+d[i+1]*6+d[i+2])/10;
+  return {g,W,H};
+}
+function inkBlobs(G,x0,x1,y0,y1,lh){
+  x0=Math.max(0,Math.floor(x0)); x1=Math.min(G.W-1,Math.ceil(x1)); y0=Math.max(0,Math.floor(y0)); y1=Math.min(G.H-1,Math.ceil(y1));
+  const runs=[]; let st=-1;
+  for(let x=x0;x<=x1+1;x++){
+    let ink=false;
+    if(x<=x1) for(let y=y0;y<=y1;y++){ if(G.g[y*G.W+x]<140){ink=true;break;} }
+    if(ink&&st<0) st=x; else if(!ink&&st>=0){runs.push([st,x-1]);st=-1;}
+  }
+  const ext=(x0_,x1_)=>{ let t=y1,bt=y0;
+    for(let y=y0;y<=y1;y++){ for(let x=x0_;x<=x1_;x++){ if(G.g[y*G.W+x]<140){ if(y<t)t=y; if(y>bt)bt=y; break; } } }
+    return [t,bt]; };
+  const rh=runs.map(r=>{const e=ext(r[0],r[1]);return e[1]-e[0];}).filter(h=>h>lh*0.3).sort((a,b)=>a-b);
+  const g0=rh.length?rh[Math.floor(rh.length*0.75)]:lh; // glyph size, from the taller ink runs
+  const blobs=[];
+  for(const r of runs){
+    const p=blobs[blobs.length-1];
+    if(p&&r[1]-p.x0<=g0*1.08&&r[0]-p.x1<g0*0.3) p.x1=r[1]; else blobs.push({x0:r[0],x1:r[1]});
+  }
+  for(const bl of blobs){ const e=ext(bl.x0,bl.x1); bl.y0=e[0]; bl.y1=e[1]; }
+  return blobs;
+}
+// Pair the line's Chinese characters (in order) with glyph-sized ink blobs (in order).
+function snapLine(G,chars,lb){
+  const lh=lb.y1-lb.y0; if(lh<6) return;
+  let blobs=inkBlobs(G,lb.x0-lh*0.2,lb.x1+lh*0.2,lb.y0,lb.y1,lh);
+  const hs=blobs.map(b=>b.y1-b.y0).filter(h=>h>lh*0.5).sort((a,b)=>a-b);
+  const gh=hs.length?hs[hs.length>>1]:lh;
+  const cand=[];
+  for(const bl of blobs){
+    const w=bl.x1-bl.x0+1;
+    if(w<gh*0.8) continue; // letters, digits and most punctuation are narrower than a Chinese glyph
+    const k=w>gh*1.45?Math.round(w/(gh*0.98)):1;
+    for(let i=0;i<k;i++) cand.push({x0:bl.x0+w*i/k,x1:bl.x0+w*(i+1)/k,y0:bl.y0,y1:bl.y1});
+  }
+  const idx=chars.map((c,i)=>isCJK(c.c)?i:-1).filter(i=>i>=0);
+  const n=idx.length,m=cand.length; if(!n||!m) return;
+  const hint=i=>chars[i].b?chars[i].b.x+chars[i].b.w/2:null;
+  // monotone alignment, cheap when positions agree, small penalty for skipping
+  const INF=1e9, D=[...Array(n+1)].map(()=>new Float64Array(m+1).fill(INF)), P=[...Array(n+1)].map(()=>new Int8Array(m+1));
+  D[0][0]=0;
+  for(let i=0;i<=n;i++)for(let j=0;j<=m;j++){
+    const v=D[i][j]; if(v>=INF) continue;
+    if(i<n&&j<m){ const h=hint(idx[i]); const c=v+(h==null?0.3:Math.min(2,Math.abs(h-(cand[j].x0+cand[j].x1)/2)/gh)*0.2);
+      if(c<D[i+1][j+1]){D[i+1][j+1]=c;P[i+1][j+1]=1;} }
+    if(i<n&&v+1<D[i+1][j]){D[i+1][j]=v+1;P[i+1][j]=2;}
+    const sk=(cand[j]&&cand[j].x1-cand[j].x0<gh*0.92)?0.3:0.7;
+    if(j<m&&v+sk<D[i][j+1]){D[i][j+1]=v+sk;P[i][j+1]=3;}
+  }
+  let i=n,j=m; const top=Math.min(...cand.map(c=>c.y0));
+  while(i>0||j>0){
+    const k=P[i][j];
+    if(k===1){ const c=cand[j-1]; chars[idx[i-1]].b={x:c.x0,y:top,w:c.x1-c.x0,h:gh}; chars[idx[i-1]].snap=true; i--;j--; }
+    else if(k===2){ chars[idx[i-1]].nolabel=true; i--; }
+    else j--;
+  }
+}
 async function ocrCanvas(canvas){
   const w=await getOcr();
   const {data}=await w.recognize(canvas);
+  const G=grayOf(canvas);
   const lines=[]; let lastBottom=null,lastH=0;
   for(const par of (data.paragraphs||[])){
     let first=true;
@@ -612,17 +685,20 @@ async function ocrCanvas(canvas){
       const chars=[];
       for(const wd of (ln.words||[])){
         if(chars.length) chars.push({c:' ',b:null});
-        // spread each word box over its characters (symbol boxes are often off for Chinese)
         const wb=wd.bbox, cs=[...(wd.text||'')].filter(c=>!/\s/.test(c));
+        const sy=(wd.symbols||[]).filter(s=>(s.text||'').trim());
+        if(sy.length===cs.length){ sy.forEach((s,k)=>chars.push({c:cs[k],b:{x:s.bbox.x0,y:lb.y0,w:Math.max(1,s.bbox.x1-s.bbox.x0),h:lh}})); continue; }
         const wt=cs.map(c=>isCJKP(c)?1:0.55), tw=wt.reduce((a,b)=>a+b,0)||1;
         let cx=wb.x0; const unit=(wb.x1-wb.x0)/tw;
         cs.forEach((c,k)=>{const cw=wt[k]*unit; chars.push({c,b:{x:cx,y:lb.y0,w:Math.max(1,cw),h:lh}}); cx+=cw;});
       }
-      const cl=tidy(chars); const t=cl.map(x=>x.c).join('');
+      const cl=tidy(chars);
+      snapLine(G,cl,lb);
+      const t=cl.map(x=>x.c).join('');
       if(!t) continue;
       if(![...t].some(isCJK)&&ln.confidence<55) continue;
       const gap=first&&lastBottom!=null&&(lb.y0-lastBottom)>Math.max(lh,lastH)*0.9;
-      lines.push({t,gap,boxes:cl.map(x=>x.b)}); lastBottom=lb.y1; lastH=lh; first=false;
+      lines.push({t,gap,boxes:cl.map(x=>x.b),nolabel:cl.map(x=>!!x.nolabel)}); lastBottom=lb.y1; lastH=lh; first=false;
     }
   }
   return lines;
