@@ -25,3 +25,5 @@ Tạo vở tập viết chữ Hán (田字格, 米字格, 回宫格, 九宫格, 
 
 - Dữ liệu nét: Make Me a Hanzi / hanzi-writer-data (Arphic Public License), tải từ jsDelivr. Thư viện `vo/lib/hanzi-writer.min.js` (MIT), `vo/lib/jspdf.umd.min.js` (MIT).
 - `vo/data/chars.js`: nghĩa + âm Hán Việt từng chữ rút từ CVDICT (CC BY-SA 4.0). `vo/data/lessons.js`: từ mới bài 11–25.
+
+Lưu ý: khi sửa `shared/nav.js`, `shared/nav-head.js` hay `shared/theme.css`, tăng số `?v=` ở thẻ script trong mọi trang (và ở link theme.css trong nav-head.js) để iPhone không dùng bản cũ trong bộ nhớ đệm.

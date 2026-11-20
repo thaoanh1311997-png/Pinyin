@@ -27,7 +27,7 @@
   };
   window.BM_THEME_GET = function () { return th; };
   if (document.readyState === 'loading') {
-    document.write('<link rel="stylesheet" id="bm-theme-css" href="' + BASE + 'shared/theme.css?v=1">');
+    document.write('<link rel="stylesheet" id="bm-theme-css" href="' + BASE + 'shared/theme.css?v=11">');
     document.addEventListener('DOMContentLoaded', function () { window.BM_THEME(th); });
   }
   function on() {
