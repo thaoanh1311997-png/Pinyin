@@ -34,7 +34,7 @@ textarea{width:100%;height:140px;margin-top:10px;font-size:12px}
 <script>
 const $=s=>document.querySelector(s);
 $('#copy').onclick=async()=>{
-  try{const code=await (await fetch('../bb-server/src/index.js',{cache:'no-store'})).text();
+  try{const code=await (await fetch('../bb-server/src/index.js?t='+Date.now(),{cache:'no-store'})).text();
     try{await navigator.clipboard.writeText(code);$('#cmsg').textContent='Đã chép! Qua Cloudflare dán vào nha.';}
     catch(e){const t=document.createElement('textarea');t.value=code;$('#cmsg').after(t);t.select();$('#cmsg').textContent='Bấm giữ vào ô dưới, chọn tất cả rồi sao chép.';}
   }catch(e){$('#cmsg').textContent='Chưa tải được mã, thử lại nha.';}

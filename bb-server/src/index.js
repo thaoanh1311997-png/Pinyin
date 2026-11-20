@@ -145,7 +145,7 @@ export default {
     const errs = [];
     let res = await viaPlayer(id, errs);
     if (!res || res.mt) { const t = await viaTranscript(id, errs); if (t && (!res || t.lines.some(l => cjk(l[2])))) res = t; }
-    if (!res) return json({ ok: false, errors: errs }, 200);
+    if (!res) return json({ ok: false, version: 5, errors: ['v5', ...errs] }, 200);
     const resp = json({ ok: true, ...res }, 200, { 'Cache-Control': 'public, max-age=86400' });
     ctx.waitUntil(cache.put(key, resp.clone()));
     return resp;
