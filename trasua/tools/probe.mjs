@@ -14,11 +14,11 @@ console.log('IDX', await p.evaluate(async () => { try { const r = await fetch('d
 console.log('IMG0', await p.evaluate(async () => { const i = document.querySelector('.news .thumb img'); if (!i) return 'none'; const r = await fetch(i.src); return i.src + ' ' + r.status + ' ' + r.headers.get('content-type') + ' complete ' + i.complete + ' w ' + i.naturalWidth; }));
 const link0 = await p.evaluate(async () => { const j = await (await fetch('data/news.json')).json(); return j.items.slice(5, 8).map(x => x.link); });
 const RL = [['corslol', u => 'https://api.cors.lol/?url=' + encodeURIComponent(u)], ['allorigins', u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u)], ['codetabs', u => 'https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent(u)], ['jina', u => 'https://r.jina.ai/' + u], ['corseu', u => 'https://cors.eu.org/' + u], ['corsproxyorg', u => 'https://corsproxy.org/?url=' + encodeURIComponent(u)], ['cfworkers', u => 'https://test.cors.workers.dev/?' + u], ['x2u', u => 'https://cors.x2u.in/' + u], ['thingproxy', u => 'https://thingproxy.freeboard.io/fetch/' + u]];
-for (const link of link0) for (const [nm, f] of RL) {
+for (const link of link0.slice(0, 1)) for (const [nm, f] of RL) {
   const r = await p.evaluate(async (url) => { const t = Date.now(); try { const ctl = new AbortController(); setTimeout(() => ctl.abort(), 20000); const x = await fetch(url, { signal: ctl.signal }); const tx = await x.text(); return x.status + ' len ' + tx.length + ' zh ' + (tx.match(/[一-鿿]/g) || []).length + ' left_zw ' + tx.includes('left_zw') + ' ' + (Date.now() - t) + 'ms ' + tx.slice(0, 80).replace(/\s+/g, ' '); } catch (e) { return 'ERR ' + e.message + ' ' + (Date.now() - t) + 'ms'; } }, f(link));
   console.log('RELAY', nm, r);
 }
-const ids = await p.$$eval('.news', x => x.slice(0, 5).map(a => (a.getAttribute('href') || '').split('/').pop()));
+const ids = await p.evaluate(async () => { const j = await (await fetch('data/news.json?x=' + Date.now())).json(); const by = s => j.items.filter(x => x.s === s); return [...by('中国新闻网').slice(0, 3), ...by('RFI中文').slice(0, 1), ...by('DW中文').slice(0, 1)].map(x => x.id); });
 for (const id of ids) {
   const t0 = Date.now();
   await p.goto(U + '#/read/' + id); await p.waitForSelector('#reader');

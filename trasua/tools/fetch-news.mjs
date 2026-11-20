@@ -25,7 +25,6 @@ const FEEDS = [ // [category, name, url, source] – feeds that fail are skipped
   ['vh', 'ent', 'https://www.chinanews.com.cn/rss/ent.xml', '中国新闻网'],
   ['cn', 'tech', 'https://www.chinanews.com.cn/rss/tech.xml', '中国新闻网'],
   ['sk', 'life-health', 'https://www.chinanews.com.cn/rss/life-health.xml', '中国新闻网'],
-  ['qt', 'bbc', 'https://feeds.bbci.co.uk/zhongwen/simp/rss.xml', 'BBC中文'],
   ['qt', 'dw', 'https://rss.dw.com/rdf/rss-chi-all', 'DW中文'],
   ['qt', 'rfi', 'https://www.rfi.fr/cn/rss', 'RFI中文'],
   ['xh', 'people-society', 'http://www.people.com.cn/rss/society.xml', '人民网'],
@@ -49,6 +48,10 @@ const pickImg = (html, base) => { try { return extract(html, base).imgs[0] || ''
 let old = [];
 try { old = JSON.parse(fs.readFileSync(OUT, 'utf8')).items || []; } catch (e) {}
 for (const a of old) if (a.img && /\/fileftp\//.test(a.img)) delete a.img; // old runs stored the site logo: look again
+// learners read Simplified Chinese: skip items written in Traditional characters
+const TRAD = /[這們國會說時來對發應為從與學關點過還當體經歷電題麼個裡後問開門長見東車書業產頭樣錢讓總義區無變將進現實義聽報導軍員並術製該議論際雙條種萬處買賣記紀氣價難邊陸灣華語寫讀]/g;
+const isTrad = t => (t.match(TRAD) || []).length >= 2;
+old = old.filter(a => !isTrad(a.t + a.b));
 const seen = new Map(old.map(a => [a.link, a]));
 let added = 0;
 const decodeBuf = buf => { const head = buf.slice(0, 300).toString('latin1'); return /encoding=["']?(gb2312|gbk|gb18030)/i.test(head) ? new TextDecoder('gbk').decode(buf) : buf.toString('utf8'); };
@@ -63,7 +66,7 @@ for (const [cat, name, url, src] of FEEDS) {
       const rawDesc = dec(tag(it, 'description'));
       let body = strip(tag(it, 'description'));
       const date = new Date(strip(tag(it, 'pubDate')) || strip(tag(it, 'dc:date')) || Date.now());
-      if (!title || !link || !/[一-鿿]/.test(title)) continue;
+      if (!title || !link || !/[一-鿿]/.test(title) || isTrad(title + ' ' + strip(tag(it, 'description')))) continue;
       if (body.replace(/\s/g, '') === title.replace(/\s/g, '') || body.includes('题：' + title)) body = body.length > title.length + 25 ? body : '';
       body = body.replace(/^(中新网|中新社)[^电]{0,20}电\s*(\([^)]*\)|（[^）]*）)?\s*/, '');
       { const seenS = new Set(); body = body.replace(/\s*[^。！？]*?[\u4e00-\u9fff]{1,4}\s*摄\s*/g, '。').split(/(?<=[。！？])/).map(x => x.trim()).filter(x => x && x !== '。' && !/^图为/.test(x) && !seenS.has(x) && seenS.add(x)).join(''); }
