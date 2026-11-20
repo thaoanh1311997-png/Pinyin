@@ -1787,12 +1787,11 @@ async function autoSubsFile(){
       }catch(e){ console.warn('groq mp3',e); gErr=String(e&&e.message||e); }
       if(job.stop||LES!==les) return;
     }
-    // Phones and iPads: the in-browser speech model needs gigabytes for a long lesson and Safari kills the page
-    // (it reloads on the home page). Only short clips are done on the device; long ones need the fast server.
-    { const md=P&&P.media&&P.dur?P.dur():0, long=md?md>240:blob.size>4*1048576;
-      if(IS_MOB&&long){ job.running=false;
+    // Phones and iPads: the in-browser speech model needs 1.5+ GB even for a 1-minute clip (measured in WebKit),
+    // and Safari kills the page (it reloads on the home page). So on these devices only the fast server is used.
+    { if(IS_MOB){ job.running=false;
         const c=(gErr.match(/groq (\d+)/)||[])[1];
-        noSubs(!groqKey()?'Bài dài nên điện thoại cần máy chủ nhanh để làm phụ đề. Mở link mã máy chủ mà Claude đã gửi 1 lần trên máy này, rồi chọn lại file nha.'
+        noSubs(!groqKey()?'Điện thoại cần máy chủ nhanh để làm phụ đề. Mở link mã máy chủ mà Claude đã gửi 1 lần trên máy này, rồi chọn lại file nha.'
           :c==='401'||c==='403'?'Mã máy chủ nhanh bị sai hoặc hết hạn. Gửi Claude mã mới để sửa nha.'
           :c==='429'?'Máy chủ nhanh đang hết lượt miễn phí trong giờ này. Khoảng 1 tiếng nữa chọn lại file là được nha.'
           :c==='413'?'File này lớn quá với máy chủ nhanh. Bạn đổi sang MP3 rồi chọn lại nha.'

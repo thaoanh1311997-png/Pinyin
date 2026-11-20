@@ -18,10 +18,10 @@ const rss = () => { try { return +cp.execSync("ps -eo rss,comm,args | grep -i 'W
       const base = rss(); let peak = base; const iv = setInterval(() => { const r = rss(); if (r > peak) peak = r; }, 200);
       await p.click('[data-go=video]'); await p.waitForTimeout(400);
       await p.setInputFiles('#mediaFile', file); await p.click('#startVideo');
-      const t0 = Date.now(); let st = ''; const MSG = /cần máy chủ nhanh|sai hoặc hết hạn|Chưa gọi được|hết lượt|lớn quá/;
+      const t0 = Date.now(); let st = ''; const MSG = /cần máy chủ nhanh|Điện thoại cần|sai hoặc hết hạn|Chưa gọi được|hết lượt|lớn quá/;
       for (let k = 0; k < 120; k++) {
         await p.waitForTimeout(1000);
-        try { st = await p.evaluate(() => [...document.querySelectorAll('main > section')].filter(s => !s.hidden).map(s => s.id).join(',') + ' lines=' + document.querySelectorAll('.line').length + ' ' + ' ' + ((document.body.innerText.match(/(Bài dài|Mã máy chủ|Chưa gọi|File này)[^\n]{0,70}/) || [''])[0])); } catch (e) { st = 'eval failed ' + e.message.slice(0, 80); }
+        try { st = await p.evaluate(() => [...document.querySelectorAll('main > section')].filter(s => !s.hidden).map(s => s.id).join(',') + ' lines=' + document.querySelectorAll('.line').length + ' ' + ' ' + ((document.body.innerText.match(/(Điện thoại|Bài dài|Mã máy chủ|Chưa gọi|File này)[^\n]{0,70}/) || [''])[0])); } catch (e) { st = 'eval failed ' + e.message.slice(0, 80); }
         if (/lines=[1-9]/.test(st) && Date.now() - t0 > 15000) break;
         if (/vHome/.test(st) && Date.now() - t0 > 3000) break;
         if (MSG.test(st)) break;
