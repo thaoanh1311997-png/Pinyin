@@ -9,7 +9,7 @@
   function abs(u, base) { try { return new URL(u.replace(/&amp;/g, '&'), base).href; } catch (e) { return ''; } }
   function zone(html) {
     // main content container on chinanews pages (several templates over the years)
-    var marks = ['class="left_zw"', "class='left_zw'", 'class="content_desc"', 'class="left-zw"', 'id="content"', 'class="content"', '<article'];
+    var marks = ['class="rm_txt_con"', 'class="box_con"', 'id="rwb_zw"', 'class="left_zw"', "class='left_zw'", 'class="content_desc"', 'class="left-zw"', 'id="content"', 'class="content"', '<article'];
     for (var i = 0; i < marks.length; i++) {
       var k = html.indexOf(marks[i]); if (k < 0) continue;
       var rest = html.slice(k);
@@ -19,7 +19,17 @@
     return '';
   }
   function extract(html, base) {
-    var z = zone(html); if (!z) return { paras: [], imgs: [], pos: [] };
+    var r = pick(zone(html), base);
+    if (r.paras.length < 2) { // other sites / unknown templates: whole page, only real sentences
+      var body = html.replace(/<(script|style|nav|header|footer|aside)[\s\S]*?<\/\1>/gi, '');
+      var g = pick(body.slice(Math.max(0, body.search(/<main|<article|<h1/i))), base);
+      g.paras = g.paras.filter(function (t) { return (t.match(/[一-鿿]/g) || []).length >= 15; });
+      if (g.paras.length > r.paras.length) r = g;
+    }
+    return r;
+  }
+  function pick(z, base) {
+    if (!z) return { paras: [], imgs: [], pos: [] };
     var imgs = [], pos = [], paras = [];
     var re = /<img[^>]+(?:data-src|src)=["']([^"']+)["'][^>]*>|<p[^>]*>([\s\S]*?)<\/p>/gi, m;
     while ((m = re.exec(z))) {
