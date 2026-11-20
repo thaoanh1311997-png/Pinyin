@@ -2,7 +2,7 @@
 // crashes, reloads or a jump back to the home page. Groq is mocked; everything else is the live code.
 const { webkit, devices } = require('playwright');
 const cp = require('child_process');
-const rss = () => { try { return +cp.execSync("ps -eo rss,comm,args | grep -i 'WebKitWebProcess\\|WebContent' | grep -v grep | awk '{s+=$1} END {print s+0}'").toString().trim() / 1024 | 0; } catch (e) { return 0; } };
+const rss = () => { try { return +cp.execSync("ps -eo rss,comm,args | grep -i 'WebProcess\\|WebContent' | grep -v grep | awk '{s+=$1} END {print s+0}'").toString().trim() / 1024 | 0; } catch (e) { return 0; } };
 (async () => {
   const b = await webkit.launch();
   for (const [dn, dev] of [['iPhone', devices['iPhone 13']], ['iPad', devices['iPad Pro 11']]]) {
