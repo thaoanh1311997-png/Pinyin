@@ -127,6 +127,13 @@ table.bi col.num{width:28px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:50;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;text-align:center}
 .toast.on{opacity:1}
 .del{color:var(--bad);font-size:13px;font-weight:600}
+.lpick .pg{font-size:12px;color:var(--muted);margin-left:2px}
+.resume{background:linear-gradient(120deg,#fff4e0,#fff);border:1.5px solid #f6cf8f;border-radius:16px;padding:12px 14px;margin:0 0 12px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between}
+.resume .steps,.resume .progress{flex-basis:100%;margin-top:4px}
+.resume .steps:empty{display:none}
+.small{font-size:12.5px}
+.btn-sm{padding:8px 14px;font-size:14px}
+.resume .inp{flex:1;min-width:160px}
 
 @media (max-width:560px){
   .paper{padding:16px 12px;border-radius:14px}
@@ -182,6 +189,7 @@ table.bi col.num{width:28px}
     </div>
     <div class="lesbar" id="lesbar"></div>
     <div class="tools" id="tools"></div>
+    <div id="resumeBox"></div>
     <div id="out"></div>
   </div>
 
@@ -224,7 +232,7 @@ function ls(k,v){try{ if(v===undefined) return localStorage.getItem(k); if(v===n
 
 /* ---------- lưu tài liệu (IndexedDB) ---------- */
 var DB=null;
-function db(){ return new Promise(function(res,rej){ if(DB) return res(DB); try{ var r=indexedDB.open("ot-docs",1); r.onupgradeneeded=function(){ r.result.createObjectStore("docs",{keyPath:"id"}); }; r.onsuccess=function(){DB=r.result;res(DB)}; r.onerror=function(){rej(r.error)}; }catch(e){rej(e)} }); }
+function db(){ return new Promise(function(res,rej){ if(DB) return res(DB); try{ var r=indexedDB.open("ot-docs",2); r.onupgradeneeded=function(){ var d=r.result; if(!d.objectStoreNames.contains("docs")) d.createObjectStore("docs",{keyPath:"id"}); if(!d.objectStoreNames.contains("pages")) d.createObjectStore("pages",{keyPath:"k"}); }; r.onsuccess=function(){DB=r.result;res(DB)}; r.onerror=function(){rej(r.error)}; }catch(e){rej(e)} }); }
 function dbAll(){ return db().then(function(d){ return new Promise(function(res){ var out=[]; var c=d.transaction("docs").objectStore("docs").openCursor(); c.onsuccess=function(){ var x=c.result; if(x){out.push(x.value);x.continue()} else res(out) }; c.onerror=function(){res(out)}; }); }).catch(function(){return []}); }
 function dbPut(doc){ return db().then(function(d){ return new Promise(function(res,rej){ var t=d.transaction("docs","readwrite"); t.objectStore("docs").put(doc); t.oncomplete=function(){res()}; t.onerror=function(){rej(t.error)}; }); }); }
 function dbDel(id){ return db().then(function(d){ return new Promise(function(res){ var t=d.transaction("docs","readwrite"); t.objectStore("docs").delete(id); t.oncomplete=function(){res()}; }); }); }
@@ -243,7 +251,7 @@ function loadDocs(){
   });
 }
 function drawDocs(){
-  $("#docs").innerHTML=DOCS.map(function(d){return '<button class="chip'+(cur===d&&$("#upView").classList.contains("hidden")?' on':'')+'" data-doc="'+esc(d.id)+'">'+(d.builtin?'📘 ':'📄 ')+esc(d.name)+'</button>'}).join("")+'<button class="chip add" data-add>＋ Thêm tài liệu</button>';
+  $("#docs").innerHTML=DOCS.map(function(d){return '<button class="chip'+(cur===d&&$("#upView").classList.contains("hidden")?' on':'')+'" data-doc="'+esc(d.id)+'">'+(d.builtin?'📘 ':(d.pending&&d.pending.length?'⏳ ':'📄 '))+esc(d.name)+'</button>'}).join("")+'<button class="chip add" data-add>＋ Thêm tài liệu</button>';
 }
 $("#docs").onclick=function(e){ var t=e.target.closest("button"); if(!t) return; if(t.dataset.add!=null){ showUpload(); return; } var d=DOCS.filter(function(x){return x.id===t.dataset.doc})[0]; if(d) openDoc(d); };
 
@@ -252,6 +260,7 @@ function openDoc(d){
   var saved=ls("tl.sel."+d.id); sel=saved?JSON.parse(saved):d.lessons.map(function(l){return l.n});
   sel=sel.filter(function(n){return d.lessons.some(function(l){return l.n===n})}); if(!sel.length) sel=d.lessons.map(function(l){return l.n});
   $("#barSub").textContent=d.name;
+  $("#resumeBox").innerHTML=resumeHTML(d);
   drawDocs(); drawTabs(); render(); window.scrollTo(0,0);
   var on=document.querySelector("#docs .chip.on"); if(on){ var bx=$("#docs"); bx.scrollLeft=Math.max(0,on.offsetLeft-bx.offsetLeft-12); }
 }
@@ -306,6 +315,7 @@ function render(){
       h+='</div>'; }); });
     if(!rows.length) h+='<p class="empty">Các bài đang chọn chưa có phần ngữ pháp.</p>';
   }
+  if(!L.length) h+='<p class="empty">Chưa có bài nào dịch xong. Bấm “Làm tiếp” ở trên nha.</p>';
   o.innerHTML=h+'</div>';
 }
 $("#out").addEventListener("input",function(e){ var t=e.target; if(t.dataset&&t.dataset.k) ls(t.dataset.k,t.value); });
@@ -325,65 +335,156 @@ var LIB={
   tessc:"https://cdn.jsdelivr.net/npm/tesseract.js-core@5.1.1",
   lang:"https://cdn.jsdelivr.net/npm/@tesseract.js-data/chi_sim@1.0.0/4.0.0_best_int"
 };
-var ocrW=null;
-function ocr(canvasOrFile,onp){
-  return (window.Tesseract?Promise.resolve():loadScript(LIB.tess)).then(function(){
-    if(ocrW) return ocrW;
-    return Tesseract.createWorker("chi_sim",1,{workerPath:LIB.tessw,corePath:LIB.tessc,langPath:LIB.lang,logger:function(m){ if(onp&&m.status==="recognizing text") onp(m.progress); }}).then(function(w){ocrW=w;return w});
-  }).then(function(w){ return w.recognize(canvasOrFile); }).then(function(r){ return r.data.text.replace(/(?:[\u4e00-\u9fff]) (?=[\u4e00-\u9fff])/g,function(m){return m.trim()}); });
+/* nhiều "thợ đọc chữ" chạy song song */
+var MOBILE=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform));
+function poolSize(){ var c=navigator.hardwareConcurrency||2; return Math.max(1,Math.min(MOBILE?2:4,c-1)); }
+var POOL=null;
+function getPool(){
+  if(POOL) return POOL;
+  POOL=(window.Tesseract?Promise.resolve():loadScript(LIB.tess)).then(function(){
+    var sch=Tesseract.createScheduler(), n=poolSize(), ps=[];
+    for(var i=0;i<n;i++) ps.push(Tesseract.createWorker("chi_sim",1,{workerPath:LIB.tessw,corePath:LIB.tessc,langPath:LIB.lang}).then(function(w){ sch.addWorker(w); }));
+    return Promise.all(ps).then(function(){ return sch; });
+  });
+  POOL.catch(function(){ POOL=null; });
+  return POOL;
 }
-function cleanOcr(t){ /* bỏ khoảng trắng giữa chữ Hán do OCR */ var out="",s=String(t); for(var i=0;i<s.length;i++){ var c=s[i]; if(c===" "&&/[\u4e00-\u9fff，。！？：；“”、]/.test(s[i-1]||"")&&/[\u4e00-\u9fff，。！？：；“”、]/.test(s[i+1]||"")) continue; out+=c; } return out; }
+function ocr(img){ return getPool().then(function(s){ return s.addJob("recognize",img); }).then(function(r){ return cleanOcr(r.data.text); }); }
+function cleanOcr(t){ /* bỏ khoảng trắng giữa chữ Hán do OCR */ var out="",s=String(t); for(var i=0;i<s.length;i++){ var c=s[i]; if(c===" "&&/[一-鿿，。！？：；“”、]/.test(s[i-1]||"")&&/[一-鿿，。！？：；“”、]/.test(s[i+1]||"")) continue; out+=c; } return out; }
 function fileInfo(html){ var f=$("#fileInfo"); f.innerHTML=html; f.classList.remove("hidden"); }
-var PDF=null;
+/* giữ màn hình sáng khi đang làm */
+var WL=null, BUSY=0;
+function busy(on){ BUSY+=on?1:-1; if(BUSY<0) BUSY=0; try{ if(BUSY&&navigator.wakeLock&&!WL) navigator.wakeLock.request("screen").then(function(w){WL=w; w.addEventListener&&w.addEventListener("release",function(){WL=null});}).catch(function(){}); if(!BUSY&&WL){ WL.release(); WL=null; } }catch(e){} }
+document.addEventListener("visibilitychange",function(){ if(document.visibilityState==="visible"&&BUSY){ BUSY--; busy(true); } });
+/* chạy nhiều việc cùng lúc, giữ thứ tự kết quả */
+function runAll(items,fn,conc,onStep){
+  return new Promise(function(res,rej){
+    var i=0,act=0,done=0,out=new Array(items.length),dead=false;
+    function next(){
+      if(dead) return; if(i>=items.length&&!act) return res(out);
+      while(act<conc&&i<items.length){ (function(k){ act++; Promise.resolve().then(function(){return fn(items[k],k)}).then(function(v){ out[k]=v; act--; done++; if(onStep) onStep(done,items.length,v,items[k]); next(); },function(e){ dead=true; rej(e); }); })(i++); }
+    }
+    next();
+  });
+}
+var PDF=null, FKEY="";
 $("#file").onchange=function(){ var f=this.files[0]; if(f) handleFile(f); this.value=""; };
 var dr=$("#drop"); ["dragover","dragenter"].forEach(function(ev){dr.addEventListener(ev,function(e){e.preventDefault();dr.style.background="#ffe2d6"})});
 ["dragleave","drop"].forEach(function(ev){dr.addEventListener(ev,function(e){e.preventDefault();dr.style.background=""})});
 dr.addEventListener("drop",function(e){ var f=e.dataTransfer.files[0]; if(f) handleFile(f); });
 $("#usePaste").onclick=function(){ var t=$("#paste").value.trim(); if(t.length<10){toast("Dán nội dung bài học vào trước nha");return} RAW={name:"Tài liệu dán",text:t}; splitAndPick(); };
 function handleFile(f){
-  var name=f.name.replace(/\.[^.]+$/,""); $("#pickPanel").classList.add("hidden");
+  var name=f.name.replace(/\.[^.]+$/,""); $("#pickPanel").classList.add("hidden"); SCAN_ID++;
   if(/\.pdf$/i.test(f.name)){
     fileInfo('<p class="hint">⏳ Đang mở PDF…</p>');
     (window.pdfjsLib?Promise.resolve():loadScript(LIB.pdf)).then(function(){ pdfjsLib.GlobalWorkerOptions.workerSrc=LIB.pdfw; return f.arrayBuffer(); })
     .then(function(buf){ return pdfjsLib.getDocument({data:buf}).promise; })
-    .then(function(pdf){ PDF=pdf; var n=pdf.numPages;
-      fileInfo('<p><b>📕 '+esc(f.name)+'</b> · '+n+' trang</p><p class="hint small" style="margin:4px 0 8px">Sách dày thì chọn đúng các trang của những bài cần học cho nhanh (sách scan phải đọc ảnh từng trang, khoảng 5–10 giây/trang).</p><div class="row"><span class="hint">Từ trang</span><input class="inp" id="pFrom" type="number" min="1" max="'+n+'" value="1" style="width:84px"><span class="hint">đến</span><input class="inp" id="pTo" type="number" min="1" max="'+n+'" value="'+Math.min(n,40)+'" style="width:84px"><button class="btn btn-pri" id="readPdf">Đọc chữ</button></div><div class="progress hidden" id="rprog"><i></i></div><p class="hint small" id="rmsg"></p>');
-      $("#readPdf").onclick=function(){ readPdf(name,+$("#pFrom").value,+$("#pTo").value); };
-    }).catch(function(e){ fileInfo('<p class="del">Không mở được PDF: '+esc(e.message)+'</p>'); });
+    .then(function(pdf){ PDF=pdf; FKEY=f.name+"|"+f.size+"|"+pdf.numPages; return openPdf(f.name,name); })
+    .catch(function(e){ fileInfo('<p class="del">Không mở được PDF: '+esc(e.message)+'</p>'); });
   } else if(/\.docx$/i.test(f.name)){
     fileInfo('<p class="hint">⏳ Đang đọc file Word…</p>');
     (window.mammoth?Promise.resolve():loadScript(LIB.mammoth)).then(function(){ return f.arrayBuffer(); }).then(function(buf){ return mammoth.extractRawText({arrayBuffer:buf}); })
     .then(function(r){ RAW={name:name,text:r.value}; fileInfo('<p><b>📘 '+esc(f.name)+'</b> · đã đọc '+r.value.length+' ký tự</p>'); splitAndPick(); })
     .catch(function(e){ fileInfo('<p class="del">Không đọc được file Word: '+esc(e.message)+'</p>'); });
   } else if(/^image\//.test(f.type)){
-    fileInfo('<p class="hint">⏳ Đang đọc chữ trong ảnh… <span id="ip">0%</span></p>');
-    ocr(f,function(p){ var x=$("#ip"); if(x) x.textContent=Math.round(p*100)+"%"; }).then(function(t){ RAW={name:name,text:cleanOcr(t)}; fileInfo('<p><b>🖼 '+esc(f.name)+'</b> · đã đọc chữ trong ảnh</p>'); splitAndPick(); })
-    .catch(function(e){ fileInfo('<p class="del">Không đọc được ảnh: '+esc(e.message)+'</p>'); });
+    fileInfo('<p class="hint">⏳ Đang đọc chữ trong ảnh…</p>'); busy(true);
+    ocr(f).then(function(t){ busy(false); RAW={name:name,text:t}; fileInfo('<p><b>🖼 '+esc(f.name)+'</b> · đã đọc chữ trong ảnh</p>'); splitAndPick(); })
+    .catch(function(e){ busy(false); fileInfo('<p class="del">Không đọc được ảnh: '+esc(e.message)+'</p>'); });
   } else if(/\.txt$/i.test(f.name)||f.type.indexOf("text")===0){
     f.text().then(function(t){ RAW={name:name,text:t}; fileInfo('<p><b>📄 '+esc(f.name)+'</b></p>'); splitAndPick(); });
   } else toast("File này chưa hỗ trợ, dùng PDF, Word, ảnh hoặc .txt nha");
 }
-function readPdf(name,a,b){
-  var n=PDF.numPages; a=Math.max(1,Math.min(n,a||1)); b=Math.max(a,Math.min(n,b||n));
-  var bar=$("#rprog"), msg=$("#rmsg"); bar.classList.remove("hidden"); $("#readPdf").disabled=true;
-  var texts=[], p=a, scans=0;
-  function step(){
-    if(p>b){ RAW={name:name,text:texts.join("\n")}; msg.textContent="Đã đọc "+(b-a+1)+" trang"+(scans?" ("+scans+" trang scan, đọc bằng ảnh)":"")+"."; $("#readPdf").disabled=false; splitAndPick(); return; }
-    var frac=function(x){ bar.firstChild.style.width=((p-a+x)/(b-a+1)*100)+"%"; };
-    msg.textContent="Đang đọc trang "+p+"/"+b+"…"; frac(0);
-    PDF.getPage(p).then(function(page){
-      return page.getTextContent().then(function(tc){
-        var lines=[],last=null,line="";
-        tc.items.forEach(function(it){ var y=Math.round(it.transform[5]); if(last!==null&&Math.abs(y-last)>3){lines.push(line);line="";} line+=it.str; last=y; if(it.hasEOL){lines.push(line);line="";last=null;} });
-        if(line) lines.push(line);
-        var t=lines.join("\n"), han=(t.match(/[\u4e00-\u9fff]/g)||[]).length;
-        if(han>=15) return t;
-        scans++; var vp=page.getViewport({scale:2.2}), c=document.createElement("canvas"); c.width=vp.width; c.height=vp.height;
-        return page.render({canvasContext:c.getContext("2d"),viewport:vp}).promise.then(function(){ return ocr(c,frac); }).then(cleanOcr);
+/* chữ có sẵn trong PDF (không phải scan) */
+function pageText(p){
+  return PDF.getPage(p).then(function(page){ return page.getTextContent().then(function(tc){
+    var lines=[],last=null,line="";
+    tc.items.forEach(function(it){ var y=Math.round(it.transform[5]); if(last!==null&&Math.abs(y-last)>3){lines.push(line);line="";} line+=it.str; last=y; if(it.hasEOL){lines.push(line);line="";last=null;} });
+    if(line) lines.push(line); return lines.join("\n");
+  }); });
+}
+function hanCount(t){ return (String(t).match(/[一-鿿]/g)||[]).length; }
+/* vẽ trang thành ảnh: w = bề ngang (px), top = chỉ lấy phần trên (0–1) */
+function pageImg(p,w,top){
+  return PDF.getPage(p).then(function(page){
+    var v1=page.getViewport({scale:1}), vp=page.getViewport({scale:w/v1.width}), c=document.createElement("canvas");
+    c.width=Math.round(vp.width); c.height=Math.round(vp.height*(top||1));
+    var ctx=c.getContext("2d"); ctx.fillStyle="#fff"; ctx.fillRect(0,0,c.width,c.height);
+    return page.render({canvasContext:ctx,viewport:vp}).promise.then(function(){ page.cleanup(); return c; });
+  });
+}
+/* bộ nhớ đệm từng trang (lần sau mở lại cùng file là có liền) */
+function cacheGet(k){ return db().then(function(d){ return new Promise(function(res){ var r=d.transaction("pages").objectStore("pages").get(k); r.onsuccess=function(){ res(r.result?r.result.t:null) }; r.onerror=function(){res(null)}; }); }).catch(function(){return null}); }
+function cachePut(k,t){ return db().then(function(d){ return new Promise(function(res){ var tx=d.transaction("pages","readwrite"); tx.objectStore("pages").put({k:k,t:t}); tx.oncomplete=function(){res()}; tx.onerror=function(){res()}; }); }).catch(function(){}); }
+function cached(k,make){ return cacheGet(k).then(function(t){ if(t!=null) return t; return make().then(function(t){ return cachePut(k,t).then(function(){return t}); }); }); }
+function readHead(p){ return cached(FKEY+"|h|"+p,function(){ return pageImg(p,760,0.36).then(ocr); }); }
+function readFull(p){ return cached(FKEY+"|f|"+p,function(){ return pageImg(p,1500,1).then(ocr); }); }
+
+var SCAN_ID=0;
+function openPdf(fname,name){
+  var n=PDF.numPages, my=SCAN_ID;
+  fileInfo('<p><b>📕 '+esc(fname)+'</b> · '+n+' trang</p><p class="hint" id="rmsg">⏳ Đang xem sách…</p><div class="progress hidden" id="rprog"><i></i></div>'+
+    '<details id="manual" style="margin-top:8px"><summary class="hint" style="cursor:pointer">Tự nhập số trang</summary><div class="row" style="margin-top:8px"><span class="hint">Từ trang</span><input class="inp" id="pFrom" type="number" min="1" max="'+n+'" value="1" style="width:78px"><span class="hint">đến</span><input class="inp" id="pTo" type="number" min="1" max="'+n+'" value="'+Math.min(n,15)+'" style="width:78px"><button class="btn btn-line" id="usePages">Dùng các trang này</button></div></details>');
+  $("#usePages").onclick=function(){ var a=Math.max(1,Math.min(n,+$("#pFrom").value||1)), b=Math.max(a,Math.min(n,+$("#pTo").value||a)); SCAN_ID++; RAW={name:name,text:""}; SEGS=[{n:0,head:"Trang "+a+"–"+b,pages:range(a,b)}]; showPick(true); };
+  var msg=$("#rmsg"), bar=$("#rprog");
+  // 1) PDF có chữ sẵn → đọc thẳng, rất nhanh
+  var probe=[Math.ceil(n*0.3),Math.ceil(n*0.5),Math.ceil(n*0.7)].filter(function(x,i,a){return x>=1&&a.indexOf(x)===i});
+  return Promise.all(probe.map(pageText)).then(function(ts){
+    if(ts.filter(function(t){return hanCount(t)>=15}).length>=Math.ceil(probe.length/2)){
+      msg.textContent="Đang lấy chữ…"; bar.classList.remove("hidden");
+      return runAll(range(1,n),pageText,6,function(d,t){ bar.firstChild.style.width=(d/t*100)+"%"; }).then(function(arr){
+        if(my!==SCAN_ID) return; bar.classList.add("hidden"); msg.textContent="Đã lấy chữ "+n+" trang.";
+        RAW={name:name,text:arr.join("\n")}; splitAndPick();
       });
-    }).then(function(t){ texts.push(t); p++; step(); }).catch(function(e){ msg.textContent="Lỗi ở trang "+p+": "+e.message; $("#readPdf").disabled=false; });
-  }
-  step();
+    }
+    // 2) sách scan: xem mục lục (bookmark) trước, không có thì dò nhanh đầu mỗi trang
+    return outlineLessons().then(function(L){
+      if(my!==SCAN_ID) return;
+      if(L&&L.length>=2){ msg.textContent="Sách có sẵn mục lục, tìm thấy "+L.length+" bài."; RAW={name:name,text:""}; SEGS=L; return showPick(); }
+      return scanHeads(name,msg,bar,my);
+    });
+  });
+}
+function range(a,b){ var r=[]; for(var i=a;i<=b;i++) r.push(i); return r; }
+var LES_RE=/第\s*([0-9一二三四五六七八九十百两]{1,4})\s*[课課]|Lesson\s*(\d{1,3})\b|Bài\s*(\d{1,3})\b/gi;
+function lessonNums(t){ var m,out=[]; LES_RE.lastIndex=0; while((m=LES_RE.exec(t))){ var k=cnNum(m[1]||m[2]||m[3]); if(k>0&&k<200&&out.indexOf(k)<0) out.push(k); } return out; }
+function outlineLessons(){
+  return PDF.getOutline().then(function(ol){
+    if(!ol||!ol.length) return null; var flat=[]; (function walk(a){ a.forEach(function(it){ flat.push(it); if(it.items&&it.items.length) walk(it.items); }); })(ol);
+    var hits=flat.map(function(it){ var ns=lessonNums(it.title||""); return ns.length?{n:ns[0],title:it.title,dest:it.dest}:null; }).filter(Boolean);
+    if(hits.length<2) return null;
+    return Promise.all(hits.map(function(h){ return (typeof h.dest==="string"?PDF.getDestination(h.dest):Promise.resolve(h.dest)).then(function(d){ return d&&d[0]?PDF.getPageIndex(d[0]):-1; }).then(function(ix){ h.page=ix+1; return h; },function(){ h.page=0; return h; }); }));
+  }).then(function(hits){ return hits?buildLessons(hits.filter(function(h){return h.page>0}).map(function(h){return {n:h.n,page:h.page,head:h.title}})):null; }).catch(function(){ return null; });
+}
+/* từ các trang đầu bài → khoảng trang của từng bài */
+function buildLessons(starts){
+  starts.sort(function(a,b){return a.page-b.page});
+  var first={}; starts.forEach(function(s){ if(!first[s.n]) first[s.n]=s; });
+  var c=Object.keys(first).map(function(k){return first[k]}).sort(function(a,b){return a.page-b.page});
+  // giữ dãy số bài tăng dần dài nhất (bỏ chỗ đọc nhầm)
+  var L=c.map(function(){return 1}), P=c.map(function(){return -1}), bi=-1;
+  for(var i=0;i<c.length;i++){ for(var j=0;j<i;j++) if(c[j].n<c[i].n&&L[j]+1>L[i]){L[i]=L[j]+1;P[i]=j;} if(bi<0||L[i]>L[bi]) bi=i; }
+  var keep=[]; for(var k=bi;k>=0;k=P[k]) keep.unshift(c[k]); if(!keep.length) return [];
+  var n=PDF.numPages, lens=[];
+  keep.forEach(function(s,i){ if(i+1<keep.length) lens.push(keep[i+1].page-s.page); });
+  lens.sort(function(a,b){return a-b}); var med=lens.length?lens[Math.floor(lens.length/2)]:12;
+  return keep.map(function(s,i){ var end=i+1<keep.length?keep[i+1].page-1:Math.min(n,s.page+Math.round(med*1.3)); return {n:s.n,head:s.head||"",pages:range(s.page,Math.max(s.page,end))}; });
+}
+function scanHeads(name,msg,bar,my){
+  var n=PDF.numPages, found={}, t0=Date.now();
+  bar.classList.remove("hidden"); busy(true);
+  msg.innerHTML="🔎 Sách scan: web đang dò trang đầu của từng bài (chỉ làm 1 lần, lần sau mở lại file này là có liền)…";
+  return runAll(range(1,n),function(p){ if(my!==SCAN_ID) return Promise.reject(new Error("stop")); return readHead(p).then(function(t){ return {p:p,t:t}; }); },poolSize()+1,function(d,tot,v){
+    var ns=lessonNums(v.t); if(ns.length===1) found[ns[0]]=1;
+    bar.firstChild.style.width=(d/tot*100)+"%";
+    var sec=(Date.now()-t0)/1000, left=d>3?Math.round(sec/d*(tot-d)):0;
+    msg.innerHTML="🔎 Đang dò trang đầu mỗi bài: "+d+"/"+tot+" trang · thấy "+Object.keys(found).length+" bài"+(left>5?" · còn khoảng "+(left>90?Math.round(left/60)+" phút":left+" giây"):"")+'<br><span class="small">Cứ để màn hình mở. Lỡ thoát ra thì chọn lại file này, web làm tiếp từ chỗ đã dò.</span>';
+  }).then(function(arr){
+    busy(false); if(my!==SCAN_ID) return; bar.classList.add("hidden");
+    var starts=[]; arr.forEach(function(v){ var ns=lessonNums(v.t); if(ns.length===1){ var line=(v.t.split("\n").filter(function(l){return lessonNums(l).length})[0]||"").trim(); starts.push({n:ns[0],page:v.p,head:line}); } });
+    var L=buildLessons(starts);
+    if(!L.length){ msg.innerHTML='<span class="del">Không dò được tiêu đề bài (第…课).</span> Mở “Tự nhập số trang” bên dưới để chọn trang nha.'; $("#manual").open=true; return; }
+    msg.textContent="Dò xong: tìm thấy "+L.length+" bài."; RAW={name:name,text:""}; SEGS=L; showPick();
+  },function(e){ busy(false); if(e.message!=="stop"&&my===SCAN_ID) msg.innerHTML='<span class="del">Lỗi khi dò: '+esc(e.message)+'</span>'; });
 }
 function splitLessons(text){
   var re=/^[ \t]*(?:第\s*([0-9一二三四五六七八九十百两]+)\s*课|Bài\s*(\d+)\b|Lesson\s*(\d+)\b)[^\n]*$/gim, m, marks=[];
@@ -397,18 +498,24 @@ function splitLessons(text){
   return out;
 }
 var SEGS=[];
-function splitAndPick(){
-  SEGS=splitLessons(RAW.text);
-  var pp=$("#pickPanel"); pp.classList.remove("hidden");
-  $("#pickHint").textContent=SEGS.length===1&&SEGS[0].n===0?"Không thấy tiêu đề “第…课 / Bài …”, web sẽ coi cả tài liệu là một bài.":"Tìm thấy "+SEGS.length+" bài. Bỏ chọn những bài không cần.";
-  $("#lpick").innerHTML=SEGS.map(function(s,i){ var head=s.head.replace(/\s+/g," ").slice(0,26); return '<label><input type="checkbox" data-i="'+i+'" checked> '+(s.n>0?'<b>Bài '+s.n+'</b> ':'')+'<span class="zh">'+esc(s.n>0?head.replace(/^第\s*\S+?课\s*/,""):(head||"Toàn bộ tài liệu"))+'</span></label>'; }).join("");
-  var ns=SEGS.filter(function(s){return s.n>0}).map(function(s){return s.n});
-  $("#docName").value=RAW.name+(ns.length?" · Bài "+ns[0]+(ns.length>1?"–"+ns[ns.length-1]:""):"");
+function splitAndPick(){ SEGS=splitLessons(RAW.text); showPick(); }
+function showPick(allOn){
+  var pp=$("#pickPanel"), scan=SEGS.some(function(s){return s.pages}), many=scan&&SEGS.length>3&&!allOn;
+  pp.classList.remove("hidden");
+  $("#pickHint").textContent=SEGS.length===1&&SEGS[0].n===0?(scan?"Web sẽ đọc chữ các trang này rồi tự chia bài.":"Không thấy tiêu đề “第…课 / Bài …”, web sẽ coi cả tài liệu là một bài."):(many?"Tìm thấy "+SEGS.length+" bài. Chọn những bài cần học, web chỉ đọc trang của các bài đó.":"Tìm thấy "+SEGS.length+" bài. Bỏ chọn những bài không cần.");
+  $("#lpick").innerHTML=SEGS.map(function(s,i){ var head=String(s.head||"").replace(/\s+/g," ").replace(/^第\s*\S+?[课課]\s*/,"").slice(0,22);
+    return '<label><input type="checkbox" data-i="'+i+'"'+(many?'':' checked')+'> '+(s.n>0?'<b>Bài '+s.n+'</b> ':'')+'<span class="zh">'+esc(s.n>0?head:(head||"Toàn bộ tài liệu"))+'</span>'+(s.pages?'<span class="pg">tr. '+s.pages[0]+(s.pages.length>1?'–'+s.pages[s.pages.length-1]:'')+'</span>':'')+'</label>'; }).join("");
+  $("#docName").value=RAW.name; nameFromPick();
   $("#keyBox").classList.toggle("hidden",!!groqKey());
   $("#steps").innerHTML=""; $("#prog").classList.add("hidden");
   pp.scrollIntoView({behavior:"smooth",block:"start"});
 }
-$("#cancelBtn").onclick=function(){ $("#pickPanel").classList.add("hidden"); $("#fileInfo").classList.add("hidden"); RAW=null; if(DOCS.length) openDoc(cur||DOCS[0]); };
+var nameTouched=false;
+$("#docName").addEventListener("input",function(){ nameTouched=true; });
+function nameFromPick(){ if(nameTouched||!RAW) return; var ns=pickedSegs().filter(function(s){return s.n>0}).map(function(s){return s.n}); $("#docName").value=RAW.name+(ns.length?" · Bài "+ns[0]+(ns.length>1?"–"+ns[ns.length-1]:""):""); }
+function pickedSegs(){ return [].slice.call(document.querySelectorAll("#lpick input:checked")).map(function(x){return SEGS[+x.dataset.i]}); }
+$("#lpick").addEventListener("change",nameFromPick);
+$("#cancelBtn").onclick=function(){ SCAN_ID++; $("#pickPanel").classList.add("hidden"); $("#fileInfo").classList.add("hidden"); RAW=null; if(DOCS.length) openDoc(cur||DOCS[0]); };
 
 /* ---------- AI (Groq, miễn phí) ---------- */
 (function(){ try{ var k=new URLSearchParams(location.search).get("gq"); if(k&&k.length>20){ ls("bb.groq",k); history.replaceState(null,"",location.pathname); } }catch(e){} })();
@@ -421,9 +528,12 @@ function groq(messages,onWait){
     return fetch("https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},
       body:JSON.stringify({model:MODELS[mi],messages:messages,temperature:0,max_tokens:6000,response_format:{type:"json_object"}})})
     .then(function(r){
-      if(r.status===429||r.status>=500){ tries++; if(tries>6) throw new Error("AI đang quá tải, thử lại sau ít phút"); var wait=Math.min(60,parseFloat(r.headers.get("retry-after"))||8*tries); if(onWait) onWait(wait); return sleep(wait*1000).then(go); }
+      if(r.status===429){ return r.text().then(function(t){ var ra=parseFloat(r.headers.get("retry-after"))||0;
+        if(/per day|TPD|RPD/i.test(t)||ra>90){ if(mi<MODELS.length-1){ mi++; return go(); } throw new Error("Hết lượt AI miễn phí hôm nay. Phần đã xong được lưu, mai bấm “Làm tiếp” nha"); }
+        tries++; if(tries>8) throw new Error("AI đang quá tải, lát bấm “Làm tiếp” nha"); var wait=Math.min(60,ra||8*tries); if(onWait) onWait(wait); return sleep(wait*1000).then(go); }); }
+      if(r.status>=500){ tries++; if(tries>6) throw new Error("AI đang quá tải, thử lại sau ít phút"); var wait=Math.min(60,parseFloat(r.headers.get("retry-after"))||8*tries); if(onWait) onWait(wait); return sleep(wait*1000).then(go); }
       if(r.status===401) throw new Error("Key AI không đúng hoặc hết hạn");
-      if(r.status===400||r.status===404){ return r.text().then(function(t){ if(mi<MODELS.length-1&&/model|decommission|not found|json/i.test(t)){ mi++; return go(); } throw new Error("AI báo lỗi: "+t.slice(0,160)); }); }
+      if(r.status===400||r.status===404||r.status===413){ return r.text().then(function(t){ if(mi<MODELS.length-1&&!/context|too long|maximum/i.test(t)){ mi++; return go(); } throw new Error("AI báo lỗi: "+t.slice(0,160)); }); }
       if(!r.ok) throw new Error("AI lỗi "+r.status);
       return r.json().then(function(j){ var c=j.choices[0].message.content; try{ return JSON.parse(c); }catch(e){ var m=c.match(/\{[\s\S]*\}/); if(m) return JSON.parse(m[0]); throw new Error("AI trả về sai định dạng"); } });
     });
@@ -462,33 +572,81 @@ function aiGrammar(seg,onWait){
     'Trả về JSON: {"points":[{"title":"…","formula":["…"],"explain":"…","examples":[{"zh":"…","vi":"…"}],"warn":["…"]}]}\n\nBÀI HỌC:\n'+seg.text.slice(0,7000)}],onWait)
   .then(function(j){ return (j.points||[]).filter(function(p){return p&&p.title}).map(function(p){ return {title:String(p.title),f:(p.formula||[]).map(String),note:String(p.explain||""),ex:(p.examples||[]).filter(function(e){return e&&e.zh}).map(function(e){return [String(e.zh),String(e.vi||"")]}),warn:(p.warn||[]).map(String)}; }); });
 }
+/* ---------- làm tài liệu: đọc chữ (nếu là sách scan) → AI dịch + soạn ngữ pháp, lưu sau MỖI bài ---------- */
+function segLabel(s){ return s.n>0?'Bài '+s.n:(s.head||'Tài liệu'); }
+function runJob(doc,segs,box,onFinish){
+  var steps=box.steps, prog=box.prog, btns=box.btns||[];
+  prog.classList.remove("hidden"); btns.forEach(function(b){b.disabled=true});
+  var needOcr=segs.filter(function(s){return !s.text&&s.pages}), ocrPages=needOcr.reduce(function(a,s){return a+s.pages.length},0);
+  var units=ocrPages*0.25+segs.length*2, done=0;
+  function tick(x){ done+=x; prog.firstChild.style.width=Math.min(100,done/units*100)+"%"; }
+  function draw(){ steps.innerHTML=segs.map(function(s,i){return '<li id="'+box.id+i+'"><span class="i">○</span><span>'+esc(segLabel(s))+'</span></li>'}).join(""); }
+  draw();
+  function mark(i,icon,txt,cls){ var li=document.getElementById(box.id+i); if(!li) return; li.className=cls||""; li.innerHTML='<span class="i">'+icon+'</span><span>'+esc(segLabel(segs[i]))+(txt?' · '+esc(txt):'')+'</span>'; }
+  busy(true);
+  // bước 1: đọc chữ trang của các bài đã chọn (song song, có lưu đệm)
+  var p1=needOcr.reduce(function(pr,s){ var i=segs.indexOf(s); return pr.then(function(){
+    mark(i,"✱","đang đọc chữ trang 0/"+s.pages.length,"doing");
+    return runAll(s.pages,readFull,poolSize()+1,function(d,t){ tick(0.25); mark(i,"✱","đang đọc chữ trang "+d+"/"+t,"doing"); })
+      .then(function(arr){ s.text=arr.join("\n"); s.ptext=arr;
+        if(s.n!==0) return mark(i,"○","đã đọc chữ, chờ AI");
+        /* trang tự nhập: xem đầu từng trang để chia bài */
+        return runAll(s.pages,readHead,poolSize()+1).then(function(hs){ s.heads=hs; mark(i,"○","đã đọc chữ, chờ AI"); });
+      });
+  }); },Promise.resolve()).then(function(){
+    // trang tự nhập có thể chứa nhiều bài → tự chia
+    var out=[]; segs.forEach(function(s){
+      if(s.n===0&&s.heads){ var groups=[], g=null;
+        s.pages.forEach(function(pg,k){ var ns=lessonNums(s.heads[k]); if(ns.length===1&&!groups.some(function(x){return x.n===ns[0]})){ g={n:ns[0],head:(s.heads[k].split("\n").filter(function(l){return lessonNums(l).length})[0]||"").trim(),t:[]}; groups.push(g); } if(!g){ g={n:0,head:s.head,t:[]}; groups.push(g); } g.t.push(s.ptext[k]); });
+        groups.forEach(function(x){ out.push({n:x.n,head:x.head,text:x.t.join("\n")}); }); return; }
+      out.push({n:s.n,head:s.head,text:s.text}); });
+    if(out.length!==segs.length){ segs=out; draw(); units=done+segs.length*2; }
+    doc.pending=segs.map(function(s){return {n:s.n,head:s.head,text:s.text}}); ls("tl.doc",doc.id); return dbPut(doc);
+  });
+  // bước 2: AI từng bài, xong bài nào lưu bài đó
+  return p1.then(function(){ return segs.reduce(function(pr,s,i){ return pr.then(function(){
+    var wait=function(sec){ mark(i,"⏳","AI đang bận, đợi "+Math.round(sec)+" giây rồi làm tiếp…","doing"); };
+    mark(i,"✱","AI đang dịch bài khóa…","doing");
+    var les={n:s.n>0?s.n:0,zh:"",vi:"",texts:[],grammar:[]};
+    return aiTranslate(s,wait).then(function(t){ les.zh=t.title_zh||String(s.head||"").replace(/^第\s*\S+?[课課]\s*/,""); les.vi=t.title_vi; les.texts=t.sections; tick(1); mark(i,"✱","AI đang soạn ngữ pháp…","doing"); return aiGrammar(s,wait); })
+      .then(function(g){ les.grammar=g; tick(1);
+        doc.lessons=doc.lessons.filter(function(l){return !(l.n===les.n&&les.n>0)}).concat([les]).sort(function(a,b){return a.n-b.n});
+        doc.pending=(doc.pending||[]).filter(function(x){return !(x.n===s.n&&x.text===s.text)});
+        return dbPut(doc).then(function(){ mark(i,"✓",les.texts.reduce(function(a,t){return a+t.pairs.length},0)+" câu · "+g.length+" điểm ngữ pháp"); });
+      });
+  }); },Promise.resolve()); })
+  .then(function(){ busy(false); delete doc.pending; return dbPut(doc).then(function(){ btns.forEach(function(b){b.disabled=false}); toast("Xong rồi! Đã lưu tài liệu"); onFinish(true); }); })
+  .catch(function(e){
+    busy(false); btns.forEach(function(b){b.disabled=false});
+    var li=steps.querySelector("li.doing"); if(li){ li.className="err"; li.firstChild.textContent="✗"; li.lastChild.textContent+=" → "+e.message; } else toast(e.message);
+    if(/Key/.test(e.message)){ ls("bb.groq",null); var kb=$("#keyBox"); if(kb) kb.classList.remove("hidden"); }
+    onFinish(false,e);
+  });
+}
 $("#goBtn").onclick=function(){
   var ki=$("#keyInp").value.trim(); if(ki) ls("bb.groq",ki);
   if(!groqKey()){ $("#keyBox").classList.remove("hidden"); $("#keyInp").focus(); toast("Cần key AI Groq để dịch, nhập 1 lần là xong"); return; }
-  var picked=[].slice.call(document.querySelectorAll("#lpick input:checked")).map(function(x){return SEGS[+x.dataset.i]});
+  var picked=pickedSegs().map(function(s){return {n:s.n,head:s.head,text:s.text,pages:s.pages}});
   if(!picked.length){ toast("Chọn ít nhất 1 bài"); return; }
-  var name=$("#docName").value.trim()||RAW.name, steps=$("#steps"), prog=$("#prog"); prog.classList.remove("hidden");
-  $("#goBtn").disabled=true; $("#cancelBtn").disabled=true;
-  var total=picked.length*2, done=0, doc={id:"u"+Date.now(),name:name,created:Date.now(),lessons:[]};
-  steps.innerHTML=picked.map(function(s,i){return '<li id="st'+i+'"><span class="i">○</span><span>'+(s.n>0?'Bài '+s.n:'Tài liệu')+'</span></li>'}).join("");
-  function mark(i,icon,txt,cls){ var li=$("#st"+i); li.className=cls||""; li.innerHTML='<span class="i">'+icon+'</span><span>'+(picked[i].n>0?'Bài '+picked[i].n:'Tài liệu')+(txt?' · '+txt:'')+'</span>'; }
-  function tick(){ done++; prog.firstChild.style.width=(done/total*100)+"%"; }
-  picked.reduce(function(pr,s,i){ return pr.then(function(){
-    var wait=function(sec){ mark(i,"⏳","AI đang bận, đợi "+Math.round(sec)+" giây rồi làm tiếp…","doing"); };
-    mark(i,"✱","đang dịch bài khóa…","doing");
-    var les={n:s.n>0?s.n:0,zh:"",vi:"",texts:[],grammar:[]};
-    return aiTranslate(s,wait).then(function(t){ les.zh=t.title_zh||s.head.replace(/^第\s*\S+?课\s*/,""); les.vi=t.title_vi; les.texts=t.sections; tick(); mark(i,"✱","đang soạn ngữ pháp…","doing"); return aiGrammar(s,wait); })
-      .then(function(g){ les.grammar=g; tick(); doc.lessons.push(les); mark(i,"✓",les.texts.reduce(function(a,t){return a+t.pairs.length},0)+" câu · "+g.length+" điểm ngữ pháp"); });
-  }); },Promise.resolve())
-  .then(function(){ return dbPut(doc); })
-  .then(function(){ toast("Xong rồi! Đã lưu tài liệu"); $("#goBtn").disabled=false; $("#cancelBtn").disabled=false; $("#pickPanel").classList.add("hidden"); $("#fileInfo").classList.add("hidden"); RAW=null; ls("tl.doc",doc.id); return loadDocs(); })
-  .catch(function(e){
-    $("#goBtn").disabled=false; $("#cancelBtn").disabled=false;
-    var li=steps.querySelector("li.doing"); if(li){ li.className="err"; li.firstChild.textContent="✗"; li.lastChild.textContent+=" → "+e.message; } else toast(e.message);
-    if(doc.lessons.length){ doc.name+=" (chưa xong)"; dbPut(doc).then(function(){ toast("Đã lưu những bài làm xong. Lỗi: "+e.message); }); }
-    if(/Key/.test(e.message)){ ls("bb.groq",null); $("#keyBox").classList.remove("hidden"); }
+  if(picked.some(function(s){return !s.text&&s.pages})&&!PDF){ toast("Chọn lại file sách nha"); return; }
+  SCAN_ID++;
+  var doc={id:"u"+Date.now(),name:$("#docName").value.trim()||RAW.name,created:Date.now(),lessons:[]};
+  runJob(doc,picked,{id:"st",steps:$("#steps"),prog:$("#prog"),btns:[$("#goBtn"),$("#cancelBtn")]},function(ok,e){
+    if(ok){ $("#pickPanel").classList.add("hidden"); $("#fileInfo").classList.add("hidden"); RAW=null; ls("tl.doc",doc.id); loadDocs(); }
+    else if(doc.pending&&doc.pending.length){ /* đã lưu phần làm xong → mở tài liệu, có nút “Làm tiếp” */
+      setTimeout(function(){ $("#pickPanel").classList.add("hidden"); $("#fileInfo").classList.add("hidden"); ls("tl.doc",doc.id); loadDocs().then(function(){ var r=$("#resume"); if(r){ var m=document.createElement("div"); m.className="del"; m.style.flexBasis="100%"; m.textContent="Lần trước dừng vì: "+e.message; r.appendChild(m); } }); },1800);
+    }
   });
 };
+/* làm tiếp tài liệu còn dở */
+function resumeHTML(d){ var p=d.pending||[]; if(!p.length) return ''; return '<div class="resume" id="resume"><div><b>⏳ Còn '+p.length+' bài chưa xong</b> <span class="hint small">('+esc(p.map(segLabel).join(", "))+')</span></div>'+(groqKey()?'':'<input class="inp" id="rkey" placeholder="Dán key AI Groq (gsk_…)" autocomplete="off">')+'<button class="btn btn-pri btn-sm" id="resumeBtn">▶ Làm tiếp</button><ul class="steps" id="rsteps"></ul><div class="progress hidden" id="rprog2"><i></i></div></div>'; }
+document.addEventListener("click",function(e){
+  if(!e.target.closest||!e.target.closest("#resumeBtn")) return;
+  var rk=$("#rkey"); if(rk&&rk.value.trim()) ls("bb.groq",rk.value.trim());
+  if(!groqKey()){ if(rk) rk.focus(); toast("Cần key AI Groq để dịch, nhập 1 lần là xong"); return; }
+  if(rk) rk.remove();
+  var d=cur; runJob(d,d.pending.slice(),{id:"rs",steps:$("#rsteps"),prog:$("#rprog2"),btns:[$("#resumeBtn")]},function(){ var keep=d.id; dbAll().then(function(s){ DOCS=window.ONTHI_DOCS.concat(s.sort(function(a,b){return (b.created||0)-(a.created||0)})); var nd=DOCS.filter(function(x){return x.id===keep})[0]; if(nd&&!(nd.pending&&nd.pending.length)) openDoc(nd); else { cur=nd||cur; drawDocs(); render(); } }); });
+});
 
 window.__tl={docs:function(){return DOCS}};
 loadDocs();
