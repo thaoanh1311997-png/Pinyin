@@ -4,15 +4,7 @@ jobs:
   p:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          curl -sL -A "Mozilla/5.0" https://www.voachinese.com/rssfeeds | grep -o 'href="[^"]*api/[^"]*"[^<]*<[^<]*' | head -30
-          for u in http://www.people.com.cn/rss/society.xml http://www.xinhuanet.com/politics/news_politics.xml https://www.chinanews.com.cn/rss/society.xml https://feeds.bbci.co.uk/zhongwen/simp/rss.xml https://rss.dw.com/rdf/rss-chi-all; do
-            echo "=========== $u"; curl -sL -m 20 -A "Mozilla/5.0" "$u" | head -c 4000 | tail -c 2800 | tr '\n' ' '; echo
-          done
-          echo "=========== VOA ARTICLE"
-          F=$(curl -sL -A "Mozilla/5.0" https://www.voachinese.com/rssfeeds | grep -o 'api/[a-z0-9_-]*' | head -1)
-          echo FEED $F
-          curl -sL -A "Mozilla/5.0" "https://www.voachinese.com/$F" | head -c 3000 | tr '\n' ' '
-          echo "=========== PEOPLE ARTICLE"
-          L=$(curl -sL -A "Mozilla/5.0" http://www.people.com.cn/rss/society.xml | grep -o '<link>[^<]*' | sed -n 3p | sed 's/<link>//')
-          echo $L; curl -sL -A "Mozilla/5.0" "$L" | iconv -f gbk -t utf-8 -c | grep -o '<p[^>]*>[^<]\{20,\}' | head -8
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - run: node trasua/tools/fetch-news.mjs && head -c 3000 trasua/data/news.json
