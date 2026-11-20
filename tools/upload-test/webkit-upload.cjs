@@ -10,7 +10,8 @@ let PIECES = [];
 async function ctxFor(b, dev) {
   const ctx = await b.newContext(devices[dev]); if (H) await H.setup(ctx);
   await ctx.route(/api\.groq\.com/, async r => {
-    const req = r.request(); const buf = req.postDataBuffer() || Buffer.alloc(0); const bd = (req.headers()['content-type'] || '').split('boundary=')[1];
+    const req = r.request(); if (req.method() === 'OPTIONS') return r.fulfill({ status: 204, body: '', headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'authorization,content-type', 'access-control-allow-methods': 'POST,GET,OPTIONS' } });
+    const buf = req.postDataBuffer() || Buffer.alloc(0); const bd = (req.headers()['content-type'] || '').split('boundary=')[1];
     const s = buf.indexOf('filename="'), name = buf.slice(s + 10, buf.indexOf('"', s + 10)).toString();
     const hs = buf.indexOf('\r\n\r\n', s) + 4, he = buf.indexOf(Buffer.from('\r\n--' + bd), hs); const tmp = path.join(os.tmpdir(), 'p_' + Date.now() + '_' + name);
     fs.writeFileSync(tmp, buf.slice(hs, he)); const e = cp.spawnSync(FF, ['-hide_banner', '-i', tmp, '-f', 'null', '-']); const err = e.stderr.toString();
@@ -36,7 +37,7 @@ const waitFor = async (p, fn, sec) => { for (let i = 0; i < sec; i++) { await p.
       const base = rss(); let peak = base; const iv = setInterval(() => { const r = rss(); if (r > peak) peak = r; }, 300);
       await p.evaluate(() => document.querySelector('[data-go=video]').click()); await p.waitForTimeout(400);
       await p.setInputFiles('#mediaFile', path.join(M, f)); await p.evaluate(() => document.querySelector('#startVideo').click());
-      const r = await waitFor(p, () => { const n = document.querySelectorAll('.line').length; const t = (document.querySelector('#panel') || {}).innerText || ''; return n > 3 ? 'lines=' + n : /Thêm phụ đề/.test(t) ? 'NOSUBS ' + t.slice(0, 120) : location.pathname.endsWith('/video/') && !document.querySelector('#vLesson:not([hidden])') && false; }, 150);
+      const r = await waitFor(p, () => { const n = document.querySelectorAll('.line').length; const t = (document.querySelector('#panel') || {}).innerText || ''; return n > 3 ? 'lines=' + n : /Thêm phụ đề/.test(t) ? 'NOSUBS ' + t.replace(/\s+/g, ' ').slice(0, 220) : location.pathname.endsWith('/video/') && !document.querySelector('#vLesson:not([hidden])') && false; }, 150);
       clearInterval(iv);
       say(`[${dev}] video ${f}: ${r} | pieces ${PIECES.join(', ')} | loads=${p._loads} | RAM +${peak - base}MB ${p._log.join(' ')}`);
       await ctx.close();
@@ -73,6 +74,7 @@ const waitFor = async (p, fn, sec) => { for (let i = 0; i < sec; i++) { await p.
       const { ctx, p } = await ctxFor(b, dev);
       await p.goto(BASE + 'sach/'); await p.waitForTimeout(1500);
       await p.setInputFiles('#addf', path.join(T, 'scan-30.pdf')); await p.waitForTimeout(4000);
+      const toast1 = await p.evaluate(() => (document.querySelector('.toast,#toast') || {}).textContent || '');
       await p.reload(); await p.waitForTimeout(3000);
       const href = await p.evaluate(() => { const a = document.querySelector('#mine a[href*="my="]'); return a && a.getAttribute('href'); });
       const cover = await p.evaluate(() => (document.querySelector('#mine .bk em') || {}).textContent || '');
@@ -88,7 +90,7 @@ const waitFor = async (p, fn, sec) => { for (let i = 0; i < sec; i++) { await p.
         rd += ' | 拼: ' + r;
       }
       clearInterval(iv);
-      say(`[${dev}] sach: bìa "${cover}" | ${rd} | loads=${p._loads} RAM +${peak - base}MB ${p._log.join(' ')}`);
+      say(`[${dev}] sach: thêm → "${toast1}" | bìa "${cover}" | ${rd} | loads=${p._loads} RAM +${peak - base}MB ${p._log.join(' ')}`);
       await ctx.close();
     }
   }

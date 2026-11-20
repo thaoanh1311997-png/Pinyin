@@ -41,7 +41,7 @@
         .sort(function (x, y) { return x.added - y.added; });
     });
   }
-  function get(id) { return tx('readonly', function (s) { return s.get(id); }); }
+  function get(id) { return tx('readonly', function (s) { return s.get(id); }).then(function (o) { if (o && !o.blob && o.buf) o.blob = new Blob([o.buf], { type: 'application/pdf' }); return o; }); }
   function put(o) { return tx('readwrite', function (s) { return s.put(o); }); }
   function del(id) { return tx('readwrite', function (s) { return s.delete(id); }); }
   function add(file) {
@@ -53,7 +53,11 @@
     o.blob = file.slice(0, file.size, 'application/pdf');
     return put(o).catch(function (e) {
       if (/quota/i.test((e && e.name || '') + (e && e.message || ''))) throw e;
-      return file.arrayBuffer().then(function (buf) { o.blob = new Blob([buf], { type: 'application/pdf' }); return put(o); });
+      return file.arrayBuffer().then(function (buf) {
+        o.blob = new Blob([buf], { type: 'application/pdf' });
+        // Safari chế độ riêng tư không lưu được Blob → lưu thẳng dữ liệu
+        return put(o).catch(function (e2) { if (/quota/i.test((e2 && e2.name || '') + (e2 && e2.message || ''))) throw e2; o.blob = null; o.buf = buf; return put(o); });
+      });
     }).catch(function (e) {
       if (/quota/i.test((e && e.name || '') + (e && e.message || ''))) throw new Error('máy hết chỗ lưu sách (cuốn này ' + Math.round(file.size / 1048576) + ' MB). Xoá bớt sách cũ rồi thử lại');
       throw e;

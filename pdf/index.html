@@ -961,7 +961,7 @@ async function handleFiles(files,keep){
     console.error(err);
     status('Có lỗi: '+(err&&err.message||err));
     note('Không xử lý được file này. Thử mở trang bằng Chrome hoặc Safari, hoặc chọn file khác.');
-  }finally{ if(curJob===job) $('stop').hidden=true; }
+  }finally{ if(curJob===job){ $('stop').hidden=true; if(ocrWorker){ const w=ocrWorker; ocrWorker=null; w.terminate().catch(()=>{}); } } } // free the OCR memory between rounds (phones)
 }
 async function doImage(f,job){
   const url=URL.createObjectURL(f);

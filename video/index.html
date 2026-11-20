@@ -1228,6 +1228,7 @@ async function handleDoc(f,more){
   try{
     fStatus('Đang mở '+f.name+'…',0);
     const pages=await readFile(f,job);
+    if(getOcr.w){ const w=getOcr.w; getOcr.w=null; w.terminate().catch(()=>{}); } // free the OCR memory (phones)
     if(fileJob!==job) return;
     FILE_SECS=splitLessons(pages);
     $('#fStop').hidden=true;
