@@ -948,8 +948,12 @@ async function mountMedia(){
     });
   } else if(src.type==='file'){
     if(!src.url){
-      box.innerHTML=`<div class="media tts">${mascot()}<div style="flex:1;min-width:0"><b>Chọn lại file “${esc(src.name||'video')}”</b><small>Video trong máy không lưu được trên web, chọn lại để xem cùng phụ đề.</small><div style="margin-top:8px"><label class="btn sm pri" for="reMedia" style="cursor:pointer">Chọn file</label><input type="file" id="reMedia" hidden></div></div></div>`;
-      $('#reMedia').onchange=e=>{const f=e.target.files[0];if(!f)return;if(!isMedia(f)){toast('File này không phải video hay âm thanh. Hãy chọn file nghe (mp3, m4a…) hoặc video.',4500);e.target.value='';return;}src.url=URL.createObjectURL(f);src.audio=isAudio(f);src.name=f.name;mountMedia();};
+      const m=await MDB.get(LES.id);
+      if(m&&m.blob&&LES.src===src){ src.file=new File([m.blob],m.name||src.name||'file',{type:m.blob.type}); src.url=URL.createObjectURL(m.blob); src.audio=m.audio!=null?m.audio:src.audio; SAVED_MEDIA.add(LES.id); }
+    }
+    if(!src.url){
+      box.innerHTML=`<div class="media tts">${mascot()}<div style="flex:1;min-width:0"><b>Chọn lại file “${esc(src.name||'video')}”</b><small>Bài này được thêm ở máy khác hoặc trước khi web biết lưu file. Chọn lại 1 lần, lần sau tự mở.</small><div style="margin-top:8px"><label class="btn sm pri" for="reMedia" style="cursor:pointer">Chọn file</label><input type="file" id="reMedia" hidden></div></div></div>`;
+      $('#reMedia').onchange=e=>{const f=e.target.files[0];if(!f)return;if(!isMedia(f)){toast('File này không phải video hay âm thanh. Hãy chọn file nghe (mp3, m4a…) hoặc video.',4500);e.target.value='';return;}src.url=URL.createObjectURL(f);src.file=f;src.audio=isAudio(f);src.name=f.name;keepMedia(LES.id,f);mountMedia();};
       return;
     }
     box.innerHTML=src.audio?'<div class="media audio"><audio id="vid" controls playsinline preload="auto"></audio></div>':'<div class="media"><video id="vid" controls playsinline preload="auto"></video></div>';
@@ -987,13 +991,30 @@ async function playSeg(i,run,opt={}){
 function segDur(i){const L=LES.lines[i];return hasTime(i)?(L.e-L.s)/S.rate:lastSpeakMs/1000;}
 
 /* ======================= library ======================= */
+// Audio/video files of lessons are kept in IndexedDB so a lesson reopens without picking the file again
+const MDB={db:null,
+  open(){ if(this.db) return this.db; this.db=new Promise((res,rej)=>{try{const r=indexedDB.open('bb-media',1);r.onupgradeneeded=()=>r.result.createObjectStore('f');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);}catch(e){rej(e);}}); return this.db; },
+  async tx(mode,fn){ const db=await this.open(); return new Promise((res,rej)=>{const t=db.transaction('f',mode);const q=fn(t.objectStore('f'));t.oncomplete=()=>res(q&&q.result);t.onerror=t.onabort=()=>rej(t.error);}); },
+  get(k){return this.tx('readonly',o=>o.get(k)).catch(()=>null);},
+  put(k,v){return this.tx('readwrite',o=>o.put(v,k));},
+  del(k){return this.tx('readwrite',o=>o.delete(k)).catch(()=>{});}
+};
+const SAVED_MEDIA=new Set();
+async function keepMedia(id,file){
+  if(!id||!file||SAVED_MEDIA.has(id)) return; SAVED_MEDIA.add(id);
+  try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persist().catch(()=>{});
+    // store as plain Blob (old iOS can't store File objects)
+    await MDB.put(id,{blob:new Blob([file],{type:file.type||''}),name:file.name,audio:isAudio(file)});
+  }catch(e){ SAVED_MEDIA.delete(id); console.warn('keepMedia',e); }
+}
 function lessons(){return store.get('bb.lessons',[]);}
 function saveLesson(){
   if(!LES||LES.demo) return;
   const all=lessons().filter(x=>x.id!==LES.id);
-  const copy={id:LES.id,title:LES.title,src:LES.src?{type:LES.src.type,id:LES.src.id,name:LES.src.name,audio:LES.src.audio}:{type:'tts'},lines:LES.lines.map(l=>({s:l.s,e:l.e,zh:l.zh,vi:l.vi||''})),at:Date.now()};
+  const copy={id:LES.id,title:LES.title,src:LES.src?{type:LES.src.type,id:LES.src.id,name:LES.src.name,audio:LES.src.audio,fk:LES.src.fk}:{type:'tts'},lines:LES.lines.map(l=>({s:l.s,e:l.e,zh:l.zh,vi:l.vi||''})),at:Date.now()};
   all.unshift(copy);
-  while(all.length>40) all.pop();
+  while(all.length>40){ const x=all.pop(); if(x&&x.src&&x.src.type==='file') MDB.del(x.id); }
+  if(LES.src&&LES.src.type==='file'&&LES.src.file) keepMedia(LES.id,LES.src.file);
   if(!store.set('bb.lessons',all)){ all.length=Math.max(1,all.length-10); store.set('bb.lessons',all); }
 }
 function renderLib(){
@@ -1005,7 +1026,7 @@ function renderLib(){
 $('#lib').addEventListener('click',e=>{
   const o=e.target.closest('.open'); if(o){const x=lessons().find(l=>l.id===o.dataset.id); if(x) openLesson(x); return;}
   const d=e.target.closest('.del'); if(!d) return;
-  if(d.classList.contains('arm')){store.set('bb.lessons',lessons().filter(l=>l.id!==d.dataset.del));renderLib();}
+  if(d.classList.contains('arm')){store.set('bb.lessons',lessons().filter(l=>l.id!==d.dataset.del));MDB.del(d.dataset.del);SAVED_MEDIA.delete(d.dataset.del);renderLib();}
   else{d.classList.add('arm');d.textContent='Xóa?';setTimeout(()=>{if(d.isConnected){d.classList.remove('arm');d.innerHTML=IC.x;}},3000);}
 });
 
@@ -1522,6 +1543,48 @@ async function decode16k(file,onProg){
   }
   const out=new Float32Array(total); let o=0; for(const a of parts){out.set(a,o);o+=a.length;} return out;
 }
+// Groq cloud Whisper (large-v3-turbo): a 12-minute lesson takes seconds instead of minutes
+const GROQ_DEFAULT='';
+(()=>{try{const k=new URLSearchParams(location.search).get('gq');if(k&&k.length>20){localStorage.setItem('bb.groq',k);history.replaceState(null,'',location.pathname);}}catch(e){}})();
+function groqKey(){try{return localStorage.getItem('bb.groq')||GROQ_DEFAULT;}catch(e){return GROQ_DEFAULT;}}
+function wav16(a){
+  const n=a.length, buf=new ArrayBuffer(44+n*2), v=new DataView(buf);
+  const w=(o,t)=>{for(let i=0;i<t.length;i++)v.setUint8(o+i,t.charCodeAt(i));};
+  w(0,'RIFF');v.setUint32(4,36+n*2,true);w(8,'WAVE');w(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);
+  v.setUint32(24,16000,true);v.setUint32(28,32000,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,n*2,true);
+  for(let i=0;i<n;i++){const x=Math.max(-1,Math.min(1,a[i]));v.setInt16(44+i*2,x<0?x*32768:x*32767,true);}
+  return new Blob([buf],{type:'audio/wav'});
+}
+function quietCut(a,at,win){ // quietest spot within ±win samples of `at`
+  let best=at,bestE=1e9; for(let t=Math.max(0,at-win);t<Math.min(a.length-1600,at+win);t+=800){let e=0;for(let k=t;k<t+1600;k+=4)e+=a[k]*a[k];if(e<bestE){bestE=e;best=t;}} return best;
+}
+async function groqTranscribe(audio,onProg){
+  const key=groqKey(); if(!key) return null;
+  const SR=16000, STEP=240*SR, pts=[0];
+  while(audio.length-pts[pts.length-1]>STEP+30*SR) pts.push(quietCut(audio,pts[pts.length-1]+STEP,8*SR));
+  pts.push(audio.length);
+  let done=0; onProg&&onProg(0);
+  const one=async k=>{
+    const fd=new FormData();
+    fd.append('file',wav16(audio.subarray(pts[k],pts[k+1])),'part'+k+'.wav');
+    fd.append('model','whisper-large-v3-turbo'); fd.append('language','zh'); fd.append('response_format','verbose_json'); fd.append('temperature','0');
+    fd.append('prompt','以下是普通话的句子，使用简体中文。');
+    let r;
+    for(let tries=0;tries<3;tries++){
+      r=await fetch('https://api.groq.com/openai/v1/audio/transcriptions',{method:'POST',headers:{Authorization:'Bearer '+key},body:fd});
+      if(r.status!==429&&r.status<500) break; await sleep(3000*(tries+1));
+    }
+    if(!r.ok) throw new Error('groq '+r.status);
+    const d=await r.json(); done++; onProg&&onProg(done/(pts.length-1));
+    const off=pts[k]/SR;
+    return (d.segments||[]).map(x=>({s:off+x.start,e:off+x.end,t:x.text}));
+  };
+  const res=[]; // two pieces at a time keeps within free-tier limits
+  for(let k=0;k<pts.length-1;k+=2){ const g=await Promise.all([one(k),k+1<pts.length-1?one(k+1):Promise.resolve([])]); res.push(...g[0],...g[1]); }
+  const lines=[];
+  for(const x of res){ const zh=(await toSimp(String(x.t||''))).trim(); if(!cjkCount(zh)) continue; const prev=lines[lines.length-1]; if(prev&&prev.zh===zh) continue; lines.push({s:x.s,e:Math.max(x.s+0.4,x.e),zh}); }
+  return lines;
+}
 function cutPoints(a){ // split audio into <=28s pieces at the quietest moment near each boundary
   const SR=16000, pts=[0]; let st=0;
   while(a.length-st>29*SR){
@@ -1561,12 +1624,24 @@ function wcall(w,msg,onEvt){
 }
 async function autoSubsFile(){
   const job={stop:false,running:true,les:LES}; GEN=job; const les=LES;
+  const fk=les.src.file?les.src.file.name+'|'+les.src.file.size:'';
+  const old=fk&&lessons().find(x=>x.src&&x.src.fk===fk&&x.lines&&x.lines.length&&x.id!==les.id);
+  if(old){ job.running=false; les.title=old.title; LES.id=old.id; SAVED_MEDIA.delete(old.id); LES.lines=old.lines.map(l=>({...l})); LES.src.fk=fk; saveLesson(); renderModes(); setMode('shadow'); toast('Bài này đã làm phụ đề rồi, mở lại ngay.'); return; }
+  if(fk) les.src.fk=fk;
   try{
     genUI('Bánh Mì đang nghe video…','Đang đọc âm thanh trong file',null);
     const blob=les.src.file||await (await fetch(les.src.url)).blob();
     const audio=await decode16k(blob,f=>genUI('Bánh Mì đang nghe video…','Đang đọc âm thanh trong file · '+Math.round(f*100)+'%',f));
     if(job.stop) return;
     const dur=audio.length/16000;
+    if(groqKey()){
+      try{
+        const gl=await groqTranscribe(audio,f=>genUI('Bánh Mì đang ghi phụ đề…','Đang nghe trên máy chủ nhanh · '+Math.round(f*100)+'%',f));
+        if(job.stop||LES!==les) return;
+        if(gl&&gl.length){ job.running=false; stretchT(gl,dur); finishGen(gl); return; }
+      }catch(e){ console.warn('groq',e); }
+      if(job.stop||LES!==les) return;
+    }
     let device='wasm'; try{ if(navigator.gpu&&await navigator.gpu.requestAdapter()) device='webgpu'; }catch(e){}
     const model=device==='webgpu'?'onnx-community/whisper-small':'onnx-community/whisper-base';
     genUI('Đang tải bộ nhận giọng nói','Chỉ tải lần đầu, khoảng '+(device==='webgpu'?'250':'80')+' MB. Các lần sau sẽ nhanh.',0);
@@ -1596,11 +1671,12 @@ async function autoSubsFile(){
     if(job.stop||LES!==les) return;
     job.running=false;
     if(!lines.length){noSubs('Web không nghe ra câu tiếng Trung nào trong file này. Bạn thử file khác hoặc dán phụ đề nha.');return;}
-    try{const real=P&&P.media&&P.dur&&P.dur(); if(real&&Math.abs(real-dur)>0.05&&Math.abs(real/dur-1)<0.03){const k=real/dur; lines.forEach(l=>{l.s*=k;l.e*=k;});}}catch(e){}
+    stretchT(lines,dur);
     finishGen(lines);
   }catch(e){ console.error(e); if(!job.stop&&LES===les) noSubs('Chưa tự làm phụ đề được ('+(e.message||e)+'). Hãy thử bằng Chrome trên máy tính, hoặc dán phụ đề vào đây.'); }
   finally{ job.running=false; }
 }
+function stretchT(lines,dur){ try{const real=P&&P.media&&P.dur&&P.dur(); if(real&&Math.abs(real-dur)>0.05&&Math.abs(real/dur-1)<0.03){const k=real/dur; lines.forEach(l=>{l.s*=k;l.e*=k;});}}catch(e){} }
 function finishGen(lines){
   LES.lines=lines; if(!/^Video/.test(LES.title)||LES.title==='Video YouTube') LES.title=LES.title==='Video YouTube'?'Video · '+lines[0].zh.slice(0,16):LES.title;
   $('#topTitle').textContent=LES.title; saveLesson(); toast('Xong phụ đề! Chạm vào câu nào để nghe đoạn đó.',4000);
