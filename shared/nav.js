@@ -39,12 +39,31 @@
     '#bm-nav .bm-pill:hover{background:rgba(255,255,255,.75);transform:translateY(-1px)}' +
     '#bm-nav .bm-pill.on{background:var(--bmc);color:#fff;box-shadow:0 4px 12px -4px var(--bmc)}' +
     '#bm-nav .bm-pill i{font-style:normal;font-size:17px;line-height:1}' +
-    '#bm-nav .bm-chip{display:flex;align-items:center;gap:6px;height:38px;padding:0 10px 0 12px;border-radius:999px;border:0;background:#fff;color:var(--bmc);font-weight:900;font-size:14.5px;box-shadow:0 2px 0 rgba(0,0,0,.06),0 4px 14px -6px var(--bmc);cursor:pointer;max-width:58vw;white-space:nowrap;transition:transform .15s}' +
+    '#bm-nav .bm-chip{display:flex;align-items:center;gap:6px;height:38px;padding:0 10px 0 12px;border-radius:999px;border:0;background:#fff;color:var(--bmc);font-weight:900;font-size:14.5px;box-shadow:0 2px 0 rgba(0,0,0,.06),0 4px 14px -6px var(--bmc);cursor:pointer;max-width:calc(100vw - 214px);white-space:nowrap;transition:transform .15s}' +
     '#bm-nav .bm-chip:active{transform:scale(.94)}' +
     '#bm-nav .bm-chip i{font-style:normal;font-size:18px;line-height:1}' +
     '#bm-nav .bm-chip span{overflow:hidden;text-overflow:ellipsis}' +
     '#bm-nav .bm-chip b{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--bmc);color:#fff;font-size:11px;margin-left:2px}' +
-    '@media (min-width:860px){#bm-nav .bm-pills{display:flex}#bm-nav .bm-chip{display:none}}' +
+    '#bm-nav .bm-short{display:none}@media (max-width:399px){#bm-nav .bm-full{display:none}#bm-nav .bm-short{display:inline}}' +
+    '@media (min-width:1040px){#bm-nav .bm-pills{display:flex}#bm-nav .bm-chip{display:none}}' +
+    '#bm-nav .bm-theme{position:relative;flex:none;width:38px;height:38px;border-radius:50%;border:0;padding:0;background:#fff;cursor:pointer;display:grid;place-items:center;box-shadow:0 2px 0 rgba(0,0,0,.06),0 4px 12px -6px rgba(120,60,20,.5);transition:transform .15s,background .3s}' +
+    '#bm-nav .bm-theme:active{transform:scale(.9)}' +
+    '#bm-nav .bm-theme svg{position:absolute;width:22px;height:22px;transition:transform .45s cubic-bezier(.3,1.3,.5,1),opacity .3s}' +
+    '#bm-nav .bm-sun{fill:#FFC233;stroke:#F08A24;stroke-width:2;stroke-linecap:round}' +
+    '#bm-nav .bm-moon{fill:#8E7CF0;stroke:none;opacity:0;transform:rotate(-90deg) scale(.4)}' +
+    'html[data-theme="dark"] #bm-nav .bm-sun{opacity:0;transform:rotate(90deg) scale(.4)}' +
+    'html[data-theme="dark"] #bm-nav .bm-moon{opacity:1;transform:none;fill:#FFD86B}' +
+    /* thanh + bảng chọn ở chế độ tối */
+    'html[data-theme="dark"] #bm-nav{background:linear-gradient(90deg,#2A1E16,#2B1A22 55%,#16261F);border-bottom-color:rgba(255,220,180,.1)}' +
+    'html[data-theme="dark"] #bm-nav .bm-logo span{background:linear-gradient(90deg,#FFC27A,#FF9DB5);-webkit-background-clip:text;background-clip:text}' +
+    'html[data-theme="dark"] #bm-nav :is(.bm-chip,.bm-theme){background:#342820;box-shadow:0 2px 0 rgba(0,0,0,.3)}' +
+    'html[data-theme="dark"] #bm-nav .bm-chip{color:var(--bmc2)}' +
+    'html[data-theme="dark"] #bm-nav .bm-pill{color:#E8D6C6}html[data-theme="dark"] #bm-nav .bm-pill:hover{background:rgba(255,255,255,.08)}html[data-theme="dark"] #bm-nav .bm-pill.on{color:#fff}' +
+    'html[data-theme="dark"] #bm-sheet .bm-pan{background:#241B15}' +
+    'html[data-theme="dark"] #bm-sheet .bm-hd b{color:#F7EBDD}html[data-theme="dark"] #bm-sheet .bm-hd small,html[data-theme="dark"] #bm-sheet .bm-fx{color:#C9B3A2}' +
+    'html[data-theme="dark"] #bm-sheet .bm-x{background:#3A2D24;color:#F7EBDD}html[data-theme="dark"] #bm-sheet .bm-grab{background:#4A3A2E}' +
+    'html[data-theme="dark"] #bm-sheet .bm-tg{background:#4A3A2E}' +
+    'html[data-theme="dark"] #bm-sheet .bm-card.on::before{background:#241B15}' +
     '@media print{#bm-nav,#bm-sheet{display:none!important}}' +
     /* sheet */
     '#bm-sheet{position:fixed;inset:0;z-index:2147482000;font-family:Nunito,"Baloo 2","Be Vietnam Pro",system-ui,-apple-system,sans-serif;visibility:hidden}' +
@@ -91,7 +110,7 @@
   (document.head || document.documentElement).appendChild(st);
   if (!document.querySelector('link[href*="family=Nunito"]')) {
     var fl = document.createElement('link'); fl.rel = 'stylesheet';
-    fl.href = 'https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap';
+    fl.href = 'https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap';
     document.head.appendChild(fl);
   }
 
@@ -105,7 +124,8 @@
   }).join('');
   nav.innerHTML = '<div class="bm-in"><a class="bm-logo" data-bm-go="home" href="' + BASE + '" aria-label="Bánh Mì – trang chủ">' + mascot() + '<span>Bánh Mì</span></a><div class="bm-sp"></div>' +
     '<nav class="bm-pills" aria-label="Các mục">' + pills + '</nav>' +
-    '<button class="bm-chip" type="button" aria-haspopup="dialog" aria-label="Chuyển mục học"><i>' + cur.emo + '</i><span>' + (cur.id === 'home' ? 'Chọn mục học' : cur.name) + '</span><b>▼</b></button></div>';
+    '<button class="bm-chip" type="button" aria-haspopup="dialog" aria-label="Chuyển mục học"><i>' + cur.emo + '</i><span class="bm-full">' + (cur.id === 'home' ? 'Chọn mục học' : cur.name) + '</span><span class="bm-short">' + (cur.id === 'home' ? 'Chọn mục' : cur.short) + '</span><b>▼</b></button>' +
+    '<button class="bm-theme" type="button" aria-label="Đổi giao diện sáng / tối" title="Sáng / tối"><svg class="bm-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.6"/><path d="M12 2.2v2.4M12 19.4v2.4M2.2 12h2.4M19.4 12h2.4M5.1 5.1l1.7 1.7M17.2 17.2l1.7 1.7M5.1 18.9l1.7-1.7M17.2 6.8l1.7-1.7"/></svg><svg class="bm-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 14.6A8.4 8.4 0 0 1 9.4 3.8a8.4 8.4 0 1 0 10.8 10.8z"/><circle cx="16.6" cy="5.4" r="1"/><circle cx="19.6" cy="9" r=".7"/></svg></button></div>';
   var b = document.body;
   if (b) {
     b.insertBefore(nav, b.firstChild);
@@ -144,6 +164,12 @@
   function closeSheet() { if (sheet) sheet.classList.remove('open'); }
   window.BM_OPEN_MENU = openSheet;
   nav.querySelector('.bm-chip').onclick = openSheet;
+  nav.querySelector('.bm-theme').onclick = function () {
+    var now = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    if (window.BM_THEME) window.BM_THEME(now);
+    else { document.documentElement.setAttribute('data-theme', now); try { localStorage.setItem('bm.theme', now); } catch (e) {} }
+    try { window.dispatchEvent(new CustomEvent('bm-theme', { detail: now })); } catch (e) {}
+  };
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
 
   /* ---------- hiệu ứng chuyển mục (nhẹ, có thể tắt) ---------- */
