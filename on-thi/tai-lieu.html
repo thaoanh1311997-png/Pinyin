@@ -471,9 +471,13 @@ function handleFile(f){
   var name=f.name.replace(/\.[^.]+$/,""); $("#pickPanel").classList.add("hidden"); SCAN_ID++;
   if(/\.pdf$/i.test(f.name)){
     fileInfo('<p class="hint">⏳ Đang mở PDF…</p>');
-    (window.pdfjsLib?Promise.resolve():loadScript(LIB.pdf)).then(function(){ pdfjsLib.GlobalWorkerOptions.workerSrc=LIB.pdfw; return f.arrayBuffer(); })
-    .then(function(buf){ return pdfjsLib.getDocument({data:buf}).promise; })
-    .then(function(pdf){ PDF=pdf; FKEY=f.name+"|"+f.size+"|"+pdf.numPages; return openPdf(f.name,name); })
+    var my=SCAN_ID, BUF;
+    /* sách đã có bản dịch soạn sẵn → mở liền, khỏi quét, khỏi chờ AI */
+    f.arrayBuffer().then(function(buf){ BUF=buf; return sha(buf).then(tryPack).catch(function(){return null}); })
+    .then(function(pk){ if(pk) return pk; return (window.pdfjsLib?Promise.resolve():loadScript(LIB.pdf)).then(function(){ pdfjsLib.GlobalWorkerOptions.workerSrc=LIB.pdfw; return pdfjsLib.getDocument({data:BUF}).promise; })
+      .then(function(pdf){ PDF=pdf; BUF=null; FKEY=f.name+"|"+f.size+"|"+pdf.numPages; var fp=(pdf.fingerprints||[])[0];
+        return (fp?sha("otpack|"+fp+"|"+pdf.numPages).then(tryPack).catch(function(){return null}):Promise.resolve(null)); }); })
+    .then(function(pk){ if(my!==SCAN_ID) return; if(pk) return usePack(pk); return openPdf(f.name,name); })
     .catch(function(e){ fileInfo('<p class="del">Không mở được PDF: '+esc(e.message)+'</p>'); });
   } else if(/\.docx$/i.test(f.name)){
     fileInfo('<p class="hint">⏳ Đang đọc file Word…</p>');
@@ -488,6 +492,21 @@ function handleFile(f){
     f.text().then(function(t){ RAW={name:name,text:t}; fileInfo('<p><b>📄 '+esc(f.name)+'</b></p>'); splitAndPick(); });
   } else if(/\.(doc|ppt|pptx|xls|xlsx|pages|key)$/i.test(f.name)){ fileInfo('<p class="del">File '+esc(f.name.split(".").pop().toUpperCase())+' web chưa đọc được. Mở file rồi “Lưu thành PDF” (hoặc Word .docx) rồi bỏ vào lại nha.</p>'); }
   else toast("File này chưa hỗ trợ, dùng PDF, Word, ảnh hoặc .txt nha");
+}
+/* gói dịch sẵn: mã hoá theo chính file sách, chỉ ai có đúng file mới mở được */
+function hex(b){ return [].map.call(new Uint8Array(b),function(x){return ("0"+x.toString(16)).slice(-2)}).join(""); }
+function sha(x){ if(!(window.crypto&&crypto.subtle)) return Promise.reject(new Error("no crypto")); return crypto.subtle.digest("SHA-256",typeof x==="string"?new TextEncoder().encode(x):x); }
+function tryPack(key){
+  return sha("id|"+hex(key)).then(function(h){ return fetch("data/packs/"+hex(h).slice(0,24)+".bin",{cache:"no-cache"}); })
+  .then(function(r){ if(!r.ok) return null; return r.arrayBuffer().then(function(b){
+    return crypto.subtle.importKey("raw",key,"AES-GCM",false,["decrypt"]).then(function(k){ return crypto.subtle.decrypt({name:"AES-GCM",iv:b.slice(0,12)},k,b.slice(12)); })
+    .then(function(p){ var d=JSON.parse(new TextDecoder().decode(p)); return d&&d.lessons&&d.lessons.length?d:null; }); }); })
+  .catch(function(){ return null; });
+}
+function usePack(d){
+  d.created=Date.now(); ls("tl.sel."+d.id,null);
+  return dbPut(d).then(function(){ $("#pickPanel").classList.add("hidden"); $("#fileInfo").classList.add("hidden"); RAW=null; ls("tl.doc",d.id); return loadDocs(); })
+  .then(function(){ toast("Sách này có bản dịch soạn sẵn, mở liền "+d.lessons.length+" bài 🎉"); });
 }
 /* chữ có sẵn trong PDF (không phải scan) */
 function pageText(p){
