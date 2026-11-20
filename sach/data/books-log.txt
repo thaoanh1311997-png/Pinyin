@@ -1,0 +1,121 @@
+## mit
+links on start page: 50
+pages to follow: 4
+  OK 0.38MB books/mit/01-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/b3dc57500a4cccbb985f5bbed48ccaf4_MITRES_21G_003S11_ack_pfe.pdf
+  OK 0.32MB books/mit/02-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/2b54a654efa499bda977ef90772e9be7_MITRES_21G_003S11_toc.pdf
+  OK 0.32MB books/mit/03-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/31d70b1507af0fda7044306b356df3d0_MITRES_21G_003S11_char_hts.pdf
+  OK 0.12MB books/mit/04-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/360fd54104f3cf7ebfc810fffb00f6d7_MITRES_21G_003S11_grid.pdf
+## truyen
+links on start page: 64
+pages to follow: 45
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0087/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/level1
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0327/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0030/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0302/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0156/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0002/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0003/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0120/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0271/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0231/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0129/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0067/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0008/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0009/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0112/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0111/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/level2
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0337/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0210/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0296/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0027/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0342/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0089/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0234/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0001/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0095/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0004/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0201/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/level3
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0006/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0110/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0158/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0324/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0141/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0066/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0315/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0291/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/level4
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0072/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0294/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0243/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0052/
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/level5
+  no pdf on https://global-asp.github.io/storybooks-classics/stories/zh/0262/
+## truyen-ca
+links on start page: 41
+pages to follow: 15
+  OK 0.41MB books/truyen-ca/01-我喜欢看书-i-like-to-read-j-aime-lire.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0087_read.pdf
+  OK 0.45MB books/truyen-ca/02-数数动物-counting-animals-compter-les-animaux.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0327_counting.pdf
+  OK 0.55MB books/truyen-ca/03-感情-feelings-les-sentiments.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0030_feelings.pdf
+  OK 0.79MB books/truyen-ca/04-火-fire-le-feu.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0302_fire.pdf
+  OK 0.33MB books/truyen-ca/05-很饿的鳄鱼-the-hungry-crocodile-le-crocodile-qui-avait-tres-faim.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0156_hungry.pdf
+  OK 1.37MB books/truyen-ca/06-看看农场里的动物-look-at-the-animals-regardez-les-animaux.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0002_animals.pdf
+  OK 0.64MB books/truyen-ca/07-校服-school-clothes-les-vetements-d-ecole.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0003_clothes.pdf
+  OK 0.61MB books/truyen-ca/08-头发-hair-cheveux.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0120_hair.pdf
+  OK 0.49MB books/truyen-ca/09-两个-two-deux.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0271_two.pdf
+  OK 0.54MB books/truyen-ca/10-气象书-weather-book-le-livre-de-la-meteo.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0231_weather.pdf
+  OK 0.63MB books/truyen-ca/11-贪玩的弟弟-lazy-little-brother-petit-frere-paresseux.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0129_lazy.pdf
+  OK 0.61MB books/truyen-ca/12-做菜-cooking-cuisiner.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0067_cooking.pdf
+  OK 0.38MB books/truyen-ca/13-你在做什么-what-are-you-doing-qu-est-ce-que-tu-fais.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0008_what.pdf
+  OK 0.78MB books/truyen-ca/14-我的小猫猫在哪儿-where-is-my-cat-ou-est-mon-chat.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0009_where.pdf
+  OK 0.51MB books/truyen-ca/15-我的身体-my-body-mon-corps.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0112_body.pdf
+links on start page: 37
+pages to follow: 11
+  OK 0.80MB books/truyen-ca/16-为什么河马没有毛发-why-hippos-have-no-hair-pourquoi-les-hippopotames-.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0111_hippos.pdf
+  OK 0.38MB books/truyen-ca/17-蜡做的孩子-children-of-wax-les-enfants-de-cire.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0337_wax.pdf
+  OK 0.57MB books/truyen-ca/18-丁吉和奶牛-tingi-and-the-cows-tingi-et-les-vaches.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0210_tingi.pdf
+  OK 0.65MB books/truyen-ca/19-卖香蕉的汤姆-tom-the-banana-seller-tom-le-vendeur-de-bananes.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0296_tom.pdf
+  OK 2.25MB books/truyen-ca/20-决定-decision-la-decision.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0027_decision.pdf
+  OK 0.54MB books/truyen-ca/21-惩罚-punishment-punition.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0342_punishment.pdf
+  OK 0.69MB books/truyen-ca/22-和植物聊天的卡莱-khalai-talks-to-plants-khalai-parle-aux-plantes.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0089_khalai.pdf
+  OK 0.80MB books/truyen-ca/23-球星安迪斯瓦-andiswa-soccer-star-andiswa-star-du-football.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0234_andiswa.pdf
+  OK 0.52MB books/truyen-ca/24-一个很高的人-a-very-tall-man-un-homme-tres-grand.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0001_tall.pdf
+  OK 0.65MB books/truyen-ca/25-赞玛很棒-zama-is-great-zama-est-formidable.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0095_zama.pdf
+  OK 0.74MB books/truyen-ca/26-山羊-野狗-和水牛-goat-dog-and-cow-chevre-chien-et-vache.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0004_goat.pdf
+links on start page: 34
+pages to follow: 8
+  OK 1.70MB books/truyen-ca/27-驴孩子-donkey-child-l-enfant-ane.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0201_donkey.pdf
+  OK 0.35MB books/truyen-ca/28-阿南西和智慧-anansi-and-wisdom-anansi-et-la-sagesse.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0006_anansi.pdf
+  OK 0.45MB books/truyen-ca/29-一粒小种子-旺加里-马塔伊的故事-a-tiny-seed-the-story-of-wangari-maathai-un.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0110_wangari.pdf
+  OK 0.54MB books/truyen-ca/30-母鸡和老鹰-hen-and-eagle-poule-et-aigle.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0158_hen.pdf
+  OK 1.46MB books/truyen-ca/31-离家进城的那一天-the-day-i-left-home-for-the-city-le-jour-ou-je-quit.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0324_city.pdf
+  OK 0.41MB books/truyen-ca/32-鸡和千足虫-chicken-and-millipede-la-poule-et-le-millepatte.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0141_chicken.pdf
+  OK 0.58MB books/truyen-ca/33-诺孜贝儿和三根头发-nozibele-and-the-three-hairs-nozibele-et-les-trois.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0066_nozibele.pdf
+  OK 1.41MB books/truyen-ca/34-萨可满的歌声-sakima-s-song-la-chanson-de-sakima.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0315_sakima.pdf
+links on start page: 30
+pages to follow: 4
+  OK 0.70MB books/truyen-ca/35-福思的姐姐说了什么-what-vusi-s-sister-said-que-va-dire-la-s-ur-de-vus.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0291_vusi.pdf
+  OK 0.56MB books/truyen-ca/36-指蜜鸟的复仇-the-honeyguide-s-revenge-la-revanche-de-l-indicateur.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0072_honeyguide.pdf
+  OK 0.60MB books/truyen-ca/37-奶奶的香蕉-grandma-s-bananas-les-bananes-de-grand-mere.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0294_grandma.pdf
+  OK 0.92MB books/truyen-ca/38-和奶奶一起过暑假-holidays-with-grandmother-les-vacances-avec-grand-m.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0243_holidays.pdf
+links on start page: 28
+pages to follow: 2
+  OK 0.90MB books/truyen-ca/39-辛波薇亚-simbegwire-simbegwire.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0052_simbegwire.pdf
+  OK 1.08MB books/truyen-ca/40-玛格威-magozwe-magozwe.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0262_magozwe.pdf
+## fsi
+links on start page: 363
+  OK 0.02MB books/fsi/01-sc-structure.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/SC%20Structure.pdf
+  OK 9.51MB books/fsi/02-0002-fsi-standardchinese-resourcemodule-studenttext.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/0002-FSI-StandardChinese-ResourceModule-StudentText.pdf
+  OK 2.26MB books/fsi/03-fsi-standardchinese-module01orn-studenttext.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2001%20ORN/FSI-StandardChinese-Module01ORN-StudentText.pdf
+  OK 1.04MB books/fsi/04-fsi-standardchinese-module01orn-studentworkbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2001%20ORN/FSI-StandardChinese-Module01ORN-StudentWorkbook.pdf
+  OK 4.04MB books/fsi/05-fsi-standardchinese-module02bio-studenttext.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2002%20BIO/FSI-StandardChinese-Module02BIO-StudentText.pdf
+  OK 2.54MB books/fsi/06-fsi-standardchinese-module02bio-studentworkbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2002%20BIO/FSI-StandardChinese-Module02BIO-StudentWorkbook.pdf
+  OK 11.78MB books/fsi/07-fsi-standardchinese-module03mon-studenttext.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2003%20MON/FSI-StandardChinese-Module03MON-StudentText.pdf
+  OK 9.04MB books/fsi/08-fsi-standardchinese-module03mon-studentworkbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2003%20MON/FSI-StandardChinese-Module03MON-StudentWorkbook.pdf
+  OK 11.42MB books/fsi/09-fsi-standardchinese-module04dir-studenttext.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2004%20DIR/FSI-StandardChinese-Module04DIR-StudentText.pdf
+  OK 9.44MB books/fsi/10-fsi-standardchinese-module04dir-studentworkbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2004%20DIR/FSI-StandardChinese-Module04DIR-StudentWorkbook.pdf
+  OK 4.10MB books/fsi/11-fsi-standardchinese-module05trn-studenttext.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2005%20TRN/FSI-StandardChinese-Module05TRN-StudentText.pdf
+  OK 3.16MB books/fsi/12-fsi-standardchinese-module05trn-studentworkbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2005%20TRN/FSI-StandardChinese-Module05TRN-StudentWorkbook.pdf
+TOTAL 98.8MB, 56 files

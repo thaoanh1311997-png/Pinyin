@@ -1,0 +1,693 @@
+{
+ "updated": "2026-11-20T09:33:31.284Z",
+ "books": [
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/01-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 376366,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/b3dc57500a4cccbb985f5bbed48ccaf4_MITRES_21G_003S11_ack_pfe.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/02-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 318610,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/2b54a654efa499bda977ef90772e9be7_MITRES_21G_003S11_toc.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/03-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 316366,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/31d70b1507af0fda7044306b356df3d0_MITRES_21G_003S11_char_hts.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/04-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 119017,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/360fd54104f3cf7ebfc810fffb00f6d7_MITRES_21G_003S11_grid.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "我喜欢看书 I like to read! J'aime lire",
+   "file": "books/truyen-ca/01-我喜欢看书-i-like-to-read-j-aime-lire.pdf",
+   "bytes": 407957,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0087_read.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "数数动物 Counting animals Compter les animaux",
+   "file": "books/truyen-ca/02-数数动物-counting-animals-compter-les-animaux.pdf",
+   "bytes": 451190,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0327_counting.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "感情 Feelings Les sentiments",
+   "file": "books/truyen-ca/03-感情-feelings-les-sentiments.pdf",
+   "bytes": 547282,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0030_feelings.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "火 Fire Le feu",
+   "file": "books/truyen-ca/04-火-fire-le-feu.pdf",
+   "bytes": 792756,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0302_fire.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "很饿的鳄鱼 The hungry crocodile Le crocodile qui avait très faim",
+   "file": "books/truyen-ca/05-很饿的鳄鱼-the-hungry-crocodile-le-crocodile-qui-avait-tres-faim.pdf",
+   "bytes": 328966,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0156_hungry.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "看看农场里的动物 Look at the animals Regardez les animaux",
+   "file": "books/truyen-ca/06-看看农场里的动物-look-at-the-animals-regardez-les-animaux.pdf",
+   "bytes": 1367966,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0002_animals.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "校服 School clothes Les vêtements d'école",
+   "file": "books/truyen-ca/07-校服-school-clothes-les-vetements-d-ecole.pdf",
+   "bytes": 637703,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0003_clothes.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "头发 Hair Cheveux",
+   "file": "books/truyen-ca/08-头发-hair-cheveux.pdf",
+   "bytes": 609850,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0120_hair.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "两个 Two Deux",
+   "file": "books/truyen-ca/09-两个-two-deux.pdf",
+   "bytes": 493485,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0271_two.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "气象书 Weather book Le livre de la météo",
+   "file": "books/truyen-ca/10-气象书-weather-book-le-livre-de-la-meteo.pdf",
+   "bytes": 539834,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0231_weather.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "贪玩的弟弟 Lazy little brother Petit frère paresseux",
+   "file": "books/truyen-ca/11-贪玩的弟弟-lazy-little-brother-petit-frere-paresseux.pdf",
+   "bytes": 631454,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0129_lazy.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "做菜 Cooking Cuisiner",
+   "file": "books/truyen-ca/12-做菜-cooking-cuisiner.pdf",
+   "bytes": 609781,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0067_cooking.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "你在做什么？ What are you doing? Qu'est-ce que tu fais ?",
+   "file": "books/truyen-ca/13-你在做什么-what-are-you-doing-qu-est-ce-que-tu-fais.pdf",
+   "bytes": 375014,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0008_what.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "我的小猫猫在哪儿？ Where is my cat? Où est mon chat ?",
+   "file": "books/truyen-ca/14-我的小猫猫在哪儿-where-is-my-cat-ou-est-mon-chat.pdf",
+   "bytes": 778711,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0009_where.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "我的身体 My body Mon corps",
+   "file": "books/truyen-ca/15-我的身体-my-body-mon-corps.pdf",
+   "bytes": 512006,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0112_body.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "为什么河马没有毛发 Why hippos have no hair Pourquoi les hippopotames n'ont pas de poils",
+   "file": "books/truyen-ca/16-为什么河马没有毛发-why-hippos-have-no-hair-pourquoi-les-hippopotames-.pdf",
+   "bytes": 802947,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0111_hippos.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "蜡做的孩子 Children of wax Les enfants de cire",
+   "file": "books/truyen-ca/17-蜡做的孩子-children-of-wax-les-enfants-de-cire.pdf",
+   "bytes": 378311,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0337_wax.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "丁吉和奶牛 Tingi and the cows Tingi et les vaches",
+   "file": "books/truyen-ca/18-丁吉和奶牛-tingi-and-the-cows-tingi-et-les-vaches.pdf",
+   "bytes": 566565,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0210_tingi.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "卖香蕉的汤姆 Tom the banana seller Tom le vendeur de bananes",
+   "file": "books/truyen-ca/19-卖香蕉的汤姆-tom-the-banana-seller-tom-le-vendeur-de-bananes.pdf",
+   "bytes": 650186,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0296_tom.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "决定 Decision La décision",
+   "file": "books/truyen-ca/20-决定-decision-la-decision.pdf",
+   "bytes": 2245054,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0027_decision.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "惩罚 Punishment Punition",
+   "file": "books/truyen-ca/21-惩罚-punishment-punition.pdf",
+   "bytes": 537798,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0342_punishment.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "和植物聊天的卡莱 Khalai talks to plants Khalai parle aux plantes",
+   "file": "books/truyen-ca/22-和植物聊天的卡莱-khalai-talks-to-plants-khalai-parle-aux-plantes.pdf",
+   "bytes": 691021,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0089_khalai.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "球星安迪斯瓦 Andiswa Soccer Star Andiswa star du football",
+   "file": "books/truyen-ca/23-球星安迪斯瓦-andiswa-soccer-star-andiswa-star-du-football.pdf",
+   "bytes": 801863,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0234_andiswa.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "一个很高的人 A very tall man Un homme très grand",
+   "file": "books/truyen-ca/24-一个很高的人-a-very-tall-man-un-homme-tres-grand.pdf",
+   "bytes": 518805,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0001_tall.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "赞玛很棒！ Zama is great! Zama est formidable !",
+   "file": "books/truyen-ca/25-赞玛很棒-zama-is-great-zama-est-formidable.pdf",
+   "bytes": 646014,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0095_zama.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "山羊、野狗、和水牛 Goat, Dog, and Cow Chèvre, Chien et Vache",
+   "file": "books/truyen-ca/26-山羊-野狗-和水牛-goat-dog-and-cow-chevre-chien-et-vache.pdf",
+   "bytes": 737380,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0004_goat.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "驴孩子 Donkey Child L'enfant-âne",
+   "file": "books/truyen-ca/27-驴孩子-donkey-child-l-enfant-ane.pdf",
+   "bytes": 1697428,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0201_donkey.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "阿南西和智慧 Anansi and Wisdom Anansi et la sagesse",
+   "file": "books/truyen-ca/28-阿南西和智慧-anansi-and-wisdom-anansi-et-la-sagesse.pdf",
+   "bytes": 349820,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0006_anansi.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "一粒小种子：旺加里·马塔伊的故事 A Tiny Seed: The Story of Wangari Maathai Une petite graine : l'histoire de Wangari Maathai",
+   "file": "books/truyen-ca/29-一粒小种子-旺加里-马塔伊的故事-a-tiny-seed-the-story-of-wangari-maathai-un.pdf",
+   "bytes": 451786,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0110_wangari.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "母鸡和老鹰 Hen and Eagle Poule et Aigle",
+   "file": "books/truyen-ca/30-母鸡和老鹰-hen-and-eagle-poule-et-aigle.pdf",
+   "bytes": 540351,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0158_hen.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "离家进城的那一天 The day I left home for the city Le jour où je quittai la maison pour la ville",
+   "file": "books/truyen-ca/31-离家进城的那一天-the-day-i-left-home-for-the-city-le-jour-ou-je-quit.pdf",
+   "bytes": 1460177,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0324_city.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "鸡和千足虫 Chicken and Millipede La poule et le millepatte",
+   "file": "books/truyen-ca/32-鸡和千足虫-chicken-and-millipede-la-poule-et-le-millepatte.pdf",
+   "bytes": 407388,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0141_chicken.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "诺孜贝儿和三根头发 Nozibele and the three hairs Nozibele et les trois cheveux",
+   "file": "books/truyen-ca/33-诺孜贝儿和三根头发-nozibele-and-the-three-hairs-nozibele-et-les-trois.pdf",
+   "bytes": 581513,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0066_nozibele.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "萨可满的歌声 Sakima's song La chanson de Sakima",
+   "file": "books/truyen-ca/34-萨可满的歌声-sakima-s-song-la-chanson-de-sakima.pdf",
+   "bytes": 1413343,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0315_sakima.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "福思的姐姐说了什么 What Vusi's sister said Que va dire la sœur de Vusi ?",
+   "file": "books/truyen-ca/35-福思的姐姐说了什么-what-vusi-s-sister-said-que-va-dire-la-s-ur-de-vus.pdf",
+   "bytes": 702592,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0291_vusi.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "指蜜鸟的复仇 The Honeyguide's revenge La revanche de l'indicateur",
+   "file": "books/truyen-ca/36-指蜜鸟的复仇-the-honeyguide-s-revenge-la-revanche-de-l-indicateur.pdf",
+   "bytes": 560085,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0072_honeyguide.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "奶奶的香蕉 Grandma's bananas Les bananes de grand-mère",
+   "file": "books/truyen-ca/37-奶奶的香蕉-grandma-s-bananas-les-bananes-de-grand-mere.pdf",
+   "bytes": 596814,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0294_grandma.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "和奶奶一起过暑假 Holidays with grandmother Les vacances avec grand-maman",
+   "file": "books/truyen-ca/38-和奶奶一起过暑假-holidays-with-grandmother-les-vacances-avec-grand-m.pdf",
+   "bytes": 924618,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0243_holidays.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "辛波薇亚 Simbegwire Simbegwire",
+   "file": "books/truyen-ca/39-辛波薇亚-simbegwire-simbegwire.pdf",
+   "bytes": 901241,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0052_simbegwire.pdf"
+  },
+  {
+   "src": "truyen-ca",
+   "group": "Truyện tranh thiếu nhi (Storybooks Canada)",
+   "license": "CC BY 4.0 · Global Storybooks",
+   "lv": [
+    "so"
+   ],
+   "title": "玛格威 Magozwe Magozwe",
+   "file": "books/truyen-ca/40-玛格威-magozwe-magozwe.pdf",
+   "bytes": 1077240,
+   "from": "https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0262_magozwe.pdf"
+  },
+  {
+   "src": "fsi",
+   "group": "FSI Standard Chinese",
+   "license": "Phạm vi công cộng · US Foreign Service Institute",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "SC Structure",
+   "file": "books/fsi/01-sc-structure.pdf",
+   "bytes": 24710,
+   "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/SC%20Structure.pdf"
+  },
+  {
+   "src": "fsi",
+   "group": "FSI Standard Chinese",
+   "license": "Phạm vi công cộng · US Foreign Service Institute",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "0002 FSI StandardChinese ResourceModule StudentText",
+   "file": "books/fsi/02-0002-fsi-standardchinese-resourcemodule-studenttext.pdf",
+   "bytes": 9506819,
+   "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/0002-FSI-StandardChinese-ResourceModule-StudentText.pdf"
+  },
+  {
+   "src": "fsi",
+   "group": "FSI Standard Chinese",
+   "license": "Phạm vi công cộng · US Foreign Service Institute",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "FSI StandardChinese Module01ORN StudentText",
+   "file": "books/fsi/03-fsi-standardchinese-module01orn-studenttext.pdf",
+   "bytes": 2264935,
+   "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2001%20ORN/FSI-StandardChinese-Module01ORN-StudentText.pdf"
+  },
+  {
+   "src": "fsi",
+   "group": "FSI Standard Chinese",
+   "license": "Phạm vi công cộng · US Foreign Service Institute",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "FSI StandardChinese Module01ORN StudentWorkbook",
+   "file": "books/fsi/04-fsi-standardchinese-module01orn-studentworkbook.pdf",
+   "bytes": 1036714,
+   "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2001%20ORN/FSI-StandardChinese-Module01ORN-StudentWorkbook.pdf"
+  },
+  {
+   "src": "fsi",
+   "group": "FSI Standard Chinese",
+   "license": "Phạm vi công cộng · US Foreign Service Institute",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "FSI StandardChinese Module02BIO StudentText",
+   "file": "books/fsi/05-fsi-standardchinese-module02bio-studenttext.pdf",
+   "bytes": 4040576,
+   "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2002%20BIO/FSI-StandardChinese-Module02BIO-StudentText.pdf"
+  },
+  {
+   "src": "fsi",
+   "group": "FSI Standard Chinese",
+   "license": "Phạm vi công cộng · US Foreign Service Institute",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "FSI StandardChinese Module02BIO StudentWorkbook",
+   "file": "books/fsi/06-fsi-standardchinese-module02bio-studentworkbook.pdf",
+   "bytes": 2538428,
+   "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2002%20BIO/FSI-StandardChinese-Module02BIO-StudentWorkbook.pdf"
+  },
+  {
+   "src": "fsi",
+   "group": "FSI Standard Chinese",
+   "license": "Phạm vi công cộng · US Foreign Service Institute",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "FSI StandardChinese Module03MON StudentText",
+   "file": "books/fsi/07-fsi-standardchinese-module03mon-studenttext.pdf",
+   "bytes": 11776025,
+   "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2003%20MON/FSI-StandardChinese-Module03MON-StudentText.pdf"
+  },
+  {
+   "src": "fsi",
+   "group": "FSI Standard Chinese",
+   "license": "Phạm vi công cộng · US Foreign Service Institute",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "FSI StandardChinese Module03MON StudentWorkbook",
+   "file": "books/fsi/08-fsi-standardchinese-module03mon-studentworkbook.pdf",
+   "bytes": 9044879,
+   "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2003%20MON/FSI-StandardChinese-Module03MON-StudentWorkbook.pdf"
+  },
+  {
+   "src": "fsi",
+   "group": "FSI Standard Chinese",
+   "license": "Phạm vi công cộng · US Foreign Service Institute",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "FSI StandardChinese Module04DIR StudentText",
+   "file": "books/fsi/09-fsi-standardchinese-module04dir-studenttext.pdf",
+   "bytes": 11416893,
+   "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2004%20DIR/FSI-StandardChinese-Module04DIR-StudentText.pdf"
+  },
+  {
+   "src": "fsi",
+   "group": "FSI Standard Chinese",
+   "license": "Phạm vi công cộng · US Foreign Service Institute",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "FSI StandardChinese Module04DIR StudentWorkbook",
+   "file": "books/fsi/10-fsi-standardchinese-module04dir-studentworkbook.pdf",
+   "bytes": 9444734,
+   "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2004%20DIR/FSI-StandardChinese-Module04DIR-StudentWorkbook.pdf"
+  },
+  {
+   "src": "fsi",
+   "group": "FSI Standard Chinese",
+   "license": "Phạm vi công cộng · US Foreign Service Institute",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "FSI StandardChinese Module05TRN StudentText",
+   "file": "books/fsi/11-fsi-standardchinese-module05trn-studenttext.pdf",
+   "bytes": 4097626,
+   "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2005%20TRN/FSI-StandardChinese-Module05TRN-StudentText.pdf"
+  },
+  {
+   "src": "fsi",
+   "group": "FSI Standard Chinese",
+   "license": "Phạm vi công cộng · US Foreign Service Institute",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "FSI StandardChinese Module05TRN StudentWorkbook",
+   "file": "books/fsi/12-fsi-standardchinese-module05trn-studentworkbook.pdf",
+   "bytes": 3159027,
+   "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2005%20TRN/FSI-StandardChinese-Module05TRN-StudentWorkbook.pdf"
+  }
+ ]
+}
