@@ -527,7 +527,7 @@ body.v-Lesson .wrap{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))
         <input class="in" id="ytUrl" placeholder="Dán link youtube.com hoặc youtu.be" inputmode="url" autocomplete="off">
         <div class="or">hoặc</div>
         <label class="pick" for="mediaFile"><span class="ti" style="background:var(--blue-soft);color:var(--blue)"><svg class="i" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span>Chọn video / âm thanh trong máy<small id="mediaName">MP4, MP3, M4A…</small></span></label>
-        <input type="file" id="mediaFile" accept="video/*,audio/*,.mp3,.m4a,.aac,.wav,.ogg,.oga,.opus,.flac,.wma,.amr,.3gp,.mp4,.m4v,.mov,.webm,.mkv,.mpeg,.mpga" hidden>
+        <input type="file" id="mediaFile" hidden>
       </div>
       <div class="auto-note"><span class="ti"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></span><div><b>Web tự làm phụ đề cho bạn</b><span>Chọn file video/âm thanh: web tự nghe và ghi ra phụ đề. Dán link YouTube: web thử lấy phụ đề có sẵn của video.</span></div></div>
       <details class="card pad more-subs" style="margin-top:14px">
@@ -887,6 +887,7 @@ let P=null, LES=null, MODE='shadow', CUR=0;
 let RUN={dead:true}, PLAYING=null;
 function newRun(){RUN.dead=true;stopAudio();RUN={dead:false};return RUN;}
 function stopAudio(){try{speechSynthesis.cancel()}catch(e){} if(P&&P.media)try{P.pause()}catch(e){} if(recAudio){recAudio.pause();recAudio=null;} }
+const isMedia=f=>/^(audio|video)\//.test(f.type||'')||/\.(mp3|m4a|aac|wav|ogg|oga|opus|flac|wma|amr|mpga|mp4|m4v|mov|webm|mkv|mpeg|3gp|caf|aiff?)$/i.test(f.name||'')||!/\.[a-z0-9]{2,4}$/i.test(f.name||'');
 const isAudio=f=>/^audio/.test(f.type||'')||/\.(mp3|m4a|aac|wav|ogg|oga|opus|flac|wma|amr|mpga)$/i.test(f.name||'');
 function ytId(u){
   u=(u||'').trim(); if(/^[\w-]{11}$/.test(u)) return u;
@@ -916,8 +917,8 @@ async function mountMedia(){
     });
   } else if(src.type==='file'){
     if(!src.url){
-      box.innerHTML=`<div class="media tts">${mascot()}<div style="flex:1;min-width:0"><b>Chọn lại file “${esc(src.name||'video')}”</b><small>Video trong máy không lưu được trên web, chọn lại để xem cùng phụ đề.</small><div style="margin-top:8px"><label class="btn sm pri" for="reMedia" style="cursor:pointer">Chọn file</label><input type="file" id="reMedia" accept="video/*,audio/*,.mp3,.m4a,.aac,.wav,.ogg,.oga,.opus,.flac,.wma,.amr,.3gp,.mp4,.m4v,.mov,.webm,.mkv,.mpeg,.mpga" hidden></div></div></div>`;
-      $('#reMedia').onchange=e=>{const f=e.target.files[0];if(!f)return;src.url=URL.createObjectURL(f);src.audio=isAudio(f);src.name=f.name;mountMedia();};
+      box.innerHTML=`<div class="media tts">${mascot()}<div style="flex:1;min-width:0"><b>Chọn lại file “${esc(src.name||'video')}”</b><small>Video trong máy không lưu được trên web, chọn lại để xem cùng phụ đề.</small><div style="margin-top:8px"><label class="btn sm pri" for="reMedia" style="cursor:pointer">Chọn file</label><input type="file" id="reMedia" hidden></div></div></div>`;
+      $('#reMedia').onchange=e=>{const f=e.target.files[0];if(!f)return;if(!isMedia(f)){toast('File này không phải video hay âm thanh. Hãy chọn file nghe (mp3, m4a…) hoặc video.',4500);e.target.value='';return;}src.url=URL.createObjectURL(f);src.audio=isAudio(f);src.name=f.name;mountMedia();};
       return;
     }
     box.innerHTML=src.audio?'<div class="media audio"><audio id="vid" controls playsinline preload="auto"></audio></div>':'<div class="media"><video id="vid" controls playsinline preload="auto"></video></div>';
@@ -1166,7 +1167,7 @@ drop.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)handleDoc(
 $('#tabVideo').onclick=()=>{$('#tabVideo').classList.add('on');$('#tabFile').classList.remove('on');$('#paneVideo').hidden=false;$('#paneFile').hidden=true;};
 $('#tabFile').onclick=()=>{$('#tabFile').classList.add('on');$('#tabVideo').classList.remove('on');$('#paneVideo').hidden=true;$('#paneFile').hidden=false;};
 let MEDIA_FILE=null;
-$('#mediaFile').onchange=e=>{MEDIA_FILE=e.target.files[0]||null;$('#mediaName').textContent=MEDIA_FILE?'Đã chọn: '+MEDIA_FILE.name:'MP4, MP3, M4A…';if(MEDIA_FILE)$('#ytUrl').value='';};
+$('#mediaFile').onchange=e=>{MEDIA_FILE=e.target.files[0]||null;if(MEDIA_FILE&&!isMedia(MEDIA_FILE)){toast('File này không phải video hay âm thanh. Hãy chọn file nghe (mp3, m4a…) hoặc video.',4500);MEDIA_FILE=null;e.target.value='';}$('#mediaName').textContent=MEDIA_FILE?'Đã chọn: '+MEDIA_FILE.name:'MP4, MP3, M4A…';if(MEDIA_FILE)$('#ytUrl').value='';};
 $('#subFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;$('#subText').value=await f.text();e.target.value='';toast('Đã mở '+f.name);};
 $('#startVideo').onclick=async()=>{
   const url=$('#ytUrl').value.trim(); const id=url?ytId(url):null;
@@ -1614,14 +1615,14 @@ function noSubs(msg){ // ask for a transcript, or make one from a file
   $('#panel').innerHTML=`<div class="pc"><h2 style="font-size:22px">Thêm phụ đề để học</h2>
     <p class="muted" style="margin:6px 0 0">${esc(msg||'Dán bản chép lời tiếng Trung của video vào đây (hoặc mở file .srt) để có pinyin, dịch và các bài luyện.')}</p>
     ${LES.src&&LES.src.type==='youtube'?grabBox():''}
-    <div class="row" style="margin-top:14px">${LES.src&&LES.src.type==='file'&&LES.src.url?`<button class="btn pri" id="lsAuto">${IC.spark}Tự làm phụ đề</button>`:`<label class="btn pri" for="lsVid" style="cursor:pointer">${IC.spark}Chọn file video đã tải</label><input type="file" id="lsVid" accept="video/*,audio/*,.mp3,.m4a,.aac,.wav,.ogg,.oga,.opus,.flac,.wma,.amr,.3gp,.mp4,.m4v,.mov,.webm,.mkv,.mpeg,.mpga" hidden>`}</div>
+    <div class="row" style="margin-top:14px">${LES.src&&LES.src.type==='file'&&LES.src.url?`<button class="btn pri" id="lsAuto">${IC.spark}Tự làm phụ đề</button>`:`<label class="btn pri" for="lsVid" style="cursor:pointer">${IC.spark}Chọn file video đã tải</label><input type="file" id="lsVid" hidden>`}</div>
     <div class="or">hoặc dán phụ đề</div>
     <textarea class="in" id="lsSub" placeholder="Dán bản chép lời hoặc nội dung .srt vào đây"></textarea>
     <div class="row" style="margin-top:12px"><button class="btn pri" id="lsGo">${IC.check}Dùng phụ đề này</button><label class="btn out sm" for="lsFile" style="cursor:pointer">Mở file .srt</label><input type="file" id="lsFile" accept=".srt,.vtt,.txt,.ass,text/*" hidden></div>
     <details class="help"><summary>Cách khác: tự chép phụ đề</summary><ol><li>Mở video trên YouTube bằng máy tính, bấm <b>…thêm</b> dưới video, chọn <b>Hiện bản chép lời</b>.</li><li>Bôi đen toàn bộ bản chép lời, bấm Ctrl + C, rồi dán vào ô trên.</li><li>Hoặc tải phụ đề .srt ở downsub.com rồi bấm “Mở file .srt”.</li></ol></details></div>`;
   $('#lsFile').onchange=async e=>{const f=e.target.files[0];if(f)$('#lsSub').value=await f.text();};
   if($('#lsAuto')) $('#lsAuto').onclick=()=>autoSubsFile();
-  if($('#lsVid')) $('#lsVid').onchange=e=>{const f=e.target.files[0];if(!f)return;LES.src={type:'file',name:f.name,url:URL.createObjectURL(f),audio:isAudio(f)};mountMedia().then(()=>autoSubsFile());};
+  if($('#lsVid')) $('#lsVid').onchange=e=>{const f=e.target.files[0];if(!f)return;if(!isMedia(f)){toast('File này không phải video hay âm thanh. Hãy chọn file nghe (mp3, m4a…) hoặc video.',4500);e.target.value='';return;}LES.src={type:'file',name:f.name,url:URL.createObjectURL(f),audio:isAudio(f)};mountMedia().then(()=>autoSubsFile());};
   $('#lsGo').onclick=()=>{const lines=parseSubs($('#lsSub').value);if(!lines.length){toast('Chưa thấy câu tiếng Trung nào trong ô phụ đề.');return;}LES.lines=lines;saveLesson();renderModes();setMode('shadow');translateLines(LES.lines,l=>{const i=LES.lines.indexOf(l);$$(`[data-vi="${i}"]`).forEach(el=>{el.textContent=l.vi;el.classList.remove('wait');});}).then(()=>saveLesson());};
 }
 const fmtT=s=>{s=Math.max(0,Math.floor(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
