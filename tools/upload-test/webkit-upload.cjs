@@ -9,17 +9,24 @@ const OUT = []; const say = (...a) => { const s = a.join(' '); console.log(s); O
 let PIECES = [];
 async function ctxFor(b, dev) {
   const ctx = await b.newContext(devices[dev]); if (H) await H.setup(ctx);
-  await ctx.route(/api\.groq\.com/, async r => {
-    const req = r.request(); if (req.method() === 'OPTIONS') return r.fulfill({ status: 204, body: '', headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'authorization,content-type', 'access-control-allow-methods': 'POST,GET,OPTIONS' } });
-    const buf = req.postDataBuffer() || Buffer.alloc(0); const bd = (req.headers()['content-type'] || '').split('boundary=')[1];
-    const s = buf.indexOf('filename="'), name = buf.slice(s + 10, buf.indexOf('"', s + 10)).toString();
-    const hs = buf.indexOf('\r\n\r\n', s) + 4, he = buf.indexOf(Buffer.from('\r\n--' + bd), hs); const tmp = path.join(os.tmpdir(), 'p_' + Date.now() + '_' + name);
-    fs.writeFileSync(tmp, buf.slice(hs, he)); const e = cp.spawnSync(FF, ['-hide_banner', '-i', tmp, '-f', 'null', '-']); const err = e.stderr.toString();
-    const m = err.match(/Duration: (\d+):(\d+):([\d.]+)/), dur = m ? +m[1] * 3600 + +m[2] * 60 + +m[3] : 0; const bad = /Invalid|error/i.test(err.split('Output #0')[0].replace(/Duration.*/,''));
-    PIECES.push(name + ' ' + (he - hs >> 20) + 'MB ' + dur.toFixed(0) + 's' + (bad || !dur ? ' BAD' : '')); fs.unlinkSync(tmp);
-    if (!dur) return r.fulfill({ status: 400, body: '{}', contentType: 'application/json', headers: { 'access-control-allow-origin': '*' } });
-    const segs = []; for (let t = 0; t < dur; t += 6) segs.push({ start: t, end: t + 5, text: '我们今天学习第' + Math.round(t) + '秒的句子。' });
-    r.fulfill({ body: JSON.stringify({ segments: segs }), contentType: 'application/json', headers: { 'access-control-allow-origin': '*' } });
+  // Groq giả: lấy mẩu âm thanh ngay trong trang (WebKit không cho Playwright đọc thân request có Blob), kiểm tra bằng ffmpeg
+  await ctx.exposeFunction('__piece', (name, b64) => {
+    const tmp = path.join(os.tmpdir(), 'p_' + Date.now() + '_' + name); const buf = Buffer.from(b64, 'base64'); fs.writeFileSync(tmp, buf);
+    const e = cp.spawnSync(FF, ['-hide_banner', '-i', tmp, '-f', 'null', '-']); const err = e.stderr.toString(); fs.unlinkSync(tmp);
+    const m = err.match(/Duration: (\d+):(\d+):([\d.]+)/), dur = m ? +m[1] * 3600 + +m[2] * 60 + +m[3] : 0;
+    const bad = /Invalid data|corrupt|Error while decoding/i.test(err);
+    PIECES.push(name + ' ' + (buf.length / 1048576).toFixed(1) + 'MB ' + dur.toFixed(0) + 's' + (bad || !dur ? ' BAD' : '')); return bad ? 0 : dur;
+  });
+  await ctx.addInitScript(() => {
+    const of = window.fetch;
+    window.fetch = async (u, o) => {
+      if (!/api\.groq\.com\/openai\/v1\/audio/.test(String(u))) return of(u, o);
+      const f = o.body.get('file'); const ab = new Uint8Array(await f.arrayBuffer()); let s = ''; for (let i = 0; i < ab.length; i += 32768) s += String.fromCharCode.apply(null, ab.subarray(i, i + 32768));
+      const dur = await window.__piece(f.name, btoa(s));
+      if (!dur) return new Response('{}', { status: 400 });
+      const segs = []; for (let t = 0; t < dur; t += 6) segs.push({ start: t, end: t + 5, text: '我们今天学习第' + Math.round(t) + '秒的句子。' });
+      return new Response(JSON.stringify({ segments: segs }), { status: 200, headers: { 'content-type': 'application/json' } });
+    };
   });
   const p = await ctx.newPage(); const log = []; p._log = log; p._loads = 0;
   p.on('pageerror', e => log.push('ERR ' + e.message.slice(0, 120))); p.on('crash', () => log.push('CRASH'));
