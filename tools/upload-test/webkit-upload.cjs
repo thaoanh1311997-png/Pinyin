@@ -60,7 +60,7 @@ const waitFor = async (p, fn, sec) => { for (let i = 0; i < sec; i++) { await p.
       await p.goto(BASE + 'pdf/'); await p.waitForTimeout(1500);
       const base = rss(); let peak = base; const iv = setInterval(() => { const r = rss(); if (r > peak) peak = r; }, 300);
       await p.setInputFiles('#file', path.join(T, f));
-      const done = () => document.getElementById('stop').hidden && document.querySelectorAll('#out section').length > 1 && document.getElementById('status').innerText.slice(0, 60);
+      const done = () => document.getElementById('stop').hidden && document.querySelectorAll('#out section').length > 0 && /Xong|Đã dừng|lỗi/i.test(document.getElementById('status').innerText) && document.getElementById('status').innerText.slice(0, 60);
       let r = await waitFor(p, done, 400); let r2 = '';
       if (await p.$('.more-btn')) { await p.click('.more-btn'); await p.waitForTimeout(800); r2 = await waitFor(p, done, 400); }
       clearInterval(iv);
