@@ -108,12 +108,21 @@ function segment(text) {
   return out;
 }
 function wordsHTML(text) { // interactive words with pinyin
-  var py = pyAll(text); var k = 0; var html = '';
+  var py = pyAll(text); var k = 0; var toks = [];
   segment(text).forEach(function (w) {
     var n = Array.from(w).length; var parts = py.slice(k, k + n); k += n;
-    if (!isCJK(w[0])) { html += '<span class="w punct"><span class="p"></span><span class="c">' + esc(w) + '</span></span>'; return; }
-    html += '<span class="w" data-w="' + esc(w) + '"><span class="p">' + esc(parts.map(function (x) { return x.pinyin; }).join('')) + '</span><span class="c">' + esc(w) + '</span></span>';
+    if (!isCJK(w[0])) { toks.push({ h: '<span class="w punct"><span class="p"></span><span class="c">' + esc(w) + '</span></span>', open: /^[“‘「『《（(\[【]+$/.test(w.trim()), pu: !/^\s+$/.test(w) }); return; }
+    toks.push({ h: '<span class="w" data-w="' + esc(w) + '"><span class="p">' + esc(parts.map(function (x) { return x.pinyin; }).join('')) + '</span><span class="c">' + esc(w) + '</span></span>' });
   });
+  // keep punctuation glued to its word so it never starts/ends a line alone
+  var html = '', grp = '', glueNext = false;
+  toks.forEach(function (t) {
+    if (t.pu && !t.open && grp) { grp += t.h; return; }
+    if (glueNext) { grp += t.h; glueNext = !!t.open; return; }
+    if (grp) html += '<span class="wg">' + grp + '</span>';
+    grp = t.h; glueNext = !!t.open;
+  });
+  if (grp) html += '<span class="wg">' + grp + '</span>';
   return html;
 }
 function hskOf(w) { var v = VMAP && VMAP.get(w); return v ? (v.o || (v.t ? Math.min(v.t + 0, 7) : 0)) : 0; }
@@ -122,6 +131,15 @@ function levelOfText(text) {
   var ls = []; segment(text).forEach(function (w) { if (!isCJK(w[0]) || /^[\d一二三四五六七八九十百千万]+$/.test(w)) return; var v = VMAP.get(w); ls.push(v ? (v.o || v.t || 7) : (w.length === 1 ? 4 : 7)); });
   if (!ls.length) return 0; ls.sort(function (a, b) { return a - b; });
   var p = ls[Math.floor(ls.length * 0.85)] || 1; return Math.max(1, Math.min(6, p));
+}
+function easeOfText(text) { // % words within HSK 1-4
+  if (!VMAP) return 0; var n = 0, ok = 0;
+  segment(text).forEach(function (w) { if (!isCJK(w[0]) || /^[\d一二三四五六七八九十百千万]+$/.test(w)) return; n++; var v = VMAP.get(w); if (v && (v.o || v.t || 7) <= 4) ok++; });
+  return n ? Math.round(ok * 100 / n) : 0;
+}
+function easeBadge(ez) {
+  var t = ez >= 50 ? ['b1', '🌱 Dễ hơn'] : ez >= 38 ? ['b4', '🌿 Vừa'] : ['b6', '🌶️ Khó'];
+  return '<span class="badge ' + t[0] + '">' + t[1] + ' · ' + ez + '% từ HSK1–4</span>';
 }
 
 /* ---------------- speech (TTS) ---------------- */
@@ -273,12 +291,13 @@ routes.home = function () {
     '<div class="stats"><div class="stat"><b>🔥 ' + streak() + '</b><span>ngày liên tiếp</span></div><div class="stat"><b>' + ((td.card || 0) + (td.quiz || 0)) + '</b><span>từ ôn hôm nay</span></div><div class="stat"><b>' + (td.read || 0) + '</b><span>bài đã đọc</span></div></div>' +
     '<div class="sec-t">Học gì hôm nay?</div>' +
     '<div class="tiles">' +
-    '<a class="tile t-news" href="#/news"><span class="em">📰</span><div><b>Đọc báo</b><br><small>Tin thật mỗi ngày · pinyin · dịch</small></div></a>' +
+    '<a class="tile t-news" href="#/news"><span class="em">📰</span><div><b>Đọc báo</b><br><small>Tin thật · truyện · pinyin · dịch</small></div></a>' +
     '<a class="tile t-exam" href="#/exam"><span class="em">📝</span><div><b>Phòng thi HSK</b><br><small>' + (last ? 'Lần gần nhất: ' + last.score + '/' + last.max : 'HSK 1–6 · HSK 3.0') + '</small></div></a>' +
     '<a class="tile t-vocab" href="#/vocab"><span class="em">🃏</span><div><b>Từ vựng</b><br><small>' + (due ? due + ' từ cần ôn' : 'Flashcard theo cấp HSK') + '</small></div></a>' +
     '<a class="tile t-talk" href="#/talk"><span class="em">💬</span><div><b>Giao tiếp</b><br><small>12 chủ đề đời thường</small></div></a></div>' +
     '<div class="sec-t">💡 Câu hôm nay</div>' +
     '<div class="ph"><div class="zl zh">' + ruby(pick[0]) + '</div><div class="v">' + esc(pick[1]) + '</div><div class="acts"><button data-say="' + esc(pick[0]) + '">🔊 Nghe</button><button data-say="' + esc(pick[0]) + '" data-slow="1">🐢 Chậm</button></div></div>' +
+    '<div class="sec-t">📖 Truyện hôm nay <small><a href="#/news/story">Xem tất cả →</a></small></div>' + easyCard(window.STORY[Math.floor(Date.now() / 864e5) % window.STORY.length]) +
     '<div class="sec-t">📰 Tin mới <small><a href="#/news">Xem tất cả →</a></small></div><div id="homeNews"><div class="empty">Đang tải tin… ⏳</div></div>' +
     (nb ? '<a class="card row" style="text-decoration:none;color:inherit" href="#/vocab/nb"><span style="font-size:28px">⭐</span><div class="grow"><b>Sổ tay của bạn</b><div class="muted small">' + nb + ' từ đã lưu khi đọc báo</div></div><span>→</span></a>' : '') +
     '<div class="foot">Trà Sữa 🧋 · tin tức từ 中国新闻网 (chinanews.com.cn) · đề thi là đề luyện tự soạn theo cấu trúc HSK</div>';
@@ -291,13 +310,13 @@ routes.home = function () {
 document.addEventListener('click', function (e) { var b = e.target.closest('[data-say]'); if (b && !b.closest('#sheetBody')) say(b.getAttribute('data-say'), !!b.dataset.slow); });
 
 /* =============================== NEWS =============================== */
-var CATS = [['easy', '⭐ Bài dễ', '#fff0c7', '⭐'], ['all', '🔥 Mới nhất', '#ffe1ea', '🔥'], ['xh', '🏘️ Xã hội', '#dcecff', '🏘️'], ['tn', '🇨🇳 Trong nước', '#ffe2dc', '🇨🇳'], ['qt', '🌏 Quốc tế', '#d8f6ec', '🌏'], ['kt', '💰 Kinh tế', '#fff0c7', '💰'], ['vh', '🎎 Văn hóa', '#ebe5ff', '🎎'], ['tt', '⚽ Thể thao', '#d8f6ec', '⚽'], ['sk', '🩺 Sức khỏe', '#ffe1ea', '🩺'], ['gd', '🎓 Giáo dục', '#dcecff', '🎓']];
+var CATS = [['easy', '⭐ Bài dễ', '#fff0c7', '⭐'], ['story', '📖 Truyện', '#ebe5ff', '📖'], ['all', '🔥 Mới nhất', '#ffe1ea', '🔥'], ['xh', '🏘️ Xã hội', '#dcecff', '🏘️'], ['tn', '🇨🇳 Trong nước', '#ffe2dc', '🇨🇳'], ['qt', '🌏 Quốc tế', '#d8f6ec', '🌏'], ['kt', '💰 Kinh tế', '#fff0c7', '💰'], ['vh', '🎎 Văn hóa', '#ebe5ff', '🎎'], ['tt', '⚽ Thể thao', '#d8f6ec', '⚽'], ['sk', '🩺 Sức khỏe', '#ffe1ea', '🩺'], ['gd', '🎓 Giáo dục', '#dcecff', '🎓']];
 var newsP = null;
 function loadNews() {
   if (newsP) return newsP;
   newsP = Promise.all([fetch('data/news.json?t=' + Math.floor(Date.now() / 6e5)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }), loadVocab()]).then(function (a) {
     var j = a[0];
-    if (j && j.items) j.items.forEach(function (it) { it.lv = levelOfText(it.t + it.b); });
+    if (j && j.items) j.items.forEach(function (it) { it.lv = levelOfText(it.t + it.b); it.ez = easeOfText(it.t + it.b); });
     else newsP = null;
     return j;
   });
@@ -306,53 +325,62 @@ function loadNews() {
 function catOf(c) { return CATS.find(function (x) { return x[0] === c; }) || CATS[2]; }
 function newsCard(it) {
   var c = catOf(it.c); var read = LS.get('read', {})[it.id];
-  return '<a class="news' + (read ? ' read' : '') + '" href="#/read/' + it.id + '"><div class="ico" style="background:' + c[2] + '">' + c[3] + '</div><div class="grow"><h3>' + esc(it.t) + '</h3><p>' + esc(it.b) + '</p><div class="meta">' + (it.lv ? '<span class="badge b' + it.lv + '">~HSK ' + (it.lv >= 6 ? '6+' : it.lv) + '</span>' : '') + '<span>' + esc(it.s) + '</span><span>· ' + ago(it.d) + '</span>' + (read ? '<span>· ✓ đã đọc</span>' : '') + '</div></div></a>';
+  return '<a class="news' + (read ? ' read' : '') + '" href="#/read/' + it.id + '"><div class="ico" style="background:' + c[2] + '">' + c[3] + '</div><div class="grow"><h3>' + esc(it.t) + '</h3><p>' + esc(it.b) + '</p><div class="meta">' + (it.ez ? easeBadge(it.ez) : '') + '<span>' + esc(it.s) + '</span><span>· ' + ago(it.d) + '</span>' + (read ? '<span>· ✓ đã đọc</span>' : '') + '</div></div></a>';
 }
 function easyCard(e) {
   var read = LS.get('read', {})[e.id];
-  return '<a class="news' + (read ? ' read' : '') + '" href="#/read/' + e.id + '"><div class="ico" style="background:#fff0c7">' + e.e + '</div><div class="grow"><h3>' + esc(e.t) + '</h3><p style="font-family:var(--ui);font-weight:700">' + esc(e.tv) + '</p><div class="meta"><span class="badge b' + e.lv + '">HSK ' + e.lv + '</span><span>Bài đọc luyện tập · có dịch sẵn</span>' + (read ? '<span>· ✓ đã đọc</span>' : '') + '</div></div></a>';
+  return '<a class="news' + (read ? ' read' : '') + '" href="#/read/' + e.id + '"><div class="ico" style="background:' + (e.g ? '#ebe5ff' : '#fff0c7') + '">' + e.e + '</div><div class="grow"><h3>' + esc(e.t) + '</h3><p style="font-family:var(--ui);font-weight:700">' + esc(e.tv) + '</p><div class="meta"><span class="badge b' + e.lv + '">HSK ' + e.lv + '</span><span>' + (e.g ? esc(e.g) + ' · có dịch sẵn' : 'Bài đọc luyện tập · có dịch sẵn') + '</span>' + (read ? '<span>· ✓ đã đọc</span>' : '') + '</div></div></a>';
 }
 routes.news = function (cat) {
   cat = cat || LS.get('ncat', 'all'); LS.set('ncat', cat);
   APP.innerHTML = top('📰 <span>Đọc báo</span>') +
     '<div class="chips">' + CATS.map(function (c) { return '<a class="chip' + (c[0] === cat ? ' on' : '') + '" href="#/news/' + c[0] + '" style="text-decoration:none;color:inherit">' + c[1] + '</a>'; }).join('') + '</div><div id="nlist"><div class="empty">Đang tải tin… ⏳</div></div>';
-  if (cat === 'easy') {
-    $('#nlist').innerHTML = '<div class="note">⭐ Bài đọc ngắn theo cấp độ HSK, có bản dịch tiếng Việt sẵn — hợp để khởi động trước khi đọc báo thật.</div>' + window.EASY.map(easyCard).join('');
+  if (cat === 'easy' || cat === 'story') {
+    var isSt = cat === 'story'; var SRC = isSt ? window.STORY : window.EASY;
+    var el0 = $('#nlist'); var ef = LS.get(isSt ? 'slv' : 'elv', 0);
+    var groups = isSt ? [[0, 'Tất cả'], [2, 'HSK 1–2'], [3, 'HSK 3'], [4, 'HSK 4'], [56, 'HSK 5–6']] : [[0, 'Tất cả'], [2, 'HSK 1–2'], [3, 'HSK 3'], [4, 'HSK 4'], [5, 'HSK 5']];
+    var list = SRC.slice().sort(function (a, b) { return a.lv - b.lv; }).filter(function (e) { return !ef || (ef === 2 ? e.lv <= 2 : ef === 56 ? e.lv >= 5 : e.lv === ef); });
+    el0.innerHTML = '<div class="seg" id="elseg">' + groups.map(function (g) { return '<button data-lv="' + g[0] + '" class="' + (ef === g[0] ? 'on' : '') + '">' + g[1] + '</button>'; }).join('') + '</div>' +
+      (isSt ? '<div class="note">📖 ' + SRC.length + ' truyện từ HSK 1 đến HSK 6: thành ngữ, ngụ ngôn, cổ tích Trung Quốc – Việt Nam và truyện ngắn. Có dịch sẵn từng câu và bài học cuối truyện.</div>'
+        : '<div class="note">⭐ ' + SRC.length + ' bài đọc ngắn từ HSK 1 đến HSK 5, có bản dịch tiếng Việt sẵn từng câu — hợp để khởi động trước khi đọc báo thật.</div>') + list.map(easyCard).join('');
+    $('#elseg').onclick = function (e) { var b = e.target.closest('[data-lv]'); if (!b) return; LS.set(isSt ? 'slv' : 'elv', +b.dataset.lv); routes.news(cat); };
     return;
   }
   loadNews().then(function (j) {
     var el = $('#nlist'); if (!el) return;
     if (!j || !j.items || !j.items.length) { el.innerHTML = '<div class="card">😢 Chưa tải được tin. Kiểm tra mạng rồi thử lại, hoặc đọc <a href="#/news/easy">bài dễ</a>.</div>'; return; }
     var items = j.items.filter(function (it) { return cat === 'all' || it.c === cat; });
-    var lvSel = LS.get('nlv', 0);
-    var lvBar = '<div class="seg" id="lvseg">' + [[0, 'Tất cả'], [4, '≤ HSK 4'], [5, 'HSK 5'], [6, 'HSK 6+']].map(function (x) { return '<button data-lv="' + x[0] + '" class="' + (lvSel === x[0] ? 'on' : '') + '">' + x[1] + '</button>'; }).join('') + '</div>';
-    var shown = items.filter(function (it) { return !lvSel || (lvSel === 4 ? it.lv <= 4 : lvSel === 5 ? it.lv === 5 : it.lv >= 6); });
-    el.innerHTML = lvBar + '<div class="muted small" style="margin:-4px 4px 10px;font-weight:700">Cập nhật ' + ago(j.updated) + ' · ' + shown.length + ' tin · nguồn 中国新闻网</div>' +
-      (shown.length ? shown.slice(0, 80).map(newsCard).join('') : '<div class="empty">Không có tin ở mức này 🙈</div>');
-    $('#lvseg').onclick = function (e) { var b = e.target.closest('[data-lv]'); if (!b) return; LS.set('nlv', +b.dataset.lv); routes.news(cat); };
+    var srt = LS.get('nsort', 'new');
+    var lvBar = '<div class="seg" id="lvseg">' + [['new', '🕒 Mới nhất'], ['easy', '🌱 Dễ đọc trước']].map(function (x) { return '<button data-s="' + x[0] + '" class="' + (srt === x[0] ? 'on' : '') + '">' + x[1] + '</button>'; }).join('') + '</div>';
+    var shown = items.slice(); if (srt === 'easy') shown.sort(function (a, b) { return (b.ez || 0) - (a.ez || 0); });
+    el.innerHTML = lvBar + '<a class="note" href="#/news/easy" style="display:block;text-decoration:none">📌 Báo thật thường ở mức <b>HSK 5–6</b>. Mới học thì đọc <b>⭐ Bài dễ</b> hoặc <b>📖 Truyện</b> (HSK 1–6, có dịch sẵn) trước nha →</a>' +
+      '<div class="muted small" style="margin:0 4px 10px;font-weight:700">Cập nhật ' + ago(j.updated) + ' · ' + shown.length + ' tin · nguồn 中国新闻网</div>' +
+      (shown.length ? shown.slice(0, 80).map(newsCard).join('') : '<div class="empty">Mục này chưa có tin mới, xem <a href="#/news/all">Mới nhất</a> nha 🙈</div>');
+    $('#lvseg').onclick = function (e) { var b = e.target.closest('[data-s]'); if (!b) return; LS.set('nsort', b.dataset.s); routes.news(cat); };
   });
 };
 routes.read = async function (id) {
   APP.innerHTML = top('', '#/news') + '<div class="empty">Đang mở bài… ⏳</div>';
-  var easy = window.EASY.find(function (e) { return e.id === id; });
+  var easy = window.EASY.find(function (e) { return e.id === id; }) || (window.STORY || []).find(function (e) { return e.id === id; });
   var art; var rt = RT;
   await loadVocab(); if (rt !== RT) return;
-  if (easy) art = { id: id, t: easy.t, sents: easy.s.map(function (x) { return x[0]; }), vis: easy.s.map(function (x) { return x[1]; }), tv: easy.tv, lv: easy.lv, easy: true };
+  if (easy) art = { id: id, t: easy.t, sents: easy.s.map(function (x) { return x[0]; }), vis: easy.s.map(function (x) { return x[1]; }), tv: easy.tv, lv: easy.lv, easy: true, g: easy.g, m: easy.m };
   else {
     var j = await loadNews(); var it = j && j.items.find(function (x) { return x.id === id; });
     if (!it) { APP.innerHTML = top('Không tìm thấy', '#/news') + '<div class="card">Bài này đã cũ và không còn trong danh sách. <a href="#/news">Quay lại</a></div>'; return; }
     var sents = it.b.match(/[^。！？!?]+[。！？!?”」』]*/g) || [it.b];
     sents = sents.map(function (s) { return s.trim(); }).filter(Boolean);
-    art = { id: id, t: it.t, sents: sents, vis: LS.get('tr.' + id, null), lv: it.lv, link: it.link, s: it.s, d: it.d, c: it.c };
+    art = { id: id, t: it.t, sents: sents, vis: LS.get('tr.' + id, null), lv: it.lv, ez: it.ez, link: it.link, s: it.s, d: it.d, c: it.c };
   }
   var S = LS.get('rd', { py: true, vi: true, zs: 21 });
   if (rt !== RT) return;
-  APP.innerHTML = top('<span class="muted" style="font-size:15px">' + (art.easy ? '⭐ Bài đọc HSK ' + art.lv : catOf(art.c)[1]) + '</span>', '#/news', '<button class="iconbtn" id="rdSet">Aa</button>') +
+  APP.innerHTML = top('<span class="muted" style="font-size:15px">' + (art.g ? '📖 ' + esc(art.g) + ' · HSK ' + art.lv : art.easy ? '⭐ Bài đọc HSK ' + art.lv : catOf(art.c)[1]) + '</span>', '#/news', '<button class="iconbtn" id="rdSet">Aa</button>') +
     '<div class="reader' + (S.py ? '' : ' nopy') + (S.vi ? '' : ' novi') + '" id="reader" style="--zs:' + S.zs + 'px">' +
     '<div class="zline title" style="--zs:' + (S.zs + 4) + 'px">' + wordsHTML(art.t) + '</div>' +
-    '<div class="meta">' + (art.lv ? '<span class="badge b' + art.lv + '">~HSK ' + (art.lv >= 6 ? '6+' : art.lv) + '</span>' : '') + (art.easy ? '<span>' + esc(art.tv) + '</span>' : '<span>' + esc(art.s) + ' · ' + ago(art.d) + '</span>') + '</div>' +
+    '<div class="meta">' + (art.easy ? '<span class="badge b' + art.lv + '">HSK ' + art.lv + '</span>' : art.ez ? easeBadge(art.ez) : '') + (art.easy ? '<span>' + esc(art.tv) + '</span>' : '<span>' + esc(art.s) + ' · ' + ago(art.d) + '</span>') + '</div>' +
     '<div class="note" style="margin-top:0">👆 Chạm vào từ bất kỳ để xem nghĩa, Hán Việt, phát âm và lưu vào sổ tay.</div>' +
     art.sents.map(function (s, i) { return '<div class="sent" data-i="' + i + '"><button class="say" data-sent="' + i + '">🔊</button><div class="zline">' + wordsHTML(s) + '</div><div class="vi">' + (art.vis && art.vis[i] ? esc(art.vis[i]) : '<span class="muted">…</span>') + '</div></div>'; }).join('') +
+    (art.m ? '<div class="note" style="margin-top:4px">💡 <b>Ý nghĩa:</b> ' + esc(art.m) + '</div>' : '') +
     (art.link ? '<div class="srcbox">Đoạn trích từ RSS của ' + esc(art.s) + '. <a href="' + esc(art.link) + '" target="_blank" rel="noopener">Đọc bài gốc đầy đủ ↗</a></div>' : '') +
     '<div class="tools"><button class="btn sky" id="rdPlay">▶ Nghe cả bài</button><button class="btn ghost" id="rdDone">✓ Đọc xong</button></div></div>';
   var rd = $('#reader');
@@ -378,7 +406,7 @@ routes.read = async function (id) {
       var el = i > 0 && $('.sent[data-i="' + (i - 1) + '"]'); if (el) { el.classList.add('playing'); el.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
     });
   };
-  $('#rdDone').onclick = function () { var r = LS.get('read', {}); if (!r[art.id]) { r[art.id] = Date.now(); LS.set('read', r); act('read'); } toast('Giỏi quá! +1 bài đã đọc 🎉'); setTimeout(function () { go(art.easy ? '#/news/easy' : '#/news'); }, 600); };
+  $('#rdDone').onclick = function () { var r = LS.get('read', {}); if (!r[art.id]) { r[art.id] = Date.now(); LS.set('read', r); act('read'); } toast('Giỏi quá! +1 bài đã đọc 🎉'); setTimeout(function () { go(art.g ? '#/news/story' : art.easy ? '#/news/easy' : '#/news'); }, 600); };
   $('#rdSet').onclick = function () {
     openSheet('<h3 style="margin:0 0 12px;font-size:19px;font-weight:900">Tùy chỉnh đọc</h3>' +
       '<div class="seg" id="sPy"><button data-v="1" class="' + (S.py ? 'on' : '') + '">Hiện pinyin</button><button data-v="0" class="' + (S.py ? '' : 'on') + '">Ẩn pinyin</button></div>' +
@@ -989,7 +1017,7 @@ routes.topic = function (id) {
   };
 };
 
-window.TS_DEBUG = { ex: function () { return EX; }, save: saveEx, draw: function () { drawRoom(); } };
+window.TS_DEBUG = { ex: function () { return EX; }, save: saveEx, draw: function () { drawRoom(); }, news: loadNews, seg: function (t) { return segment(t); }, vm: function () { return VMAP; } };
 render();
 // warm up vocab in background (news levels, word lookups)
 setTimeout(loadVocab, 300);
