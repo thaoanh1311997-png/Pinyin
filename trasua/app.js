@@ -45,8 +45,23 @@ function mascot(cls) {
 
 /* ---------------- pinyin ---------------- */
 var PY = window.pinyinPro;
-function pyAll(text) { try { return PY.pinyin(text, { type: 'all' }); } catch (e) { return [].map.call(text, function (c) { return { origin: c, pinyin: '', isZh: isCJK(c) }; }); } }
-function pyWord(w) { try { return PY.pinyin(w, { type: 'array' }).join(''); } catch (e) { return ''; } }
+/* pinyin fixes: common polyphones that pinyin-pro gets wrong in context */
+try { PY.customPinyin({ '长满': 'zhǎng mǎn', '长高': 'zhǎng gāo', '长出': 'zhǎng chū', '长得': 'zhǎng de', '长胖': 'zhǎng pàng', '调高': 'tiáo gāo', '调低': 'tiáo dī', '背不动': 'bēi bú dòng', '背走': 'bēi zǒu', '背着': 'bēi zhe', '背起': 'bēi qǐ', '种了': 'zhòng le', '种下': 'zhòng xià', '种树': 'zhòng shù', '种菜': 'zhòng cài', '还给': 'huán gěi', '还钱': 'huán qián', '还书': 'huán shū', '塞翁': 'sài wēng', '椰子': 'yē zi', '难处': 'nán chu', '一点儿': 'yì diǎn r', '一会儿': 'yí huì r', '一块儿': 'yí kuài r', '玩儿': 'wán r', '哪儿': 'nǎ r', '这儿': 'zhè r', '那儿': 'nà r', '有点儿': 'yǒu diǎn r', '一下儿': 'yí xià r', '好好儿': 'hǎo hāo r', '慢慢儿': 'màn mān r', '没事儿': 'méi shì r', '一边儿': 'yì biān r' }); } catch (e) {}
+var DE_NEXT = '到意出分奖病罪知失益体当以逞手宠势票主天', DE_PRE = '获取难心赢求所舍免自夺彼雅安'; // 得 stays dé
+var DEI_PRE = '我你他她它们就也都少须还'; // modal 得 = děi
+var DI_PRE = '了在等局海两多一散的满土大天当各本外内此场基草田园陆山盆工目该某产境遍原落空耕荒雪平高低绿圣宝福胜营阵驻腹属领湿沼盐坡谷洼旱农墓'; // noun + 地 → dì
+var DI_NEXT = '方区点图球铁下上面址带震位磁边毯板道里主形质狱块段域势标壳盘基契租价产铺砖窖心底层图';
+function fixPy(r) {
+  for (var i = 0; i < r.length; i++) {
+    var x = r[i], pv = r[i - 1], nx = r[i + 1];
+    if (!x.isZh || !pv || !pv.isZh) continue;
+    if (x.origin === '得' && x.pinyin === 'dé' && !(nx && nx.isZh && DE_NEXT.indexOf(nx.origin) >= 0) && DE_PRE.indexOf(pv.origin) < 0 && !(pv.origin === '不' && nx && nx.origin === '不')) x.pinyin = DEI_PRE.indexOf(pv.origin) >= 0 && nx && nx.isZh ? 'děi' : 'de';
+    else if (x.origin === '地' && x.pinyin === 'dì' && nx && nx.isZh && (DI_PRE.indexOf(pv.origin) < 0 || /适当|恰当|相当|充分/.test((r[i - 2] ? r[i - 2].origin : '') + pv.origin)) && DI_NEXT.indexOf(nx.origin) < 0 && (pv.origin === pv.origin && (r[i - 2] && r[i - 2].isZh))) x.pinyin = 'de';
+  }
+  return r;
+}
+function pyAll(text) { try { return fixPy(PY.pinyin(text, { type: 'all' })); } catch (e) { return [].map.call(text, function (c) { return { origin: c, pinyin: '', isZh: isCJK(c) }; }); } }
+function pyWord(w) { try { return fixPy(PY.pinyin(w, { type: 'all' })).map(function (x) { return x.pinyin; }).join(''); } catch (e) { return ''; } }
 function ruby(text) {
   return pyAll(text).map(function (x) { return x.isZh ? '<ruby>' + esc(x.origin) + '<rt>' + esc(x.pinyin) + '</rt></ruby>' : (x.origin === '\n' ? '<br>' : esc(x.origin)); }).join('');
 }
@@ -57,7 +72,7 @@ var VOC = null, VMAP = null, vocP = null;
 function loadVocab() {
   if (vocP) return vocP;
   vocP = fetch('data/vocab.json').then(function (r) { return r.json(); }).then(function (a) {
-    VOC = a.map(function (x) { return { w: x[0], p: x[1].replace(/ /g, ''), hv: x[2], m: x[3], o: x[4], t: x[5] }; });
+    VOC = a.map(function (x) { return { w: x[0], p: x[1].replace(/ /g, ''), hv: x[2], m: x[3], o: x[4], t: x[5], n: x[6] || 0 }; });
     VMAP = new Map(); VOC.forEach(function (v) { if (!VMAP.has(v.w)) VMAP.set(v.w, v); });
     return VOC;
   }).catch(function () { vocP = null; return null; });
@@ -125,16 +140,19 @@ function wordsHTML(text) { // interactive words with pinyin
   if (grp) html += '<span class="wg">' + grp + '</span>';
   return html;
 }
-function hskOf(w) { var v = VMAP && VMAP.get(w); return v ? (v.o || (v.t ? Math.min(v.t + 0, 7) : 0)) : 0; }
+function minL(c) { return c ? +String(c)[0] : 0; } // level codes: 3 = HSK3, 24 = listed in HSK2 and HSK4
+function hasL(c, l) { return !!c && String(c).indexOf(String(l)) >= 0; }
+function vLv(v) { return minL(v.o) || minL(v.n) || minL(v.t) || 7; }
+function hskOf(w) { var v = VMAP && VMAP.get(w); return v ? vLv(v) : 0; }
 function levelOfText(text) {
   if (!VMAP) return 0;
-  var ls = []; segment(text).forEach(function (w) { if (!isCJK(w[0]) || /^[\d一二三四五六七八九十百千万]+$/.test(w)) return; var v = VMAP.get(w); ls.push(v ? (v.o || v.t || 7) : (w.length === 1 ? 4 : 7)); });
+  var ls = []; segment(text).forEach(function (w) { if (!isCJK(w[0]) || /^[\d一二三四五六七八九十百千万]+$/.test(w)) return; var v = VMAP.get(w); ls.push(v ? vLv(v) : (w.length === 1 ? 4 : 7)); });
   if (!ls.length) return 0; ls.sort(function (a, b) { return a - b; });
   var p = ls[Math.floor(ls.length * 0.85)] || 1; return Math.max(1, Math.min(6, p));
 }
 function easeOfText(text) { // % words within HSK 1-4
   if (!VMAP) return 0; var n = 0, ok = 0;
-  segment(text).forEach(function (w) { if (!isCJK(w[0]) || /^[\d一二三四五六七八九十百千万]+$/.test(w)) return; n++; var v = VMAP.get(w); if (v && (v.o || v.t || 7) <= 4) ok++; });
+  segment(text).forEach(function (w) { if (!isCJK(w[0]) || /^[\d一二三四五六七八九十百千万]+$/.test(w)) return; n++; var v = VMAP.get(w); if (v && vLv(v) <= 4) ok++; });
   return n ? Math.round(ok * 100 / n) : 0;
 }
 function easeBadge(ez) {
@@ -214,7 +232,8 @@ async function showWord(w, el) {
     var ms = [];
     es.forEach(function (e) { if (/^(biến thể|dạng cổ)/i.test(e.m)) return; cleanMean(e.m).forEach(function (x) { if (ms.indexOf(x) < 0) ms.push(x); }); });
     if (!ms.length && v) ms = v.m.split('; ');
-    var lv = v ? (v.o ? '<span class="badge b' + v.o + '">HSK ' + v.o + '</span> ' : '') + (v.t ? '<span class="badge b' + Math.min(v.t, 7) + '">HSK 3.0 · ' + (v.t === 7 ? '7–9' : v.t) + '</span>' : '') : '';
+    var lbl = function (c) { return String(c).split('').map(function (d) { return d === '7' ? '7–9' : d; }).join(', '); };
+    var lv = v ? (v.n ? '<span class="badge b' + minL(v.n) + '">HSK 3.0 · ' + lbl(v.n) + '</span> ' : '') + (v.t ? '<span class="badge b' + minL(v.t) + '">Thi 2025 · ' + lbl(v.t) + '</span> ' : '') + (v.o ? '<span class="badge b' + minL(v.o) + '">HSK 2.0 · ' + lbl(v.o) + '</span>' : '') : '';
     var isS = saved().indexOf(w) >= 0;
     openSheet('<div class="wd-h"><div class="big">' + esc(w) + '</div><div class="grow"><div class="pyb">' + esc(py) + '</div><div class="wd-hv">' + (hv ? 'Hán Việt: ' + esc(hv.toUpperCase()) : '') + '</div><div style="margin-top:4px">' + lv + '</div></div><button class="iconbtn" data-say>🔊</button></div>' +
       (ms.length ? '<ol class="wd-m">' + ms.slice(0, 8).map(function (m) { return '<li>' + esc(m) + '</li>'; }).join('') + '</ol>' : '<p class="muted" id="wdLoad">' + (DICT ? 'Chưa có nghĩa trong từ điển. Thử bấm “Dịch Google”.' : 'Đang tải từ điển… ⏳') + '</p>') +
@@ -265,7 +284,7 @@ function render() {
   if (EX && name !== 'room') { /* leaving exam room by back button */ }
   stopSpeak(); closeSheet(); APP.onclick = null; APP.oninput = null;
   document.body.classList.toggle('room', name === 'room');
-  $$('#tabs a').forEach(function (a) { a.classList.toggle('on', a.dataset.t === (name === 'read' ? 'news' : name === 'result' || name === 'room' || name === 'level' ? 'exam' : name === 'cards' || name === 'quiz' ? 'vocab' : name === 'topic' ? 'talk' : name)); });
+  $$('#tabs a').forEach(function (a) { a.classList.toggle('on', a.dataset.t === (name === 'read' ? 'news' : name === 'result' || name === 'room' || name === 'level' ? 'exam' : name === 'cards' || name === 'quiz' ? 'vocab' : name === 'topic' || name === 'role' || name === 'play' ? 'talk' : name)); });
   RT++;
   var fn = routes[name] || routes.home;
   if (curRoute !== h) window.scrollTo(0, 0);
@@ -314,18 +333,22 @@ var CATS = [['easy', '⭐ Bài dễ', '#fff0c7', '⭐'], ['story', '📖 Truyệ
 var newsP = null;
 function loadNews() {
   if (newsP) return newsP;
-  newsP = Promise.all([fetch('data/news.json?t=' + Math.floor(Date.now() / 6e5)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }), loadVocab()]).then(function (a) {
-    var j = a[0];
+  newsP = Promise.all([fetch('data/news.json?t=' + Math.floor(Date.now() / 6e5)).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }), loadVocab(),
+    fetch('data/img/index.json?t=' + Math.floor(Date.now() / 6e5)).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; })]).then(function (a) {
+    var j = a[0]; THUMBS = new Set(a[2] || []);
     if (j && j.items) j.items.forEach(function (it) { it.lv = levelOfText(it.t + it.b); it.ez = easeOfText(it.t + it.b); });
     else newsP = null;
     return j;
   });
   return newsP;
 }
+var THUMBS = new Set();
+function thumbOf(it) { return THUMBS.has(it.id) ? 'data/img/' + it.id + '.jpg' : ''; }
 function catOf(c) { return CATS.find(function (x) { return x[0] === c; }) || CATS[2]; }
 function newsCard(it) {
   var c = catOf(it.c); var read = LS.get('read', {})[it.id];
-  return '<a class="news' + (read ? ' read' : '') + '" href="#/read/' + it.id + '"><div class="ico" style="background:' + c[2] + '">' + c[3] + '</div><div class="grow"><h3>' + esc(it.t) + '</h3><p>' + esc(it.b) + '</p><div class="meta">' + (it.ez ? easeBadge(it.ez) : '') + '<span>' + esc(it.s) + '</span><span>· ' + ago(it.d) + '</span>' + (read ? '<span>· ✓ đã đọc</span>' : '') + '</div></div></a>';
+  var th = thumbOf(it);
+  return '<a class="news' + (read ? ' read' : '') + '" href="#/read/' + it.id + '">' + (th ? '<div class="thumb" style="background:' + c[2] + '"><span>' + c[3] + '</span><img src="' + th + '" alt="" loading="lazy" onerror="this.remove()"></div>' : '<div class="ico" style="background:' + c[2] + '">' + c[3] + '</div>') + '<div class="grow"><h3>' + esc(it.t) + '</h3><p>' + esc(it.b) + '</p><div class="meta">' + (it.ez ? easeBadge(it.ez) : '') + '<span>' + esc(it.s) + '</span><span>· ' + ago(it.d) + '</span>' + (read ? '<span>· ✓ đã đọc</span>' : '') + '</div></div></a>';
 }
 function easyCard(e) {
   var read = LS.get('read', {})[e.id];
@@ -370,15 +393,16 @@ routes.read = async function (id) {
     if (!it) { APP.innerHTML = top('Không tìm thấy', '#/news') + '<div class="card">Bài này đã cũ và không còn trong danh sách. <a href="#/news">Quay lại</a></div>'; return; }
     var sents = it.b.match(/[^。！？!?]+[。！？!?”」』]*/g) || [it.b];
     sents = sents.map(function (s) { return s.trim(); }).filter(Boolean);
-    art = { id: id, t: it.t, sents: sents, vis: LS.get('tr.' + id, null), lv: it.lv, ez: it.ez, link: it.link, s: it.s, d: it.d, c: it.c };
+    art = { id: id, t: it.t, sents: sents, vis: LS.get('tr.' + id, null), lv: it.lv, ez: it.ez, img: thumbOf(it), link: it.link, s: it.s, d: it.d, c: it.c };
   }
   var S = LS.get('rd', { py: true, vi: true, zs: 21 });
   if (rt !== RT) return;
   APP.innerHTML = top('<span class="muted" style="font-size:15px">' + (art.g ? '📖 ' + esc(art.g) + ' · HSK ' + art.lv : art.easy ? '⭐ Bài đọc HSK ' + art.lv : catOf(art.c)[1]) + '</span>', '#/news', '<button class="iconbtn" id="rdSet">Aa</button>') +
     '<div class="reader' + (S.py ? '' : ' nopy') + (S.vi ? '' : ' novi') + '" id="reader" style="--zs:' + S.zs + 'px">' +
+    (art.img ? '<figure class="hero-img"><img src="' + art.img + '" alt="" onerror="this.parentNode.remove()"><figcaption>Ảnh: ' + esc(art.s) + '</figcaption></figure>' : '') +
     '<div class="zline title" style="--zs:' + (S.zs + 4) + 'px">' + wordsHTML(art.t) + '</div>' +
     '<div class="meta">' + (art.easy ? '<span class="badge b' + art.lv + '">HSK ' + art.lv + '</span>' : art.ez ? easeBadge(art.ez) : '') + (art.easy ? '<span>' + esc(art.tv) + '</span>' : '<span>' + esc(art.s) + ' · ' + ago(art.d) + '</span>') + '</div>' +
-    '<div class="note" style="margin-top:0">👆 Chạm vào từ bất kỳ để xem nghĩa, Hán Việt, phát âm và lưu vào sổ tay.</div>' +
+    '<div class="note" style="margin-top:0">👆 Chạm vào từ bất kỳ để xem nghĩa, Hán Việt, phát âm và lưu vào sổ tay.' + (art.easy ? '' : '<br>🤖 Bản dịch tin tức là <b>dịch máy</b> nên có thể chưa sát, chỉ để tham khảo — nghĩa từng từ khi chạm vào là từ điển chuẩn.') + '</div>' +
     art.sents.map(function (s, i) { return '<div class="sent" data-i="' + i + '"><button class="say" data-sent="' + i + '">🔊</button><div class="zline">' + wordsHTML(s) + '</div><div class="vi">' + (art.vis && art.vis[i] ? esc(art.vis[i]) : '<span class="muted">…</span>') + '</div></div>'; }).join('') +
     (art.m ? '<div class="note" style="margin-top:4px">💡 <b>Ý nghĩa:</b> ' + esc(art.m) + '</div>' : '') +
     (art.link ? '<div class="srcbox">Đoạn trích từ RSS của ' + esc(art.s) + '. <a href="' + esc(art.link) + '" target="_blank" rel="noopener">Đọc bài gốc đầy đủ ↗</a></div>' : '') +
@@ -860,17 +884,24 @@ function confetti() {
 }
 
 /* =============================== VOCAB =============================== */
-var SYS = [['2.0', 'HSK 2.0'], ['3.0', 'HSK 3.0']];
+var SYS = [['3.0', 'HSK 3.0'], ['2025', 'Thi 2025'], ['2.0', 'HSK 2.0']];
+var SYSF = { '3.0': 'n', '2025': 't', '2.0': 'o' };
+var SYSCNT = {"3.0": {"1": 500, "2": 772, "3": 973, "4": 1000, "5": 1071, "6": 1140, "7": 5636}, "2025": {"1": 300, "2": 204, "3": 507, "4": 1019, "5": 1638, "6": 1815, "7": 5622}, "2.0": {}};
+var SYSNOTE = {
+  '3.0': '📘 <b>HSK 3.0 – chuẩn 2021</b> (GF0025-2021, Bộ Giáo dục TQ): HSK 1 có 500 từ, HSK 2 có 772, HSK 3 có 973, HSK 4 có 1.000, HSK 5 có 1.071, HSK 6 có 1.140, HSK 7–9 có 5.636 (tổng 11.092). Mỗi cấp là <b>từ mới</b> của cấp đó.',
+  '2025': '📗 <b>Đề cương thi HSK mới bản 2025</b> — dùng cho kỳ thi HSK 3.0 từ 13/12/2026. Mỗi cấp là từ mới của cấp đó (cộng dồn ≈ 300 · 500 · 1.000 · 2.000 · 3.600 · 5.400 · 11.000 từ).',
+  '2.0': '📙 <b>HSK 2.0</b> (danh sách Hanban 2012, dùng cho kỳ thi HSK 1–6 cũ đến hết 2026): mỗi cấp là từ mới của cấp đó, tổng khoảng 5.000 từ.'
+};
 function vocabList(sys, lv) {
-  if (lv === 'nb') { var nb = saved(); return nb.map(function (w) { return VMAP.get(w) || { w: w, p: pyWord(w), hv: '', m: '', o: 0, t: 0 }; }); }
-  lv = +lv; return VOC.filter(function (v) { return sys === '2.0' ? v.o === lv : v.t === lv; });
+  if (lv === 'nb') { var nb = saved(); return nb.map(function (w) { return VMAP.get(w) || { w: w, p: pyWord(w), hv: '', m: '', o: 0, t: 0, n: 0 }; }); }
+  var f = SYSF[sys] || 'n'; return VOC.filter(function (v) { return hasL(v[f], lv); });
 }
 function srsInfo(w) { return LS.get('srs', {})[w]; }
 routes.vocab = async function (a, b) {
   APP.innerHTML = top('🃏 <span>Từ vựng</span>') + '<div class="empty">Đang tải bộ từ… ⏳</div>';
   var rt = RT; await loadVocab(); if (rt !== RT) return;
   if (!VOC) { APP.innerHTML = top('🃏 <span>Từ vựng</span>') + '<div class="card">Không tải được bộ từ. Kiểm tra mạng rồi thử lại nhé.</div>'; return; }
-  var sys = a === 'nb' ? LS.get('vsys', '2.0') : (a || LS.get('vsys', '2.0')); var lv = a === 'nb' ? 'nb' : (b || LS.get('vlv', '1'));
+  var sys = a === 'nb' ? LS.get('vsys', '3.0') : (a || LS.get('vsys', '3.0')); if (!SYSF[sys]) sys = '3.0'; var lv = a === 'nb' ? 'nb' : (b || LS.get('vlv', '1'));
   if (lv !== 'nb' && sys === '2.0' && +lv > 6) lv = '6';
   LS.set('vsys', sys); if (lv !== 'nb') LS.set('vlv', lv);
   var levels = sys === '2.0' ? [1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5, 6, 7];
@@ -882,7 +913,8 @@ routes.vocab = async function (a, b) {
   APP.innerHTML = top('🃏 <span>Từ vựng</span>') +
     '<div class="seg" id="sysseg">' + SYS.map(function (s) { return '<button data-s="' + s[0] + '" class="' + (sys === s[0] && lv !== 'nb' ? 'on' : '') + '">' + s[1] + '</button>'; }).join('') + '<button data-s="nb" class="' + (lv === 'nb' ? 'on' : '') + '">⭐ Sổ tay</button></div>' +
     (lv !== 'nb' ? '<div class="chips">' + levels.map(function (l) { return '<a class="chip' + (String(l) === String(lv) ? ' on' : '') + '" style="text-decoration:none;color:inherit" href="#/vocab/' + sys + '/' + l + '">HSK ' + (l === 7 ? '7–9' : l) + '</a>'; }).join('') + '</div>' : '') +
-    '<div class="card row" style="gap:6px;justify-content:space-around;text-align:center"><div><b style="font-size:22px">' + list.length + '</b><div class="small muted" style="font-weight:800">từ</div></div><div><b style="font-size:22px;color:var(--mint)">' + learned + '</b><div class="small muted" style="font-weight:800">đã thuộc</div></div><div><b style="font-size:22px;color:var(--pink)">' + due + '</b><div class="small muted" style="font-weight:800">cần ôn</div></div><div><b style="font-size:22px;color:var(--sky)">' + fresh + '</b><div class="small muted" style="font-weight:800">từ mới</div></div></div>' +
+    (lv !== 'nb' ? '<div class="note" style="margin-top:0">' + SYSNOTE[sys] + '</div>' : '') +
+    '<div class="card row" style="gap:6px;justify-content:space-around;text-align:center"><div><b style="font-size:22px">' + (lv !== 'nb' && SYSCNT[sys][lv] ? SYSCNT[sys][lv] : list.length) + '</b><div class="small muted" style="font-weight:800">từ' + (lv !== 'nb' && SYSCNT[sys][lv] > list.length ? '<br><span style="font-weight:700;font-size:10.5px">(' + (SYSCNT[sys][lv] - list.length) + ' từ đa nghĩa tính 2 lần)</span>' : '') + '</div></div><div><b style="font-size:22px;color:var(--mint)">' + learned + '</b><div class="small muted" style="font-weight:800">đã thuộc</div></div><div><b style="font-size:22px;color:var(--pink)">' + due + '</b><div class="small muted" style="font-weight:800">cần ôn</div></div><div><b style="font-size:22px;color:var(--sky)">' + fresh + '</b><div class="small muted" style="font-weight:800">từ mới</div></div></div>' +
     (list.length >= 4 ? '<div class="modes"><button class="mode" style="background:linear-gradient(150deg,#fff,#ffe1ea)" data-m="cards"><span class="em">🃏</span>Học thẻ<small>' + (due ? due + ' ôn + ' : '') + 'từ mới</small></button><button class="mode" style="background:linear-gradient(150deg,#fff,#dcecff)" data-m="quiz"><span class="em">🎯</span>Trắc nghiệm<small>10 câu</small></button><button class="mode" style="background:linear-gradient(150deg,#fff,#d8f6ec)" data-m="listen"><span class="em">🎧</span>Nghe chọn từ<small>10 câu</small></button></div>' : '') +
     '<input class="search" id="vsearch" placeholder="Tìm chữ Hán, pinyin hoặc nghĩa…" autocomplete="off">' +
     '<div class="card" id="vlist" style="padding:6px 12px"></div>';
@@ -946,7 +978,7 @@ routes.cards = async function (kind, sys, lv, topicId) {
 routes.quiz = async function (kind, sys, lv) {
   var rt = RT; await loadVocab(); if (rt !== RT) return;
   var list = vocabList(sys, lv); var back = '#/vocab/' + (lv === 'nb' ? 'nb' : sys + '/' + lv);
-  var pool = list.length >= 4 ? list : VOC.filter(function (v) { return v.o === 1 || v.o === 2; });
+  var pool = list.length >= 4 ? list : VOC.filter(function (v) { return minL(v.n) === 1 || minL(v.n) === 2; });
   var qs = shuffle(list).slice(0, 10); var i = 0, right = 0;
   var draw = function () {
     if (i >= qs.length) {
@@ -979,7 +1011,8 @@ var _vocab = routes.vocab;
 /* =============================== TALK =============================== */
 routes.talk = function () {
   APP.innerHTML = top('💬 <span>Giao tiếp</span>') +
-    '<div class="note" style="margin-top:0">🗣️ Câu nói đời thường theo chủ đề — bấm 🔊 nghe, 🐢 nghe chậm, 🎤 nói thử để kiểm tra phát âm.</div>' +
+    '<a class="card row rp-banner" href="#/role"><span style="font-size:38px">🎭</span><div class="grow"><b style="font-size:17px">Đóng vai</b><div class="small muted" style="font-weight:700">Máy hỏi, bạn trả lời bằng giọng nói hoặc gõ — máy chấm và sửa câu cho bạn</div></div><span style="font-size:22px">›</span></a>' +
+    '<div class="note">🗣️ Câu nói đời thường theo chủ đề — bấm 🔊 nghe, 🐢 nghe chậm, 🎤 nói thử để kiểm tra phát âm.</div>' +
     '<div class="topics">' + window.PHRASES.map(function (t) { return '<button class="topic" style="background:linear-gradient(150deg,#fff,' + t.c + ')" data-t="' + t.id + '"><span class="em">' + t.e + '</span><b>' + esc(t.vi) + '</b><small>' + esc(t.zh) + ' · ' + t.p.length + ' câu</small></button>'; }).join('') + '</div>';
   $$('.topic').forEach(function (b) { b.onclick = function () { go('#/topic/' + b.dataset.t); }; });
 };
@@ -1014,6 +1047,108 @@ routes.topic = function (id) {
       r.onend = function () { b.classList.remove('on'); b.textContent = '🎤 Nói thử'; };
       r.start();
     } catch (err) { box.textContent = 'Thiết bị này chưa hỗ trợ nhận giọng nói.'; }
+  };
+};
+
+/* =============================== ĐÓNG VAI =============================== */
+function groqKey() { try { var k = localStorage.getItem('bb.groq') || ''; return k.replace(/^"|"$/g, ''); } catch (e) { return ''; } }
+(function () { try { var k = new URLSearchParams(location.search).get('gq'); if (k && k.length > 20) { localStorage.setItem('bb.groq', k); history.replaceState(null, '', location.pathname + location.hash); } } catch (e) {} })();
+var GQ_MODELS = ['llama-3.3-70b-versatile', 'openai/gpt-oss-120b', 'llama-3.1-8b-instant'];
+function groqJSON(messages) {
+  var key = groqKey(), mi = 0, tries = 0;
+  var go1 = function () {
+    return fetch('https://api.groq.com/openai/v1/chat/completions', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + key },
+      body: JSON.stringify({ model: GQ_MODELS[mi], messages: messages, temperature: 0.2, max_tokens: 900, response_format: { type: 'json_object' } }) })
+      .then(function (r) {
+        if (r.status === 429 || r.status >= 500) { tries++; if (tries > 3) throw new Error('AI đang bận, thử lại sau ít phút nhé'); return new Promise(function (ok) { setTimeout(ok, 3000 * tries); }).then(go1); }
+        if (r.status === 401) { try { localStorage.removeItem('bb.groq'); } catch (e) {} throw new Error('KEY'); }
+        if (r.status === 400 || r.status === 404) { if (mi < GQ_MODELS.length - 1) { mi++; return go1(); } throw new Error('AI báo lỗi ' + r.status); }
+        if (!r.ok) throw new Error('AI lỗi ' + r.status);
+        return r.json().then(function (j) { var c = j.choices[0].message.content; try { return JSON.parse(c); } catch (e) { var m = c.match(/\{[\s\S]*\}/); if (m) return JSON.parse(m[0]); throw new Error('AI trả về sai định dạng'); } });
+      });
+  };
+  return go1();
+}
+function simil(a, b) { // character overlap ratio (order-insensitive), for offline checking against model answers
+  a = Array.from(normS(a)); b = Array.from(normS(b)); if (!a.length || !b.length) return 0;
+  var bb = b.slice(); var hit = a.filter(function (c) { var k = bb.indexOf(c); if (k >= 0) { bb.splice(k, 1); return true; } return false; }).length;
+  return 2 * hit / (a.length + b.length);
+}
+routes.role = function () {
+  APP.innerHTML = top('🎭 <span>Đóng vai</span>', '#/talk') +
+    '<div class="note" style="margin-top:0">Chọn một tình huống. Máy sẽ hỏi (đọc to + chữ), bạn trả lời bằng 🎤 giọng nói hoặc ⌨️ gõ chữ. Có thể bấm câu mẫu để dùng, hoặc tự nói theo ý mình — máy sẽ chấm, sửa và gợi ý cách nói tự nhiên hơn.</div>' +
+    '<div class="topics">' + window.ROLEPLAY.map(function (r) { var done = LS.get('rp', {})[r.id]; return '<button class="topic" style="background:linear-gradient(150deg,#fff,' + r.c + ')" data-r="' + r.id + '"><span class="em">' + r.e + '</span><b>' + esc(r.t) + '</b><small>Máy: ' + esc(r.who) + ' · ~HSK ' + r.lv + (done ? ' · ✓' : '') + '</small></button>'; }).join('') + '</div>';
+  $$('.topic').forEach(function (b) { b.onclick = function () { go('#/play/' + b.dataset.r); }; });
+};
+routes.play = function (id, step) {
+  var R0 = window.ROLEPLAY.find(function (x) { return x.id === id; }); if (!R0) { go('#/role'); return; }
+  var i = Math.min(+step || 0, R0.turns.length); var rt = RT;
+  var showPy = LS.get('tpy', true);
+  if (i >= R0.turns.length) {
+    var d = LS.get('rp', {}); d[id] = Date.now(); LS.set('rp', d); act('read');
+    APP.innerHTML = top(R0.e + ' <span>' + esc(R0.t) + '</span>', '#/role') + '<div class="card" style="text-align:center;padding:26px 16px"><div style="font-size:54px">🎉</div><h2 style="margin:6px 0">Xong vai rồi, giỏi quá!</h2><p class="muted" style="font-weight:700">Làm lại để luyện câu tự nhiên hơn, hoặc thử tình huống khác nhé.</p><div class="row" style="justify-content:center;gap:8px;margin-top:10px"><a class="btn sm pink" href="#/play/' + id + '/0">↻ Làm lại</a><a class="btn sm sky" href="#/role">Tình huống khác</a></div></div>';
+    return;
+  }
+  var T = R0.turns[i];
+  APP.innerHTML = top(R0.e + ' <span>' + esc(R0.t) + '</span>', '#/role', '<button class="iconbtn" id="tpy" style="font-size:13px;font-weight:900">' + (showPy ? 'pīn' : 'pin') + '</button>') +
+    '<div class="rp-prog"><div style="width:' + Math.round(i * 100 / R0.turns.length) + '%"></div></div><div class="small muted" style="font-weight:800;margin:4px 2px 10px">Lượt ' + (i + 1) + '/' + R0.turns.length + ' · Máy: ' + esc(R0.who) + ' · Bạn: ' + esc(R0.me) + '</div>' +
+    '<div id="rpw" class="' + (showPy ? '' : 'nopy') + '">' +
+    '<div class="bubble bot"><div class="who">🤖 ' + esc(R0.who) + '</div><div class="zl">' + ruby(T.q[0]) + '</div><div class="v">' + esc(T.q[1]) + '</div><div class="acts"><button data-say="' + esc(T.q[0]) + '">🔊 Nghe</button><button data-say="' + esc(T.q[0]) + '" data-slow="1">🐢 Chậm</button></div></div>' +
+    '<div class="sec-t" style="margin-top:14px">💡 Câu mẫu <small class="muted">(chạm để dùng)</small></div>' +
+    T.a.map(function (a, k) { return '<button class="tpl" data-k="' + k + '"><div class="zl">' + ruby(a[0]) + '</div><div class="v">' + esc(a[1]) + '</div></button>'; }).join('') +
+    '<div class="sec-t" style="margin-top:14px">✍️ Câu trả lời của bạn</div>' +
+    '<div class="rp-in"><textarea id="rpTxt" rows="2" placeholder="Nói 🎤 hoặc gõ chữ Hán… (tự nói theo ý mình cũng được)"></textarea>' +
+    '<div class="row" style="gap:8px;margin-top:8px">' + (REC ? '<button class="btn sm pink" id="rpMic">🎤 Nói</button>' : '') + '<button class="btn sm sky grow" id="rpChk">✓ Kiểm tra</button></div></div>' +
+    '<div id="rpFb"></div>' +
+    '<div class="row" style="gap:8px;margin:14px 0 6px"><button class="btn ghost sm" id="rpSkip">Bỏ qua ›</button><span class="grow"></span><button class="btn sm" id="rpNext" style="display:none">Câu tiếp ›</button></div></div>';
+  setTimeout(function () { if (rt === RT) say(T.q[0]); }, 350);
+  $('#tpy').onclick = function () { LS.set('tpy', !showPy); routes.play(id, i); };
+  var txt = $('#rpTxt'), fb = $('#rpFb');
+  $$('.tpl').forEach(function (b) { b.onclick = function () { txt.value = T.a[+b.dataset.k][0]; $$('.tpl').forEach(function (x) { x.classList.toggle('on', x === b); }); say(txt.value); }; });
+  var next = function () { stopSpeak(); go('#/play/' + id + '/' + (i + 1)); };
+  $('#rpNext').onclick = next; $('#rpSkip').onclick = next;
+  if ($('#rpMic')) $('#rpMic').onclick = function () {
+    var b = this; stopSpeak();
+    try {
+      var r = new REC(); r.lang = 'zh-CN'; r.interimResults = false; r.maxAlternatives = 1;
+      b.textContent = '🎙️ Đang nghe…'; b.classList.add('on');
+      r.onresult = function (ev) { txt.value = ev.results[0][0].transcript; };
+      r.onerror = function (ev) { toast(ev.error === 'not-allowed' ? 'Bạn cần cho phép dùng micro nhé 🎤' : 'Chưa nghe rõ, thử lại nhé!'); };
+      r.onend = function () { b.textContent = '🎤 Nói'; b.classList.remove('on'); if (txt.value.trim()) $('#rpChk').click(); };
+      r.start();
+    } catch (e) { toast('Thiết bị này chưa hỗ trợ nhận giọng nói, bạn gõ chữ nhé.'); }
+  };
+  var showFb = function (h) { fb.innerHTML = h; $('#rpNext').style.display = ''; fb.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); };
+  var line = function (zh, vi, cls) { return '<div class="fbline ' + (cls || '') + '"><div class="zl">' + ruby(zh) + '</div>' + (vi ? '<div class="v">' + esc(vi) + '</div>' : '') + '<div class="acts"><button data-say="' + esc(zh) + '">🔊 Nghe</button><button data-say="' + esc(zh) + '" data-slow="1">🐢 Chậm</button></div></div>'; };
+  $('#rpChk').onclick = function () {
+    var ans = txt.value.trim(); if (!ans) { toast('Bạn nói hoặc gõ câu trả lời trước nhé'); return; }
+    if (!/[\u4e00-\u9fff]/.test(ans)) { showFb('<div class="fb bad">✋ Bạn trả lời bằng chữ Hán nhé (bấm 🎤 để nói tiếng Trung, hoặc chạm một câu mẫu).</div>'); return; }
+    var best = T.a.map(function (a) { return [a, simil(ans, a[0])]; }).sort(function (x, y) { return y[1] - x[1]; })[0];
+    if (best[1] >= 0.92) { showFb('<div class="fb good">🎉 <b>Chuẩn rồi!</b> Câu của bạn đúng như câu mẫu.</div>' + line(best[0][0], best[0][1], 'ok')); return; }
+    if (!groqKey()) {
+      showFb('<div class="fb mid">' + (best[1] >= 0.6 ? '🙂 <b>Gần giống câu mẫu.</b> So sánh với câu mẫu bên dưới nhé.' : '🤔 <b>Câu này khác câu mẫu.</b> Để máy sửa câu tự nói, cần bật “AI sửa câu” (miễn phí) một lần trên máy này.') + '</div>' +
+        line(best[0][0], best[0][1], 'ok') +
+        '<details class="keybox"><summary>🔑 Bật AI sửa câu tự nói</summary><div class="small" style="margin:8px 0">Dán key Groq (miễn phí) — key chỉ lưu trên máy này, dùng chung với các trang ôn thi khác.</div><input id="rpKey" class="search" placeholder="gsk_…" autocomplete="off"><button class="btn sm" id="rpKeySave" style="margin-top:6px">Lưu key</button></details>');
+      $('#rpKeySave').onclick = function () { var k = $('#rpKey').value.trim(); if (k.length < 20) { toast('Key chưa đúng'); return; } try { localStorage.setItem('bb.groq', k); } catch (e) {} toast('Đã lưu key ✓'); $('#rpChk').click(); };
+      return;
+    }
+    fb.innerHTML = '<div class="fb mid">⏳ Máy đang chấm câu của bạn…</div>';
+    groqJSON([
+      { role: 'system', content: 'Bạn là giáo viên tiếng Trung giỏi, dạy người Việt Nam (trình độ khoảng HSK ' + R0.lv + '–4). Chấm câu trả lời trong bài đóng vai thật chính xác, giải thích ngắn gọn bằng tiếng Việt dễ hiểu. Chỉ dùng chữ Hán giản thể. Không bịa lỗi: nếu câu đã đúng và tự nhiên thì nói là đúng. Luôn trả lời bằng JSON hợp lệ.' },
+      { role: 'user', content: 'Tình huống: ' + R0.t + '. Người hỏi (' + R0.who + ') nói: 「' + T.q[0] + '」 (' + T.q[1] + ').\nHọc viên (' + R0.me + ') trả lời: 「' + ans + '」\n(Lưu ý: câu trả lời có thể được nhận dạng từ giọng nói nên có thể sai chữ đồng âm; nếu rõ ràng là lỗi nhận dạng thì sửa lại và nói rõ.)\n\nTrả về JSON: {"verdict":"good|ok|fix" (good = đúng và tự nhiên; ok = hiểu được nhưng nên sửa nhẹ; fix = sai ngữ pháp/từ hoặc không đúng ý câu hỏi), "fixed":"câu của học viên sau khi sửa lỗi, giữ ý của họ (nếu đúng thì chép nguyên)", "fixed_vi":"nghĩa tiếng Việt của câu fixed", "natural":"một cách nói tự nhiên của người bản xứ trong tình huống này (ngắn gọn, đúng trình độ)", "natural_vi":"nghĩa tiếng Việt", "notes":["từng điểm cần sửa hoặc lời khen, tiếng Việt, mỗi ý 1 câu ngắn, tối đa 3 ý"]}' }
+    ]).then(function (j) {
+      if (rt !== RT) return;
+      var v = j.verdict === 'good' ? ['good', '🎉 <b>Chuẩn rồi!</b>'] : j.verdict === 'ok' ? ['mid', '🙂 <b>Được, sửa nhẹ cho tự nhiên hơn:</b>'] : ['bad', '✏️ <b>Cần sửa một chút:</b>'];
+      var notes = (j.notes || []).filter(Boolean).slice(0, 3).map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('');
+      showFb('<div class="fb ' + v[0] + '">' + v[1] + (notes ? '<ul>' + notes + '</ul>' : '') + '</div>' +
+        (j.fixed && normS(j.fixed) !== normS(ans) ? '<div class="sec-t">✅ Câu của bạn sau khi sửa</div>' + line(j.fixed, j.fixed_vi, 'ok') : '') +
+        (j.natural && normS(j.natural) !== normS(j.fixed || ans) ? '<div class="sec-t">🌟 Người bản xứ hay nói</div>' + line(j.natural, j.natural_vi, 'nat') : '') +
+        '<div class="small muted" style="margin:6px 2px;font-weight:700">🤖 Nhận xét do AI tạo — tham khảo, có thể chưa hoàn hảo.</div>');
+    }).catch(function (e) {
+      if (rt !== RT) return;
+      if (e.message === 'KEY') { showFb('<div class="fb bad">🔑 Key AI không đúng hoặc đã hết hạn. Bấm Kiểm tra lại để nhập key mới.</div>'); return; }
+      showFb('<div class="fb mid">😢 ' + esc(e.message || 'Mạng yếu') + '. So với câu mẫu gần nhất nhé:</div>' + line(best[0][0], best[0][1], 'ok'));
+    });
   };
 };
 

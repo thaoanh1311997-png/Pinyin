@@ -128,7 +128,7 @@ window.STORY = [
     ['森林里的动物看见了，都吓得赶快逃走了。', 'Các con vật trong rừng nhìn thấy, đều sợ hãi vội vàng bỏ chạy.'],
     ['老虎以为大家真的怕狐狸，却不知道它们怕的其实是自己。', 'Hổ tưởng mọi người sợ cáo thật, mà không biết thứ chúng sợ thật ra là chính mình.'],
   ] },
-  { id: 's16', lv: 4, e: '🌱', g: 'Thành ngữ', t: '拔苗助长', tv: 'Nhổ mạ giúp lúa lớn', m: 'Nóng vội, làm trái quy luật thì hỏng việc — học hành, nuôi con cũng vậy.', s: [
+  { id: 's16', lv: 4, e: '🌱', g: 'Thành ngữ', t: '拔苗助长', tv: 'Nhổ mạ cho mau lớn', m: 'Nóng vội, làm trái quy luật thì hỏng việc — học hành, nuôi con cũng vậy.', s: [
     ['古时候，有个农民总是嫌他的禾苗长得太慢。', 'Thời xưa, có một người nông dân luôn chê mạ của mình lớn chậm quá.'],
     ['他每天都到地里去看，可是禾苗好像一点儿也没有长高。', 'Ngày nào ông cũng ra đồng xem, nhưng mạ dường như chẳng cao lên chút nào.'],
     ['有一天，他想出了一个办法：把每棵禾苗都往上拔高一点儿。', 'Một hôm, ông nghĩ ra một cách: nhổ từng cây mạ lên cao một chút.'],
@@ -145,7 +145,7 @@ window.STORY = [
     ['后来长出了绿皮红心的大瓜，又甜又解渴，这就是西瓜。', 'Về sau mọc lên những quả to vỏ xanh ruột đỏ, vừa ngọt vừa giải khát, đó chính là dưa hấu.'],
     ['他把西瓜放进海里，让过往的船把西瓜带回陆地，国王知道后就把他接了回来。', 'Chàng thả dưa xuống biển để thuyền qua lại mang vào đất liền, nhà vua biết chuyện liền đón chàng trở về.'],
   ] },
-  { id: 's18', lv: 5, e: '⚔️', g: 'Thành ngữ', t: '刻舟求剑', tv: 'Khắc thuyền tìm kiếm', m: 'Cứng nhắc, không biết sự việc đã thay đổi thì làm gì cũng sai.', s: [
+  { id: 's18', lv: 5, e: '⚔️', g: 'Thành ngữ', t: '刻舟求剑', tv: 'Khắc thuyền tìm gươm', m: 'Cứng nhắc, không biết sự việc đã thay đổi thì làm gì cũng sai.', s: [
     ['战国时期，有个楚国人坐船过江。', 'Thời Chiến Quốc, có một người nước Sở ngồi thuyền qua sông.'],
     ['船到江中间的时候，他一不小心，把随身带的宝剑掉进了水里。', 'Lúc thuyền ra giữa sông, ông sơ ý làm rơi thanh bảo kiếm mang theo người xuống nước.'],
     ['别人都劝他赶紧下水去找，他却不慌不忙地拿出一把小刀。', 'Mọi người khuyên ông mau xuống nước tìm, nhưng ông lại thong thả lấy ra một con dao nhỏ.'],

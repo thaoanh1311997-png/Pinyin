@@ -104,6 +104,27 @@ body.room nav.tabs{display:none}
 .news p{margin:0;font-family:var(--zh);font-size:14px;color:var(--ink2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .news .meta{display:flex;gap:6px;align-items:center;margin-top:6px;font-size:12px;color:var(--ink2);font-weight:700;flex-wrap:wrap}
 .news.read{opacity:.62}
+.rp-banner{text-decoration:none;color:inherit;background:linear-gradient(135deg,#fff,#ffe1ea 60%,#ebe5ff);gap:12px;margin-bottom:6px}
+.rp-prog{height:8px;border-radius:99px;background:var(--bg2);overflow:hidden}.rp-prog div{height:100%;background:linear-gradient(90deg,var(--pink),var(--sun));border-radius:99px}
+.bubble{background:var(--card);border-radius:20px 20px 20px 6px;box-shadow:var(--sh);padding:12px 14px}
+.bubble .who{font-size:12.5px;font-weight:900;color:var(--ink2);margin-bottom:4px}
+.bubble .zl,.tpl .zl,.fbline .zl{font-family:var(--zh);font-size:20px;line-height:1.9}
+.bubble .v,.tpl .v,.fbline .v{font-size:14px;color:var(--ink2);font-weight:700;margin-top:2px}
+.bubble .acts,.fbline .acts{display:flex;gap:6px;margin-top:8px}.bubble .acts button,.fbline .acts button{background:var(--bg2);border-radius:12px;padding:6px 10px;font-weight:800;font-size:13px}
+#rpw.nopy rt{visibility:hidden}
+.tpl{display:block;width:100%;text-align:left;background:var(--card);border:2px dashed var(--line);border-radius:16px;padding:8px 12px;margin-bottom:8px}
+.tpl .zl{font-size:18px}.tpl.on{border-style:solid;border-color:var(--sky);background:#f2f8ff}
+.rp-in textarea{width:100%;box-sizing:border-box;border:2px solid var(--line);border-radius:16px;padding:10px 12px;font-family:var(--zh);font-size:18px;background:var(--card);color:var(--ink);resize:vertical}
+.fb{border-radius:16px;padding:10px 14px;font-weight:700;margin:12px 0 8px;font-size:14.5px}.fb ul{margin:6px 0 0;padding-left:20px;font-weight:600}
+.fb.good{background:#e3f9ee;color:#0c7a54}.fb.mid{background:#fff4d6;color:#8a5a00}.fb.bad{background:#ffe8ee;color:#b8325c}
+.fbline{background:var(--card);border-radius:16px;box-shadow:var(--sh);padding:10px 14px;margin-bottom:8px;border-left:5px solid var(--mint)}.fbline.nat{border-left-color:var(--sun)}
+.keybox{background:var(--card);border-radius:16px;padding:10px 14px;box-shadow:var(--sh);font-weight:700}.keybox summary{cursor:pointer}
+.news .thumb{position:relative;width:104px;height:78px;border-radius:14px;overflow:hidden;flex:none;display:grid;place-items:center;font-size:26px}
+.news .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-img{margin:0 0 12px;border-radius:18px;overflow:hidden;background:var(--bg2);box-shadow:var(--sh)}
+.hero-img img{display:block;width:100%;max-height:360px;object-fit:cover}
+.hero-img figcaption{font-size:11.5px;color:var(--ink2);padding:5px 10px;font-weight:700}
+@media (max-width:380px){.news .thumb{width:88px;height:66px}}
 .reader{padding-bottom:20px}
 .reader .title{font-size:24px;line-height:1.9;margin:4px 0 6px}
 .reader .meta{font-size:13px;color:var(--ink2);font-weight:700;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
@@ -360,6 +381,7 @@ input.chr{width:64px;height:56px;border-radius:15px;border:2px solid var(--line)
 <script src="data/phrases.js"></script>
 <script src="data/easy.js"></script>
 <script src="data/stories.js"></script>
+<script src="data/roleplay.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
