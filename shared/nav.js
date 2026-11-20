@@ -8,6 +8,7 @@
     { id: 'video', path: 'video/', name: 'Học qua video', short: 'Video', emo: '🎬', c: '#12A66A', c2: '#5CD6A0', d: 'Xem video, nói theo, nghe chép' },
     { id: 'trasua', path: 'trasua/', name: 'Đọc báo & HSK', short: 'Báo · HSK', emo: '🧋', c: '#E8577E', c2: '#FF9DB5', d: 'Tin mỗi ngày, phòng thi HSK, từ vựng' },
     { id: 'onthi', path: 'on-thi/', name: 'Ôn thi trên lớp', short: 'Ôn thi', emo: '📝', c: '#F2643F', c2: '#FFAE8A', d: 'Ra đề, chấm điểm, tài liệu ôn' },
+    { id: 'vo', path: 'vo/', name: 'Vở tập viết', short: 'Tập viết', emo: '✍️', c: '#7C5CDB', c2: '#B39DFF', d: 'Tạo vở ô chữ, in hoặc viết trên iPad' },
     { id: 'pdf', path: 'pdf/', name: 'Đọc PDF có Pinyin', short: 'PDF', emo: '📄', c: '#1593A6', c2: '#6FD0DE', d: 'Mở giáo trình, hiện pinyin từng chữ' }
   ];
   var rel = location.href.indexOf(BASE) === 0 ? location.pathname.slice(new URL(BASE).pathname.length) : '';

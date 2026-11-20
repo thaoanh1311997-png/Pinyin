@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script src="../shared/nav-head.js"></script>
+<title>Vở tập viết · Bánh Mì</title>
+<meta name="description" content="Tạo vở tập viết chữ Hán: ô điền, ô mễ, thứ tự nét, chữ mờ để tô, pinyin và nghĩa tiếng Việt. In, tải PDF hoặc viết luôn trên iPad.">
+<meta name="theme-color" content="#FFF4E8">
+<link rel="icon" href="../shared/banhmi.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../shared/banhmi-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@500;700&family=Nunito:wght@700;800;900&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script src="../shared/nav.js"></script>
+
+<div class="wrap">
+  <header class="hero in">
+    <div class="buddy" id="buddy"></div>
+    <div class="htx">
+      <h1>Vở tập viết <span>写字本</span></h1>
+      <p>Soạn vở theo ý mình, in ra hay viết luôn trên iPad bằng Apple Pencil. Không cần đăng nhập.</p>
+      <div class="steps"><a href="#c1"><b>1</b>Chữ</a><a href="#c2"><b>2</b>Mẫu ô</a><a href="#c3"><b>3</b>Tuỳ chỉnh</a><a href="#pvTop" class="st-go"><b>✓</b>In · Viết</a></div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div class="side">
+      <!-- 1. Chữ -->
+      <section class="card in" id="c1" style="animation-delay:.05s">
+        <h2><span class="num">1</span>Chữ cần luyện</h2>
+        <div class="seg tabs" role="tablist">
+          <button class="on" data-tab="type" role="tab">✏️ Tự gõ</button>
+          <button data-tab="lib" role="tab">📚 Thư viện</button>
+        </div>
+
+        <div class="pane" id="paneType">
+          <textarea id="txt" rows="3" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="Gõ hoặc dán chữ Hán, VD: 你好 学习 写 字"></textarea>
+          <p class="hint">Cách nhau bằng dấu cách: <b class="zh">你好</b> là 1 từ, <b class="zh">你 好</b> là 2 chữ.</p>
+          <label class="tg"><input type="checkbox" id="split"><span class="sw"></span>Tách hết thành từng chữ</label>
+          <div class="ents-hd"><b id="entCount">0 chữ</b><small>Chạm vào chữ để sửa pinyin, nghĩa hoặc luyện nét</small></div>
+          <div class="ents" id="ents"></div>
+          <div class="btns">
+            <button class="btn ghost sm" id="clearTxt">🧹 Xoá hết</button>
+            <button class="btn soft sm" id="openQuiz">🐾 Luyện nét từng chữ</button>
+          </div>
+        </div>
+
+        <div class="pane" id="paneLib" hidden>
+          <div class="seg sub">
+            <button class="on" data-lib="les">📘 Giáo trình</button>
+            <button data-lib="hsk">🎯 HSK</button>
+            <button data-lib="basic">🌱 Cơ bản</button>
+          </div>
+          <div id="libBody"></div>
+        </div>
+      </section>
+
+      <!-- 2. Mẫu -->
+      <section class="card in" id="c2" style="animation-delay:.1s">
+        <h2><span class="num">2</span>Mẫu ô</h2>
+        <div class="grids" id="grids"></div>
+        <div class="lbl">Cỡ ô</div>
+        <div class="seg sizes" id="sizes"></div>
+        <div class="lbl">Màu ô</div>
+        <div class="swatches" id="colors"></div>
+      </section>
+
+      <!-- 3. Tuỳ chỉnh -->
+      <section class="card in" id="c3" style="animation-delay:.15s">
+        <h2><span class="num">3</span>Tuỳ chỉnh</h2>
+        <div class="stp"><span>Số dòng mỗi chữ</span><div class="stepper" data-k="rows"><button data-d="-1" aria-label="Bớt">−</button><b></b><button data-d="1" aria-label="Thêm">+</button></div></div>
+        <div class="stp"><span>Số chữ mờ để tô <small>(dòng đầu)</small></span><div class="stepper" data-k="hint"><button data-d="-1" aria-label="Bớt">−</button><b></b><button data-d="1" aria-label="Thêm">+</button></div></div>
+        <div class="lbl">Các dòng sau</div>
+        <div class="seg" id="nextSeg">
+          <button data-next="blank">Để trống</button>
+          <button data-next="one">1 chữ mờ đầu dòng</button>
+          <button data-next="same">Giống dòng đầu</button>
+        </div>
+        <div class="tgs">
+          <label class="tg"><input type="checkbox" data-k="showStroke"><span class="sw"></span>Thứ tự nét</label>
+          <label class="tg"><input type="checkbox" data-k="showPy"><span class="sw"></span>Pinyin</label>
+          <label class="tg"><input type="checkbox" data-k="showHv"><span class="sw"></span>Âm Hán Việt</label>
+          <label class="tg"><input type="checkbox" data-k="showMean"><span class="sw"></span>Nghĩa tiếng Việt</label>
+          <label class="tg"><input type="checkbox" data-k="model"><span class="sw"></span>Chữ mẫu đậm ở ô đầu</label>
+          <label class="tg"><input type="checkbox" data-k="fade"><span class="sw"></span>Chữ mờ nhạt dần</label>
+        </div>
+        <details class="more">
+          <summary>Đầu trang &amp; số trang</summary>
+          <label class="tg"><input type="checkbox" data-k="header"><span class="sw"></span>Tiêu đề ở trang đầu</label>
+          <input class="inp" id="title" maxlength="40" placeholder="Tiêu đề">
+          <label class="tg"><input type="checkbox" data-k="nameLine"><span class="sw"></span>Dòng “Họ tên · Ngày”</label>
+          <label class="tg"><input type="checkbox" data-k="footer"><span class="sw"></span>Số trang ở cuối</label>
+        </details>
+        <button class="btn ghost sm" id="resetOpt">↺ Về cài đặt gốc</button>
+      </section>
+    </div>
+
+    <div class="main" id="pvTop">
+      <div class="pvbar card in" style="animation-delay:.08s">
+        <div class="pvinfo"><b>👀 Xem trước</b><small id="pvMeta">…</small></div>
+        <div class="zoom"><button id="zOut" aria-label="Thu nhỏ">−</button><button id="zFit">Vừa khung</button><button id="zIn" aria-label="Phóng to">+</button></div>
+        <div class="acts">
+          <button class="btn write" id="bWrite">✍️ Viết lên vở</button>
+          <button class="btn ghost" id="bPrint">🖨️ In</button>
+          <button class="btn main" id="bPdf">⬇️ Tải PDF</button>
+        </div>
+      </div>
+      <div class="pv" id="pv"><div class="pv-in" id="pvIn"></div></div>
+    </div>
+  </div>
+  <p class="credit">Dữ liệu nét chữ: Make Me a Hanzi / Hanzi Writer (Arphic Public License). Nghĩa: CVDICT (CC BY-SA 4.0). Từ mới bài 11–25 theo giáo trình Hán ngữ.</p>
+</div>
+
+<div class="dock" id="dock">
+  <button id="dPv">👀 Xem</button>
+  <button id="dWrite" class="w">✍️ Viết</button>
+  <button id="dPrint">🖨️ In</button>
+  <button id="dPdf" class="m">⬇️ PDF</button>
+</div>
+
+<!-- Viết lên vở -->
+<div class="wr" id="wr" hidden>
+  <div class="wbar">
+    <button class="wb done" id="wDone">✓ Xong</button>
+    <div class="wtools">
+      <div class="wgrp" id="wColors"></div>
+      <div class="wgrp" id="wSizes"></div>
+      <button class="wb" id="wErase" title="Tẩy">🧽<span>Tẩy</span></button>
+      <button class="wb" id="wUndo" title="Hoàn tác">↶<span>Hoàn tác</span></button>
+      <button class="wb" id="wRedo" title="Làm lại">↷<span>Làm lại</span></button>
+      <button class="wb" id="wClear" title="Xoá trang này">🗑<span>Xoá trang</span></button>
+      <button class="wb" id="wFinger" title="Ngón tay">👆<span id="wFingerTx">Ngón tay: viết</span></button>
+      <button class="wb" id="wZo" aria-label="Thu nhỏ">−</button>
+      <button class="wb" id="wZi" aria-label="Phóng to">+</button>
+      <button class="wb" id="wQuiz">🐾<span>Luyện nét</span></button>
+      <button class="wb" id="wPdf">⬇️<span>PDF</span></button>
+    </div>
+  </div>
+  <div class="wsc" id="wsc"><div class="wpages" id="wpages"></div></div>
+  <div class="wpage-no" id="wPageNo"></div>
+</div>
+
+<!-- Luyện nét -->
+<div class="modal" id="qz" hidden>
+  <div class="mbg" data-close></div>
+  <div class="mbox qbox">
+    <div class="mhd"><b>🐾 Luyện nét</b><button class="mx" data-close aria-label="Đóng">✕</button></div>
+    <div class="qchips" id="qChips"></div>
+    <div class="qinfo" id="qInfo"></div>
+    <div class="qstage"><div class="qgrid" id="qGrid"></div><div id="qW"></div><div class="qmsg" id="qMsg"></div></div>
+    <div class="qbtns">
+      <button class="btn ghost sm" id="qPrev">‹</button>
+      <button class="btn soft sm" id="qAnim">▶ Xem cách viết</button>
+      <button class="btn main sm" id="qTry">✍️ Tự viết</button>
+      <button class="btn ghost sm" id="qNext">›</button>
+    </div>
+    <label class="tg qtg"><input type="checkbox" id="qOutline" checked><span class="sw"></span>Hiện chữ mờ để tô theo</label>
+  </div>
+</div>
+
+<!-- Sửa chữ -->
+<div class="modal" id="ed" hidden>
+  <div class="mbg" data-close></div>
+  <div class="mbox ebox">
+    <div class="mhd"><b class="zh" id="eHz"></b><button class="mx" data-close aria-label="Đóng">✕</button></div>
+    <label class="fl">Pinyin<input class="inp" id="ePy" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+    <label class="fl">Âm Hán Việt<input class="inp" id="eHv" autocomplete="off" spellcheck="false"></label>
+    <label class="fl">Nghĩa tiếng Việt<textarea class="inp" id="eMean" rows="2"></textarea></label>
+    <div class="btns">
+      <button class="btn main sm" id="eSave">Lưu</button>
+      <button class="btn ghost sm" id="eReset">↺ Lấy lại từ điển</button>
+      <button class="btn soft sm" id="eQuiz">🐾 Luyện nét</button>
+      <button class="btn ghost sm danger" id="eDel">Bỏ khỏi vở</button>
+    </div>
+  </div>
+</div>
+
+<!-- PDF xong -->
+<div class="modal" id="pdfOk" hidden>
+  <div class="mbg" data-close></div>
+  <div class="mbox pbox">
+    <div class="mhd"><b>📄 Vở đã sẵn sàng!</b><button class="mx" data-close aria-label="Đóng">✕</button></div>
+    <p id="pdfMeta"></p>
+    <div class="btns col">
+      <button class="btn main" id="pSave">⬇️ Lưu file PDF</button>
+      <button class="btn soft" id="pShare">📤 Mở bằng app khác (Tệp, GoodNotes…)</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div id="printArea"></div>
+
+<script src="../trasua/lib/pinyin-pro.js"></script>
+<script src="data/lessons.js"></script>
+<script src="data/chars.js"></script>
+<script src="lib/hanzi-writer.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

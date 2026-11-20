@@ -3,12 +3,13 @@
   var me = document.currentScript;
   var BASE = new URL('../', me ? me.src : location.href).pathname;
   var rel = location.pathname.indexOf(BASE) === 0 ? location.pathname.slice(BASE.length) : '';
-  var id = /^video\//.test(rel) ? 'video' : /^trasua\//.test(rel) ? 'trasua' : /^on-thi\//.test(rel) ? 'onthi' : /^pdf\//.test(rel) ? 'pdf' : 'home';
+  var id = /^video\//.test(rel) ? 'video' : /^trasua\//.test(rel) ? 'trasua' : /^on-thi\//.test(rel) ? 'onthi' : /^pdf\//.test(rel) ? 'pdf' : /^vo\//.test(rel) ? 'vo' : 'home';
   var IN = {
     video: 'from{opacity:0;transform:translateX(26px)}',
     trasua: 'from{opacity:0;transform:translateY(18px)}',
     onthi: 'from{opacity:0;transform:scale(.97)}',
     pdf: 'from{opacity:0;transform:translateY(-14px)}',
+    vo: 'from{opacity:0;transform:translateY(14px) rotate(-.6deg)}',
     home: 'from{opacity:0;transform:scale(1.025)}'
   };
   function on() {
