@@ -12,5 +12,7 @@ Web mini: chọn môn → bấm "Ra đề mới" → làm bài → nộp để c
      - `ss` (sửa câu sai): `{q: câu sai, a: câu đúng ("A / B" nếu nhiều cách), n: giải thích, src}`
      - `dt` (điền trống): `{q: câu có ＿＿＿, a:[các đáp án chấp nhận], vi?, src}`
      - `tv`, `vt` (dịch câu), `tvd`, `vtd` (dịch đoạn): `{zh, vi, py?, src}`
+   - Mỗi câu có thể thêm `x` (giải thích), `g` (mã thẻ ngữ pháp), MCQ thêm `xo` (giải thích từng lựa chọn).
+   - `cards`: thẻ ngữ pháp `{id, les, title, f:[công thức], note:[giải thích], ex:[[zh, vi]], warn:[bẫy]}` (hiện trong Sổ ngữ pháp).
    - `structures`: các đề mặc định `{id, name, icon, color: coral|teal|blue, date: "YYYY-MM-DD", min, sections:[{type, n, pts}]}`
 2. Thêm `id` vào mảng trong `data/sets.js` (bộ cuối cùng là bộ mặc định).

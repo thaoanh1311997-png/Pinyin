@@ -173,6 +173,52 @@ textarea.ans.para{min-height:150px}
 .total{font-weight:700}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:50;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;text-align:center}
 .toast.on{opacity:1}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row2 .btn{padding:13px 8px;font-size:15px}
+.exp{margin-top:12px;padding:12px 12px 10px;border-radius:12px;background:var(--warn-soft);font-size:15px;line-height:1.6}
+.exp.exp-ok{background:#f4f8f3}
+.exp .lab{font-size:12px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.exp.exp-ok .lab{color:var(--ok)}
+.exp p{margin:4px 0}
+.exp .zh{font-size:17px}
+.exp .vi-line{color:#5a4f46;font-style:italic}
+.exp .tip{color:var(--muted);font-size:14px}
+.exp .miss{color:var(--bad);font-weight:600}
+.ok-t{color:var(--ok)} .bad-t{color:var(--bad);text-decoration:line-through}
+.olist{list-style:none;padding:0;margin:6px 0 0}
+.olist li{display:flex;gap:8px;padding:5px 0;border-top:1px dashed #f0dcb4}
+.olist li:first-child{border-top:0}
+.olist .mk{width:18px;flex:none;font-weight:700;color:var(--muted)}
+.olist li.ok .mk{color:var(--ok)} .olist li.bad .mk{color:var(--bad)}
+.olist i{color:var(--bad);font-style:normal;font-size:13px}
+.cmp{background:#fff;border-radius:10px;padding:8px 10px;margin:6px 0}
+.cmp>div{display:flex;gap:8px;align-items:baseline;padding:2px 0}
+.lab2{font-size:12px;color:var(--muted);width:62px;flex:none}
+mark{background:#ffd3cc;color:#b42318;border-radius:3px;padding:0 1px}
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chipbtn{display:inline-flex;align-items:center;gap:4px;padding:7px 11px;border-radius:999px;background:#fff;border:1.5px solid var(--line);font-size:13.5px;font-weight:600;color:var(--ink);text-decoration:none}
+.chipbtn.ask{background:#2b2622;color:#fff;border-color:#2b2622}
+.regrade{margin-top:8px;font-size:13px;color:var(--muted)}
+.regrade .grade{margin-top:4px}
+.regrade .grade button{padding:6px 4px;font-size:13px;min-width:70px}
+.sheet{position:fixed;inset:0;z-index:40;display:none}
+.sheet.on{display:block}
+.sheet-bg{position:absolute;inset:0;background:rgba(40,30,20,.45)}
+.sheet-card{position:absolute;left:0;right:0;bottom:0;max-height:86vh;background:var(--bg);border-radius:22px 22px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.15);display:flex;flex-direction:column;max-width:720px;margin:0 auto;animation:up .22s ease}
+@keyframes up{from{transform:translateY(40px);opacity:.5}to{transform:none;opacity:1}}
+.sheet-x{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:16px;z-index:2}
+.sheet-body{overflow-y:auto;padding:20px 18px calc(24px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+.cd-les{font-size:12px;font-weight:700;color:var(--pri);text-transform:uppercase;letter-spacing:.05em}
+.cd-t{font-size:22px;margin:4px 44px 12px 0}
+.formula{background:#fff3df;border:1px solid #f3dcb3;border-radius:12px;padding:10px 12px;font-weight:600;color:#7a4a12;font-size:15px;line-height:1.7}
+.cd-sub{font-family:"Baloo 2";font-weight:700;font-size:17px;margin:16px 0 6px}
+.cd-sub.warn{color:var(--bad)}
+.ex{background:var(--card);border-radius:12px;padding:8px 12px;margin-bottom:6px;box-shadow:var(--shadow)}
+.ex .zh{font-size:18px}
+.exvi{color:var(--muted);font-size:14px;font-style:italic}
+.warnp{background:var(--bad-soft);border-radius:10px;padding:8px 10px;margin:6px 0;font-size:15px}
+.book-item{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:6px;font-size:15px;font-weight:500}
+
 .only-wrong .q.is-ok,.only-wrong .sec-h.allok{display:none}
 .filter{display:flex;gap:6px;margin-top:12px}
 .filter button{flex:1;padding:8px;border-radius:10px;border:1.5px solid var(--line);font-weight:600;font-size:14px;background:#fff}
@@ -190,6 +236,7 @@ details summary{cursor:pointer;font-weight:600}
 <div id="examView" class="hidden"></div>
 <div id="editView" class="hidden"></div>
 <div class="toast" id="toast"></div>
+<div class="sheet" id="sheet"><div class="sheet-bg" data-close></div><div class="sheet-card"><button class="sheet-x" data-close>✕</button><div class="sheet-body" id="sheetBody"></div></div></div>
 
 <script>window.ONTHI_SETS = window.ONTHI_SETS || [];</script>
 <!--DATA-->
@@ -256,7 +303,7 @@ function renderHome(){
       '<div class="row"><button class="btn btn-pri grow" data-go="'+i+'">🎲 Ra đề mới</button>'+
       (st.custom?'<button class="btn btn-line btn-sm" data-edit="'+i+'">Sửa</button>':'')+'</div></div>';
   });
-  html+='<button class="btn btn-ghost" style="width:100%" id="newStruct">＋ Tự tạo cấu trúc đề</button>';
+  html+='<div class="row2">'+((curSet.cards||[]).length?'<button class="btn btn-line" id="openBook">📖 Sổ ngữ pháp</button>':'')+'<button class="btn btn-ghost" id="newStruct">＋ Tự tạo cấu trúc đề</button></div>';
   var hist=(store("hist")||[]).filter(function(x){return x.set===curSet.id}).slice(0,8);
   if(hist.length){
     html+='<div class="card history" style="margin-top:14px"><h3 style="font-size:18px;margin-bottom:6px">Điểm các lần làm</h3>'+hist.map(function(x){
@@ -271,6 +318,7 @@ function renderHome(){
     else if(t.dataset.go!=null){startExam(structures()[+t.dataset.go]);}
     else if(t.dataset.edit!=null){openEditor(structures()[+t.dataset.edit]);}
     else if(t.id==="newStruct"){openEditor(null);}
+    else if(t.id==="openBook"){openBook();}
   };
   window.scrollTo(0,0);
 }
@@ -335,7 +383,6 @@ function renderQ(q,si,qi,num){
     var longOpt=it.o.some(function(o){return o.length>8});
     h+='<div class="stem zh"><span class="n">'+num+'.</span>'+esc(it.q).replace(/_{2,}/g,'<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>')+'</div><div class="opts'+(longOpt?' long':'')+'">'+
       q.order.map(function(oi,k){return '<button class="opt zh" data-opt="'+oi+'"><span class="l">'+"ABCD"[k]+'</span><span>'+esc(it.o[oi])+'</span></button>'}).join("")+'</div>';
-    h+='<div class="rev note-mcq"></div>';
   } else if(q.type==="sx"){
     h+='<div class="stem"><span class="n">'+num+'.</span><span class="hint">Ghép thành câu đúng</span></div>';
     h+='<div class="answer-line zh" data-line="1"></div><div class="tiles zh">'+q.order.map(function(pi){return '<button class="tile" data-tile="'+pi+'">'+esc(it.p[pi])+'</button>'}).join("")+'</div>';
@@ -343,23 +390,21 @@ function renderQ(q,si,qi,num){
   } else if(q.type==="dt"){
     var parts=it.q.split(/＿{2,}|_{3,}/);
     h+='<div class="stem zh"><span class="n">'+num+'.</span>'+esc(parts[0])+'<input class="blank" data-blank="1" autocomplete="off" autocapitalize="off" spellcheck="false" lang="zh">'+esc(parts.slice(1).join("＿＿"))+'</div>';
-    h+='<div class="rev key"><div class="lab">Đáp án</div><div class="z zh">'+esc(it.a.join(" / "))+'</div>'+(it.vi?'<div class="note">'+esc(it.vi)+'</div>':'')+'</div>';
+    h+='<div class="rev key"><div class="lab">Đáp án</div><div class="z zh">'+esc(it.a.join(" / "))+'</div></div>';
   } else if(q.type==="ss"){
     h+='<div class="stem zh"><span class="n">'+num+'.</span>'+esc(it.q)+'</div>';
     h+='<textarea class="ans zh-in" rows="2" placeholder="Viết lại câu đúng…" lang="zh"></textarea>';
-    h+='<div class="rev key"><div class="lab">Câu đúng</div><div class="z zh">'+esc(it.a)+'</div>'+(it.n?'<div class="note">💡 '+esc(it.n)+'</div>':'')+'</div>';
-    h+=gradeBtns();
+    h+='<div class="rev key"><div class="lab">Câu đúng</div><div class="z zh">'+esc(it.a)+'</div></div>';
   } else {
     var para=q.type==="tvd"||q.type==="vtd", toVi=q.type==="tv"||q.type==="tvd";
     var src=toVi?it.zh:it.vi, ans=toVi?it.vi:it.zh;
     h+='<div class="stem '+(toVi?'zh':'vi')+(para?' para':'')+'"><span class="n">'+num+'.</span>'+esc(src)+'</div>';
     h+='<textarea class="ans'+(para?' para':'')+(toVi?'':' zh-in')+'" placeholder="'+(toVi?'Viết bản dịch tiếng Việt…':'写中文…')+'"'+(toVi?'':' lang="zh"')+'></textarea>';
     h+='<div class="rev key"><div class="lab">Bản dịch mẫu</div><div class="'+(toVi?'':'z zh')+'">'+esc(ans)+'</div>'+(it.py&&!toVi?'<div class="py">'+esc(it.py)+'</div>':'')+'</div>';
-    h+=gradeBtns();
   }
-  return h+'</div>';
+  return h+'<div class="exp-slot"></div></div>';
 }
-function gradeBtns(){return '<div class="grade rev"><button class="g1" data-g="1">✓ Đúng</button><button class="g5" data-g="0.5">≈ Gần đúng</button><button class="g0" data-g="0">✗ Sai</button></div>'}
+function gradeBtns(lab){return '<div class="regrade"><span>'+lab+'</span><div class="grade"><button class="g1" data-g="1">✓ Đúng</button><button class="g5" data-g="0.5">≈ Gần đúng</button><button class="g0" data-g="0">✗ Sai</button></div></div>'}
 function getQ(id){var p=id.split("_");return exam.secs[+p[0]].items[+p[1]]}
 function bindExam(){
   var v=$("#examView");
@@ -374,7 +419,9 @@ function bindExam(){
       else { q.user.push(pi); }
       drawSx(qe,q); progress();
     }
-    else if(t.dataset.g!=null&&exam.done){ q.grade=+t.dataset.g; qe.querySelectorAll(".grade button").forEach(function(b){b.classList.toggle("on",b===t)}); markQ(qe,q); renderScore(); }
+    else if(t.dataset.card){ openCard(t.dataset.card); }
+    else if(t.dataset.copy!=null){ copyText(askText(q)); }
+    else if(t.dataset.g!=null&&exam.done){ q.grade=+t.dataset.g; q.manual=true; qe.querySelectorAll(".grade button").forEach(function(b){b.classList.toggle("on",b===t)}); markQ(qe,q); renderScore(); }
     else if(t.dataset.f){ exam.onlyWrong=t.dataset.f==="wrong"; $("#paper").classList.toggle("only-wrong",exam.onlyWrong); renderScore(); }
     else if(t.dataset.act==="submit"){ submit(); }
     else if(t.dataset.act==="again"){ startExam(exam.st); }
@@ -415,9 +462,27 @@ function autoGrade(q){
   if(q.type==="mcq") return q.user===it.a?1:0;
   if(q.type==="sx") return norm(q.user.map(function(i){return it.p[i]}).join(""))===norm(it.a)?1:0;
   if(q.type==="dt"){ var u=norm(q.user); return it.a.some(function(a){return norm(a)===u})&&u?1:0; }
-  if(q.type==="ss"){ var u2=norm(q.user); if(!u2) return 0; if(it.a.split("/").some(function(a){return norm(a)===u2})) return 1; if(u2===norm(it.q)) return 0; return null; }
-  if(!q.user||!String(q.user).trim()) return 0;
-  return null; // tự chấm
+  if(q.type==="ss"){ var u2=norm(q.user); if(!u2) return 0; return it.a.split("/").some(function(a){return norm(a)===u2})?1:0; }
+  if(!q.user||!String(q.user).trim()){ q.sim=0; return 0; }
+  return transGrade(q);
+}
+/* chấm dịch tự động: so với bản mẫu */
+var MARKERS=["越来越","起来","出来","下来","下去","只有","只要","一边","不了","不下","不动","不起","把","被","着","连","越"];
+function lcs(a,b){ var m=a.length,n=b.length,prev=new Array(n+1).fill(0),cur; for(var i=1;i<=m;i++){cur=new Array(n+1).fill(0);for(var j=1;j<=n;j++){cur[j]=a[i-1]===b[j-1]?prev[j-1]+1:Math.max(prev[j],cur[j-1]);}prev=cur;} return prev[n]; }
+function viTokens(s){ return String(s).toLowerCase().normalize("NFC").replace(/[^0-9a-zà-ỹđ\s]/g," ").split(/\s+/).filter(Boolean); }
+function similarity(user,ref,toVi){
+  if(toVi){ var u=viTokens(user), r=viTokens(ref); if(!u.length||!r.length) return 0; var cnt={},hit=0; r.forEach(function(w){cnt[w]=(cnt[w]||0)+1}); u.forEach(function(w){if(cnt[w]){hit++;cnt[w]--}}); var p=hit/u.length, rc=hit/r.length; return 0.3*p+0.7*rc; }
+  var a=norm(user), b=norm(ref); if(!a||!b) return 0; var l=lcs(a,b); return 0.3*l/a.length+0.7*l/b.length;
+}
+function transGrade(q){
+  var it=q.it, toVi=q.type==="tv"||q.type==="tvd", para=q.type==="tvd"||q.type==="vtd";
+  var ref=toVi?it.vi:it.zh, f=similarity(q.user,ref,toVi); q.sim=f;
+  var missing=[]; if(!toVi){ var u=norm(q.user), r=norm(ref), used=""; MARKERS.forEach(function(m){ if(r.indexOf(m)>=0 && used.indexOf(m)<0 && u.indexOf(m)<0){ missing.push(m); used+=m; } }); }
+  q.missing=missing;
+  var hi=toVi?0.78:0.85, lo=toVi?0.5:0.6, g;
+  if(!para){ g=f>=hi?1:f>=lo?0.5:0; if(missing.length&&g>0.5) g=0.5; }
+  else { var a=0.4; g=Math.max(0,Math.min(1,(f-a)/(hi-a))); g=Math.max(0,Math.round(g*4-0.2)/4); g=Math.max(0,g-0.25*missing.length); }
+  return g;
 }
 function submit(){
   var all=[]; exam.secs.forEach(function(s){all=all.concat(s.items)});
@@ -433,6 +498,7 @@ function submit(){
     }
     if(q.type==="dt"){ var b=qe.querySelector(".blank"); b.classList.add(q.grade?"r":"w"); if(!q.user) b.placeholder="—"; }
     if(q.type==="sx"){ var ln=qe.querySelector("[data-line]"); ln.classList.add(q.grade?"r":"w"); if(!q.user.length) ln.innerHTML='<span class="hint small" style="padding:4px 8px">Chưa làm</span>'; if(q.grade) qe.querySelector(".key").classList.add("hidden"); }
+    qe.querySelector(".exp-slot").innerHTML=explainHTML(q);
     if(q.grade!=null){ var gb=qe.querySelector('.grade button[data-g="'+q.grade+'"]'); if(gb) gb.classList.add("on"); }
     markQ(qe,q);
   })});
@@ -443,6 +509,7 @@ function markQ(qe,q){
   qe.classList.remove("is-ok","is-bad","is-half");
   if(q.grade==null) return;
   qe.classList.add(q.grade===1?"is-ok":q.grade===0?"is-bad":"is-half");
+  var st=qe.querySelector(".gstate"); if(st) st.textContent=gradeLabel(q);
 }
 function renderScore(save){
   var got=0,total=0,pend=0,rows=[];
@@ -460,6 +527,105 @@ function renderScore(save){
   var hist=store("hist")||[]; var d=new Date(exam.start);
   var rec={id:exam.start,set:curSet.id,name:exam.st.name,score:Math.round(got*100)/100,total:total,when:d.getDate()+"/"+(d.getMonth()+1)+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")};
   hist=hist.filter(function(x){return x.id!==rec.id}); hist.unshift(rec); store("hist",hist.slice(0,40));
+}
+
+/* ---------- GIẢI THÍCH + HỎI ĐÁP ---------- */
+function cardById(id){ return (curSet.cards||[]).filter(function(c){return c.id===id})[0]; }
+function shortTitle(c){ return c.title.split(" — ")[0]; }
+function gradeLabel(q){ return q.grade===1?"Đúng":q.grade===0?"Sai":fmt(q.grade*q.pts)+"/"+fmt(q.pts)+"đ"; }
+function diffMarks(a,b){ /* đánh dấu ký tự của a không nằm trong LCS với b */
+  var m=a.length,n=b.length,T=[]; for(var i=0;i<=m;i++){T.push(new Array(n+1).fill(0));}
+  for(i=1;i<=m;i++)for(var j=1;j<=n;j++)T[i][j]=a[i-1]===b[j-1]?T[i-1][j-1]+1:Math.max(T[i-1][j],T[i][j-1]);
+  var keep=new Array(m).fill(false); i=m;j=n; while(i>0&&j>0){ if(a[i-1]===b[j-1]){keep[i-1]=true;i--;j--;} else if(T[i-1][j]>=T[i][j-1]) i--; else j--; }
+  return a.split("").map(function(ch,k){return keep[k]||/[\s，。！？、；：“”"…]/.test(ch)?esc(ch):'<mark>'+esc(ch)+'</mark>'}).join("");
+}
+function bestAns(q){ var u=norm(q.user), best=q.it.a.split("/")[0].trim(), bs=-1; q.it.a.split("/").forEach(function(a){a=a.trim(); var s=lcs(u,norm(a)); if(s>bs){bs=s;best=a}}); return best; }
+function explainHTML(q){
+  var it=q.it, ok=q.grade===1, h='', L="ABCD";
+  if(q.type==="mcq"){
+    var pos=function(oi){return L[q.order.indexOf(oi)]};
+    if(it.x) h+='<p>'+esc(it.x)+'</p>';
+    var rows=[];
+    q.order.slice().sort(function(x,y){var r=function(o){return o===it.a?0:o===q.user?1:2}; return r(x)-r(y)}).forEach(function(oi){
+      var g=(it.xo||[])[oi]||"", right=oi===it.a, mine=oi===q.user;
+      if(!g&&!right&&!mine) return;
+      if((it.x||ok)&&!right&&!mine) return;
+      rows.push('<li class="'+(right?'ok':mine?'bad':'')+'"><span class="mk">'+(right?'✓':mine?'✗':'·')+'</span><span><b class="zh">'+pos(oi)+'. '+esc(it.o[oi])+'</b>'+(mine&&!right?' <i>(bạn chọn)</i>':'')+(g?' – '+esc(g):'')+'</span></li>');
+    });
+    if(q.user==null) h='<p class="miss">Bạn bỏ trống câu này.</p>'+h;
+    if(rows.length) h+='<ul class="olist">'+rows.join("")+'</ul>';
+  } else if(q.type==="dt"){
+    if(!ok) h+='<p>'+(q.user?'Bạn điền <b class="zh bad-t">'+esc(q.user)+'</b>, đáp án là <b class="zh ok-t">'+esc(it.a.join(" / "))+'</b>.':'<span class="miss">Bạn bỏ trống câu này.</span> Đáp án: <b class="zh ok-t">'+esc(it.a.join(" / "))+'</b>.')+'</p>';
+    if(it.x) h+='<p>'+esc(it.x)+'</p>';
+    if(it.vi) h+='<p class="vi-line">'+esc(it.vi)+'</p>';
+  } else if(q.type==="sx"){
+    if(!ok&&q.user.length) h+='<p>Bạn ghép: <span class="zh">'+esc(q.user.map(function(i){return it.p[i]}).join(" "))+'</span></p>';
+    if(it.vi) h+='<p class="vi-line">'+esc(it.vi)+'</p>';
+    if(!ok) h+='<p class="tip">Mẹo: tìm chủ ngữ và động từ chính trước, rồi gắn trạng ngữ (thời gian, nơi chốn, 把/被…) vào trước động từ, bổ ngữ và tân ngữ ra sau.</p>';
+  } else if(q.type==="ss"){
+    var ba=bestAns(q);
+    if(!ok&&q.user) h+='<div class="cmp"><div><span class="lab2">Bạn viết</span><span class="zh">'+diffMarks(String(q.user).trim(),ba)+'</span></div><div><span class="lab2">Câu đúng</span><span class="zh">'+diffMarks(ba,String(q.user).trim())+'</span></div></div>';
+    if(!q.user) h+='<p class="miss">Bạn bỏ trống câu này.</p>';
+    h+='<p><b>Lỗi sai:</b> <span class="zh">'+diffMarks(it.q,ba)+'</span></p>';
+    if(it.n) h+='<p>💡 '+esc(it.n)+'</p>';
+    if(!ok&&q.user) h+=gradeBtns('Bạn sửa cách khác mà vẫn đúng? Chỉnh điểm:');
+  } else {
+    var toVi=q.type==="tv"||q.type==="tvd";
+    if(q.user){
+      h+='<p>Giống bản mẫu khoảng <b>'+Math.round((q.sim||0)*100)+'%</b> → web tính <b class="gstate">'+gradeLabel(q)+'</b>.</p>';
+      if(q.missing&&q.missing.length) h+='<p>⚠ Bản mẫu dùng cấu trúc <b class="zh">'+q.missing.map(esc).join("、")+'</b> mà bài bạn chưa có, xem lại nha.</p>';
+      if(!toVi&&q.grade<1) h+='<div class="cmp"><div><span class="lab2">Bạn viết</span><span class="zh">'+diffMarks(String(q.user).trim(),it.zh)+'</span></div><div><span class="lab2">Bản mẫu</span><span class="zh">'+diffMarks(it.zh,String(q.user).trim())+'</span></div></div>';
+      if(q.grade<1) h+=gradeBtns('Dịch cách khác mà vẫn đúng ý? Chỉnh điểm:');
+    } else h+='<p class="miss">Bạn bỏ trống câu này.</p>';
+  }
+  var cs=(it.g||[]).map(cardById).filter(Boolean);
+  var acts=cs.map(function(c){return '<button class="chipbtn" data-card="'+esc(c.id)+'">📖 '+esc(shortTitle(c))+'</button>'}).join("");
+  acts+='<a class="chipbtn ask" target="_blank" rel="noopener" href="'+askURL(askText(q))+'">💬 Hỏi Claude</a><button class="chipbtn" data-copy>📋 Chép câu hỏi</button>';
+  return '<div class="exp'+(ok?' exp-ok':'')+'"><div class="lab">'+(ok?'💡 Ghi nhớ':'💡 Vì sao sai?')+'</div>'+h+'<div class="acts">'+acts+'</div></div>';
+}
+function qLine(q){
+  var it=q.it,L="ABCD";
+  if(q.type==="mcq") return "Câu trắc nghiệm: "+it.q+"\nCác lựa chọn: "+q.order.map(function(oi,k){return L[k]+". "+it.o[oi]}).join("  ")+"\nMình chọn: "+(q.user==null?"(bỏ trống)":L[q.order.indexOf(q.user)]+". "+it.o[q.user])+"\nĐáp án đúng: "+L[q.order.indexOf(it.a)]+". "+it.o[it.a];
+  if(q.type==="dt") return "Câu điền trống: "+it.q+"\nMình điền: "+(q.user||"(bỏ trống)")+"\nĐáp án: "+it.a.join(" / ");
+  if(q.type==="sx") return "Câu sắp xếp: "+it.p.join(" / ")+"\nMình ghép: "+(q.user.length?q.user.map(function(i){return it.p[i]}).join(""):"(bỏ trống)")+"\nĐáp án: "+it.a;
+  if(q.type==="ss") return "Câu sửa sai: "+it.q+"\nMình sửa thành: "+(q.user||"(bỏ trống)")+"\nĐáp án: "+it.a;
+  var toVi=q.type==="tv"||q.type==="tvd";
+  return (toVi?"Dịch Trung → Việt: ":"Dịch Việt → Trung: ")+(toVi?it.zh:it.vi)+"\nBản dịch của mình: "+(q.user||"(bỏ trống)")+"\nBản dịch mẫu: "+(toVi?it.vi:it.zh);
+}
+function askText(q){
+  var t="Mình đang ôn thi tiếng Trung ("+curSet.name+").\n"+qLine(q);
+  if(q.it.x) t+="\nGiải thích trên web: "+q.it.x;
+  if(q.it.n) t+="\nGhi chú: "+q.it.n;
+  t+="\n\nGiải thích giúp mình bằng tiếng Việt, dễ hiểu: vì sao đáp án đúng, mình sai ở đâu, cấu trúc ngữ pháp liên quan, và cho thêm 2 câu ví dụ tương tự.";
+  return t;
+}
+function askURL(t){ if(t.length>1800) t=t.slice(0,1800)+"…"; return "https://claude.ai/new?q="+encodeURIComponent(t); }
+function copyText(t){
+  var done=function(){toast("Đã chép, dán vào khung chat với Claude nha")};
+  try{ if(navigator.clipboard&&window.isSecureContext){ navigator.clipboard.writeText(t).then(done,fallback); return; } }catch(e){}
+  fallback();
+  function fallback(){ var ta=document.createElement("textarea"); ta.value=t; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy");done()}catch(e){toast("Không chép được, thử nút Hỏi Claude")} ta.remove(); }
+}
+function cardHTML(c){
+  var h='<div class="cd-les">Bài '+(c.id.indexOf("X.")===0?"15–25":c.les)+'</div><h2 class="cd-t">'+esc(c.title)+'</h2>';
+  if(c.f.length) h+='<div class="formula">'+c.f.map(function(x){return '<div>▸ '+esc(x)+'</div>'}).join("")+'</div>';
+  if(c.note.length) h+='<p>'+c.note.map(esc).join("<br>")+'</p>';
+  if(c.ex.length) h+='<div class="cd-sub">Ví dụ</div>'+c.ex.map(function(e){return '<div class="ex"><div class="zh">'+esc(e[0])+'</div><div class="exvi">'+esc(e[1])+'</div></div>'}).join("");
+  if(c.warn.length) h+='<div class="cd-sub warn">⚠ Bẫy hay gặp</div>'+c.warn.map(function(w){return '<p class="warnp">'+esc(w)+'</p>'}).join("");
+  var ask="Mình đang học ngữ pháp tiếng Trung ("+curSet.name+"), điểm: "+c.title+".\nCông thức: "+c.f.join(" | ")+"\nMình còn thắc mắc: ";
+  h+='<div class="acts" style="margin-top:14px"><a class="chipbtn ask" target="_blank" rel="noopener" href="'+askURL(ask)+'">💬 Hỏi Claude về điểm này</a></div>';
+  return h;
+}
+function openSheet(inner){
+  var sh=$("#sheet"); $("#sheetBody").innerHTML=inner; sh.classList.add("on"); document.body.style.overflow="hidden"; $("#sheetBody").scrollTop=0;
+}
+function closeSheet(){ $("#sheet").classList.remove("on"); document.body.style.overflow=""; }
+function openCard(id){ var c=cardById(id); if(c) openSheet(cardHTML(c)); }
+function openBook(){
+  var by={}; (curSet.cards||[]).forEach(function(c){ var k=c.id.indexOf("X.")===0?"Phân biệt":"Bài "+c.les; (by[k]=by[k]||[]).push(c); });
+  var h='<h2 class="cd-t">📖 Sổ ngữ pháp</h2><p class="hint">'+esc(curSet.name)+' · bấm vào một điểm để xem công thức, ví dụ, bẫy</p>';
+  Object.keys(by).forEach(function(k){ h+='<div class="cd-sub">'+esc(k)+'</div>'+by[k].map(function(c){return '<button class="book-item" data-card="'+esc(c.id)+'">'+esc(c.title)+'</button>'}).join(""); });
+  openSheet(h);
 }
 
 /* ---------- STRUCTURE EDITOR ---------- */
@@ -548,7 +714,10 @@ function parseStructure(text){
 
 /* ---------- START ---------- */
 window.__ot={exam:function(){return exam}};
-function boot(){ pickSet(); renderHome(); }
+function boot(){ pickSet(); renderHome();
+  $("#sheet").addEventListener("click",function(e){ if(e.target.closest("[data-close]")) closeSheet(); var c=e.target.closest("[data-card]"); if(c) openCard(c.dataset.card); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeSheet(); });
+}
 if(SETS.length) boot(); else window.addEventListener("load",boot);
 })();
 </script>
