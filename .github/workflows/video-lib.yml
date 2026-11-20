@@ -1,0 +1,26 @@
+name: Học video daily library
+on:
+  schedule:
+    - cron: '23 22 * * *'   # every day, 05:23 Vietnam time
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: video-lib
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - name: Find new videos per HSK level
+        run: node video/tools/fetch-videos.mjs
+      - name: Commit list
+        run: |
+          if [ -n "$(git status --porcelain video/data/ytlib.json)" ]; then
+            git config user.name "video-bot"; git config user.email "video-bot@users.noreply.github.com"
+            git add video/data/ytlib.json && git commit -m "Update video library"
+            for i in 1 2 3; do git pull --rebase -q && git push && break; sleep 5; done
+          fi

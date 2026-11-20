@@ -173,6 +173,8 @@ textarea.in{min-height:140px;resize:vertical;font-family:var(--f-zh),var(--f-ui)
 .vcard .th .pl:after{content:"";border-left:15px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px}
 .vcard .th .lvb{position:absolute;top:8px;left:8px;background:rgba(255,255,255,.95);color:#17202A;font-weight:900;font-size:11.5px;padding:4px 8px;border-radius:8px}
 .vcard .th .done{position:absolute;top:8px;right:8px;background:var(--green,#12A66A);color:#fff;font-weight:900;font-size:11.5px;padding:4px 8px;border-radius:8px}
+.vcard .th .done.new{background:#F0605D}
+.vcard .th .dur{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.72);color:#fff;font-weight:800;font-size:12px;padding:3px 7px;border-radius:7px}
 .vcard .bd{padding:10px 13px 13px}
 .vcard .tag{display:inline-block;font-size:12px;font-weight:900;padding:3px 9px;border-radius:999px;background:var(--tgb);color:var(--tgc)}
 .vcard .bd b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:15px;font-weight:900;line-height:1.35;margin-top:7px}
@@ -1280,25 +1282,33 @@ const YTL={
 const TAGC={'Truyện':['#E1F6EB','#0C8653'],'Hoạt hình':['#F1E8FF','#7A4FD8'],'Bài hát':['#FFE8EF','#D23A6B'],'Podcast':['#E6F0FF','#2F6FD6'],'Vlog':['#FFF1DE','#C46A12'],'Luyện nghe':['#E3F7F7','#11807F'],'Phỏng vấn':['#FFF6D6','#9A7400']};
 const LVC=['','#22C17E','#2EB872','#5AA8F5','#B07CF2','#FF9E57','#F0605D'];
 const YT_BAD=new Set();
-function vcard(lv,v){const [id,tag,title]=v,c=TAGC[tag]||TAGC['Truyện'];const done=lessons().some(x=>x.src&&x.src.type==='youtube'&&x.src.id===id&&x.lines&&x.lines.length);
-  return `<button class="vcard" data-yt="${id}" data-lv="${lv}"><span class="th"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/${id}/mqdefault.jpg"><span class="pl"></span><span class="lvb">HSK ${lv}</span>${done?'<span class="done">Đã học</span>':''}</span><span class="bd"><span class="tag" style="--tgb:${c[0]};--tgc:${c[1]}">${esc(tag)}</span><b>${esc(title)}</b></span></button>`;}
+// New videos found every day by a GitHub Action (video/tools/fetch-videos.mjs), newest first
+let YTD=[];
+function ytList(lv){const seen=new Set(), out=[];
+  for(const x of YTD) if(x.lv==lv&&!seen.has(x.id)){seen.add(x.id);out.push([x.id,x.tag,x.title,x.dur||'',x.added]);}
+  for(const v of YTL[lv]) if(!seen.has(v[0])){seen.add(v[0]);out.push(v);}
+  return out.filter(ytOk);}
+(async()=>{for(const u of ['https://raw.githubusercontent.com/thaoanh1311997-png/Pinyin/main/video/data/ytlib.json?t='+Math.floor(Date.now()/36e5),'data/ytlib.json']){
+  try{const r=await fetch(u,{cache:'no-store'}); if(!r.ok) continue; const d=await r.json(); if(d&&Array.isArray(d.items)){YTD=d.items.filter(x=>x&&/^[\w-]{11}$/.test(x.id)&&x.lv>=1&&x.lv<=6); if(VIEW==='Home'||!VIEW) renderYtLib(); return;}}catch(e){}}})();
+function vcard(lv,v){const [id,tag,title,dur,added]=v,c=TAGC[tag]||TAGC['Truyện'];const isNew=added&&(Date.now()-new Date(added))<3*864e5;const done=lessons().some(x=>x.src&&x.src.type==='youtube'&&x.src.id===id&&x.lines&&x.lines.length);
+  return `<button class="vcard" data-yt="${id}" data-lv="${lv}"><span class="th"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/${id}/mqdefault.jpg"><span class="pl"></span><span class="lvb">HSK ${lv}</span>${done?'<span class="done">Đã học</span>':isNew?'<span class="done new">Mới</span>':''}${dur?`<span class="dur">${esc(dur)}</span>`:''}</span><span class="bd"><span class="tag" style="--tgb:${c[0]};--tgc:${c[1]}">${esc(tag)}</span><b>${esc(title)}</b></span></button>`;}
 function ytOk(v){return !YT_BAD.has(v[0]);}
 function renderYtLib(){
-  $('#ytLib').innerHTML=[1,2,3,4,5,6].map(lv=>`<div class="yl-h" style="--lvc:${LVC[lv]}"><h3>HSK${lv}</h3><button data-all="${lv}">Xem tất cả ›</button></div><div class="hscroll">${YTL[lv].filter(ytOk).slice(0,6).map(v=>vcard(lv,v)).join('')}</div>`).join('');
+  $('#ytLib').innerHTML=[1,2,3,4,5,6].map(lv=>`<div class="yl-h" style="--lvc:${LVC[lv]}"><h3>HSK${lv}</h3><button data-all="${lv}">Xem tất cả ›</button></div><div class="hscroll">${ytList(lv).slice(0,8).map(v=>vcard(lv,v)).join('')}</div>`).join('');
   hookThumbs($('#ytLib'));
 }
 function hookThumbs(root){ // a removed video shows YouTube's 120x90 grey placeholder: hide those cards
   root.querySelectorAll('.vcard img').forEach(im=>{const chk=()=>{if(im.naturalWidth&&im.naturalWidth<=120){const b=im.closest('.vcard');YT_BAD.add(b.dataset.yt);b.remove();}};if(im.complete)chk();else im.addEventListener('load',chk);im.addEventListener('error',()=>{});});
 }
 function openYtVideo(id){
-  for(const lv in YTL){const v=YTL[lv].find(x=>x[0]===id); if(!v) continue;
+  for(const lv in YTL){const v=ytList(lv).find(x=>x[0]===id); if(!v) continue;
     const old=lessons().find(x=>x.src&&x.src.type==='youtube'&&x.src.id===id);
     if(old&&old.lines&&old.lines.length){openLesson(old);return;}
     openLesson({id:old?old.id:'y'+id,title:'HSK'+lv+' · '+v[2],src:{type:'youtube',id},lines:[]}); return;}
 }
 document.addEventListener('click',e=>{
   const c=e.target.closest('.vcard'); if(c){closeSheet(); openYtVideo(c.dataset.yt); return;}
-  const a=e.target.closest('[data-all]'); if(a){const lv=+a.dataset.all; openSheet(`<h2>HSK${lv} · ${YTL[lv].filter(ytOk).length} video</h2><div class="vgrid">${YTL[lv].filter(ytOk).map(v=>vcard(lv,v)).join('')}</div>`); const sh=document.querySelector('.vgrid'); if(sh) hookThumbs(sh);}
+  const a=e.target.closest('[data-all]'); if(a){const lv=+a.dataset.all; const L=ytList(lv); openSheet(`<h2>HSK${lv} · ${L.length} video</h2><div class="vgrid">${L.map(v=>vcard(lv,v)).join('')}</div>`); const sh=document.querySelector('.vgrid'); if(sh) hookThumbs(sh);}
 });
 renderYtLib();
 
