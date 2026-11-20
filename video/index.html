@@ -875,7 +875,7 @@ async function mountMedia(){
     const ok=await loadYT();
     if(!ok){box.innerHTML=ttsBox('Không tải được video YouTube (kiểm tra mạng). Tạm dùng giọng đọc máy.');return;}
     await new Promise(res=>{
-      const yp=new YT.Player('ytBox',{videoId:src.id,host:'https://www.youtube-nocookie.com',playerVars:{playsinline:1,rel:0,modestbranding:1,iv_load_policy:3,cc_load_policy:0},
+      const yp=new YT.Player('ytBox',{videoId:src.id,playerVars:{playsinline:1,rel:0,modestbranding:1,iv_load_policy:3,cc_load_policy:0},
         events:{onReady:()=>{
           P={media:true,kind:'yt',time:()=>yp.getCurrentTime()||0,play:()=>yp.playVideo(),pause:()=>yp.pauseVideo(),seek:t=>yp.seekTo(t,true),rate:r=>{try{yp.setPlaybackRate(r)}catch(e){}},playing:()=>yp.getPlayerState()===1};
           res();},
