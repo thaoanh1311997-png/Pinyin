@@ -3,6 +3,7 @@
    lv: so | trung | cao. Link nội bộ bắt đầu bằng ../ thì mở cùng tab. */
 window.SACH = {
   cats: [
+    { id: 'doc', emo: '📖', name: 'Đọc ngay trong web', short: 'Đọc ngay', c: '#E0475B', c2: '#FF9AA6', cd: '#B12E40', soft: '#FFE6E9', d: 'Bấm vào bìa là mở sách PDF đọc luôn, không cần tải app. Chỉ sách bản quyền mở hoặc phạm vi công cộng.' },
     { id: 'mine', emo: '⭐', name: 'Giáo trình đang học', short: 'Đang học', c: '#E2852B', c2: '#FFC861', cd: '#B5621A', soft: '#FFF0DC', d: 'Hán ngữ 汉语教程 bản 3 và sách Đọc hiểu trên lớp' },
     { id: 'hsk', emo: '🎯', name: 'HSK 3.0 & đề thi chính thức', short: 'HSK 3.0', c: '#E8577E', c2: '#FF9DB5', cd: '#B93B60', soft: '#FFE8EE', d: 'Đề cương, đề mẫu, audio giáo trình HSK từ trang chính chủ' },
     { id: 'gt', emo: '📘', name: 'Giáo trình & khoá học', short: 'Giáo trình', c: '#2F7BEA', c2: '#7FB6FF', cd: '#1F5DB8', soft: '#E6F0FF', d: 'Boya, Phát triển Hán ngữ, giáo trình mở, ngữ pháp' },
@@ -66,7 +67,7 @@ window.SACH = {
       url: 'https://www.blcup.com/Res/ResList/index/17?pid=1&oby=xl&lx=0', go: 'Mở kho tài nguyên' },
     { id: 'mitlc', cat: 'gt', emo: '🎓', t: 'Giáo trình mở MIT · Learning Chinese', zh: '汉语基础教材 (Julian Wheatley)', lv: ['so', 'trung'], free: 'cc', by: 'MIT OpenCourseWare', tags: ['Sách đầy đủ', 'Giải thích tiếng Anh', 'CC BY-NC-SA'],
       d: 'Cuốn giáo trình <b>trọn bộ, đọc online miễn phí</b> của MIT, 4 phần, từ phát âm tới trung cấp. Đây là giáo trình mở tốt nhất tìm được.',
-      url: 'https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/pages/online-textbook/', go: 'Đọc sách' },
+      links: [['#shelf-mit', '📖 Đọc ngay'], ['https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/pages/online-textbook/', 'Trang gốc MIT']] },
     { id: 'mitc', cat: 'gt', emo: '🏫', t: 'Khoá Tiếng Trung I–IV của MIT', zh: 'MIT Chinese I–IV', lv: ['so', 'trung'], free: 'cc', by: 'MIT OpenCourseWare', tags: ['Đề cương', 'Hoạt động lớp', 'Video'],
       d: 'Tài liệu lớp học thật của MIT: đề cương, hoạt động, bài tập; Chinese I có video của giảng viên.',
       note: 'Chủ yếu là tài liệu lớp, không phải sách học trọn bài.',
@@ -74,7 +75,7 @@ window.SACH = {
     { id: 'fsi', cat: 'gt', emo: '🇺🇸', t: 'Khoá FSI Standard Chinese', zh: 'FSI 标准汉语', lv: ['so', 'trung'], free: 'pd', by: 'Bộ Ngoại giao Mỹ (FSI)', tags: ['22 PDF', '299 MP3', 'Giải thích tiếng Anh'],
       d: 'Khoá học của chính phủ Mỹ, thuộc phạm vi công cộng: 22 file sách và gần 300 file nghe, tải miễn phí.',
       note: 'Sách soạn đã lâu, có chỗ dùng chữ phồn thể. Trang có quảng cáo gói trả phí, chỉ cần bấm phần tải miễn phí.',
-      url: 'https://www.fsi-language-courses.org/fsi-standard-chinese-a-modular-approach/', go: 'Tải khoá FSI' },
+      links: [['#shelf-fsi', '📖 Đọc ngay'], ['https://www.fsi-language-courses.org/fsi-standard-chinese-a-modular-approach/', 'Trang gốc + audio']] },
     { id: 'dli', cat: 'gt', emo: '📼', t: 'Khoá DLI Chinese Standard', zh: 'DLI 汉语标准课程', lv: ['so', 'trung'], free: 'pd', by: 'Học viện Ngôn ngữ Quốc phòng Mỹ', tags: ['PDF', 'Audio'],
       d: 'Một khoá khác của chính phủ Mỹ, phạm vi công cộng, có sách và audio.',
       url: 'https://www.fsi-language-courses.org/chinese/courses/dli-chinese-standard-course/', go: 'Tải khoá DLI' },
@@ -93,7 +94,7 @@ window.SACH = {
     /* ---------- 📖 Truyện & sách đọc ---------- */
     { id: 'gsb', cat: 'truyen', emo: '🧸', t: 'Global Storybooks · truyện tranh', zh: '全球故事书 · 中文', lv: ['so'], free: 'cc', by: 'Global Storybooks', tags: ['Có audio', 'Cấp 1–5', 'Hợp đọc cho bé'],
       d: 'Truyện tranh thiếu nhi chữ giản thể, chia 5 cấp từ dễ tới khó, nhiều truyện có <b>giọng đọc</b>. Vừa luyện đọc vừa đọc cho con nghe được luôn.',
-      links: [['https://www.storybookscanada.globalstorybooks.net/stories/zh/level1/', 'Truyện cấp 1–5'], ['https://global-asp.github.io/storybooks-classics/stories/zh', 'Truyện cổ điển (PDF + MP3)'], ['https://global-asp.github.io/storybooks-swahili/stories/zh', 'Truyện châu Phi']] },
+      links: [['#shelf-truyen-ca-1', '📖 Đọc ngay 40 truyện'], ['https://www.storybookscanada.globalstorybooks.net/stories/zh/level1/', 'Bản có audio'], ['https://global-asp.github.io/storybooks-classics/stories/zh', 'Truyện cổ điển (PDF + MP3)'], ['https://global-asp.github.io/storybooks-swahili/stories/zh', 'Truyện châu Phi']] },
     { id: 'bean', cat: 'truyen', emo: '🫘', t: 'Mandarin Bean · đọc theo cấp HSK', zh: '分级阅读', lv: ['so', 'trung', 'cao'], free: 'free', by: 'Mandarin Bean', tags: ['HSK 1–6', 'Có audio', 'Pinyin'],
       d: 'Bài đọc ngắn chia theo cấp HSK: truyện, văn hoá, đời sống. Có audio, bật tắt pinyin được. Tất cả bài đọc đều miễn phí.',
       links: [['https://mandarinbean.com/', 'Mở Mandarin Bean'], ['https://mandarinbean.com/category/beginner/', 'Bài sơ cấp']] },

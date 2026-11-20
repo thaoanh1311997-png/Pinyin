@@ -1085,7 +1085,7 @@ window.__handleFiles=handleFiles;
   $('pFrom').value=p; $('pTo').value=p+2;
   status('Đang tải sách…',0);
   fetch(src).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob();}).then(b=>{
-    handleFiles([new File([b],decodeURIComponent(src.split('/').pop()),{type:'application/pdf'})]);
+    return handleFiles([new File([b],decodeURIComponent(src.split('/').pop()),{type:'application/pdf'})]).then(()=>{const o=$('out');if(o&&o.firstChild)o.scrollIntoView({behavior:'smooth',block:'start'});});
   }).catch(e=>status('Không tải được sách ('+e.message+').'));
 })();
 })();

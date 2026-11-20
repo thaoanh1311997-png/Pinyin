@@ -21,6 +21,29 @@
   var st = load('bm.sach', { cat: 'all', lv: 'all' });
   if (st.cat !== 'all' && !CAT[st.cat]) st.cat = 'all';
   var fav = load('bm.sach.fav', []);
+  var BOOKS = [], SH = window.SACH_SHELF || { groups: {}, story: {}, fsi: {} };
+  function bookOf(b) {
+    var g = SH.groups[b.src] || { emo: '📘', name: b.group, d: '', lic: b.license, c: '#E0475B', soft: '#FFE6E9' };
+    var o = { file: b.file, src: b.src, g: g, lic: b.license, zh: '', vi: b.title, sub: '', lv: b.lv || ['so'], shelf: b.src };
+    if (b.src === 'truyen-ca') {
+      var zh = (b.title.match(/^[^A-Za-z]+/) || [b.title])[0].trim(), m = SH.story[zh];
+      o.zh = zh; o.vi = m ? m[0] : ''; o.level = m ? m[1] : 0;
+      o.lv = o.level >= 3 ? ['so', 'trung'] : ['so']; o.shelf = 'truyen-ca-' + (o.level || 1); o.sub = 'Cấp ' + (o.level || '?');
+    } else if (b.src === 'fsi') {
+      var low = (b.from || b.file).toLowerCase(), k = Object.keys(SH.fsi).filter(function (x) { return low.indexOf(x) >= 0; })[0];
+      o.vi = k ? SH.fsi[k] : b.title; o.sub = /workbook/.test(low) ? '📝 Sách bài tập' : '📗 Sách học';
+    } else if (b.src === 'mit') {
+      var suf = ((b.from || '').match(/S11_(\w+)\.pdf$/) || [])[1] || '', mm = suf.match(/^(unit|char|stroke)(\d+)$/);
+      if (mm) { var nn = +mm[2]; o.vi = mm[1] === 'unit' ? 'Bài ' + nn : mm[1] === 'char' ? 'Chữ Hán bài ' + nn : 'Thứ tự nét bài ' + nn; o.sub = mm[1] === 'unit' ? '📗 Bài học' : mm[1] === 'char' ? '✍️ Chữ Hán' : '🖌️ Thứ tự nét'; }
+      else o.vi = (SH.mit || {})[suf] || b.title;
+    }
+    return o;
+  }
+  function loadBooks() {
+    fetch('data/books.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
+      BOOKS = (d.books || []).map(bookOf); drawCats(); draw(); stat();
+    }).catch(function () {});
+  }
   var favOnly = false, q = '';
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -33,14 +56,15 @@
   if (window.BM_MASCOT) b.insertAdjacentHTML('beforeend', window.BM_MASCOT());
   b.addEventListener('click', function () { b.classList.remove('jump'); void b.offsetWidth; b.classList.add('jump'); });
   var nLinks = D.items.length, nCats = D.cats.length;
-  $('stat').innerHTML = '<span>📦 <b>' + nLinks + '</b> nguồn · <b>' + nCats + '</b> nhóm</span><span>💸 <b>0đ</b></span>';
+  function stat() { $('stat').innerHTML = '<span>📦 <b>' + nLinks + '</b> nguồn</span>' + (BOOKS.length ? '<span>📖 <b>' + BOOKS.length + '</b> cuốn đọc ngay</span>' : '') + '<span>💸 <b>0đ</b></span>'; }
+  stat();
   $('legend').innerHTML = Object.keys(FREE).map(function (k) { return '<span><i class="bd ' + FREE[k][0] + '">' + FREE[k][1] + '</i></span>'; }).join('');
 
   /* thanh lọc */
   function drawCats() {
     var all = { id: 'all', emo: '✨', name: 'Tất cả', c: '#5E9A2B' };
     $('cats').innerHTML = [all].concat(D.cats).map(function (c) {
-      var n = c.id === 'all' ? D.items.length : D.items.filter(function (i) { return i.cat === c.id; }).length;
+      var n = c.id === 'all' ? D.items.length + BOOKS.length : c.id === 'doc' ? BOOKS.length : D.items.filter(function (i) { return i.cat === c.id; }).length;
       return '<button class="cat' + (st.cat === c.id ? ' on' : '') + '" role="tab" aria-selected="' + (st.cat === c.id) + '" data-cat="' + c.id + '" style="--k:' + c.c + '"><i>' + c.emo + '</i>' + esc(c.short || c.name) + ' <small>' + n + '</small></button>';
     }).join('');
   }
@@ -67,7 +91,7 @@
     var c = CAT[i.cat], f = FREE[i.free] || FREE.free, on = fav.indexOf(i.id) >= 0;
     var lv = i.lv.length === 3 ? 'Mọi cấp' : i.lv.map(function (l) { return LVN[l]; }).join(' → ');
     var links = (i.links || [[i.url, i.go || 'Mở']]).map(function (l, k) {
-      return '<a class="btn ' + (k ? 'sec' : 'pri') + '" href="' + esc(l[0]) + '"' + (/^\.\.\//.test(l[0]) ? '' : ' target="_blank" rel="noopener noreferrer"') + '>' + esc(l[1]) + (/^\.\.\//.test(l[0]) ? '' : ' ↗') + '</a>';
+      return '<a class="btn ' + (k ? 'sec' : 'pri') + '" href="' + esc(l[0]) + '"' + (/^(\.\.\/|#|doc\.html)/.test(l[0]) ? '' : ' target="_blank" rel="noopener noreferrer"') + '>' + esc(l[1]) + (/^(\.\.\/|#|doc\.html)/.test(l[0]) ? '' : ' ↗') + '</a>';
     }).join('');
     return '<article class="it' + (i.mine ? ' mine' : '') + '" style="' + vars(c) + ';animation-delay:' + Math.min(n * 0.03, 0.3) + 's">' +
       '<div class="it-top"><div class="it-ico" aria-hidden="true">' + (i.emo || c.emo) + '</div>' +
@@ -82,6 +106,7 @@
     var list = D.items.filter(match), html = '', n = 0;
     var cats = st.cat === 'all' ? D.cats : [CAT[st.cat]];
     cats.forEach(function (c) {
+      if (c.id === 'doc') { html += shelves(c); return; }
       var its = list.filter(function (i) { return i.cat === c.id; });
       if (!its.length) return;
       html += '<section class="grp" style="' + vars(c) + '"><div class="grp-h"><div class="gi" aria-hidden="true">' + c.emo + '</div><div><h2>' + esc(c.name) + '</h2><p>' + c.d + '</p></div></div><div class="grid">' +
@@ -90,8 +115,60 @@
     if (!html) {
       html = '<div class="empty"><div class="e">🥖💭</div><p>' + (favOnly && !fav.length ? 'Chưa lưu tài liệu nào. Bấm ⭐ trên thẻ để lưu nha.' : 'Không thấy tài liệu nào khớp.') + '</p><button class="btn sec" type="button" id="reset">Xem tất cả</button></div>';
     }
-    $('list').innerHTML = html;
+    $('list').innerHTML = html; covers();
   }
+  function bmatch(b) {
+    if (st.lv !== 'all' && b.lv.indexOf(st.lv) < 0) return false;
+    if (q) { var hay = fold([b.zh, b.vi, b.sub, b.g.name, 'truyen sach pdf doc ngay'].join(' ')); if (!fold(q).split(/\s+/).every(function (w) { return !w || hay.indexOf(w) >= 0; })) return false; }
+    return true;
+  }
+  function shelves(c) {
+    if (favOnly || !BOOKS.length) return '';
+    var list = BOOKS.filter(bmatch); if (!list.length) return '';
+    var order = [], by = {};
+    list.forEach(function (b) { if (!by[b.shelf]) { by[b.shelf] = []; order.push(b.shelf); } by[b.shelf].push(b); });
+    var h = '<section class="grp" id="doc" style="' + vars(c) + '"><div class="grp-h"><div class="gi" aria-hidden="true">' + c.emo + '</div><div><h2>' + esc(c.name) + '</h2><p>' + c.d + '</p></div></div>';
+    order.forEach(function (k) {
+      var bs = by[k], g = bs[0].g;
+      var name = g.name + (bs[0].src === 'truyen-ca' ? ' · Cấp ' + (bs[0].level || '?') : '');
+      h += '<div class="shelf" id="shelf-' + k + '" style="--k:' + g.c + ';--kl:' + g.soft + '"><div class="sh-h"><b>' + g.emo + ' ' + esc(name) + ' <small>' + bs.length + ' cuốn</small></b>' +
+        (k === order.filter(function (x) { return by[x][0].src === bs[0].src; })[0] ? '<p>' + esc(g.d) + ' <span class="lic">' + esc(g.lic) + '</span></p>' : '') + '</div><div class="row">' +
+        bs.map(function (b) {
+          return '<a class="bk" href="doc.html?f=' + encodeURIComponent(b.file).replace(/%2F/g, '/') + '&t=' + encodeURIComponent((b.zh ? b.zh + ' · ' : '') + b.vi + (b.sub && b.src !== 'truyen-ca' ? ' (' + b.sub.replace(/^\S+\s/, '') + ')' : '')) + '&g=' + encodeURIComponent(b.g.name) + '"><div class="cv" data-f="' + esc(b.file) + '"><span class="ph"><i>' + g.emo + '</i>' + esc(b.zh || b.vi) + '</span></div>' +
+            (b.zh ? '<b lang="zh-CN">' + esc(b.zh) + '</b>' : '') + '<small>' + esc(b.vi) + '</small>' + (b.sub ? '<em>' + esc(b.sub) + '</em>' : '') + '</a>';
+        }).join('') + '</div></div>';
+    });
+    return h + '</section>';
+  }
+  /* bìa sách: vẽ trang 1 bằng pdf.js khi cuộn tới */
+  var pdfjsP = null, covQ = [], covBusy = 0;
+  function pdfjs() {
+    if (pdfjsP) return pdfjsP;
+    pdfjsP = new Promise(function (ok, no) {
+      var sc = document.createElement('script'); sc.src = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
+      sc.onload = function () { window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'; ok(window.pdfjsLib); };
+      sc.onerror = no; document.head.appendChild(sc);
+    });
+    return pdfjsP;
+  }
+  function covNext() {
+    if (covBusy >= 2 || !covQ.length) return;
+    var el = covQ.shift(); if (!el.isConnected || el.dataset.done) { covNext(); return; }
+    covBusy++; el.dataset.done = 1;
+    pdfjs().then(function (lib) {
+      return lib.getDocument({ url: el.dataset.f, disableAutoFetch: true, disableStream: true }).promise.then(function (d) {
+        return d.getPage(1).then(function (pg) {
+          var v = pg.getViewport({ scale: 1 }), w = el.clientWidth || 140, sc = w * Math.min(window.devicePixelRatio || 1, 2) / v.width, vp = pg.getViewport({ scale: sc });
+          var cv = document.createElement('canvas'); cv.width = Math.floor(vp.width); cv.height = Math.floor(vp.height);
+          return pg.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise.then(function () { el.appendChild(cv); el.classList.add('has'); d.destroy(); });
+        });
+      });
+    }).catch(function () {}).then(function () { covBusy--; covNext(); });
+  }
+  var covIO = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { covIO.unobserve(e.target); covQ.push(e.target); covNext(); } });
+  }, { rootMargin: '200px' }) : null;
+  function covers() { if (covIO) [].forEach.call(document.querySelectorAll('.cv[data-f]:not([data-done])'), function (el) { covIO.observe(el); }); }
   function toast(t) { var el = $('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(function () { el.classList.remove('on'); }, 1800); }
   function all() { drawCats(); drawLv(); drawFav(); draw(); }
 
@@ -106,6 +183,13 @@
   });
   $('favOnly').addEventListener('click', function () { favOnly = !favOnly; drawFav(); draw(); });
   $('list').addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="#shelf-"]');
+    if (a) {
+      e.preventDefault(); var id = a.getAttribute('href').slice(1);
+      if (!document.getElementById(id)) { st.cat = 'doc'; st.lv = 'all'; favOnly = false; q = ''; $('q').value = ''; $('qx').hidden = true; save('bm.sach', st); all(); }
+      var t = document.getElementById(id); if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 12, behavior: 'smooth' });
+      return;
+    }
     var s = e.target.closest('[data-fav]');
     if (s) {
       var id = s.getAttribute('data-fav'), k = fav.indexOf(id);
@@ -124,5 +208,5 @@
     var v = this.value; qt = setTimeout(function () { q = v.trim(); draw(); }, 120);
   });
   $('qx').addEventListener('click', function () { $('q').value = ''; q = ''; this.hidden = true; draw(); $('q').focus(); });
-  all();
+  all(); loadBooks();
 })();

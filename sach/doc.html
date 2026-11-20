@@ -41,7 +41,7 @@ html[data-theme="dark"] .pill input{background:rgba(0,0,0,.08)}
 .msg{max-width:520px;margin:40px auto;padding:22px;text-align:center;background:var(--bm-card);border-radius:22px;box-shadow:var(--bm-sh2)}
 .msg .e{font-size:44px}
 .msg a{display:inline-block;margin-top:10px;padding:10px 16px;border-radius:14px;background:var(--c);color:#fff;text-decoration:none;font-weight:900}
-.lic{text-align:center;font-size:12px;color:var(--bm-muted);padding:0 16px}
+.lic{text-align:center;font-size:12px;color:var(--bm-muted);padding:0 16px;overflow-wrap:anywhere;word-break:break-word}
 @media (max-width:420px){.tb .dl{display:none}}
 </style>
 </head>
@@ -79,12 +79,13 @@ html[data-theme="dark"] .pill input{background:rgba(0,0,0,.08)}
   // tên sách + giấy phép
   fetch('data/books.json',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){
     var b=(d.books||[]).filter(function(x){return x.file===f})[0]; if(!b) return;
-    $('ttl').textContent=b.title; document.title=b.title+' · Bánh Mì'; $('sub').textContent=b.group;
+    var t=P.get('t')||b.title; $('ttl').textContent=t; document.title=t+' · Bánh Mì'; $('sub').textContent=P.get('g')||b.group;
     $('lic').textContent='Nguồn: '+b.license+' · bản gốc: '+b.from;
   }).catch(function(){});
-  if($('ttl').textContent==='Đang mở sách…') $('ttl').textContent=decodeURIComponent(f.split('/').pop().replace(/^\d+-/,'').replace(/\.pdf$/,'').replace(/-/g,' '));
+  if(P.get('t')){ $('ttl').textContent=P.get('t'); $('sub').textContent=P.get('g')||''; }
+  else if($('ttl').textContent==='Đang mở sách…') $('ttl').textContent=decodeURIComponent(f.split('/').pop().replace(/^\d+-/,'').replace(/\.pdf$/,'').replace(/-/g,' '));
 
-  function width(){ return Math.min(window.innerWidth-16, 900)*zoom; }
+  function width(){ return Math.min(document.documentElement.clientWidth-16, 900)*zoom; }
   function layout(){
     var w=width();
     els.forEach(function(el,i){ var s=sizes[i]||sizes[0]; el.style.width=w+'px'; el.style.height=(w*s[1]/s[0])+'px'; });
