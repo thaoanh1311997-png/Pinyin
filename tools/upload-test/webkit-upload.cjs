@@ -44,7 +44,7 @@ const waitFor = async (p, fn, sec) => { for (let i = 0; i < sec; i++) { await p.
     // 2) Học video: tab File (PDF scan 30 trang, ảnh)
     for (const f of ['scan-30.pdf', 'trang.jpg']) {
       const { ctx, p } = await ctxFor(b, dev);
-      await p.goto(BASE + 'video/'); await p.waitForTimeout(1500); await p.evaluate(() => document.querySelector('#tabFile').click());
+      await p.goto(BASE + 'video/'); await p.waitForTimeout(1500); await p.evaluate(() => document.querySelector('[data-go=file]').click());
       const base = rss(); let peak = base; const iv = setInterval(() => { const r = rss(); if (r > peak) peak = r; }, 300);
       await p.setInputFiles('#docFile', path.join(T, f));
       let r = await waitFor(p, () => document.querySelector('#fStop').hidden && document.querySelector('#fMsg').textContent, 400);
