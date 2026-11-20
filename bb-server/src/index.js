@@ -1,4 +1,4 @@
-// Bánh Bao – máy chủ lấy phụ đề YouTube (Cloudflare Worker, miễn phí)
+// Bánh Mì – máy chủ lấy phụ đề YouTube (Cloudflare Worker, miễn phí)
 // Dán toàn bộ file này vào Cloudflare Worker rồi bấm Deploy.
 // Dùng: https://<tên>.workers.dev/?v=<mã video>
 
@@ -139,7 +139,7 @@ export default {
     if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
     const url = new URL(req.url);
     const id = (url.searchParams.get('v') || '').trim();
-    if (!/^[\w-]{11}$/.test(id)) return json({ ok: true, hello: 'Bánh Bao caption server. Use ?v=VIDEO_ID' });
+    if (!/^[\w-]{11}$/.test(id)) return json({ ok: true, hello: 'Bánh Mì caption server. Use ?v=VIDEO_ID' });
     const cache = caches.default, key = new Request('https://bb-cache/' + id + '/v4');
     const hit = await cache.match(key); if (hit) return hit;
     const errs = [];

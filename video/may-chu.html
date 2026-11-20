@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bánh Bao · Máy chủ phụ đề</title>
+<title>Bánh Mì · Máy chủ phụ đề</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#F3F5F7;--card:#fff;--ink:#17202A;--muted:#6B7684;--green:#12A66A;--gd:#0C8653;--soft:#E1F6EB;--line:#E3E7EC}
@@ -46,7 +46,7 @@ $('#save').onclick=async()=>{
   $('#msg').textContent='Đang thử…';
   try{const d=await (await fetch(u+'/?v=dQw4w9WgXcQ')).json();
     try{localStorage.setItem('bb.srv',u);}catch(e){}
-    $('#msg').innerHTML=d&&(d.ok||d.errors)?(d.ok?'Chạy rồi! Lấy thử được '+(d.lines||[]).length+' câu. Giờ dán link YouTube vào web là có phụ đề. ':'Máy chủ chạy rồi, nhưng YouTube đang chặn nó lấy phụ đề. Gửi ảnh chụp chỗ này cho Claude nha: '+String(d.errors||'').slice(0,300))+' <a href="./">Về Bánh Bao</a>':'Máy chủ chưa đúng mã, xem lại bước 2.';
+    $('#msg').innerHTML=d&&(d.ok||d.errors)?(d.ok?'Chạy rồi! Lấy thử được '+(d.lines||[]).length+' câu. Giờ dán link YouTube vào web là có phụ đề. ':'Máy chủ chạy rồi, nhưng YouTube đang chặn nó lấy phụ đề. Gửi ảnh chụp chỗ này cho Claude nha: '+String(d.errors||'').slice(0,300))+' <a href="./">Về Bánh Mì</a>':'Máy chủ chưa đúng mã, xem lại bước 2.';
   }catch(e){$('#msg').textContent='Không gọi được máy chủ. Kiểm tra lại link hoặc bước 2.';}
 };
 </script></body></html>

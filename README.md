@@ -7,7 +7,7 @@ Link: https://thaoanh1311997-png.github.io/Pinyin/
 - Nghĩa tiếng Việt: CVDICT của Phong Phan (CC BY-SA 4.0), file `dict.txt` được rút gọn từ CVDICT nên cũng theo giấy phép CC BY-SA 4.0.
 - Âm Hán Việt: hanviet-pinyin-words (MIT).
 
-## Bánh Bao · Học tiếng Trung qua video
+## Bánh Mì · Học tiếng Trung qua video
 
 Link: https://thaoanh1311997-png.github.io/Pinyin/video/
 
