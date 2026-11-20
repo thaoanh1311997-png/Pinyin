@@ -1559,7 +1559,7 @@ async function rowsToLines(rows){
   return lines;
 }
 // Supadata transcript API (free 100 requests/month, user's own key)
-const SD_DEFAULT='';
+const SD_DEFAULT='sd_60eac8f2f50a130b891b945cd2323c8d';
 (()=>{try{const k=new URLSearchParams(location.search).get('sdk');if(k&&k.length>10){localStorage.setItem('bb.sdkey',k);history.replaceState(null,'',location.pathname);}}catch(e){}})();
 function sdKey(){try{return localStorage.getItem('bb.sdkey')||SD_DEFAULT;}catch(e){return SD_DEFAULT;}}
 async function fromSupadata(id,onWait){
