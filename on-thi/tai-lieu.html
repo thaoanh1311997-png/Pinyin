@@ -188,7 +188,7 @@ table.bi col.num{width:28px}
 </style>
 </head>
 <body>
-<script src="../shared/nav.js?v=13"></script>
+<script src="../shared/nav.js?v=14"></script>
 <div class="bar"><div class="in">
   <a class="back" href="./" aria-label="Về trang ra đề">←</a>
   <div><div class="t">Tài liệu ôn</div><div class="s" id="barSub">Dịch song ngữ · Luyện dịch · Ngữ pháp</div></div>
@@ -275,9 +275,9 @@ function loadDocs(){
   });
 }
 function drawDocs(){
-  $("#docs").innerHTML=DOCS.map(function(d){return '<button class="chip'+(cur===d&&$("#upView").classList.contains("hidden")?' on':'')+'" data-doc="'+esc(d.id)+'">'+(d.builtin||d.pack?'📘 ':(d.pending&&d.pending.length?'⏳ ':'📄 '))+esc(d.name)+'</button>'}).join("")+'<button class="chip add" data-add>＋ Thêm tài liệu</button>';
+  $("#docs").innerHTML=DOCS.map(function(d){return '<button class="chip'+(cur===d&&$("#upView").classList.contains("hidden")?' on':'')+'" data-doc="'+esc(d.id)+'">'+(d.builtin||d.pack?'📘 ':(d.pending&&d.pending.length?'⏳ ':'📄 '))+esc(d.name)+'</button>'}).join("")+'<button class="chip add" data-add>＋ Thêm tài liệu</button>'+(DOCS.some(function(d){return d.pack})?'':'<button class="chip add" data-pk>🔑 Mở sách có sẵn</button>');
 }
-$("#docs").onclick=function(e){ var t=e.target.closest("button"); if(!t) return; if(t.dataset.add!=null){ showUpload(); return; } var d=DOCS.filter(function(x){return x.id===t.dataset.doc})[0]; if(d) openDoc(d); };
+$("#docs").onclick=function(e){ var t=e.target.closest("button"); if(!t) return; if(t.dataset.add!=null){ showUpload(); return; } if(t.dataset.pk!=null){ askPack(); return; } var d=DOCS.filter(function(x){return x.id===t.dataset.doc})[0]; if(d) openDoc(d); };
 
 function openDoc(d){
   cur=d; ls("tl.doc",d.id); $("#upView").classList.add("hidden"); $("#viewer").classList.remove("hidden"); $("#printBtn").classList.remove("hidden");
@@ -525,6 +525,10 @@ function initPacks(){
     })); });
   }).catch(function(){});
 }
+/* mở bằng chìa khoá đã gửi riêng (dán link hoặc mã), máy nhớ luôn */
+function askPack(){ var v=prompt("Dán link chìa khoá sách vào đây (chỉ cần 1 lần trên máy này):"); if(!v) return; var m=String(v).match(/[0-9a-f]{64}/i);
+  if(!m){ toast("Chưa đúng link chìa khoá, dán lại nha"); return; } toast("Đang mở sách…");
+  tryPack(unhex(m[0].toLowerCase())).then(function(d){ if(!d){ toast("Link chìa khoá chưa đúng, dán lại nha"); return; } return usePack(d); }).catch(function(){ toast("Chưa mở được, thử lại nha"); }); }
 function usePack(d){
   d.created=Date.now(); ls("tl.sel."+d.id,null); SCAN_ID++;
   return dbPut(d).then(function(){ return dropOldCopies(d); }).then(function(){ $("#pickPanel").classList.add("hidden"); $("#fileInfo").classList.add("hidden"); RAW=null; ls("tl.doc",d.id); return loadDocs(); })

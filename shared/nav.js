@@ -236,3 +236,20 @@
     if (cur.id !== 'home') { tv[cur.id] = 1; localStorage.setItem('bm.today', JSON.stringify(tv)); }
   } catch (e) {}
 })();
+
+/* ---------- tự cập nhật bản mới (nhất là khi mở từ biểu tượng ngoài màn hình chính) ---------- */
+(function () {
+  if (!window.fetch || location.protocol.indexOf('http') !== 0) return;
+  var key = 'bm.ver:' + location.pathname, last = 0;
+  function check() {
+    var now = Date.now(); if (now - last < 60000) return; last = now;
+    fetch(location.pathname, { cache: 'reload' }).then(function (r) {
+      var v = r.headers.get('etag') || r.headers.get('last-modified'); if (!r.ok || !v) return;
+      var old = null; try { old = localStorage.getItem(key); localStorage.setItem(key, v); } catch (e) { return; }
+      if (old && old !== v) location.reload();
+    }).catch(function () {});
+  }
+  check();
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') check(); });
+  window.addEventListener('pageshow', function (e) { if (e.persisted) check(); });
+})();
