@@ -1077,5 +1077,16 @@ example();
 // warm the dictionary shortly after load, so the first tap is instant
 setTimeout(loadDict,1500);
 window.__handleFiles=handleFiles;
+// mở sẵn sách từ tủ "Tài liệu miễn phí": ?src=../sach/books/…pdf&p=<trang> (chỉ file cùng trang web)
+(function(){
+  const P=new URLSearchParams(location.search), src=P.get('src');
+  if(!src||!/^\.\.\/sach\/books\/[^?#]+\.pdf$/i.test(src)||/\.\.\/.*\.\./.test(src.slice(3))) return;
+  const p=Math.max(1,parseInt(P.get('p'))||1);
+  $('pFrom').value=p; $('pTo').value=p+2;
+  status('Đang tải sách…',0);
+  fetch(src).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob();}).then(b=>{
+    handleFiles([new File([b],decodeURIComponent(src.split('/').pop()),{type:'application/pdf'})]);
+  }).catch(e=>status('Không tải được sách ('+e.message+').'));
+})();
 })();
 </script>

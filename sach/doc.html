@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script src="../shared/nav-head.js?v=13"></script>
+<title>Đọc sách · Bánh Mì</title>
+<meta name="theme-color" content="#FFF7EC">
+<link rel="icon" href="../shared/banhmi.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../shared/banhmi-180.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap">
+<style>
+:root{--c:#5E9A2B;--cd:#3F7417;--f:Nunito,system-ui,-apple-system,"Segoe UI",sans-serif}
+html[data-theme="dark"]{--c:#7DBE45;--cd:#A9D86E}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bm-bg2);color:var(--bm-ink);font:700 15px/1.45 var(--f);-webkit-text-size-adjust:100%}
+button,a{font:inherit;-webkit-tap-highlight-color:transparent;color:inherit}
+.bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px;padding:8px max(12px,env(safe-area-inset-left,0px));background:var(--bm-glass);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--bm-line)}
+.back{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:14px;background:var(--bm-card);text-decoration:none;font-size:18px;box-shadow:var(--bm-sh1)}
+.ttl{flex:1;min-width:0}
+.ttl b{display:block;font-size:15px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ttl small{display:block;font-size:12px;color:var(--bm-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb{display:flex;gap:6px;flex:none}
+.tb button,.tb a{border:0;min-width:40px;height:40px;padding:0 10px;border-radius:14px;background:var(--bm-card);box-shadow:var(--bm-sh1);font-weight:900;font-size:15px;cursor:pointer;display:grid;place-items:center;text-decoration:none}
+.tb .py{background:var(--c);color:#fff;box-shadow:0 3px 0 var(--cd)}
+html[data-theme="dark"] .tb .py{color:#1B1410}
+.pages{display:flex;flex-direction:column;align-items:center;gap:12px;padding:14px 8px calc(90px + env(safe-area-inset-bottom,0px))}
+.pg{position:relative;background:#fff;box-shadow:0 4px 18px -8px rgba(60,30,10,.35);border-radius:6px;overflow:hidden;max-width:100%}
+.pg canvas{display:block;width:100%;height:100%}
+.pg .n{position:absolute;right:8px;bottom:6px;font-size:11px;color:#9A8576;background:rgba(255,255,255,.85);padding:1px 7px;border-radius:99px}
+.pg.load::after{content:"";position:absolute;inset:0;margin:auto;width:28px;height:28px;border-radius:50%;border:3px solid #E8DccF;border-top-color:var(--c);animation:sp 0.8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.pill{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:4px;background:#3B2414;color:#fff;border-radius:99px;padding:4px;box-shadow:0 8px 24px -10px rgba(0,0,0,.5)}
+html[data-theme="dark"] .pill{background:#F7EBDD;color:#2A1E16}
+.pill button{border:0;background:transparent;color:inherit;width:40px;height:38px;border-radius:99px;font-size:17px;cursor:pointer}
+.pill button:active{background:rgba(255,255,255,.15)}
+.pill input{width:46px;height:32px;border:0;border-radius:10px;text-align:center;font:900 15px var(--f);background:rgba(255,255,255,.15);color:inherit}
+html[data-theme="dark"] .pill input{background:rgba(0,0,0,.08)}
+.pill span{font-size:14px;opacity:.85;padding-right:6px}
+.msg{max-width:520px;margin:40px auto;padding:22px;text-align:center;background:var(--bm-card);border-radius:22px;box-shadow:var(--bm-sh2)}
+.msg .e{font-size:44px}
+.msg a{display:inline-block;margin-top:10px;padding:10px 16px;border-radius:14px;background:var(--c);color:#fff;text-decoration:none;font-weight:900}
+.lic{text-align:center;font-size:12px;color:var(--bm-muted);padding:0 16px}
+@media (max-width:420px){.tb .dl{display:none}}
+</style>
+</head>
+<body>
+<script src="../shared/nav.js?v=13"></script>
+<div class="bar">
+  <a class="back" href="./" aria-label="Về Tài liệu miễn phí">‹</a>
+  <div class="ttl"><b id="ttl">Đang mở sách…</b><small id="sub"></small></div>
+  <div class="tb">
+    <button id="zo" type="button" aria-label="Thu nhỏ">−</button>
+    <button id="zi" type="button" aria-label="Phóng to">+</button>
+    <a id="dl" class="dl" href="#" download aria-label="Tải file PDF">⬇</a>
+    <a id="py" class="py" href="#" title="Mở trang này trong Đọc PDF có Pinyin">拼</a>
+  </div>
+</div>
+<div id="pages" class="pages"></div>
+<p class="lic" id="lic"></p>
+<div class="pill" id="pill" hidden>
+  <button id="prev" type="button" aria-label="Trang trước">‹</button>
+  <input id="pno" type="number" inputmode="numeric" min="1" aria-label="Số trang"><span id="pn">/ 0</span>
+  <button id="next" type="button" aria-label="Trang sau">›</button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var P=new URLSearchParams(location.search), f=P.get('f')||'';
+  function fail(t){ $('ttl').textContent='Không mở được sách'; $('pages').innerHTML='<div class="msg"><div class="e">🥖💭</div><p>'+t+'</p><a href="./">‹ Về tủ sách</a></div>'; }
+  if(!/^books\/[\w\-\/一-鿿%.]+\.pdf$/i.test(f)||/\.\./.test(f)){ fail('Link sách không đúng.'); return; }
+  if(!window.pdfjsLib){ fail('Không tải được bộ đọc PDF. Kiểm tra mạng rồi thử lại nha.'); return; }
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+  var KEY='bm.sach.pg.'+f, zoom=1, doc=null, N=0, sizes=[], els=[], done={}, cur=1;
+  try{ zoom=+localStorage.getItem('bm.sach.zoom')||1; }catch(e){}
+  $('dl').href=f; $('py').href='../pdf/?src='+encodeURIComponent('../sach/'+f)+'&p=1';
+  // tên sách + giấy phép
+  fetch('data/books.json',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){
+    var b=(d.books||[]).filter(function(x){return x.file===f})[0]; if(!b) return;
+    $('ttl').textContent=b.title; document.title=b.title+' · Bánh Mì'; $('sub').textContent=b.group;
+    $('lic').textContent='Nguồn: '+b.license+' · bản gốc: '+b.from;
+  }).catch(function(){});
+  if($('ttl').textContent==='Đang mở sách…') $('ttl').textContent=decodeURIComponent(f.split('/').pop().replace(/^\d+-/,'').replace(/\.pdf$/,'').replace(/-/g,' '));
+
+  function width(){ return Math.min(window.innerWidth-16, 900)*zoom; }
+  function layout(){
+    var w=width();
+    els.forEach(function(el,i){ var s=sizes[i]||sizes[0]; el.style.width=w+'px'; el.style.height=(w*s[1]/s[0])+'px'; });
+  }
+  function render(i){
+    if(done[i]===zoom) return; done[i]=zoom;
+    var el=els[i]; el.classList.add('load');
+    doc.getPage(i+1).then(function(page){
+      var v1=page.getViewport({scale:1}); sizes[i]=[v1.width,v1.height];
+      var w=width(), dpr=Math.min(window.devicePixelRatio||1,2.5), sc=w/v1.width*dpr, vp=page.getViewport({scale:sc});
+      el.style.height=(w*v1.height/v1.width)+'px';
+      var c=document.createElement('canvas'); c.width=Math.floor(vp.width); c.height=Math.floor(vp.height);
+      return page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise.then(function(){
+        var old=el.querySelector('canvas'); if(old) el.removeChild(old); el.insertBefore(c,el.firstChild); el.classList.remove('load');
+      });
+    }).catch(function(){ done[i]=0; el.classList.remove('load'); });
+  }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ var i=+e.target.dataset.i; render(i); if(i+1<N) render(i+1); } });
+  },{rootMargin:'600px 0px'});
+  function setCur(){
+    var mid=window.innerHeight/2, best=cur;
+    for(var i=0;i<N;i++){ var r=els[i].getBoundingClientRect(); if(r.top<=mid&&r.bottom>=mid){best=i+1;break;} if(r.top>mid){best=Math.max(1,i);break;} }
+    if(best!==cur){ cur=best; $('pno').value=cur; try{localStorage.setItem(KEY,cur)}catch(e){} $('py').href='../pdf/?src='+encodeURIComponent('../sach/'+f)+'&p='+cur; }
+  }
+  function go(p){ p=Math.max(1,Math.min(N,p|0)); var el=els[p-1]; if(el) window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-64}); }
+  pdfjsLib.getDocument({url:f,cMapUrl:'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',cMapPacked:true}).promise.then(function(d){
+    doc=d; N=d.numPages; $('pn').textContent='/ '+N; $('pno').max=N; $('pill').hidden=false;
+    return d.getPage(1).then(function(p){ var v=p.getViewport({scale:1}); for(var i=0;i<N;i++) sizes[i]=[v.width,v.height]; });
+  }).then(function(){
+    var box=$('pages'), h='';
+    for(var i=0;i<N;i++) h+='<div class="pg load" data-i="'+i+'"><span class="n">'+(i+1)+'</span></div>';
+    box.innerHTML=h; els=[].slice.call(box.children); layout(); els.forEach(function(el){io.observe(el)});
+    var last=1; try{last=+localStorage.getItem(KEY)||1}catch(e){}
+    $('pno').value=1; if(last>1){ setTimeout(function(){go(last)},50); }
+    window.addEventListener('scroll',function(){ clearTimeout(setCur.t); setCur.t=setTimeout(setCur,80); },{passive:true});
+  }).catch(function(e){ fail('File sách chưa sẵn sàng hoặc bị lỗi ('+(e&&e.message||e)+').'); });
+
+  function rezoom(z){ var p=cur; zoom=Math.max(.6,Math.min(2.5,z)); try{localStorage.setItem('bm.sach.zoom',zoom)}catch(e){} layout(); done={}; els.forEach(function(el){io.unobserve(el);io.observe(el)}); go(p); }
+  $('zi').onclick=function(){rezoom(zoom+.25)}; $('zo').onclick=function(){rezoom(zoom-.25)};
+  $('prev').onclick=function(){go(cur-1)}; $('next').onclick=function(){go(cur+1)};
+  $('pno').addEventListener('change',function(){go(+this.value)});
+  var rt; window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){var p=cur;layout();done={};els.forEach(function(el){io.unobserve(el);io.observe(el)});go(p)},200)});
+})();
+</script>
+</body>
+</html>

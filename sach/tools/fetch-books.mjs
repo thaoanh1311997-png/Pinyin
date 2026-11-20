@@ -12,13 +12,11 @@ const L = (...a) => { const s = a.join(' '); log.push(s); console.log(s); };
 const SOURCES = [
   { id: 'mit', group: 'Giáo trình MIT · Learning Chinese', license: 'CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)', lv: ['so', 'trung'],
     start: 'https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/pages/online-textbook/',
-    follow: /\/courses\/res-21g-003[^"#?]*\/resources\/[^"#?]+/, max: 40 },
-  { id: 'truyen', group: 'Truyện tranh cổ điển (Global Storybooks)', license: 'CC BY 4.0 / CC BY-NC 3.0 · Global Storybooks', lv: ['so'],
-    start: 'https://global-asp.github.io/storybooks-classics/stories/zh', follow: /storybooks-classics\/stories\/zh\/[^"#?]+/, max: 45 },
+    follow: /\/courses\/res-21g-003[^"#?]*\/(resources|pages\/online-textbook)\/[^"#?]+/, all: true, max: 60 },
   { id: 'truyen-ca', group: 'Truyện tranh thiếu nhi (Storybooks Canada)', license: 'CC BY 4.0 · Global Storybooks', lv: ['so'],
     start: ['1','2','3','4','5'].map(n => `https://www.storybookscanada.globalstorybooks.net/stories/zh/level${n}/`), follow: /\/stories\/zh\/(?!level)[^"#?]+/, max: 45 },
   { id: 'fsi', group: 'FSI Standard Chinese', license: 'Phạm vi công cộng · US Foreign Service Institute', lv: ['so', 'trung'],
-    start: 'https://www.fsi-language-courses.org/fsi-standard-chinese-a-modular-approach/', follow: null, max: 12 }
+    start: 'https://www.fsi-language-courses.org/fsi-standard-chinese-a-modular-approach/', follow: null, skip: /sc-structure/i, max: 13 }
 ];
 
 async function get(url, type = 'text') {
@@ -30,6 +28,11 @@ function hrefs(html, base) {
   const out = []; const re = /href\s*=\s*["']([^"']+)["']/gi; let m;
   while ((m = re.exec(html))) { try { out.push(new URL(m[1].replace(/&amp;/g, '&'), base).href); } catch (e) {} }
   return [...new Set(out)];
+}
+function anchors(html, base) {
+  const out = {}; const re = /<a\b[^>]*href\s*=\s*["']([^"']+\.pdf[^"']*)["'][^>]*>([\s\S]*?)<\/a>/gi; let m;
+  while ((m = re.exec(html))) { try { const u = new URL(m[1].replace(/&amp;/g, '&'), base).href; const t = m[2].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); if (t && !out[u]) out[u] = t; } catch (e) {} }
+  return out;
 }
 function titleOf(html) {
   const h = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || html.match(/<title>([\s\S]*?)<\/title>/i) || [])[1] || '';
@@ -64,7 +67,8 @@ for (const src of SOURCES) {
     let html; try { html = await get(start); } catch (e) { L('ERR start', e.message); continue; }
     const links = hrefs(html, start);
     L('links on start page:', links.length);
-    for (const u of links.filter(u => /\.pdf(\?|$)/i.test(u))) { if (n >= src.max) break; await grab(src, u, decodeURIComponent(path.basename(new URL(u).pathname, '.pdf')).replace(/[_-]+/g, ' '), ++n); }
+    const an = anchors(html, start);
+    for (const u of links.filter(u => /\.pdf(\?|$)/i.test(u) && !(src.skip && src.skip.test(u)))) { if (n >= src.max) break; await grab(src, u, an[u] || decodeURIComponent(path.basename(new URL(u).pathname, '.pdf')).replace(/[_-]+/g, ' '), ++n); }
     if (!src.follow) continue;
     const pages = links.filter(u => src.follow.test(u) && !/\.pdf(\?|$)/i.test(u));
     L('pages to follow:', pages.length);
@@ -73,7 +77,8 @@ for (const src of SOURCES) {
       let h; try { h = await get(pg); } catch (e) { L('ERR page', e.message); continue; }
       const pdfs = hrefs(h, pg).filter(u => /\.pdf(\?|$)/i.test(u));
       if (!pdfs.length) { L('  no pdf on', pg); continue; }
-      await grab(src, pdfs[0], titleOf(h), ++n);
+      if (src.all) { const an = anchors(h, pg); for (const u of pdfs) { if (n >= src.max) break; if (!books.some(b => b.from === u)) await grab(src, u, (an[u] || '') + ' · ' + path.basename(new URL(u).pathname, '.pdf').replace(/^[0-9a-f]{32}_/, ''), ++n); } }
+      else await grab(src, pdfs[0], titleOf(h), ++n);
     }
   }
 }
