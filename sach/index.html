@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script src="../shared/nav-head.js?v=13"></script>
+<title>Tài liệu miễn phí · Bánh Mì</title>
+<meta name="description" content="Tủ sách tiếng Trung miễn phí, hợp pháp: audio giáo trình Hán ngữ, Boya, HSK 3.0, đề thi mẫu chính thức, truyện đọc theo cấp độ, từ điển và khoá học mở.">
+<meta name="theme-color" content="#FFF7EC">
+<link rel="icon" href="../shared/banhmi.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../shared/banhmi-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@500;700&family=Nunito:wght@600;700;800;900&display=swap">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<script src="../shared/nav.js?v=13"></script>
+<div class="floaty" aria-hidden="true"><span style="left:6%;top:22%">书</span><span style="right:8%;top:38%;animation-delay:-4s">读</span><span style="left:12%;top:70%;animation-delay:-8s">学</span><span style="right:16%;top:84%;animation-delay:-2s">文</span></div>
+
+<div class="wrap">
+  <header class="hero in">
+    <div class="hero-in">
+      <div class="hero-tx">
+        <span class="hi" lang="zh-CN">📚 免费资料</span>
+        <h1>Tài liệu <em>miễn phí</em></h1>
+        <p>Sách, audio, đề thi từ nguồn chính chủ. Bấm là mở, không cần đăng ký.</p>
+      </div>
+      <div class="buddy" id="buddy" title="Chạm thử nè"><div class="bubble">一起读书吧！</div></div>
+    </div>
+    <div class="stat" id="stat"></div>
+  </header>
+
+  <section class="tools in" style="animation-delay:.06s">
+    <label class="search"><span aria-hidden="true">🔎</span><input id="q" type="search" placeholder="Tìm: Boya, HSK 3, truyện, audio…" autocomplete="off" enterkeyhint="search"><button id="qx" type="button" aria-label="Xoá tìm kiếm" hidden>✕</button></label>
+    <div class="cats" id="cats" role="tablist" aria-label="Chọn loại tài liệu"></div>
+    <div class="lvrow">
+      <div class="seg" id="lv" role="radiogroup" aria-label="Trình độ"></div>
+      <button class="fav-only" id="favOnly" type="button" aria-pressed="false">⭐<span class="fl"> Đã lưu</span> <b id="favN">0</b></button>
+    </div>
+  </section>
+
+  <main id="list" aria-live="polite"></main>
+
+  <details class="why bm-rv">
+    <summary>🛡️ Vì sao có sách chỉ có audio, không có file PDF?</summary>
+    <div>
+      <p>Mấy bộ như <b>Hán ngữ 汉语教程</b>, <b>Boya 博雅汉语</b>, <b>HSK标准教程</b> là sách có bản quyền, nhà xuất bản không cho tải sách miễn phí. Những file PDF trôi nổi trên mạng là bản lậu, hay bị thiếu trang, lỗi chữ, có khi kèm quảng cáo độc.</p>
+      <p>Nên ở đây Bánh Mì chỉ để <b>phần nhà xuất bản cho miễn phí</b>: audio, bài tập, đề mẫu. Sách giấy thì mua bản có bản quyền ở nhà sách hoặc gian hàng chính hãng. Nếu đã có file sách của mình, mở ở mục <a data-bm-go="pdf" href="../pdf/">📄 Đọc PDF có Pinyin</a> để hiện pinyin từng chữ nha.</p>
+      <div class="legend" id="legend"></div>
+    </div>
+  </details>
+  <p class="foot">Link mở ở tab mới. Thấy link nào hỏng thì nhắn Bánh Mì sửa nhé 🥖</p>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="data.js?v=1"></script>
+<script src="app.js?v=1"></script>
+</body>
+</html>

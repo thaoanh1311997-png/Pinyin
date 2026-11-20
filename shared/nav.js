@@ -10,6 +10,7 @@
     { id: 'onthi', path: 'on-thi/', name: 'Ôn thi trên lớp', short: 'Ôn thi', emo: '📝', c: '#F2643F', c2: '#FFAE8A', d: 'Ra đề, chấm điểm, tài liệu ôn' },
     { id: 'vo', path: 'vo/', name: 'Vở tập viết', short: 'Tập viết', emo: '✍️', c: '#7C5CDB', c2: '#B39DFF', d: 'Tạo vở ô chữ, in hoặc viết trên iPad' },
     { id: 'game', path: 'game/', name: 'Mini game', short: 'Game', emo: '🎮', c: '#2F7BEA', c2: '#7FB6FF', d: 'Nối chữ, dạo phố, đoán chữ, ghép bộ thủ' },
+    { id: 'sach', path: 'sach/', name: 'Tài liệu miễn phí', short: 'Tài liệu', emo: '📚', c: '#5E9A2B', c2: '#A9D86E', d: 'Giáo trình, đề HSK, truyện đọc, audio chính chủ' },
     { id: 'pdf', path: 'pdf/', name: 'Đọc PDF có Pinyin', short: 'PDF', emo: '📄', c: '#1593A6', c2: '#6FD0DE', d: 'Mở giáo trình, hiện pinyin từng chữ' }
   ];
   var rel = location.href.indexOf(BASE) === 0 ? location.pathname.slice(new URL(BASE).pathname.length) : '';
@@ -36,7 +37,7 @@
     '#bm-nav .bm-logo span{background:linear-gradient(90deg,#C76A12,#E8577E);-webkit-background-clip:text;background-clip:text;color:transparent}' +
     '#bm-nav .bm-sp{flex:1}' +
     '#bm-nav .bm-pills{display:none;gap:4px;align-items:center}' +
-    '#bm-nav .bm-pill{display:flex;align-items:center;gap:6px;height:36px;padding:0 13px;border-radius:999px;text-decoration:none;color:#5E4A3C;font-weight:800;font-size:14.5px;transition:background .2s,transform .2s}' +
+    '#bm-nav .bm-pill{display:flex;align-items:center;gap:6px;height:36px;padding:0 13px;border-radius:999px;text-decoration:none;color:#5E4A3C;font-weight:800;font-size:14.5px;white-space:nowrap;transition:background .2s,transform .2s}' +
     '#bm-nav .bm-pill:hover{background:rgba(255,255,255,.75);transform:translateY(-1px)}' +
     '#bm-nav .bm-pill.on{background:var(--bmc);color:#fff;box-shadow:0 4px 12px -4px var(--bmc)}' +
     '#bm-nav .bm-pill i{font-style:normal;font-size:17px;line-height:1}' +
@@ -46,7 +47,7 @@
     '#bm-nav .bm-chip span{overflow:hidden;text-overflow:ellipsis}' +
     '#bm-nav .bm-chip b{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--bmc);color:#fff;font-size:11px;margin-left:2px}' +
     '#bm-nav .bm-short{display:none}@media (max-width:399px){#bm-nav .bm-full{display:none}#bm-nav .bm-short{display:inline}}' +
-    '@media (min-width:1040px){#bm-nav .bm-pills{display:flex}#bm-nav .bm-chip{display:none}}' +
+    '@media (min-width:1180px){#bm-nav .bm-pills{display:flex}#bm-nav .bm-chip{display:none}}' +
     '#bm-nav .bm-theme{position:relative;flex:none;width:38px;height:38px;border-radius:50%;border:0;padding:0;background:#fff;cursor:pointer;display:grid;place-items:center;box-shadow:0 2px 0 rgba(0,0,0,.06),0 4px 12px -6px rgba(120,60,20,.5);transition:transform .15s,background .3s}' +
     '#bm-nav .bm-theme:active{transform:scale(.9)}' +
     '#bm-nav .bm-theme svg{position:absolute;width:22px;height:22px;transition:transform .45s cubic-bezier(.3,1.3,.5,1),opacity .3s}' +
@@ -90,6 +91,7 @@
     '#bm-sheet .bm-card.on::before{content:"Đang ở đây";position:absolute;right:10px;top:10px;font-size:11px;font-weight:900;background:rgba(255,255,255,.95);color:var(--bmc);padding:2px 8px;border-radius:99px;z-index:1}' +
     '#bm-sheet .bm-home{grid-column:1/-1;flex-direction:row;align-items:center;gap:10px;padding:11px 14px}' +
     '#bm-sheet .bm-home b{margin:0}' +
+    '#bm-sheet .bm-wide{grid-column:1/-1}' +
     '@keyframes bmPop{to{opacity:1;transform:none}}' +
     /* chuyển trang nhẹ nhàng: mỗi mục một kiểu trượt/mờ riêng, ngắn ~0.3s */
     '@keyframes bmFade{from{opacity:0}}' +
@@ -143,8 +145,9 @@
   var sheet = null;
   function buildSheet() {
     sheet = document.createElement('div'); sheet.id = 'bm-sheet'; sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-label', 'Chuyển mục học');
+    var odd = (SECS.length - 1) % 2;
     var cards = SECS.slice(1).map(function (s, i) {
-      return '<a class="bm-card' + (s === cur ? ' on' : '') + '" data-bm-go="' + s.id + '" href="' + url(s) + '" style="--bmc:' + s.c + ';--bmc2:' + s.c2 + ';animation-delay:' + (0.06 + i * 0.06) + 's"><i>' + s.emo + '</i><b>' + s.name + '</b><small>' + s.d + '</small></a>';
+      return '<a class="bm-card' + (s === cur ? ' on' : '') + (odd && i === SECS.length - 2 ? ' bm-wide' : '') + '" data-bm-go="' + s.id + '" href="' + url(s) + '" style="--bmc:' + s.c + ';--bmc2:' + s.c2 + ';animation-delay:' + (0.06 + i * 0.06) + 's"><i>' + s.emo + '</i><b>' + s.name + '</b><small>' + s.d + '</small></a>';
     }).join('');
     var h = SECS[0];
     cards += '<a class="bm-card bm-home' + (cur === h ? ' on' : '') + '" data-bm-go="home" href="' + BASE + '" style="--bmc:' + h.c + ';--bmc2:' + h.c2 + ';animation-delay:.32s"><i>🏠</i><b>Về trang chủ Bánh Mì</b></a>';
