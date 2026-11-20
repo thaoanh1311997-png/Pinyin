@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-20T09:35:17.740Z",
+ "updated": "2026-11-20T09:37:28.171Z",
  "books": [
   {
    "src": "mit",
@@ -9,8 +9,8 @@
     "so",
     "trung"
    ],
-   "title": "pdf 368 kB · MITRES_21G_003S11_ack_pfe",
-   "file": "books/mit/01-pdf-368-kb-mitres-21g-003s11-ack-pfe.pdf",
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/01-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
    "bytes": 376366,
    "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/b3dc57500a4cccbb985f5bbed48ccaf4_MITRES_21G_003S11_ack_pfe.pdf"
   },
@@ -22,8 +22,8 @@
     "so",
     "trung"
    ],
-   "title": "pdf 311 kB · MITRES_21G_003S11_toc",
-   "file": "books/mit/02-pdf-311-kb-mitres-21g-003s11-toc.pdf",
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/02-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
    "bytes": 318610,
    "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/2b54a654efa499bda977ef90772e9be7_MITRES_21G_003S11_toc.pdf"
   },
@@ -35,8 +35,8 @@
     "so",
     "trung"
    ],
-   "title": "pdf 309 kB · MITRES_21G_003S11_char_hts",
-   "file": "books/mit/03-pdf-309-kb-mitres-21g-003s11-char-hts.pdf",
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/03-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
    "bytes": 316366,
    "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/31d70b1507af0fda7044306b356df3d0_MITRES_21G_003S11_char_hts.pdf"
   },
@@ -48,10 +48,387 @@
     "so",
     "trung"
    ],
-   "title": "pdf 116 kB · MITRES_21G_003S11_grid",
-   "file": "books/mit/04-pdf-116-kb-mitres-21g-003s11-grid.pdf",
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/04-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
    "bytes": 119017,
    "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/360fd54104f3cf7ebfc810fffb00f6d7_MITRES_21G_003S11_grid.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/05-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 527538,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/fb58b03bb67c7c92fbc5b74b4c18aa1d_MITRES_21G_003S11_bgd.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/06-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 407079,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/01af9a25b804b7d58a26fa580691df4f_MITRES_21G_003S11_pinyin.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/07-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 432734,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/e997e90bb0ac79ea7d75c3d2f5fcf8b7_MITRES_21G_003S11_unit01.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/08-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 463206,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/5d7516aefe6bf45dfb045687830fe27f_MITRES_21G_003S11_char01.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/09-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 197164,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/a4f5f6b484e74683573bb08b2d06a528_MITRES_21G_003S11_stroke01.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/10-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 677652,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/533eaf6eb819cabf6473006586f6ab86_MITRES_21G_003S11_unit02.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/11-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 591437,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/97915adbcca432319d8793d2530e5768_MITRES_21G_003S11_char02.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/12-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 268296,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/8e5447f5f9f7eac9067d77137f6a091d_MITRES_21G_003S11_stroke02.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/13-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 572759,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/7413ef603a88dea457928c1f6f8230bc_MITRES_21G_003S11_unit03.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/14-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 670703,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/a6720b220f227f0e1480dac9f8403ace_MITRES_21G_003S11_char03.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/15-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 269266,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/0723d792115acd627d48a4b446f7a8a3_MITRES_21G_003S11_stroke03.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/16-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 856979,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/d235cb303b7d11e1e24cdcd322ac15bc_MITRES_21G_003S11_unit04.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/17-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 677078,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/1a42c42b09b2f74c35bd155172d7e483_MITRES_21G_003S11_char04.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/18-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 221682,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/e094f8304878f1a7f838c1c01d80ba99_MITRES_21G_003S11_stroke04.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/19-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 870905,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/4b76c3d5e014f4833ef5efa2642b58ae_MITRES_21G_003S11_unit05.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/20-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 774631,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/2d09c5507a355ed4a4e5134dc45c1d35_MITRES_21G_003S11_char05.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/21-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 326830,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/c3407f2c94d055a46cfb3e93bc981e56_MITRES_21G_003S11_stroke05.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/22-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 732629,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/ce12c83210a6eacc170b3034f922ddde_MITRES_21G_003S11_unit06.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/23-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 680076,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/07799fde3377f93ecfe0fbf36e6bb77c_MITRES_21G_003S11_char06.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/24-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 676819,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/7dc831597d90a922f5a7b5f7e66dcbc0_MITRES_21G_003S11_stroke06.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/25-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 734425,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/9ac5a3ef1007db50644516dee9a1d249_MITRES_21G_003S11_unit07.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/26-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 800842,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/fd0990f4a876b71715713ecf463f50f8_MITRES_21G_003S11_char07.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/27-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 307800,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/3501ead3310624dd24d33611923f94e1_MITRES_21G_003S11_stroke07.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/28-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 1088347,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/3fb7ed18b72df30602aba28f4e94abe6_MITRES_21G_003S11_unit08.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/29-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 996255,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/56eae0bfe4eb82d1e827bc1b19dff93d_MITRES_21G_003S11_unit09.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/30-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 1231995,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/d8ba98f52de3d20fe7096e9f1fb74839_MITRES_21G_003S11_unit10.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/31-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 795739,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/830f96513ffa15abb4fb233b04554cd2_MITRES_21G_003S11_unit11.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/32-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 756894,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/ba5b510d36377261339bda90e19a462d_MITRES_21G_003S11_unit12.pdf"
+  },
+  {
+   "src": "mit",
+   "group": "Giáo trình MIT · Learning Chinese",
+   "license": "CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
+   "file": "books/mit/33-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "bytes": 822158,
+   "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/693b21cf4163e7579d4f303385b4b09c_MITRES_21G_003S11_menu.pdf"
   },
   {
    "src": "truyen-ca",
@@ -541,21 +918,8 @@
     "so",
     "trung"
    ],
-   "title": "Structure Text",
-   "file": "books/fsi/01-structure-text.pdf",
-   "bytes": 24710,
-   "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/SC%20Structure.pdf"
-  },
-  {
-   "src": "fsi",
-   "group": "FSI Standard Chinese",
-   "license": "Phạm vi công cộng · US Foreign Service Institute",
-   "lv": [
-    "so",
-    "trung"
-   ],
-   "title": "Introduction Text",
-   "file": "books/fsi/02-introduction-text.pdf",
+   "title": "0002 FSI StandardChinese ResourceModule StudentText",
+   "file": "books/fsi/02-0002-fsi-standardchinese-resourcemodule-studenttext.pdf",
    "bytes": 9506819,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/0002-FSI-StandardChinese-ResourceModule-StudentText.pdf"
   },
@@ -567,8 +931,8 @@
     "so",
     "trung"
    ],
-   "title": "Student Text",
-   "file": "books/fsi/03-student-text.pdf",
+   "title": "FSI StandardChinese Module01ORN StudentText",
+   "file": "books/fsi/03-fsi-standardchinese-module01orn-studenttext.pdf",
    "bytes": 2264935,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2001%20ORN/FSI-StandardChinese-Module01ORN-StudentText.pdf"
   },
@@ -580,8 +944,8 @@
     "so",
     "trung"
    ],
-   "title": "Student Workbook",
-   "file": "books/fsi/04-student-workbook.pdf",
+   "title": "FSI StandardChinese Module01ORN StudentWorkbook",
+   "file": "books/fsi/04-fsi-standardchinese-module01orn-studentworkbook.pdf",
    "bytes": 1036714,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2001%20ORN/FSI-StandardChinese-Module01ORN-StudentWorkbook.pdf"
   },
@@ -593,8 +957,8 @@
     "so",
     "trung"
    ],
-   "title": "Student Text",
-   "file": "books/fsi/05-student-text.pdf",
+   "title": "FSI StandardChinese Module02BIO StudentText",
+   "file": "books/fsi/05-fsi-standardchinese-module02bio-studenttext.pdf",
    "bytes": 4040576,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2002%20BIO/FSI-StandardChinese-Module02BIO-StudentText.pdf"
   },
@@ -606,8 +970,8 @@
     "so",
     "trung"
    ],
-   "title": "Student Workbook",
-   "file": "books/fsi/06-student-workbook.pdf",
+   "title": "FSI StandardChinese Module02BIO StudentWorkbook",
+   "file": "books/fsi/06-fsi-standardchinese-module02bio-studentworkbook.pdf",
    "bytes": 2538428,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2002%20BIO/FSI-StandardChinese-Module02BIO-StudentWorkbook.pdf"
   },
@@ -619,8 +983,8 @@
     "so",
     "trung"
    ],
-   "title": "Student Text",
-   "file": "books/fsi/07-student-text.pdf",
+   "title": "FSI StandardChinese Module03MON StudentText",
+   "file": "books/fsi/07-fsi-standardchinese-module03mon-studenttext.pdf",
    "bytes": 11776025,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2003%20MON/FSI-StandardChinese-Module03MON-StudentText.pdf"
   },
@@ -632,8 +996,8 @@
     "so",
     "trung"
    ],
-   "title": "Student Workbook",
-   "file": "books/fsi/08-student-workbook.pdf",
+   "title": "FSI StandardChinese Module03MON StudentWorkbook",
+   "file": "books/fsi/08-fsi-standardchinese-module03mon-studentworkbook.pdf",
    "bytes": 9044879,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2003%20MON/FSI-StandardChinese-Module03MON-StudentWorkbook.pdf"
   },
@@ -645,8 +1009,8 @@
     "so",
     "trung"
    ],
-   "title": "Student Text",
-   "file": "books/fsi/09-student-text.pdf",
+   "title": "FSI StandardChinese Module04DIR StudentText",
+   "file": "books/fsi/09-fsi-standardchinese-module04dir-studenttext.pdf",
    "bytes": 11416893,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2004%20DIR/FSI-StandardChinese-Module04DIR-StudentText.pdf"
   },
@@ -658,8 +1022,8 @@
     "so",
     "trung"
    ],
-   "title": "Student Workbook",
-   "file": "books/fsi/10-student-workbook.pdf",
+   "title": "FSI StandardChinese Module04DIR StudentWorkbook",
+   "file": "books/fsi/10-fsi-standardchinese-module04dir-studentworkbook.pdf",
    "bytes": 9444734,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2004%20DIR/FSI-StandardChinese-Module04DIR-StudentWorkbook.pdf"
   },
@@ -671,8 +1035,8 @@
     "so",
     "trung"
    ],
-   "title": "Student Text",
-   "file": "books/fsi/11-student-text.pdf",
+   "title": "FSI StandardChinese Module05TRN StudentText",
+   "file": "books/fsi/11-fsi-standardchinese-module05trn-studenttext.pdf",
    "bytes": 4097626,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2005%20TRN/FSI-StandardChinese-Module05TRN-StudentText.pdf"
   },
@@ -684,8 +1048,8 @@
     "so",
     "trung"
    ],
-   "title": "Student Workbook",
-   "file": "books/fsi/12-student-workbook.pdf",
+   "title": "FSI StandardChinese Module05TRN StudentWorkbook",
+   "file": "books/fsi/12-fsi-standardchinese-module05trn-studentworkbook.pdf",
    "bytes": 3159027,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2005%20TRN/FSI-StandardChinese-Module05TRN-StudentWorkbook.pdf"
   },
@@ -697,8 +1061,8 @@
     "so",
     "trung"
    ],
-   "title": "Student Text",
-   "file": "books/fsi/13-student-text.pdf",
+   "title": "FSI StandardChinese Module06MTG StudentText",
+   "file": "books/fsi/13-fsi-standardchinese-module06mtg-studenttext.pdf",
    "bytes": 3747826,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2006%20MTG/FSI-StandardChinese-Module06MTG-StudentText.pdf"
   }

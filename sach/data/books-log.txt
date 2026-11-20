@@ -5,10 +5,127 @@ pages to follow: 8
   no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/pages/online-textbook/part-ii-units-5-7-character-lessons-4-6/
   no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/pages/online-textbook/part-iii-units-8-10-character-lesson-7/
   no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/pages/online-textbook/part-iv-units-11-12-menu-supplement/
-  OK 0.38MB books/mit/01-pdf-368-kb-mitres-21g-003s11-ack-pfe.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/b3dc57500a4cccbb985f5bbed48ccaf4_MITRES_21G_003S11_ack_pfe.pdf
-  OK 0.32MB books/mit/02-pdf-311-kb-mitres-21g-003s11-toc.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/2b54a654efa499bda977ef90772e9be7_MITRES_21G_003S11_toc.pdf
-  OK 0.32MB books/mit/03-pdf-309-kb-mitres-21g-003s11-char-hts.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/31d70b1507af0fda7044306b356df3d0_MITRES_21G_003S11_char_hts.pdf
-  OK 0.12MB books/mit/04-pdf-116-kb-mitres-21g-003s11-grid.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/360fd54104f3cf7ebfc810fffb00f6d7_MITRES_21G_003S11_grid.pdf
+  OK 0.38MB books/mit/01-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/b3dc57500a4cccbb985f5bbed48ccaf4_MITRES_21G_003S11_ack_pfe.pdf
+  OK 0.32MB books/mit/02-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/2b54a654efa499bda977ef90772e9be7_MITRES_21G_003S11_toc.pdf
+  OK 0.32MB books/mit/03-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/31d70b1507af0fda7044306b356df3d0_MITRES_21G_003S11_char_hts.pdf
+  OK 0.12MB books/mit/04-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/360fd54104f3cf7ebfc810fffb00f6d7_MITRES_21G_003S11_grid.pdf
+next level pages: 122
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/part_i/
+  OK 0.53MB books/mit/05-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/fb58b03bb67c7c92fbc5b74b4c18aa1d_MITRES_21G_003S11_bgd.pdf
+  OK 0.41MB books/mit/06-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/01af9a25b804b7d58a26fa580691df4f_MITRES_21G_003S11_pinyin.pdf
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/0-2-3/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/0-3-1/
+  OK 0.43MB books/mit/07-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/e997e90bb0ac79ea7d75c3d2f5fcf8b7_MITRES_21G_003S11_unit01.pdf
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/1-10-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/1-10_ex3c/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/1-10_ex3de/
+  OK 0.46MB books/mit/08-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/5d7516aefe6bf45dfb045687830fe27f_MITRES_21G_003S11_char01.pdf
+  OK 0.20MB books/mit/09-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/a4f5f6b484e74683573bb08b2d06a528_MITRES_21G_003S11_stroke01.pdf
+  OK 0.68MB books/mit/10-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/533eaf6eb819cabf6473006586f6ab86_MITRES_21G_003S11_unit02.pdf
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/2-4/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/2-7-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/2-9/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/2-11-3/
+  OK 0.59MB books/mit/11-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/97915adbcca432319d8793d2530e5768_MITRES_21G_003S11_char02.pdf
+  OK 0.27MB books/mit/12-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/8e5447f5f9f7eac9067d77137f6a091d_MITRES_21G_003S11_stroke02.pdf
+  OK 0.57MB books/mit/13-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/7413ef603a88dea457928c1f6f8230bc_MITRES_21G_003S11_unit03.pdf
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/3-4-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/3-7-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/3-12/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/3-13-1/
+  OK 0.67MB books/mit/14-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/a6720b220f227f0e1480dac9f8403ace_MITRES_21G_003S11_char03.pdf
+  OK 0.27MB books/mit/15-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/0723d792115acd627d48a4b446f7a8a3_MITRES_21G_003S11_stroke03.pdf
+  OK 0.86MB books/mit/16-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/d235cb303b7d11e1e24cdcd322ac15bc_MITRES_21G_003S11_unit04.pdf
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/4-2-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/4-10/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/4-11-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/pages/online-textbook/part-i-introduction-units-1-4-character-lessons-1-3/#
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/part_ii/
+  OK 0.68MB books/mit/17-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/1a42c42b09b2f74c35bd155172d7e483_MITRES_21G_003S11_char04.pdf
+  OK 0.22MB books/mit/18-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/e094f8304878f1a7f838c1c01d80ba99_MITRES_21G_003S11_stroke04.pdf
+  OK 0.87MB books/mit/19-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/4b76c3d5e014f4833ef5efa2642b58ae_MITRES_21G_003S11_unit05.pdf
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/5-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/5-4-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/5-6/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/5-7-2/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/5-14/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/5-15/
+  OK 0.77MB books/mit/20-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/2d09c5507a355ed4a4e5134dc45c1d35_MITRES_21G_003S11_char05.pdf
+  OK 0.33MB books/mit/21-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/c3407f2c94d055a46cfb3e93bc981e56_MITRES_21G_003S11_stroke05.pdf
+  OK 0.73MB books/mit/22-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/ce12c83210a6eacc170b3034f922ddde_MITRES_21G_003S11_unit06.pdf
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/6-3-5/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/6-9/
+  OK 0.68MB books/mit/23-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/07799fde3377f93ecfe0fbf36e6bb77c_MITRES_21G_003S11_char06.pdf
+  OK 0.68MB books/mit/24-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/7dc831597d90a922f5a7b5f7e66dcbc0_MITRES_21G_003S11_stroke06.pdf
+  OK 0.73MB books/mit/25-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/9ac5a3ef1007db50644516dee9a1d249_MITRES_21G_003S11_unit07.pdf
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/7-2-4/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/7-4/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/7-5/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/7-9-2/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/7-11/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/7-13/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/7-14/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/pages/online-textbook/part-ii-units-5-7-character-lessons-4-6/#
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/part_iii/
+  OK 0.80MB books/mit/26-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/fd0990f4a876b71715713ecf463f50f8_MITRES_21G_003S11_char07.pdf
+  OK 0.31MB books/mit/27-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/3501ead3310624dd24d33611923f94e1_MITRES_21G_003S11_stroke07.pdf
+  OK 1.09MB books/mit/28-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/3fb7ed18b72df30602aba28f4e94abe6_MITRES_21G_003S11_unit08.pdf
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/8-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/8-2/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/8-3-2/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/8-3-3/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/8-4-4/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/8-5-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/8-6/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/8-6-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/8-7-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/8-8/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/8-9/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/8-11/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/8-12-1/
+  OK 1.00MB books/mit/29-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/56eae0bfe4eb82d1e827bc1b19dff93d_MITRES_21G_003S11_unit09.pdf
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/9-1-2/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/9-3/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/9-4-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/9-4-3/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/9-4-5/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/9-6/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/9-7/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/9-9/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/9-10/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/9-10-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/9-11/
+  OK 1.23MB books/mit/30-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/d8ba98f52de3d20fe7096e9f1fb74839_MITRES_21G_003S11_unit10.pdf
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/10-4/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/10-8-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/10-8-3/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/10-9/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/10-10/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/10-10-3/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/10-11/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/10-12/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/10-12-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/10-13/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/10-15/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/10-17-1/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/10-18/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/pages/online-textbook/part-iii-units-8-10-character-lesson-7/#
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/part_iv/
+  OK 0.80MB books/mit/31-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/830f96513ffa15abb4fb233b04554cd2_MITRES_21G_003S11_unit11.pdf
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/11-2/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/11-4/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/11-6/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/11-7/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/11-8/
+  OK 0.76MB books/mit/32-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/ba5b510d36377261339bda90e19a462d_MITRES_21G_003S11_unit12.pdf
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/12-2/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/12-3/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/12-4/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/12-6/
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/resources/12-7/
+  OK 0.82MB books/mit/33-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf <- https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/693b21cf4163e7579d4f303385b4b09c_MITRES_21G_003S11_menu.pdf
+  no pdf on https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/pages/online-textbook/part-iv-units-11-12-menu-supplement/#
+next level pages: 0
 ## truyen-ca
 links on start page: 41
 pages to follow: 15
@@ -27,6 +144,7 @@ pages to follow: 15
   OK 0.38MB books/truyen-ca/13-你在做什么-what-are-you-doing-qu-est-ce-que-tu-fais.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0008_what.pdf
   OK 0.78MB books/truyen-ca/14-我的小猫猫在哪儿-where-is-my-cat-ou-est-mon-chat.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0009_where.pdf
   OK 0.51MB books/truyen-ca/15-我的身体-my-body-mon-corps.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0112_body.pdf
+next level pages: 0
 links on start page: 37
 pages to follow: 11
   OK 0.80MB books/truyen-ca/16-为什么河马没有毛发-why-hippos-have-no-hair-pourquoi-les-hippopotames-.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0111_hippos.pdf
@@ -40,6 +158,7 @@ pages to follow: 11
   OK 0.52MB books/truyen-ca/24-一个很高的人-a-very-tall-man-un-homme-tres-grand.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0001_tall.pdf
   OK 0.65MB books/truyen-ca/25-赞玛很棒-zama-is-great-zama-est-formidable.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0095_zama.pdf
   OK 0.74MB books/truyen-ca/26-山羊-野狗-和水牛-goat-dog-and-cow-chevre-chien-et-vache.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0004_goat.pdf
+next level pages: 0
 links on start page: 34
 pages to follow: 8
   OK 1.70MB books/truyen-ca/27-驴孩子-donkey-child-l-enfant-ane.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0201_donkey.pdf
@@ -50,29 +169,32 @@ pages to follow: 8
   OK 0.41MB books/truyen-ca/32-鸡和千足虫-chicken-and-millipede-la-poule-et-le-millepatte.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0141_chicken.pdf
   OK 0.58MB books/truyen-ca/33-诺孜贝儿和三根头发-nozibele-and-the-three-hairs-nozibele-et-les-trois.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0066_nozibele.pdf
   OK 1.41MB books/truyen-ca/34-萨可满的歌声-sakima-s-song-la-chanson-de-sakima.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0315_sakima.pdf
+next level pages: 0
 links on start page: 30
 pages to follow: 4
   OK 0.70MB books/truyen-ca/35-福思的姐姐说了什么-what-vusi-s-sister-said-que-va-dire-la-s-ur-de-vus.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0291_vusi.pdf
   OK 0.56MB books/truyen-ca/36-指蜜鸟的复仇-the-honeyguide-s-revenge-la-revanche-de-l-indicateur.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0072_honeyguide.pdf
   OK 0.60MB books/truyen-ca/37-奶奶的香蕉-grandma-s-bananas-les-bananes-de-grand-mere.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0294_grandma.pdf
   OK 0.92MB books/truyen-ca/38-和奶奶一起过暑假-holidays-with-grandmother-les-vacances-avec-grand-m.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0243_holidays.pdf
+next level pages: 0
 links on start page: 28
 pages to follow: 2
   OK 0.90MB books/truyen-ca/39-辛波薇亚-simbegwire-simbegwire.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0052_simbegwire.pdf
   OK 1.08MB books/truyen-ca/40-玛格威-magozwe-magozwe.pdf <- https://www.storybookscanada.globalstorybooks.net/pdf/zh/zh-0262_magozwe.pdf
+next level pages: 0
 ## fsi
 links on start page: 363
-  OK 0.02MB books/fsi/01-structure-text.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/SC%20Structure.pdf
-  OK 9.51MB books/fsi/02-introduction-text.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/0002-FSI-StandardChinese-ResourceModule-StudentText.pdf
-  OK 2.26MB books/fsi/03-student-text.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2001%20ORN/FSI-StandardChinese-Module01ORN-StudentText.pdf
-  OK 1.04MB books/fsi/04-student-workbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2001%20ORN/FSI-StandardChinese-Module01ORN-StudentWorkbook.pdf
-  OK 4.04MB books/fsi/05-student-text.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2002%20BIO/FSI-StandardChinese-Module02BIO-StudentText.pdf
-  OK 2.54MB books/fsi/06-student-workbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2002%20BIO/FSI-StandardChinese-Module02BIO-StudentWorkbook.pdf
-  OK 11.78MB books/fsi/07-student-text.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2003%20MON/FSI-StandardChinese-Module03MON-StudentText.pdf
-  OK 9.04MB books/fsi/08-student-workbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2003%20MON/FSI-StandardChinese-Module03MON-StudentWorkbook.pdf
-  OK 11.42MB books/fsi/09-student-text.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2004%20DIR/FSI-StandardChinese-Module04DIR-StudentText.pdf
-  OK 9.44MB books/fsi/10-student-workbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2004%20DIR/FSI-StandardChinese-Module04DIR-StudentWorkbook.pdf
-  OK 4.10MB books/fsi/11-student-text.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2005%20TRN/FSI-StandardChinese-Module05TRN-StudentText.pdf
-  OK 3.16MB books/fsi/12-student-workbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2005%20TRN/FSI-StandardChinese-Module05TRN-StudentWorkbook.pdf
-  OK 3.75MB books/fsi/13-student-text.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2006%20MTG/FSI-StandardChinese-Module06MTG-StudentText.pdf
-TOTAL 102.6MB, 57 files
+  skip (tiny) https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/SC%20Structure.pdf
+  OK 9.51MB books/fsi/02-0002-fsi-standardchinese-resourcemodule-studenttext.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/0002-FSI-StandardChinese-ResourceModule-StudentText.pdf
+  OK 2.26MB books/fsi/03-fsi-standardchinese-module01orn-studenttext.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2001%20ORN/FSI-StandardChinese-Module01ORN-StudentText.pdf
+  OK 1.04MB books/fsi/04-fsi-standardchinese-module01orn-studentworkbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2001%20ORN/FSI-StandardChinese-Module01ORN-StudentWorkbook.pdf
+  OK 4.04MB books/fsi/05-fsi-standardchinese-module02bio-studenttext.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2002%20BIO/FSI-StandardChinese-Module02BIO-StudentText.pdf
+  OK 2.54MB books/fsi/06-fsi-standardchinese-module02bio-studentworkbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2002%20BIO/FSI-StandardChinese-Module02BIO-StudentWorkbook.pdf
+  OK 11.78MB books/fsi/07-fsi-standardchinese-module03mon-studenttext.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2003%20MON/FSI-StandardChinese-Module03MON-StudentText.pdf
+  OK 9.04MB books/fsi/08-fsi-standardchinese-module03mon-studentworkbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2003%20MON/FSI-StandardChinese-Module03MON-StudentWorkbook.pdf
+  OK 11.42MB books/fsi/09-fsi-standardchinese-module04dir-studenttext.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2004%20DIR/FSI-StandardChinese-Module04DIR-StudentText.pdf
+  OK 9.44MB books/fsi/10-fsi-standardchinese-module04dir-studentworkbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2004%20DIR/FSI-StandardChinese-Module04DIR-StudentWorkbook.pdf
+  OK 4.10MB books/fsi/11-fsi-standardchinese-module05trn-studenttext.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2005%20TRN/FSI-StandardChinese-Module05TRN-StudentText.pdf
+  OK 3.16MB books/fsi/12-fsi-standardchinese-module05trn-studentworkbook.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2005%20TRN/FSI-StandardChinese-Module05TRN-StudentWorkbook.pdf
+  OK 3.75MB books/fsi/13-fsi-standardchinese-module06mtg-studenttext.pdf <- https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2006%20MTG/FSI-StandardChinese-Module06MTG-StudentText.pdf
+TOTAL 121.0MB, 85 files
