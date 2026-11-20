@@ -1,6 +1,8 @@
 /* Bánh Mì · Dạo phố — các cảnh và đồ vật (soạn tay).
    o: [chữ, pinyin, nghĩa, emoji hoặc #icon, x%, y%, cỡ (1 = bình thường)]   — x, y là vị trí chân đồ vật trên khung cảnh
-   d: cửa sang cảnh khác [id cảnh, x%, y%] */
+   o[7] (nếu có): id cuộc nói chuyện trong talk.js — đồ vật là một người, chạm vào thì nói chuyện được
+   d: cửa sang cảnh khác [id cảnh, x%, y%, chữ trên biển]
+   sh: tên ngắn trên thanh bản đồ */
 window.GAME_WORLD = {
  start: 'pho',
  scenes: {
@@ -11,7 +13,7 @@ window.GAME_WORLD = {
     ['红绿灯','hónglǜdēng','đèn giao thông','🚦',6,62,1],
     ['公共汽车','gōnggòng qìchē','xe buýt','🚌',24,66,1.3],
     ['出租车','chūzūchē','xe taxi','🚕',58,64,1.1],
-    ['汽车','qìchē','ô tô','🚗',84,70,1.1],
+    ['汽车','qìchē','ô tô','🚗',86,84,1.1],
     ['摩托车','mótuōchē','xe máy','🛵',40,74,1],
     ['自行车','zìxíngchē','xe đạp','🚲',70,80,1],
     ['树','shù','cái cây','🌳',92,47,1.3],
@@ -19,8 +21,9 @@ window.GAME_WORLD = {
     ['路灯','lùdēng','đèn đường','#lamppost',33,50,1],
     ['垃圾桶','lājītǒng','thùng rác','🗑️',52,90,0.8],
     ['太阳','tàiyáng','mặt trời','☀️',90,8,0.9],
-    ['云','yún','đám mây','☁️',22,8,1] ],
-   d: [['congvien',50,98,'公园']] },
+    ['云','yún','đám mây','☁️',22,8,1],
+    ['阿姨','āyí','cô (hàng xóm)','👵',30,90,1,'ayi'] ],
+   d: [['congvien',50,98,'公园'],['pho2',98,64,'市中心']] },
 
   nha: { zh:'客厅', p:'kètīng', vi:'Phòng khách', emo:'🛋️', bg:'living',
    o: [
@@ -35,7 +38,8 @@ window.GAME_WORLD = {
     ['台灯','táidēng','đèn bàn','#lamp',12,56,1],
     ['猫','māo','con mèo','🐈',20,84,0.9],
     ['书','shū','sách','📚',64,86,0.8],
-    ['花','huā','hoa','💐',88,90,0.9] ],
+    ['花','huā','hoa','💐',88,90,0.9],
+    ['老公','lǎogōng','chồng','👨',84,74,1.1,'laogong'] ],
    d: [['pho',50,99,'街上'],['bep',2,47,'厨房'],['phongngu',98,47,'卧室']] },
 
   bep: { zh:'厨房', p:'chúfáng', vi:'Nhà bếp', emo:'🍳', bg:'kitchen',
@@ -51,7 +55,8 @@ window.GAME_WORLD = {
     ['鸡蛋','jīdàn','trứng gà','🥚',30,86,0.8],
     ['米饭','mǐfàn','cơm','🍚',48,86,0.9],
     ['面包','miànbāo','bánh mì','🍞',66,86,0.9],
-    ['苹果','píngguǒ','quả táo','🍎',84,86,0.8] ],
+    ['苹果','píngguǒ','quả táo','🍎',84,86,0.8],
+    ['婆婆','pópo','mẹ chồng','👵',13,90,1,'popo'] ],
    d: [['nha',98,47,'客厅']] },
 
   phongngu: { zh:'卧室', p:'wòshì', vi:'Phòng ngủ', emo:'🛏️', bg:'bedroom',
@@ -113,13 +118,14 @@ window.GAME_WORLD = {
     ['蔬菜','shūcài','rau','🥬',64,54,0.9],
     ['打折','dǎ zhé','giảm giá','#sale',82,52,1],
     ['购物车','gòuwùchē','xe đẩy mua hàng','🛒',24,82,1.2],
-    ['收银台','shōuyíntái','quầy thu ngân','#cashier',74,80,1.4] ],
+    ['收银台','shōuyíntái','quầy thu ngân','#cashier',74,80,1.4],
+    ['售货员','shòuhuòyuán','nhân viên bán hàng','🧑‍💼',50,84,1,'shouhuo'] ],
    d: [['pho',50,99,'街上']] },
 
   truong: { zh:'教室', p:'jiàoshì', vi:'Lớp học', emo:'🏫', bg:'school',
    o: [
     ['黑板','hēibǎn','bảng đen','#board',46,30,1.8],
-    ['老师','lǎoshī','cô giáo','👩‍🏫',82,48,1.1],
+    ['老师','lǎoshī','cô giáo','👩‍🏫',82,48,1.1,'laoshi'],
     ['地图','dìtú','bản đồ','🗺️',88,20,0.9],
     ['钟','zhōng','đồng hồ','🕰️',12,30,0.8],
     ['学生','xuésheng','học sinh','🧑‍🎓',20,64,1],
@@ -130,13 +136,14 @@ window.GAME_WORLD = {
     ['铅笔','qiānbǐ','bút chì','✏️',32,90,0.8],
     ['橡皮','xiàngpí','cục tẩy','#eraser',50,90,0.7],
     ['尺子','chǐzi','cái thước','📏',66,90,0.8],
-    ['书包','shūbāo','cặp sách','🎒',84,86,0.9] ],
+    ['书包','shūbāo','cặp sách','🎒',84,86,0.9],
+    ['同学','tóngxué','bạn cùng lớp','👩',78,70,1,'xiaomei_xue'] ],
    d: [['pho',50,99,'街上']] },
 
   benhvien: { zh:'医院', p:'yīyuàn', vi:'Bệnh viện', emo:'🏥', bg:'hospital',
    o: [
-    ['医生','yīshēng','bác sĩ','🧑‍⚕️',22,50,1.1],
-    ['护士','hùshi','y tá','👩‍⚕️',78,50,1.1],
+    ['医生','yīshēng','bác sĩ','🧑‍⚕️',22,50,1.1,'yisheng'],
+    ['护士','hùshi','y tá','👩‍⚕️',78,50,1.1,'hushi'],
     ['病床','bìngchuáng','giường bệnh','🛏️',50,56,1.4],
     ['病人','bìngrén','bệnh nhân','🤒',50,44,0.8],
     ['药','yào','thuốc','💊',14,80,0.8],
@@ -151,7 +158,7 @@ window.GAME_WORLD = {
    o: [
     ['菜单','càidān','thực đơn','📋',14,26,0.9],
     ['厨师','chúshī','đầu bếp','🧑‍🍳',84,40,1.1],
-    ['服务员','fúwùyuán','nhân viên phục vụ','💁',16,58,1.1],
+    ['服务员','fúwùyuán','nhân viên phục vụ','💁',16,58,1.1,'fuwu'],
     ['桌子','zhuōzi','cái bàn','#table',50,70,1.5],
     ['饺子','jiǎozi','sủi cảo','🥟',36,58,0.8],
     ['面条','miàntiáo','mì sợi','🍜',50,56,0.8],
@@ -175,7 +182,156 @@ window.GAME_WORLD = {
     ['草','cǎo','cỏ','🌿',30,90,0.8],
     ['蝴蝶','húdié','con bướm','🦋',46,78,0.8],
     ['滑梯','huátī','cầu trượt','🛝',66,78,1.1],
-    ['狗','gǒu','con chó','🐕',88,88,0.9] ],
-   d: [['pho',50,2,'街上']] }
+    ['狗','gǒu','con chó','🐕',88,88,0.9],
+    ['朋友','péngyou','bạn bè','👩',84,72,1,'xiaomei_park'] ],
+   d: [['pho',50,2,'街上']] },
+
+  pho2: { zh:'市中心', p:'shì zhōngxīn', vi:'Trung tâm thành phố', sh:'Trung tâm', emo:'🚏', bg:'street2',
+   b: [['shudian','书店',9,'#5DB7D9'],['yinhang','银行',25.4,'#E9A23B'],['yaodian','药店',41.8,'#58C27D'],['kafei','咖啡馆',58.2,'#B9805A'],['youju','邮局',74.6,'#E86A6A'],['banshi','出入境',91,'#7C8FE0']],
+   o: [
+    ['公交车站','gōngjiāochē zhàn','bến xe buýt','🚏',23,82,1.25],
+    ['警察','jǐngchá','cảnh sát','👮',36,70,1.05,'jingcha'],
+    ['喷泉','pēnquán','đài phun nước','⛲',55,74,1.3],
+    ['滑板车','huábǎnchē','xe scooter (trẻ em)','🛴',76,76,0.9],
+    ['路牌','lùpái','biển chỉ đường','#signpost',92,84,1],
+    ['地铁','dìtiě','tàu điện ngầm','🚇',9,90,1],
+    ['雨伞','yǔsǎn','cái ô','☂️',44,90,0.8],
+    ['鸽子','gēzi','chim bồ câu','🕊️',63,90,0.75],
+    ['冰淇淋','bīngqílín','kem (ốc quế)','🍦',80,93,0.8] ],
+   d: [['pho',2,64,'街上'],['jichang',98,64,'机场']] },
+
+  shudian: { zh:'书店', p:'shūdiàn', vi:'Nhà sách', emo:'📚', bg:'book',
+   o: [
+    ['小说','xiǎoshuō','tiểu thuyết','📖',34,30,0.9],
+    ['词典','cídiǎn','từ điển','📘',50,30,0.9],
+    ['课本','kèběn','sách giáo khoa','📗',66,30,0.9],
+    ['地球仪','dìqiúyí','quả địa cầu','🌏',84,30,0.9],
+    ['绘本','huìběn','sách tranh (cho bé)','#picbook',34,54,0.9],
+    ['报纸','bàozhǐ','tờ báo','🗞️',50,54,0.9],
+    ['本子','běnzi','quyển vở','📒',66,54,0.8],
+    ['蜡笔','làbǐ','bút sáp màu','🖍️',82,54,0.8],
+    ['书架','shūjià','giá sách','#bookshelf',13,72,1.6],
+    ['店员','diànyuán','nhân viên cửa hàng','👨‍💼',50,80,1.05,'dianyuan'],
+    ['笔','bǐ','cây bút','🖊️',30,90,0.8],
+    ['书签','shūqiān','thẻ đánh dấu sách','🔖',72,90,0.8] ],
+   d: [['pho2',50,99,'市中心']] },
+
+  yinhang: { zh:'银行', p:'yínháng', vi:'Ngân hàng', emo:'🏦', bg:'bank',
+   o: [
+    ['密码','mìmǎ','mật khẩu, mã PIN','🔢',88,36,0.8],
+    ['职员','zhíyuán','nhân viên (văn phòng)','👩‍💼',50,51,1.1,'yinhang'],
+    ['取款机','qǔkuǎnjī','cây ATM','🏧',12,60,1.3],
+    ['人民币','Rénmínbì','Nhân dân tệ','💴',33,62,0.8],
+    ['美元','Měiyuán','đô la Mỹ','💵',67,62,0.8],
+    ['签名','qiānmíng','ký tên, chữ ký','✍️',82,62,0.8],
+    ['硬币','yìngbì','đồng xu','#coin',28,86,0.8],
+    ['钱包','qiánbāo','cái ví','👛',44,84,0.8],
+    ['存钱罐','cúnqiánguàn','heo đất (ống tiết kiệm)','🐷',64,86,0.9],
+    ['银行卡','yínhángkǎ','thẻ ngân hàng','💳',84,86,0.8] ],
+   d: [['pho2',50,99,'市中心']] },
+
+  yaodian: { zh:'药店', p:'yàodiàn', vi:'Nhà thuốc', emo:'💊', bg:'pharmacy',
+   o: [
+    ['感冒药','gǎnmàoyào','thuốc cảm','💊',30,30,0.9],
+    ['退烧药','tuìshāoyào','thuốc hạ sốt','#syrup',46,30,0.9],
+    ['维生素','wéishēngsù','vitamin','#pillbottle',62,30,0.9],
+    ['眼药水','yǎnyàoshuǐ','thuốc nhỏ mắt','💧',78,30,0.8],
+    ['创可贴','chuàngkětiē','băng cá nhân','🩹',30,54,0.8],
+    ['防晒霜','fángshàishuāng','kem chống nắng','🧴',46,54,0.9],
+    ['口罩','kǒuzhào','khẩu trang','😷',62,54,0.8],
+    ['体温计','tǐwēnjì','nhiệt kế','🌡️',78,54,0.8],
+    ['药剂师','yàojìshī','dược sĩ','👨‍⚕️',50,80,1.05,'yaoshi'],
+    ['处方','chǔfāng','đơn thuốc','📄',22,88,0.8],
+    ['购物篮','gòuwùlán','giỏ mua hàng','🧺',78,88,0.9] ],
+   d: [['pho2',50,99,'市中心']] },
+
+  kafei: { zh:'咖啡馆', p:'kāfēiguǎn', vi:'Quán cà phê', emo:'☕', bg:'cafe',
+   o: [
+    ['无线网','wúxiànwǎng','wifi','📶',60,27,0.8],
+    ['音乐','yīnyuè','âm nhạc','🎵',86,25,0.8],
+    ['服务员','fúwùyuán','nhân viên phục vụ','💁‍♂️',80,57,1.05,'kafei'],
+    ['植物','zhíwù','cây cảnh','🪴',10,58,1.2],
+    ['朋友','péngyou','bạn bè','👩',30,64,1,'xiaomei_cafe'],
+    ['咖啡','kāfēi','cà phê','☕',44,74,0.8],
+    ['奶茶','nǎichá','trà sữa','🧋',57,74,0.8],
+    ['果汁','guǒzhī','nước ép trái cây','🧃',72,80,0.8],
+    ['笔记本电脑','bǐjìběn diànnǎo','máy tính xách tay','💻',20,88,0.9],
+    ['蛋糕','dàngāo','bánh ngọt, bánh kem','🍰',40,90,0.8],
+    ['牛角面包','niújiǎo miànbāo','bánh sừng bò','🥐',62,90,0.8],
+    ['糖','táng','đường, kẹo','🍬',86,88,0.7] ],
+   d: [['pho2',50,99,'市中心']] },
+
+  youju: { zh:'邮局', p:'yóujú', vi:'Bưu điện', emo:'📮', bg:'post',
+   o: [
+    ['明信片','míngxìnpiàn','bưu thiếp','#postcard',80,27,0.9],
+    ['工作人员','gōngzuò rényuán','nhân viên','👩‍🦱',50,51,1.05,'youju'],
+    ['邮筒','yóutǒng','hòm thư','📮',11,62,1.3],
+    ['邮票','yóupiào','con tem','#stamp',34,61,0.8],
+    ['秤','chèng','cái cân','⚖️',70,61,0.9],
+    ['包裹','bāoguǒ','bưu kiện','📦',30,82,1.1],
+    ['快递','kuàidì','chuyển phát nhanh','🚚',72,82,1.1],
+    ['剪刀','jiǎndāo','cái kéo','✂️',14,90,0.8],
+    ['信','xìn','lá thư','💌',44,88,0.8],
+    ['信封','xìnfēng','phong bì','✉️',88,90,0.8] ],
+   d: [['pho2',50,99,'市中心']] },
+
+  banshi: { zh:'出入境大厅', p:'chūrùjìng dàtīng', vi:'Phòng làm hộ chiếu', sh:'Làm hộ chiếu', emo:'🛂', bg:'office',
+   o: [
+    ['屏幕','píngmù','màn hình','🖥️',80,30,1],
+    ['工作人员','gōngzuò rényuán','nhân viên','👨‍💼',50,51,1.05,'banshi'],
+    ['号码','hàomǎ','số thứ tự','🎫',12,60,0.8],
+    ['护照','hùzhào','hộ chiếu','#passport',33,61,0.8],
+    ['签证','qiānzhèng','thị thực, visa','#visa',67,61,0.8],
+    ['打印机','dǎyìnjī','máy in','🖨️',88,62,1],
+    ['表格','biǎogé','tờ khai, biểu mẫu','📝',22,84,0.9],
+    ['身份证','shēnfènzhèng','căn cước công dân','#idcard',38,90,0.8],
+    ['照片','zhàopiàn','ảnh, tấm ảnh','#idphoto',62,90,0.8],
+    ['文件','wénjiàn','giấy tờ, hồ sơ','📂',76,86,0.9],
+    ['笔','bǐ','cây bút','🖊️',90,90,0.8] ],
+   d: [['pho2',50,99,'市中心']] },
+
+  jichang: { zh:'机场', p:'jīchǎng', vi:'Sân bay', emo:'🛫', bg:'airport',
+   o: [
+    ['飞机','fēijī','máy bay','✈️',66,24,1.4],
+    ['航班','hángbān','chuyến bay (bảng giờ bay)','#flightboard',38,34,1.2],
+    ['工作人员','gōngzuò rényuán','nhân viên','👩‍💼',30,53,1,'zhiji'],
+    ['值机柜台','zhíjī guìtái','quầy làm thủ tục bay','#checkin',30,65,1.4],
+    ['免税店','miǎnshuìdiàn','cửa hàng miễn thuế','🛍️',10,70,0.9],
+    ['安检','ānjiǎn','kiểm tra an ninh','#scanner',62,64,1.5],
+    ['安检员','ānjiǎnyuán','nhân viên an ninh','👮‍♀️',80,66,1.05,'anjian'],
+    ['行李箱','xínglixiāng','va li','🧳',36,82,1.1],
+    ['矿泉水','kuàngquánshuǐ','nước khoáng','#water',14,90,0.8],
+    ['护照','hùzhào','hộ chiếu','#passport',54,88,0.8],
+    ['登机牌','dēngjīpái','thẻ lên máy bay','#boardingpass',68,90,0.8],
+    ['手提包','shǒutíbāo','túi xách tay','👜',84,90,0.9] ],
+   d: [['pho2',2,47,'市中心'],['feiji',98,47,'登机口']] },
+
+  feiji: { zh:'飞机上', p:'fēijī shang', vi:'Trên máy bay', emo:'✈️', bg:'plane',
+   o: [
+    ['云','yún','đám mây','☁️',26,30,0.8],
+    ['洗手间','xǐshǒujiān','nhà vệ sinh','🚻',56,30,0.8],
+    ['机长','jīzhǎng','cơ trưởng','👨‍✈️',74,44,1],
+    ['座位','zuòwèi','chỗ ngồi','💺',20,66,1.3],
+    ['空姐','kōngjiě','tiếp viên hàng không (nữ)','👩‍✈️',50,62,1.1,'kongjie'],
+    ['乘客','chéngkè','hành khách','🧔',80,64,1],
+    ['安全带','ānquándài','dây an toàn','#seatbelt',32,82,0.9],
+    ['毯子','tǎnzi','cái chăn (mỏng)','#blanket',12,90,0.9],
+    ['飞机餐','fēijī cān','suất ăn trên máy bay','🍱',50,86,0.9],
+    ['耳机','ěrjī','tai nghe','🎧',68,86,0.8] ],
+   d: [['jichang',2,47,'机场'],['jiudian',98,47,'酒店']] },
+
+  jiudian: { zh:'酒店', p:'jiǔdiàn', vi:'Khách sạn', emo:'🏨', bg:'hotel',
+   o: [
+    ['前台','qiántái','lễ tân','🙋‍♀️',34,52,1.05,'qiantai'],
+    ['电梯','diàntī','thang máy','#elevator',84,58,1.4],
+    ['房卡','fángkǎ','thẻ phòng','#keycard',20,60,0.8],
+    ['服务铃','fúwùlíng','chuông gọi phục vụ','🛎️',48,59,0.8],
+    ['行李箱','xínglixiāng','va li','🧳',62,62,1],
+    ['帽子','màozi','cái mũ','👒',14,88,0.9],
+    ['照相机','zhàoxiàngjī','máy ảnh','📷',30,84,0.8],
+    ['早餐','zǎocān','bữa sáng','🥞',46,82,0.9],
+    ['游泳池','yóuyǒngchí','bể bơi','🏊',70,84,1.1],
+    ['太阳镜','tàiyángjìng','kính râm','🕶️',88,90,0.8] ],
+   d: [['feiji',2,47,'飞机'],['pho2',50,99,'市中心']] }
  }
 };
