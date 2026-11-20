@@ -5,12 +5,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          mkdir out; cd out
-          i=0
-          for u in https://www.voachinese.com/rssfeeds https://feeds.bbci.co.uk/zhongwen/simp/rss.xml https://www.chinanews.com.cn/rss/scroll-news.xml https://www.chinanews.com.cn/rss/society.xml http://www.people.com.cn/rss/world.xml http://www.people.com.cn/rss/society.xml https://www.rfi.fr/cn/rss https://rss.dw.com/rdf/rss-chi-all https://cn.nytimes.com/rss/ "https://zh.wikinews.org/w/index.php?title=Special:NewPages&feed=rss" http://www.xinhuanet.com/politics/news_politics.xml https://www.chinadaily.com.cn/rss/china_rss.xml "https://translate.googleapis.com/translate_a/single?client=gtx&sl=zh-CN&tl=vi&dt=t&q=%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C"; do
-            i=$((i+1)); curl -sL -m 20 -A "Mozilla/5.0" -o f$i -w "$i %{http_code} %{size_download} $u\n" "$u" >> summary.txt || echo "$i FAIL $u" >> summary.txt
+          curl -sL -A "Mozilla/5.0" https://www.voachinese.com/rssfeeds | grep -o 'href="[^"]*api/[^"]*"[^<]*<[^<]*' | head -30
+          for u in http://www.people.com.cn/rss/society.xml http://www.xinhuanet.com/politics/news_politics.xml https://www.chinanews.com.cn/rss/society.xml https://feeds.bbci.co.uk/zhongwen/simp/rss.xml https://rss.dw.com/rdf/rss-chi-all; do
+            echo "=========== $u"; curl -sL -m 20 -A "Mozilla/5.0" "$u" | head -c 4000 | tail -c 2800 | tr '\n' ' '; echo
           done
-          grep -o 'https\?://[^"]*voachinese.com/api/[^"]*' f1 | sort -u | head -40 > voa_feeds.txt || true
-          cat summary.txt voa_feeds.txt
-      - uses: actions/upload-artifact@v4
-        with: {name: out, path: out}
+          echo "=========== VOA ARTICLE"
+          F=$(curl -sL -A "Mozilla/5.0" https://www.voachinese.com/rssfeeds | grep -o 'api/[a-z0-9_-]*' | head -1)
+          echo FEED $F
+          curl -sL -A "Mozilla/5.0" "https://www.voachinese.com/$F" | head -c 3000 | tr '\n' ' '
+          echo "=========== PEOPLE ARTICLE"
+          L=$(curl -sL -A "Mozilla/5.0" http://www.people.com.cn/rss/society.xml | grep -o '<link>[^<]*' | sed -n 3p | sed 's/<link>//')
+          echo $L; curl -sL -A "Mozilla/5.0" "$L" | iconv -f gbk -t utf-8 -c | grep -o '<p[^>]*>[^<]\{20,\}' | head -8
