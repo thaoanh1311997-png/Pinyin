@@ -5,13 +5,13 @@ on:
     branches: [upload-test]
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: 20}
-      - run: npm i --no-save playwright ffmpeg-static && npx playwright install webkit
+      - run: npm i --no-save playwright ffmpeg-static && npx playwright install --with-deps webkit
       - name: Make test media
         run: |
           F=$(node -p "require('ffmpeg-static')"); mkdir -p /tmp/m

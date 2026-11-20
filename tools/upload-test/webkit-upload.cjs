@@ -4,7 +4,7 @@ const { webkit, chromium, devices } = require('playwright');
 const H = process.env.HARNESS ? require(process.env.HARNESS) : null;
 const fs = require('fs'), cp = require('child_process'), os = require('os'), path = require('path');
 const FF = process.env.FFMPEG || 'ffmpeg', M = process.env.MEDIA || '.', T = __dirname, BASE = 'http://localhost:8765/Pinyin/';
-const rss = () => { try { return +cp.execSync("ps -eo rss,args | grep -i 'WebContent\\|WebProcess' | grep -v grep | awk '{s+=$1} END {print s+0}'").toString().trim() / 1024 | 0; } catch (e) { return 0; } };
+const rss = () => { try { return +cp.execSync("ps -eo rss,args | grep -i 'WebContent\\|WebProcess\\|WebKitWebProcess' | grep -v grep | awk '{s+=$1} END {print s+0}'").toString().trim() / 1024 | 0; } catch (e) { return 0; } };
 const OUT = []; const say = (...a) => { const s = a.join(' '); console.log(s); OUT.push(s); };
 let PIECES = [];
 async function ctxFor(b, dev) {
