@@ -1,8 +1,6 @@
 name: Kiểm tra chọn file trên WebKit (Safari)
 on:
   workflow_dispatch:
-  push:
-    branches: [upload-test]
 jobs:
   test:
     runs-on: ubuntu-latest
