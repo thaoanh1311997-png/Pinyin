@@ -12,7 +12,7 @@ const L = (...a) => { const s = a.join(' '); log.push(s); console.log(s); };
 const SOURCES = [
   { id: 'mit', group: 'Giáo trình MIT · Learning Chinese', license: 'CC BY-NC-SA 4.0 · MIT OpenCourseWare (Julian Wheatley)', lv: ['so', 'trung'],
     start: 'https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/pages/online-textbook/',
-    follow: /\/courses\/res-21g-003[^"#?]*\/(resources|pages\/online-textbook)\/[^"#?]+/, all: true, max: 60 },
+    follow: /\/courses\/res-21g-003[^"#?]*\/(resources|pages\/online-textbook)\/[^"#?]+/, all: true, depth: 2, max: 70 },
   { id: 'truyen-ca', group: 'Truyện tranh thiếu nhi (Storybooks Canada)', license: 'CC BY 4.0 · Global Storybooks', lv: ['so'],
     start: ['1','2','3','4','5'].map(n => `https://www.storybookscanada.globalstorybooks.net/stories/zh/level${n}/`), follow: /\/stories\/zh\/(?!level)[^"#?]+/, max: 45 },
   { id: 'fsi', group: 'FSI Standard Chinese', license: 'Phạm vi công cộng · US Foreign Service Institute', lv: ['so', 'trung'],
@@ -49,6 +49,7 @@ async function grab(src, pdfUrl, title, n) {
     if (len > MAX_FILE) { L('  skip (too big', (len / 1e6).toFixed(1) + 'MB)', pdfUrl); r.body?.cancel?.(); return; }
     const buf = Buffer.from(await r.arrayBuffer());
     if (buf.slice(0, 4).toString() !== '%PDF') { L('  skip (not pdf)', pdfUrl); return; }
+    if (buf.length < 50e3 && src.id === 'fsi') { L('  skip (tiny)', pdfUrl); return; }
     if (buf.length > MAX_FILE || total + buf.length > MAX_TOTAL) { L('  skip (size cap)', (buf.length / 1e6).toFixed(1) + 'MB', pdfUrl); return; }
     const name = String(n).padStart(2, '0') + '-' + slug(title || path.basename(new URL(pdfUrl).pathname, '.pdf')) + '.pdf';
     const rel = `books/${src.id}/${name}`;
@@ -68,17 +69,25 @@ for (const src of SOURCES) {
     const links = hrefs(html, start);
     L('links on start page:', links.length);
     const an = anchors(html, start);
-    for (const u of links.filter(u => /\.pdf(\?|$)/i.test(u) && !(src.skip && src.skip.test(u)))) { if (n >= src.max) break; await grab(src, u, an[u] || decodeURIComponent(path.basename(new URL(u).pathname, '.pdf')).replace(/[_-]+/g, ' '), ++n); }
+    for (const u of links.filter(u => /\.pdf(\?|$)/i.test(u) && !(src.skip && src.skip.test(u)))) { if (n >= src.max) break; await grab(src, u, (src.id === 'fsi' ? '' : an[u]) || decodeURIComponent(path.basename(new URL(u).pathname, '.pdf')).replace(/[_-]+/g, ' '), ++n); }
     if (!src.follow) continue;
-    const pages = links.filter(u => src.follow.test(u) && !/\.pdf(\?|$)/i.test(u));
-    L('pages to follow:', pages.length);
-    for (const pg of pages) {
-      if (n >= src.max) break;
-      let h; try { h = await get(pg); } catch (e) { L('ERR page', e.message); continue; }
-      const pdfs = hrefs(h, pg).filter(u => /\.pdf(\?|$)/i.test(u));
-      if (!pdfs.length) { L('  no pdf on', pg); continue; }
-      if (src.all) { const an = anchors(h, pg); for (const u of pdfs) { if (n >= src.max) break; if (!books.some(b => b.from === u)) await grab(src, u, (an[u] || '') + ' · ' + path.basename(new URL(u).pathname, '.pdf').replace(/^[0-9a-f]{32}_/, ''), ++n); } }
-      else await grab(src, pdfs[0], titleOf(h), ++n);
+    const seen = new Set([start]);
+    let queue = links.filter(u => src.follow.test(u) && !/\.pdf(\?|$)/i.test(u));
+    L('pages to follow:', queue.length);
+    for (let depth = 0; depth < (src.depth || 1) && queue.length; depth++) {
+      const next = [];
+      for (const pg of queue) {
+        if (n >= src.max) break;
+        if (seen.has(pg)) continue; seen.add(pg);
+        let h; try { h = await get(pg); } catch (e) { L('ERR page', e.message); continue; }
+        const hl = hrefs(h, pg);
+        const pdfs = hl.filter(u => /\.pdf(\?|$)/i.test(u));
+        if (depth + 1 < (src.depth || 1)) hl.filter(u => src.follow.test(u) && !/\.pdf(\?|$)/i.test(u) && !seen.has(u)).forEach(u => next.push(u));
+        if (!pdfs.length) { L('  no pdf on', pg); continue; }
+        if (src.all) { for (const u of pdfs) { if (n >= src.max) break; if (!books.some(b => b.from === u)) await grab(src, u, titleOf(h) + (pdfs.length > 1 ? ' · ' + path.basename(new URL(u).pathname, '.pdf').replace(/^[0-9a-f]{32}_/, '') : ''), ++n); } }
+        else await grab(src, pdfs[0], titleOf(h), ++n);
+      }
+      queue = [...new Set(next)]; L('next level pages:', queue.length);
     }
   }
 }
