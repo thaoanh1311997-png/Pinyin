@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script src="../shared/nav-head.js?v=12"></script>
+<title>Mini game · Bánh Mì</title>
+<meta name="description" content="Mini game học tiếng Trung: nối chữ, dạo phố chạm đồ vật nghe tiếng Trung, đoán chữ, ghép bộ thủ. Chọn từ theo HSK, giáo trình, đời sống, giao tiếp.">
+<meta name="theme-color" content="#FFF7EC">
+<link rel="icon" href="../shared/banhmi.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../shared/banhmi-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Noto+Sans+SC:wght@500;700&family=Nunito:wght@700;800;900&display=swap">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<script src="../shared/nav.js?v=12"></script>
+<main id="view" class="view"></main>
+<div id="sheet" class="sheet" hidden></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="data/life.js?v=1"></script>
+<script src="data/world.js?v=1"></script>
+<script src="app.js?v=1"></script>
+<script src="g-noi.js?v=1"></script>
+<script src="g-pho.js?v=1"></script>
+<script src="g-doan.js?v=1"></script>
+<script src="g-ghep.js?v=1"></script>
+<script>GAME.start();</script>
+</body>
+</html>

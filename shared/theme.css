@@ -157,3 +157,45 @@ html.bm-s-video[data-theme="dark"] .media.tts{background:linear-gradient(135deg,
 html.bm-s-pdf .hero{background:radial-gradient(120% 140% at 100% 0%,#5CC8D6 0%,transparent 55%),radial-gradient(90% 120% at 0% 100%,#0F6F80 0%,transparent 60%),linear-gradient(135deg,#1593A6,#127F91);box-shadow:0 20px 50px -24px rgba(21,147,166,.55)}
 html.bm-s-pdf .hero h1 em{color:#0F3F47}
 html.bm-s-pdf[data-theme="dark"] .hero{background:radial-gradient(120% 140% at 100% 0%,#1E7E8C 0%,transparent 55%),linear-gradient(135deg,#125C68,#0E4A54);box-shadow:none}
+
+/* ============ 🎮 Mini game ============ */
+html.bm-s-game[data-theme="dark"]:root{ --gc:#5B9BFF; --gsoft:#1C2B42; --okbg:#163329; --badbg:#3E1F22 }
+html.bm-s-game[data-theme="dark"] .ghero{background:linear-gradient(135deg,#1D2B44,#3A2230 60%,#3A2E14)}
+html.bm-s-game[data-theme="dark"] .ghero h1{color:#A9CBFF}
+html.bm-s-game[data-theme="dark"] .ghero p{color:#E3CDBB}
+html.bm-s-game[data-theme="dark"] .gh-bub{background:#2D231C;color:#A9CBFF}
+html.bm-s-game[data-theme="dark"] .catbar{border-color:#34507E}
+html.bm-s-game[data-theme="dark"] .gcard{box-shadow:0 12px 24px -18px #000}
+html.bm-s-game[data-theme="dark"] .btn.pri{box-shadow:0 4px 0 #24508F}
+html.bm-s-game[data-theme="dark"] .board-wrap{background:linear-gradient(160deg,#1C2B42,#33212A)}
+html.bm-s-game[data-theme="dark"] .tile:not(.empty){background:#F7EBDD;box-shadow:0 4px 0 #8C6E52}
+html.bm-s-game[data-theme="dark"] .tile.tv{background:#CFE2FF;color:#163A78;box-shadow:0 4px 0 #6D8FC4}
+html.bm-s-game[data-theme="dark"] .tile.tp{background:#FFD9E4;color:#8E1F43;box-shadow:0 4px 0 #B9748A}
+html.bm-s-game[data-theme="dark"] .stage .bgl{filter:brightness(.72) saturate(.9)}
+html.bm-s-game[data-theme="dark"] .quest{background:#3A2E14}
+html.bm-s-game[data-theme="dark"] .quest .q-l,html.bm-s-game[data-theme="dark"] .quest .q-sc{color:#F5C35A}
+html.bm-s-game[data-theme="dark"] .quest .py,html.bm-s-game[data-theme="dark"] :is(.ans,.gq-tx,.rw,.bk-w) .py,html.bm-s-game[data-theme="dark"] .py.peek{color:#FF9AB8}
+html.bm-s-game[data-theme="dark"] .hzbox,html.bm-s-game[data-theme="dark"] .built{background:#2D231C;border-color:#5A4332}
+html.bm-s-game[data-theme="dark"] .hz .st,html.bm-s-game[data-theme="dark"] .built .st.oth{fill:#F7EBDD}
+html.bm-s-game[data-theme="dark"] .built .st.rad{fill:#B39DFF}
+html.bm-s-game[data-theme="dark"] .hz-grid{stroke:#5A4332}
+html.bm-s-game[data-theme="dark"] .opt.right{color:#6EDDB2}
+html.bm-s-game[data-theme="dark"] .opt.wrong{color:#FF9AB8}
+html.bm-s-game[data-theme="dark"] :is(.slots){background:#28213F}
+html.bm-s-game[data-theme="dark"] .slot{background:#2D231C;color:#C7B6FF;border-color:#6A58B0}
+html.bm-s-game[data-theme="dark"] .pc{background:#28213F;color:var(--bm-ink);box-shadow:0 3px 0 #1A1530}
+html.bm-s-game[data-theme="dark"] .pc small{color:#BFAEFF}
+html.bm-s-game[data-theme="dark"] .pc.sel{background:#7C5CDB;color:#fff}
+html.bm-s-game[data-theme="dark"] .fb.bad{color:#FF9AB8}
+html.bm-s-game[data-theme="dark"] .fb.good{color:#6EDDB2}
+html.bm-s-game[data-theme="dark"] .fr b.rad{color:#B39DFF}
+html.bm-s-game[data-theme="dark"] .pk.on{color:#A9CBFF}
+html.bm-s-game[data-theme="dark"] .rw.bad{box-shadow:inset 0 0 0 2px #7A3530}
+html.bm-s-game[data-theme="dark"] .toast{background:#F7EBDD;color:#3B2414}
+html.bm-s-game[data-theme="dark"] .bigsay{box-shadow:0 8px 20px -8px #000}
+html.bm-s-game[data-theme="dark"] :is(.pcard,.sc-name,.door){background:rgba(39,30,24,.96);color:var(--bm-ink)}
+html.bm-s-game[data-theme="dark"] :is(.sc-name span,.door small){color:#D9C4B1}
+html.bm-s-game[data-theme="dark"] .pc-tx .vi{color:var(--bm-ink)}
+html.bm-s-game[data-theme="dark"] :is(.pc-art,.pc-x){background:#3B2E24;color:var(--bm-ink)}
+html.bm-s-game[data-theme="dark"] .pc-tx .py,html.bm-s-game[data-theme="dark"] .quest .py{color:#FF9AB8}
+html.bm-s-game[data-theme="dark"] .bld-sign{background:#F7EBDD}

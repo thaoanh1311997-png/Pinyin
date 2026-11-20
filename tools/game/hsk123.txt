@@ -1,0 +1,593 @@
+爱|ài|yêu, thích
+八|bā|tám
+爸爸|bàba|bố, ba
+杯子|bēizi|cái cốc, cái ly
+北京|Běijīng|Bắc Kinh
+本|běn|quyển (lượng từ sách)
+不客气|bú kèqi|không có gì
+不|bù|không
+菜|cài|món ăn, rau
+茶|chá|trà
+吃|chī|ăn
+打电话|dǎ diànhuà|gọi điện thoại
+大|dà|to, lớn
+的|de|của (trợ từ)
+点|diǎn|giờ; điểm
+电脑|diànnǎo|máy tính
+电视|diànshì|ti vi
+电影|diànyǐng|phim, điện ảnh
+东西|dōngxi|đồ vật, đồ đạc
+都|dōu|đều
+读|dú|đọc
+对不起|duìbuqǐ|xin lỗi
+多|duō|nhiều
+多少|duōshao|bao nhiêu
+儿子|érzi|con trai
+二|èr|hai
+饭店|fàndiàn|nhà hàng, khách sạn
+飞机|fēijī|máy bay
+高兴|gāoxìng|vui vẻ
+个|gè|cái, chiếc (lượng từ)
+工作|gōngzuò|làm việc; công việc
+汉语|Hànyǔ|tiếng Hán
+好|hǎo|tốt, hay
+号|hào|ngày (trong tháng); số
+喝|hē|uống
+和|hé|và, với
+很|hěn|rất
+回|huí|về, trở về
+会|huì|biết (làm gì); sẽ
+几|jǐ|mấy
+家|jiā|nhà, gia đình
+叫|jiào|gọi, tên là
+今天|jīntiān|hôm nay
+九|jiǔ|chín
+开|kāi|mở; lái (xe)
+看|kàn|xem, nhìn
+看见|kànjiàn|nhìn thấy
+块|kuài|đồng (tiền); miếng
+来|lái|đến
+老师|lǎoshī|thầy giáo, cô giáo
+了|le|rồi (trợ từ)
+冷|lěng|lạnh
+里|lǐ|trong, bên trong
+六|liù|sáu
+妈妈|māma|mẹ
+吗|ma|không? (trợ từ hỏi)
+买|mǎi|mua
+没关系|méi guānxi|không sao
+没有|méiyǒu|không có; chưa
+米饭|mǐfàn|cơm
+名字|míngzi|tên
+明天|míngtiān|ngày mai
+哪|nǎ|nào
+哪儿|nǎr|ở đâu
+那|nà|kia, đó
+呢|ne|thì sao? (trợ từ)
+能|néng|có thể
+你|nǐ|bạn
+年|nián|năm
+女儿|nǚ'ér|con gái
+朋友|péngyou|bạn bè
+七|qī|bảy
+钱|qián|tiền
+请|qǐng|mời; xin mời
+去|qù|đi
+热|rè|nóng
+人|rén|người
+认识|rènshi|quen biết
+三|sān|ba
+商店|shāngdiàn|cửa hàng
+上|shàng|trên
+上午|shàngwǔ|buổi sáng
+少|shǎo|ít
+谁|shéi|ai
+什么|shénme|cái gì
+十|shí|mười
+时候|shíhou|lúc, khi
+是|shì|là
+书|shū|sách
+水|shuǐ|nước
+水果|shuǐguǒ|hoa quả, trái cây
+睡觉|shuìjiào|ngủ
+说|shuō|nói
+四|sì|bốn
+岁|suì|tuổi
+他|tā|anh ấy
+她|tā|cô ấy
+太|tài|quá, lắm
+天气|tiānqì|thời tiết
+听|tīng|nghe
+同学|tóngxué|bạn học
+喂|wèi|alô
+我|wǒ|tôi
+我们|wǒmen|chúng tôi
+五|wǔ|năm (số 5)
+喜欢|xǐhuan|thích
+下|xià|dưới
+下午|xiàwǔ|buổi chiều
+下雨|xià yǔ|mưa
+先生|xiānsheng|ông, ngài
+现在|xiànzài|bây giờ
+想|xiǎng|muốn; nhớ; nghĩ
+小|xiǎo|nhỏ, bé
+小姐|xiǎojiě|cô (gọi phụ nữ trẻ)
+些|xiē|một số, vài
+写|xiě|viết
+谢谢|xièxie|cảm ơn
+星期|xīngqī|tuần, thứ
+学生|xuésheng|học sinh
+学习|xuéxí|học tập
+学校|xuéxiào|trường học
+一|yī|một
+衣服|yīfu|quần áo
+医生|yīshēng|bác sĩ
+医院|yīyuàn|bệnh viện
+椅子|yǐzi|cái ghế
+有|yǒu|có
+月|yuè|tháng; mặt trăng
+在|zài|ở, tại; đang
+再见|zàijiàn|tạm biệt
+怎么|zěnme|thế nào, sao
+怎么样|zěnmeyàng|thế nào
+这|zhè|này, đây
+中国|Zhōngguó|Trung Quốc
+中午|zhōngwǔ|buổi trưa
+住|zhù|ở, sống
+桌子|zhuōzi|cái bàn
+字|zì|chữ
+昨天|zuótiān|hôm qua
+坐|zuò|ngồi; đi (xe)
+做|zuò|làm
+出租车|chūzūchē|taxi
+分钟|fēnzhōng|phút
+狗|gǒu|con chó
+猫|māo|con mèo
+漂亮|piàoliang|xinh đẹp
+后面|hòumiàn|phía sau
+苹果|píngguǒ|quả táo
+前面|qiánmiàn|phía trước
+一点儿|yìdiǎnr|một chút
+吧|ba|nhé, đi (trợ từ)
+白|bái|trắng
+百|bǎi|trăm
+比|bǐ|so với, hơn
+别|bié|đừng
+唱歌|chàng gē|hát
+出|chū|ra
+穿|chuān|mặc
+次|cì|lần
+从|cóng|từ
+错|cuò|sai
+到|dào|đến
+弟弟|dìdi|em trai
+对|duì|đúng
+房间|fángjiān|phòng
+非常|fēicháng|vô cùng, rất
+高|gāo|cao
+告诉|gàosu|nói cho biết
+哥哥|gēge|anh trai
+给|gěi|cho, đưa
+贵|guì|đắt
+孩子|háizi|đứa trẻ, con
+好吃|hǎochī|ngon
+机场|jīchǎng|sân bay
+鸡蛋|jīdàn|trứng gà
+姐姐|jiějie|chị gái
+介绍|jièshào|giới thiệu
+进|jìn|vào
+就|jiù|thì, liền
+觉得|juéde|cảm thấy
+考试|kǎoshì|thi, kỳ thi
+课|kè|bài, tiết học
+快|kuài|nhanh
+累|lèi|mệt
+两|liǎng|hai
+零|líng|số không
+路|lù|đường
+慢|màn|chậm
+忙|máng|bận
+妹妹|mèimei|em gái
+门|mén|cửa
+男|nán|nam
+您|nín|ngài, ông, bà (kính trọng)
+牛奶|niúnǎi|sữa bò
+女|nǚ|nữ
+旁边|pángbiān|bên cạnh
+票|piào|vé
+起床|qǐ chuáng|ngủ dậy
+去年|qùnián|năm ngoái
+日|rì|ngày
+上班|shàng bān|đi làm
+身体|shēntǐ|cơ thể, sức khỏe
+生病|shēng bìng|bị ốm
+生日|shēngrì|sinh nhật
+时间|shíjiān|thời gian
+手机|shǒujī|điện thoại di động
+说话|shuō huà|nói chuyện
+送|sòng|tặng; tiễn
+外|wài|ngoài
+完|wán|xong, hết
+玩|wán|chơi
+晚上|wǎnshang|buổi tối
+往|wǎng|về phía
+为什么|wèi shénme|tại sao
+问|wèn|hỏi
+问题|wèntí|câu hỏi, vấn đề
+洗|xǐ|giặt, rửa
+小时|xiǎoshí|tiếng (giờ đồng hồ)
+笑|xiào|cười
+新|xīn|mới
+休息|xiūxi|nghỉ ngơi
+要|yào|muốn, cần
+也|yě|cũng
+一起|yìqǐ|cùng nhau
+右边|yòubian|bên phải
+远|yuǎn|xa
+再|zài|lại, nữa
+早上|zǎoshang|buổi sáng sớm
+找|zhǎo|tìm
+着|zhe|đang (trợ từ)
+真|zhēn|thật
+正在|zhèngzài|đang
+知道|zhīdào|biết
+准备|zhǔnbèi|chuẩn bị
+走|zǒu|đi bộ
+最|zuì|nhất
+左边|zuǒbian|bên trái
+帮助|bāngzhù|giúp đỡ
+报纸|bàozhǐ|báo giấy
+大家|dàjiā|mọi người
+但是|dànshì|nhưng
+懂|dǒng|hiểu
+公共汽车|gōnggòng qìchē|xe buýt
+公司|gōngsī|công ty
+黑|hēi|đen
+红|hóng|đỏ
+件|jiàn|chiếc, cái (lượng từ áo, việc)
+教室|jiàoshì|phòng học
+近|jìn|gần
+可能|kěnéng|có lẽ, có thể
+可以|kěyǐ|có thể, được
+快乐|kuàilè|vui vẻ
+离|lí|cách (xa)
+旅游|lǚyóu|du lịch
+卖|mài|bán
+便宜|piányi|rẻ
+千|qiān|nghìn
+晴|qíng|nắng, quang đãng
+让|ràng|để, bảo
+事情|shìqing|sự việc
+手表|shǒubiǎo|đồng hồ đeo tay
+虽然|suīrán|tuy rằng
+所以|suǒyǐ|cho nên
+它|tā|nó
+题|tí|đề, câu hỏi (bài tập)
+姓|xìng|họ
+雪|xuě|tuyết
+颜色|yánsè|màu sắc
+眼睛|yǎnjing|mắt
+药|yào|thuốc
+已经|yǐjīng|đã
+意思|yìsi|ý nghĩa
+因为|yīnwèi|bởi vì
+阴|yīn|râm, nhiều mây
+鱼|yú|cá
+运动|yùndòng|vận động, thể thao
+咖啡|kāfēi|cà phê
+开始|kāishǐ|bắt đầu
+每|měi|mỗi
+跑步|pǎo bù|chạy bộ
+跳舞|tiào wǔ|nhảy múa
+希望|xīwàng|hy vọng
+游泳|yóu yǒng|bơi
+妻子|qīzi|vợ
+西瓜|xīguā|dưa hấu
+丈夫|zhàngfu|chồng
+宾馆|bīnguǎn|khách sạn
+铅笔|qiānbǐ|bút chì
+一下|yíxià|một chút, thử
+打篮球|dǎ lánqiú|chơi bóng rổ
+第一|dì-yī|thứ nhất
+服务员|fúwùyuán|nhân viên phục vụ
+火车站|huǒchēzhàn|ga tàu hỏa
+面条|miàntiáo|mì sợi
+踢足球|tī zúqiú|đá bóng
+羊肉|yángròu|thịt cừu
+爱好|àihào|sở thích
+班|bān|lớp
+半|bàn|một nửa, rưỡi
+帮忙|bāng máng|giúp đỡ
+包|bāo|túi; gói
+别人|biérén|người khác
+差|chà|kém; thiếu
+地|de|(trợ từ trạng ngữ)
+地方|dìfang|nơi, chỗ
+地图|dìtú|bản đồ
+东|dōng|phía đông
+饿|è|đói
+放|fàng|đặt, để
+分|fēn|phút; điểm
+干净|gānjìng|sạch sẽ
+跟|gēn|với, cùng
+关|guān|đóng; tắt
+国家|guójiā|đất nước
+还是|háishi|hay là; vẫn
+花|huā|hoa; tiêu (tiền)
+坏|huài|hỏng, xấu
+回答|huídá|trả lời
+记得|jìde|nhớ
+见面|jiàn miàn|gặp mặt
+教|jiāo|dạy
+渴|kě|khát
+口|kǒu|miệng
+老|lǎo|già, cũ
+楼|lóu|tòa nhà; tầng
+马上|mǎshàng|ngay lập tức
+面包|miànbāo|bánh mì
+明白|míngbai|hiểu rõ
+拿|ná|cầm, lấy
+奶奶|nǎinai|bà nội
+南|nán|phía nam
+难|nán|khó
+起来|qǐlai|đứng dậy
+请假|qǐng jià|xin nghỉ phép
+认真|rènzhēn|nghiêm túc, chăm chỉ
+上网|shàng wǎng|lên mạng
+生气|shēng qì|tức giận
+试|shì|thử
+树|shù|cây
+图书馆|túshūguǎn|thư viện
+忘记|wàngjì|quên
+西|xī|phía tây
+洗手间|xǐshǒujiān|nhà vệ sinh
+先|xiān|trước
+爷爷|yéye|ông nội
+一会儿|yíhuìr|một lát
+一样|yíyàng|giống nhau
+一边|yìbiān|vừa... vừa...
+用|yòng|dùng
+有名|yǒumíng|nổi tiếng
+元|yuán|đồng (tiền)
+站|zhàn|đứng; bến, trạm
+中间|zhōngjiān|ở giữa
+中文|Zhōngwén|tiếng Trung
+重要|zhòngyào|quan trọng
+最后|zuìhòu|cuối cùng
+啊|a|à, nhé (thán từ)
+安静|ānjìng|yên tĩnh
+办法|bànfǎ|cách, biện pháp
+办公室|bàngōngshì|văn phòng
+饱|bǎo|no
+北方|běifāng|phương bắc
+笔记本|bǐjìběn|sổ ghi chép; laptop
+必须|bìxū|phải, bắt buộc
+不但|búdàn|không những
+才|cái|mới
+菜单|càidān|thực đơn
+参加|cānjiā|tham gia
+草|cǎo|cỏ
+层|céng|tầng
+超市|chāoshì|siêu thị
+成绩|chéngjì|thành tích, điểm số
+船|chuán|thuyền
+词典|cídiǎn|từ điển
+打算|dǎsuan|dự định
+带|dài|mang, đem
+灯|dēng|đèn
+地铁|dìtiě|tàu điện ngầm
+动物|dòngwù|động vật
+短|duǎn|ngắn
+段|duàn|đoạn
+多么|duōme|biết bao
+而且|érqiě|mà còn
+发|fā|gửi; phát
+发现|fāxiàn|phát hiện
+方便|fāngbiàn|tiện lợi
+放心|fàng xīn|yên tâm
+复习|fùxí|ôn tập
+刚才|gāngcái|vừa nãy
+个子|gèzi|vóc dáng
+更|gèng|càng, hơn
+公斤|gōngjīn|kilôgam
+公园|gōngyuán|công viên
+故事|gùshi|câu chuyện
+关心|guānxīn|quan tâm
+过去|guòqù|đi qua; quá khứ
+黑板|hēibǎn|bảng đen
+后来|hòulái|sau đó
+护照|hùzhào|hộ chiếu
+画|huà|vẽ; bức tranh
+欢迎|huānyíng|hoan nghênh, chào mừng
+换|huàn|đổi
+或者|huòzhě|hoặc
+机会|jīhuì|cơ hội
+检查|jiǎnchá|kiểm tra
+健康|jiànkāng|khỏe mạnh
+讲|jiǎng|giảng, kể
+角|jiǎo|hào (1/10 đồng)
+脚|jiǎo|bàn chân
+接|jiē|đón; nhận
+节目|jiémù|tiết mục, chương trình
+节日|jiérì|ngày lễ
+借|jiè|mượn; cho mượn
+经常|jīngcháng|thường xuyên
+经过|jīngguò|đi qua; trải qua
+经理|jīnglǐ|giám đốc
+句子|jùzi|câu
+可爱|kě'ài|đáng yêu
+刻|kè|15 phút (khắc)
+客人|kèrén|khách
+哭|kū|khóc
+筷子|kuàizi|đũa
+蓝|lán|xanh lam
+离开|líkāi|rời khỏi
+礼物|lǐwù|quà tặng
+脸|liǎn|mặt
+练习|liànxí|luyện tập
+辆|liàng|chiếc (lượng từ xe)
+绿|lǜ|xanh lá
+满意|mǎnyì|hài lòng
+米|mǐ|mét; gạo
+难过|nánguò|buồn
+年级|niánjí|lớp, khối (năm học)
+年轻|niánqīng|trẻ
+鸟|niǎo|con chim
+努力|nǔlì|cố gắng
+爬山|pá shān|leo núi
+瓶子|píngzi|cái chai
+其他|qítā|khác
+骑|qí|cưỡi, đi (xe đạp)
+起飞|qǐfēi|cất cánh
+清楚|qīngchu|rõ ràng
+然后|ránhòu|sau đó
+热情|rèqíng|nhiệt tình
+认为|rènwéi|cho rằng
+如果|rúguǒ|nếu
+声音|shēngyīn|âm thanh, giọng
+舒服|shūfu|dễ chịu, thoải mái
+水平|shuǐpíng|trình độ
+司机|sījī|tài xế
+太阳|tàiyáng|mặt trời
+特别|tèbié|đặc biệt
+疼|téng|đau
+提高|tígāo|nâng cao
+体育|tǐyù|thể dục, thể thao
+条|tiáo|cái, con (lượng từ vật dài)
+同事|tóngshì|đồng nghiệp
+头发|tóufa|tóc
+腿|tuǐ|chân (cẳng chân)
+完成|wánchéng|hoàn thành
+碗|wǎn|cái bát
+万|wàn|vạn, mười nghìn
+为|wèi|vì, cho
+位|wèi|vị (lượng từ người)
+习惯|xíguàn|thói quen
+洗澡|xǐ zǎo|tắm
+相信|xiāngxìn|tin tưởng
+向|xiàng|về phía, hướng
+像|xiàng|giống
+小心|xiǎoxīn|cẩn thận
+校长|xiàozhǎng|hiệu trưởng
+新闻|xīnwén|tin tức
+信用卡|xìnyòngkǎ|thẻ tín dụng
+要求|yāoqiú|yêu cầu
+一定|yídìng|nhất định
+一共|yígòng|tổng cộng
+以前|yǐqián|trước đây
+一般|yìbān|thông thường
+一直|yìzhí|luôn luôn; thẳng
+音乐|yīnyuè|âm nhạc
+银行|yínháng|ngân hàng
+应该|yīnggāi|nên
+影响|yǐngxiǎng|ảnh hưởng
+又|yòu|lại
+愿意|yuànyì|bằng lòng, muốn
+月亮|yuèliang|mặt trăng
+越|yuè|càng
+照顾|zhàogù|chăm sóc
+照片|zhàopiàn|ảnh, tấm hình
+只|zhǐ|chỉ
+周末|zhōumò|cuối tuần
+主要|zhǔyào|chủ yếu
+自己|zìjǐ|bản thân, tự mình
+自行车|zìxíngchē|xe đạp
+嘴|zuǐ|miệng, mồm
+最近|zuìjìn|gần đây
+作业|zuòyè|bài tập về nhà
+把|bǎ|(giới từ 把); cái (lượng từ)
+搬|bān|chuyển, dọn
+被|bèi|bị, được
+比较|bǐjiào|tương đối, khá
+比赛|bǐsài|cuộc thi đấu
+变化|biànhuà|thay đổi
+衬衫|chènshān|áo sơ mi
+城市|chéngshì|thành phố
+除了|chúle|ngoài... ra
+当然|dāngrán|đương nhiên
+电子邮件|diànzǐ yóujiàn|thư điện tử, email
+感冒|gǎnmào|cảm cúm
+关系|guānxi|quan hệ
+害怕|hàipà|sợ
+环境|huánjìng|môi trường
+会议|huìyì|cuộc họp
+简单|jiǎndān|đơn giản
+结婚|jié hūn|kết hôn
+结束|jiéshù|kết thúc
+解决|jiějué|giải quyết
+久|jiǔ|lâu
+旧|jiù|cũ
+决定|juédìng|quyết định
+空调|kōngtiáo|điều hòa
+裤子|kùzi|quần
+留学|liú xué|du học
+马|mǎ|con ngựa
+胖|pàng|béo, mập
+啤酒|píjiǔ|bia
+其实|qíshí|thật ra
+奇怪|qíguài|kỳ lạ
+裙子|qúnzi|váy
+容易|róngyì|dễ
+世界|shìjiè|thế giới
+双|shuāng|đôi
+甜|tián|ngọt
+同意|tóngyì|đồng ý
+突然|tūrán|đột nhiên
+为了|wèile|để, vì
+文化|wénhuà|văn hóa
+香蕉|xiāngjiāo|quả chuối
+需要|xūyào|cần
+游戏|yóuxì|trò chơi
+张|zhāng|tờ, tấm (lượng từ)
+只有|zhǐyǒu|chỉ có
+终于|zhōngyú|cuối cùng thì
+种|zhǒng|loại
+注意|zhùyì|chú ý
+总是|zǒngshì|luôn luôn
+阿姨|āyí|cô, dì
+矮|ǎi|thấp
+冰箱|bīngxiāng|tủ lạnh
+迟到|chídào|đến muộn
+打扫|dǎsǎo|quét dọn
+担心|dān xīn|lo lắng
+电梯|diàntī|thang máy
+锻炼|duànliàn|rèn luyện
+发烧|fā shāo|sốt
+附近|fùjìn|gần đây, lân cận
+感兴趣|gǎn xìngqù|có hứng thú
+根据|gēnjù|căn cứ vào
+关于|guānyú|về (việc gì)
+几乎|jīhū|hầu như
+极|jí|cực kỳ
+季节|jìjié|mùa
+街道|jiēdào|đường phố
+历史|lìshǐ|lịch sử
+了解|liǎojiě|hiểu rõ, tìm hiểu
+帽子|màozi|cái mũ
+盘子|pánzi|cái đĩa
+伞|sǎn|cái ô
+叔叔|shūshu|chú
+刷牙|shuā yá|đánh răng
+新鲜|xīnxiān|tươi
+选择|xuǎnzé|lựa chọn
+遇到|yùdào|gặp phải
+着急|zháojí|sốt ruột, lo lắng
+鼻子|bízi|cái mũi
+聪明|cōngming|thông minh
+蛋糕|dàngāo|bánh ngọt, bánh kem
+耳朵|ěrduo|tai
+邻居|línjū|hàng xóm
+皮鞋|píxié|giày da
+瘦|shòu|gầy
+饮料|yǐnliào|đồ uống
+刮风|guā fēng|nổi gió
+数学|shùxué|toán học
+春|chūn|mùa xuân
+冬|dōng|mùa đông
+黄河|Huáng Hé|sông Hoàng Hà
+聊天|liáo tiān|tán gẫu
+秋|qiū|mùa thu
+夏|xià|mùa hè
+行李箱|xínglixiāng|va li
+熊猫|xióngmāo|gấu trúc
+照相机|zhàoxiàngjī|máy ảnh
