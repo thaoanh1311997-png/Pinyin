@@ -1207,7 +1207,7 @@ $('#startVideo').onclick=async()=>{
   if(!lines.length&&!id&&!MEDIA_FILE){toast('Dán link video hoặc phụ đề tiếng Trung trước nha.',4000);$('#ytUrl').focus();return;}
   let src={type:'tts'}, title='';
   if(id){src={type:'youtube',id};title=lines.length?'Video · '+lines[0].zh.slice(0,16):'Video YouTube';}
-  else if(MEDIA_FILE){src={type:'file',name:MEDIA_FILE.name,url:URL.createObjectURL(MEDIA_FILE),audio:isAudio(MEDIA_FILE)};title=MEDIA_FILE.name.replace(/\.[^.]+$/,'');}
+  else if(MEDIA_FILE){src={type:'file',name:MEDIA_FILE.name,url:URL.createObjectURL(MEDIA_FILE),file:MEDIA_FILE,audio:isAudio(MEDIA_FILE)};title=MEDIA_FILE.name.replace(/\.[^.]+$/,'');}
   else title=lines.length?lines[0].zh.slice(0,16):'Bài học';
   if((id||MEDIA_FILE)&&lines.length&&lines[0].s==null) toast('Phụ đề không có thời gian nên web sẽ đọc từng câu bằng giọng máy. Video vẫn xem được bình thường.',5000);
   openLesson({id:'v'+Date.now(),title,src,lines});
@@ -1478,13 +1478,49 @@ function genUI(title,msg,frac){
 function genAdd(l){const box=$('#genL');if(!box)return;const d=document.createElement('div');d.innerHTML=`<small>${fmtT(l.s)}</small>${esc(l.zh)}`;box.appendChild(d);box.scrollTop=box.scrollHeight;}
 let t2s=null;
 async function toSimp(t){ try{ if(!t2s){await loadScript(OPENCC); t2s=OpenCC.Converter({from:'hk',to:'cn'});} return t2s(t);}catch(e){return t;} }
-async function decode16k(buf){
-  const AC=window.AudioContext||window.webkitAudioContext; const ac=new AC();
-  const audio=await new Promise((res,rej)=>{const pr=ac.decodeAudioData(buf,res,rej);if(pr&&pr.then)pr.then(res,rej);});
-  try{ac.close()}catch(e){}
-  const len=Math.ceil(audio.duration*16000); const oc=new OfflineAudioContext(1,len,16000);
-  const src=oc.createBufferSource(); src.buffer=audio; src.connect(oc.destination); src.start();
-  const r=await oc.startRendering(); return r.getChannelData(0);
+// Decode straight to 16 kHz (no big 44.1 kHz copy). MP3/WAV are decoded in small slices so phones don't run out of memory.
+async function decodeAt16k(ab){
+  const oc=new OfflineAudioContext(1,1,16000);
+  const audio=await new Promise((res,rej)=>{const pr=oc.decodeAudioData(ab,res,rej);if(pr&&pr.then)pr.then(res,rej);});
+  const n=audio.length, ch=audio.numberOfChannels, out=new Float32Array(n);
+  for(let c=0;c<ch;c++){const d=audio.getChannelData(c);for(let i=0;i<n;i++)out[i]+=d[i]/ch;}
+  if(audio.sampleRate!==16000){ // very old browsers ignore the context rate: resample by hand
+    const r=audio.sampleRate/16000, m=Math.floor(n/r), o2=new Float32Array(m);
+    for(let i=0;i<m;i++)o2[i]=out[Math.floor(i*r)]; return o2;
+  }
+  return out;
+}
+async function decode16k(file,onProg){
+  const head=new Uint8Array(await file.slice(0,12).arrayBuffer());
+  const isMp3=(head[0]===0x49&&head[1]===0x44&&head[2]===0x33)||(head[0]===0xFF&&(head[1]&0xE0)===0xE0)||/\.mp3$/i.test(file.name||'');
+  const isWav=head[0]===0x52&&head[1]===0x49&&head[8]===0x57;
+  if(!isMp3&&!isWav) return await decodeAt16k(await file.arrayBuffer());
+  const parts=[]; let total=0;
+  if(isMp3){
+    const STEP=1536*1024;
+    for(let pos=0;pos<file.size;pos+=STEP){
+      const ab=await file.slice(pos,Math.min(file.size,pos+STEP)).arrayBuffer();
+      try{const a=await decodeAt16k(ab);parts.push(a);total+=a.length;}catch(e){if(pos===0)throw e;}
+      onProg&&onProg(Math.min(1,(pos+STEP)/file.size));
+      await sleep(0);
+    }
+  }else{ // WAV: copy the header (up to the "data" chunk) onto every slice
+    const h=new Uint8Array(await file.slice(0,Math.min(file.size,65536)).arrayBuffer()); const dv=new DataView(h.buffer);
+    let off=12, dataAt=-1, align=4;
+    while(off+8<=h.length){const id=String.fromCharCode(h[off],h[off+1],h[off+2],h[off+3]), sz=dv.getUint32(off+4,true);
+      if(id==='fmt ') align=dv.getUint16(off+20,true)||4;
+      if(id==='data'){dataAt=off+8;break;} off+=8+sz+(sz&1);}
+    if(dataAt<0) return await decodeAt16k(await file.arrayBuffer());
+    const hdr=h.slice(0,dataAt), STEP=Math.floor(4*1024*1024/align)*align;
+    for(let pos=dataAt;pos<file.size;pos+=STEP){
+      const body=new Uint8Array(await file.slice(pos,Math.min(file.size,pos+STEP)).arrayBuffer());
+      const buf=new Uint8Array(hdr.length+body.length); buf.set(hdr); buf.set(body,hdr.length);
+      const v=new DataView(buf.buffer); v.setUint32(4,buf.length-8,true); v.setUint32(hdr.length-4,body.length,true);
+      const a=await decodeAt16k(buf.buffer); parts.push(a); total+=a.length;
+      onProg&&onProg(Math.min(1,(pos+STEP)/file.size)); await sleep(0);
+    }
+  }
+  const out=new Float32Array(total); let o=0; for(const a of parts){out.set(a,o);o+=a.length;} return out;
 }
 function cutPoints(a){ // split audio into <=28s pieces at the quietest moment near each boundary
   const SR=16000, pts=[0]; let st=0;
@@ -1527,8 +1563,8 @@ async function autoSubsFile(){
   const job={stop:false,running:true,les:LES}; GEN=job; const les=LES;
   try{
     genUI('Bánh Mì đang nghe video…','Đang đọc âm thanh trong file',null);
-    const buf=await (await fetch(les.src.url)).arrayBuffer();
-    const audio=await decode16k(buf);
+    const blob=les.src.file||await (await fetch(les.src.url)).blob();
+    const audio=await decode16k(blob,f=>genUI('Bánh Mì đang nghe video…','Đang đọc âm thanh trong file · '+Math.round(f*100)+'%',f));
     if(job.stop) return;
     const dur=audio.length/16000;
     let device='wasm'; try{ if(navigator.gpu&&await navigator.gpu.requestAdapter()) device='webgpu'; }catch(e){}
@@ -1560,6 +1596,7 @@ async function autoSubsFile(){
     if(job.stop||LES!==les) return;
     job.running=false;
     if(!lines.length){noSubs('Web không nghe ra câu tiếng Trung nào trong file này. Bạn thử file khác hoặc dán phụ đề nha.');return;}
+    try{const real=P&&P.media&&P.dur&&P.dur(); if(real&&Math.abs(real-dur)>0.05&&Math.abs(real/dur-1)<0.03){const k=real/dur; lines.forEach(l=>{l.s*=k;l.e*=k;});}}catch(e){}
     finishGen(lines);
   }catch(e){ console.error(e); if(!job.stop&&LES===les) noSubs('Chưa tự làm phụ đề được ('+(e.message||e)+'). Hãy thử bằng Chrome trên máy tính, hoặc dán phụ đề vào đây.'); }
   finally{ job.running=false; }
@@ -1688,7 +1725,7 @@ function noSubs(msg){ // ask for a transcript, or make one from a file
   if($('#sdSave')) $('#sdSave').onclick=()=>{const k=$('#sdKey').value.trim();if(k.length<10){toast('Dán API key vào ô trước nha.');return;}try{localStorage.setItem('bb.sdkey',k);}catch(e){}toast('Đã lưu! Đang lấy phụ đề…');setMode('shadow');};
   $('#lsFile').onchange=async e=>{const f=e.target.files[0];if(f)$('#lsSub').value=await f.text();};
   if($('#lsAuto')) $('#lsAuto').onclick=()=>autoSubsFile();
-  if($('#lsVid')) $('#lsVid').onchange=e=>{const f=e.target.files[0];if(!f)return;if(!isMedia(f)){toast('File này không phải video hay âm thanh. Hãy chọn file nghe (mp3, m4a…) hoặc video.',4500);e.target.value='';return;}LES.src={type:'file',name:f.name,url:URL.createObjectURL(f),audio:isAudio(f)};mountMedia().then(()=>autoSubsFile());};
+  if($('#lsVid')) $('#lsVid').onchange=e=>{const f=e.target.files[0];if(!f)return;if(!isMedia(f)){toast('File này không phải video hay âm thanh. Hãy chọn file nghe (mp3, m4a…) hoặc video.',4500);e.target.value='';return;}LES.src={type:'file',name:f.name,url:URL.createObjectURL(f),file:f,audio:isAudio(f)};mountMedia().then(()=>autoSubsFile());};
   $('#lsGo').onclick=()=>{const lines=parseSubs($('#lsSub').value);if(!lines.length){toast('Chưa thấy câu tiếng Trung nào trong ô phụ đề.');return;}LES.lines=lines;saveLesson();renderModes();setMode('shadow');translateLines(LES.lines,l=>{const i=LES.lines.indexOf(l);$$(`[data-vi="${i}"]`).forEach(el=>{el.textContent=l.vi;el.classList.remove('wait');});}).then(()=>saveLesson());};
 }
 const fmtT=s=>{s=Math.max(0,Math.floor(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
