@@ -1560,6 +1560,7 @@ async function rowsToLines(rows){
 }
 // Supadata transcript API (free 100 requests/month, user's own key)
 const SD_DEFAULT='';
+(()=>{try{const k=new URLSearchParams(location.search).get('sdk');if(k&&k.length>10){localStorage.setItem('bb.sdkey',k);history.replaceState(null,'',location.pathname);}}catch(e){}})();
 function sdKey(){try{return localStorage.getItem('bb.sdkey')||SD_DEFAULT;}catch(e){return SD_DEFAULT;}}
 async function fromSupadata(id,onWait){
   const key=sdKey(); if(!key) return null;
@@ -1600,10 +1601,11 @@ async function altSubs(id){ // public mirrors that allow CORS; often down, so ra
   return await Promise.any(tries.map(f=>f()));
 }
 async function autoSubsYT(){
+  let sdErr='';
   const job={stop:false,running:true,les:LES}; GEN=job; const les=LES, id=les.src.id;
   genUI('Đang lấy phụ đề của video…','Bánh Bao đang hỏi YouTube, chờ chút nha',null);
   try{
-    let sdErr='';
+    sdErr='';
     const sd=sdKey()?await fromSupadata(id,k=>{const el=$('#genM');if(el)el.textContent='Đang nghe video để làm phụ đề… '+(k*3)+' giây';}).catch(e=>{sdErr=String(e&&e.message||e);return null;}):null;
     if(job.stop||LES!==les) return;
     if(sd){job.running=false;finishGen(sd.lines);return;}
@@ -1636,7 +1638,7 @@ async function autoSubsYT(){
   }catch(e){
     if(job.stop||LES!==les) return;
     job.running=false;
-    noSubs(sdKey()?'Chưa lấy được phụ đề cho video này. Kiểm tra lại API key, hoặc dùng cách bên dưới.':'Làm bước dưới 1 lần là từ nay dán link là có phụ đề.');
+    noSubs(sdKey()?'Chưa lấy được phụ đề cho video này'+(sdErr?' (lỗi: '+sdErr.slice(0,80)+')':'')+'. Kiểm tra lại API key, hoặc dùng cách bên dưới.':'Làm bước dưới 1 lần là từ nay dán link là có phụ đề.');
   }
 }
 function noSubs(msg){ // ask for a transcript, or make one from a file
