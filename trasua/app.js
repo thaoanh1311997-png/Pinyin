@@ -343,12 +343,12 @@ function loadNews() {
   return newsP;
 }
 var THUMBS = new Set();
-function thumbOf(it) { return THUMBS.has(it.id) ? 'data/img/' + it.id + '.jpg' : ''; }
+function thumbOf(it) { return THUMBS.has(it.id) ? 'data/img/' + it.id + '.jpg' : it.img && !/\/fileftp\//.test(it.img) ? it.img.replace(/^http:/, 'https:') : ''; } // publisher's own photo (loads without referrer)
 function catOf(c) { return CATS.find(function (x) { return x[0] === c; }) || CATS[2]; }
 function newsCard(it) {
   var c = catOf(it.c); var read = LS.get('read', {})[it.id];
   var th = thumbOf(it);
-  return '<a class="news' + (read ? ' read' : '') + '" href="#/read/' + it.id + '">' + (th ? '<div class="thumb" style="background:' + c[2] + '"><span>' + c[3] + '</span><img src="' + th + '" alt="" loading="lazy" onerror="this.remove()"></div>' : '<div class="ico" style="background:' + c[2] + '">' + c[3] + '</div>') + '<div class="grow"><h3>' + esc(it.t) + '</h3><p>' + esc(it.b) + '</p><div class="meta">' + (it.ez ? easeBadge(it.ez) : '') + '<span>' + esc(it.s) + '</span><span>· ' + ago(it.d) + '</span>' + (read ? '<span>· ✓ đã đọc</span>' : '') + '</div></div></a>';
+  return '<a class="news' + (read ? ' read' : '') + '" href="#/read/' + it.id + '">' + (th ? '<div class="thumb" style="background:' + c[2] + '"><span>' + c[3] + '</span><img src="' + esc(th) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"></div>' : '<div class="ico" style="background:' + c[2] + '">' + c[3] + '</div>') + '<div class="grow"><h3>' + esc(it.t) + '</h3><p>' + esc(it.b) + '</p><div class="meta">' + (it.ez ? easeBadge(it.ez) : '') + '<span>' + esc(it.s) + '</span><span>· ' + ago(it.d) + '</span>' + (read ? '<span>· ✓ đã đọc</span>' : '') + '</div></div></a>';
 }
 function easyCard(e) {
   var read = LS.get('read', {})[e.id];
@@ -383,24 +383,44 @@ routes.news = function (cat) {
   });
 };
 /* ---- full article: fetched on the reader's own device at read time (never stored on the site) ---- */
-var RELAYS = [
-  function (u) { return 'https://api.cors.lol/?url=' + encodeURIComponent(u); },
-  function (u) { return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u); },
-  function (u) { return 'https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent(u); },
+var RELAYS = [ // free public relays (the browser can't read news sites directly); all are tried at once, the first good answer wins
+  ['h', function (u) { return 'https://api.cors.lol/?url=' + encodeURIComponent(u); }],
+  ['h', function (u) { return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u); }],
+  ['h', function (u) { return 'https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent(u); }],
+  ['m', function (u) { return 'https://r.jina.ai/' + u; }],
 ];
 function splitSents(t) { return (t.match(/[^。！？!?]+[。！？!?]*[”」』）)]*/g) || [t]).map(function (x) { return x.trim(); }).filter(Boolean); }
+function fromMarkdown(md, it) { // r.jina.ai answer (markdown) → paragraphs + photos
+  var rows = [], lead = (it.b || '').replace(/\s/g, '').slice(0, 8);
+  md.split(/\n+/).forEach(function (l) {
+    l = l.trim(); var im = l.match(/^!\[[^\]]*\]\((https?:[^)\s]+)\)/);
+    if (im) { if (/\.(jpe?g|png|webp)/i.test(im[1]) && !/logo|icon|ewm|qrcode|fileftp|erweima/i.test(im[1])) rows.push({ img: im[1] }); return; }
+    if (/^(#|\*|-|\||>|\[|Title:|URL Source:|Published Time:|Markdown Content:)/.test(l) || /\]\(http/.test(l)) return;
+    var t = l.replace(/^(中新网|中新社)[^电]{0,24}电\s*(\([^)]*\)|（[^）]*）)?\s*/, '').replace(/\s*[（(]完[）)]\s*$/, '').trim();
+    if ((t.match(/[一-鿿]/g) || []).length < 12 || /^(图为|责任编辑|【编辑|来源：|编辑：)/.test(t) || /摄$/.test(t)) return;
+    rows.push({ t: t });
+  });
+  var st = 0; if (lead) rows.some(function (r, i) { if (r.t && r.t.replace(/\s/g, '').indexOf(lead) >= 0) { st = i; return true; } return false; });
+  if (st > 0 && rows[st - 1] && rows[st - 1].img) st--; // photo right above the first paragraph
+  var paras = [], imgs = [], pos = [];
+  rows.slice(st).forEach(function (r) { if (r.img) { if (imgs.indexOf(r.img) < 0) { imgs.push(r.img); pos.push(paras.length); } } else if (paras.indexOf(r.t) < 0) paras.push(r.t); });
+  return { paras: paras, imgs: imgs.slice(0, 6), pos: pos.slice(0, 6) };
+}
 function fetchFull(it) {
   var k = 'fa.' + it.id, c = LS.get(k, null); if (c && c.paras && c.paras.length) return Promise.resolve(c);
   if (!window.TSArticle) return Promise.resolve(null);
-  var link = it.link.replace(/^http:/, 'https:'), i = 0;
-  var one = function () {
-    if (i >= RELAYS.length) return Promise.resolve(null);
-    var ctl = window.AbortController ? new AbortController() : null, tm = setTimeout(function () { if (ctl) ctl.abort(); }, 15000);
-    return fetch(RELAYS[i++](link), ctl ? { signal: ctl.signal } : {}).then(function (r) { if (!r.ok) throw 0; return r.arrayBuffer(); })
-      .then(function (b) { clearTimeout(tm); var x = TSArticle.extract(TSArticle.decode(b), link); if (!x.paras.length || x.paras.join('').length < 60) throw 0; return x; })
-      .catch(function () { clearTimeout(tm); return one(); });
-  };
-  return one().then(function (x) {
+  var link = it.link.replace(/^http:/, 'https:');
+  return new Promise(function (done) {
+    var left = RELAYS.length, won = false, ctls = [];
+    var finish = function (x) { if (won) return; if (x) { won = true; ctls.forEach(function (c2) { try { c2.abort(); } catch (e) {} }); done(x); } else if (--left === 0) done(null); };
+    RELAYS.forEach(function (rl) {
+      var ctl = window.AbortController ? new AbortController() : null; if (ctl) ctls.push(ctl);
+      var tm = setTimeout(function () { if (ctl) ctl.abort(); }, 20000);
+      fetch(rl[1](link), ctl ? { signal: ctl.signal } : {}).then(function (r) { if (!r.ok) throw 0; return rl[0] === 'm' ? r.text() : r.arrayBuffer(); })
+        .then(function (b) { clearTimeout(tm); var x = rl[0] === 'm' ? fromMarkdown(b, it) : TSArticle.extract(TSArticle.decode(b), link); if (!x.paras.length || x.paras.join('').length < 60) throw 0; finish(x); })
+        .catch(function () { clearTimeout(tm); finish(null); });
+    });
+  }).then(function (x) {
     if (!x) return null;
     var idx = LS.get('fa.idx', []).filter(function (y) { return y !== it.id; }); idx.push(it.id);
     while (idx.length > 30) { var o = idx.shift(); LS.del('fa.' + o); LS.del('trf.' + o); }
@@ -452,14 +472,14 @@ routes.read = async function (id) {
     var ss = [], ps = [];
     x.paras.forEach(function (p) { var ids = []; splitSents(p).forEach(function (t) { ids.push(ss.length); ss.push(t); }); ps.push(ids); });
     var im = [], po = [];
-    (x.imgs || []).forEach(function (u, k) { if (art.img && u === it.img) return; im.push(u); po.push((x.pos || [])[k] || 0); });
+    (x.imgs || []).forEach(function (u, k) { if (art.img && it.img && u.replace(/^http:/, 'https:') === it.img.replace(/^http:/, 'https:')) return; im.push(u); po.push((x.pos || [])[k] || 0); });
     art.sents = ss; art.paras = ps; art.imgs = im; art.pos = po; art.full = 1; art.vis = LS.get('trf.' + id, null);
   }
   var S = LS.get('rd', { py: true, vi: true, zs: 21 });
   if (rt !== RT) return;
   APP.innerHTML = top('<span class="muted" style="font-size:15px">' + (art.g ? '📖 ' + esc(art.g) + ' · HSK ' + art.lv : art.easy ? '⭐ Bài đọc HSK ' + art.lv : catOf(art.c)[1]) + '</span>', '#/news', '<button class="iconbtn" id="rdSet">Aa</button>') +
     '<div class="reader' + (S.py ? '' : ' nopy') + (S.vi ? '' : ' novi') + '" id="reader" style="--zs:' + S.zs + 'px">' +
-    (art.img ? '<figure class="hero-img"><img src="' + art.img + '" alt="" onerror="this.parentNode.remove()"><figcaption>Ảnh: ' + esc(art.s) + '</figcaption></figure>' : '') +
+    (art.img ? '<figure class="hero-img"><img src="' + esc(art.img) + '" alt="" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"><figcaption>Ảnh: ' + esc(art.s) + '</figcaption></figure>' : '') +
     '<div class="zline title" style="--zs:' + (S.zs + 4) + 'px">' + wordsHTML(art.t) + '</div>' +
     '<div class="meta">' + (art.easy ? '<span class="badge b' + art.lv + '">HSK ' + art.lv + '</span>' : art.ez ? easeBadge(art.ez) : '') + (art.easy ? '<span>' + esc(art.tv) + '</span>' : '<span>' + esc(art.s) + ' · ' + ago(art.d) + '</span>') + '</div>' +
     '<div class="note" style="margin-top:0">👆 Chạm vào từ bất kỳ để xem nghĩa, Hán Việt, phát âm và lưu vào sổ tay.' + (art.easy ? '' : '<br>🤖 Bản dịch tin tức là <b>dịch máy</b> nên có thể chưa sát, chỉ để tham khảo — nghĩa từng từ khi chạm vào là từ điển chuẩn.') + '</div>' +
