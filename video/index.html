@@ -189,6 +189,12 @@ footer{color:var(--muted);font-size:12.5px;text-align:center;margin-top:30px;fon
 .drop b{display:block;font-size:17px;font-weight:900}
 .types{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:10px}
 .types span{font-size:12px;font-weight:900;padding:4px 9px;border-radius:8px;background:var(--card);color:var(--muted)}
+/* one-tap caption grabber */
+.grab{margin-top:14px;background:var(--green-soft,#E6F6EE);border:2px dashed var(--green);border-radius:18px;padding:14px 16px}
+.grab h3{margin:0 0 6px;font-size:17px}
+.grab ol{margin:8px 0 10px;padding-left:20px;font-weight:600;line-height:1.55}
+.grab .bmk{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;font-weight:900;border-radius:999px;padding:10px 18px;text-decoration:none;cursor:grab;box-shadow:0 4px 0 var(--green-dark)}
+.grab kbd{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font:700 12px Inter,sans-serif}
 details.help{margin-top:14px;background:var(--blue-soft);border-radius:16px;padding:12px 16px}
 details.help summary{font-weight:900;color:var(--blue);cursor:pointer}
 details.help ol{margin:10px 0 4px;padding-left:20px;font-weight:600}
@@ -249,6 +255,27 @@ details.help li{margin:6px 0}
 /* player dock */
 .dock{display:flex;align-items:center;justify-content:space-between;gap:6px;background:var(--card);border-radius:24px;box-shadow:var(--sh-2);padding:8px 10px;margin-bottom:14px}
 @media (max-width:959px){.dock{position:fixed;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:35;margin:0}}
+.dock{flex-direction:column;align-items:stretch;gap:2px;padding:10px 14px 8px}
+.prog{display:flex;align-items:center;gap:10px;font:700 13px Inter,sans-serif;color:var(--muted);padding:0 2px}
+.prog input{flex:1;accent-color:var(--green);height:22px;min-width:0}
+.dk-row{display:flex;align-items:center;gap:2px}
+.db{flex:1;min-width:0;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border-radius:14px;color:var(--ink-2);font:inherit;cursor:pointer}
+.db .i{width:22px;height:22px}
+.db small{font-size:11.5px;font-weight:800}
+.db.on{color:var(--green-text);background:var(--green-soft)}
+.dk-row .pbtn.big{margin-left:6px;border-radius:20px;width:60px;height:54px}
+.pbtn.big.on2{background:var(--orange);box-shadow:0 4px 0 #B85F17}
+.lines.playing .line.act .ln-t{display:none}
+.prog input[type=range]{-webkit-appearance:none;appearance:none;background:transparent}
+.prog input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:6px;background:var(--line)}
+.prog input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--green);margin-top:-6px;border:3px solid var(--card);box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.prog input[type=range]::-moz-range-track{height:6px;border-radius:6px;background:var(--line)}
+.prog input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--green);border:3px solid var(--card)}
+.w.kara{box-shadow:0 0 0 2px var(--green);background:var(--green-soft);border-radius:8px}
+.xl{display:grid;gap:8px;margin-top:14px}
+.xw{display:grid;grid-template-columns:auto auto 1fr;gap:10px;align-items:baseline;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:10px 12px;font:inherit;color:var(--ink)}
+.xw b{font-size:20px}.xw .pyf{color:var(--green-text);font:600 14px Inter,sans-serif}.xw .m{color:var(--ink-2);font-size:14px;min-width:0}
+@media (max-width:959px){body.unpin .side{position:static}}
 .pbtn{width:46px;height:46px;border-radius:50%;border:0;background:none;display:grid;place-items:center;color:var(--ink-2);flex:none;position:relative}
 .pbtn .i{width:23px;height:23px}
 .pbtn.big{width:62px;height:62px;background:var(--green);color:var(--green-ink);box-shadow:0 4px 0 var(--green-dark)}
@@ -634,6 +661,9 @@ function toast(msg,ms=2800){const t=$('#toast');t.textContent=msg;t.classList.ad
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 
 const IC={
+  pin:'<svg class="i" viewBox="0 0 24 24"><path d="M9 3h6l-1 6 4 4H6l4-4zM12 13v8"/></svg>',
+  speed:'<svg class="i" viewBox="0 0 24 24"><path d="M4.5 17a8.5 8.5 0 1 1 15 0"/><path d="M12 13l4-5"/></svg>',
+  bulb:'<svg class="i" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>',
   play:'<svg class="i fill" viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>',
   pause:'<svg class="i fill" viewBox="0 0 24 24"><rect x="6" y="4.5" width="4" height="15" rx="1.2"/><rect x="14" y="4.5" width="4" height="15" rx="1.2"/></svg>',
   prev:'<svg class="i" viewBox="0 0 24 24"><path d="M18 6l-8 6 8 6zM6 5v14"/></svg>',
@@ -672,6 +702,7 @@ const MODES=[
 
 /* ======================= settings ======================= */
 const S=Object.assign({py:true,hz:true,vi:true,tone:true,size:28,rate:1,shadow:false,loop:false,offset:0},store.get('bb.set',{}));
+document.body.classList.toggle('unpin',!!S.unpin);
 function saveS(){store.set('bb.set',S);applyS();}
 function applyS(){
   document.body.classList.toggle('no-py',!S.py);
@@ -877,7 +908,7 @@ async function mountMedia(){
     await new Promise(res=>{
       const yp=new YT.Player('ytBox',{videoId:src.id,playerVars:{playsinline:1,rel:0,modestbranding:1,iv_load_policy:3,cc_load_policy:0},
         events:{onReady:()=>{
-          P={media:true,kind:'yt',time:()=>yp.getCurrentTime()||0,play:()=>yp.playVideo(),pause:()=>yp.pauseVideo(),seek:t=>yp.seekTo(t,true),rate:r=>{try{yp.setPlaybackRate(r)}catch(e){}},playing:()=>yp.getPlayerState()===1};
+          P={media:true,kind:'yt',time:()=>yp.getCurrentTime()||0,play:()=>yp.playVideo(),pause:()=>yp.pauseVideo(),seek:t=>yp.seekTo(t,true),rate:r=>{try{yp.setPlaybackRate(r)}catch(e){}},playing:()=>yp.getPlayerState()===1,dur:()=>{try{return yp.getDuration()||0}catch(e){return 0}}};
           res();},
           onError:e=>{toast('YouTube không cho phát video này ở web khác (mã '+e.data+'). Thử video khác nha.',5000);res();}}});
       setTimeout(res,12000);
@@ -890,7 +921,7 @@ async function mountMedia(){
     }
     box.innerHTML=src.audio?'<div class="media audio"><audio id="vid" controls playsinline preload="auto"></audio></div>':'<div class="media"><video id="vid" controls playsinline preload="auto"></video></div>';
     const v=$('#vid'); v.src=src.url;
-    P={media:true,kind:'file',time:()=>v.currentTime,play:()=>v.play().catch(()=>{}),pause:()=>v.pause(),seek:t=>{v.currentTime=t},rate:r=>{v.playbackRate=r},playing:()=>!v.paused&&!v.ended};
+    P={media:true,kind:'file',time:()=>v.currentTime,play:()=>v.play().catch(()=>{}),pause:()=>v.pause(),seek:t=>{v.currentTime=t},rate:r=>{v.playbackRate=r},playing:()=>!v.paused&&!v.ended,dur:()=>isFinite(v.duration)?v.duration:0};
   } else {
     box.innerHTML=ttsBox();
   }
@@ -1306,7 +1337,7 @@ function setMode(m){
   ({shadow:renderShadow,pron:renderPron,dict:renderDict,fill:renderFill,prac:renderPrac})[m]();
   if(matchMedia('(max-width:959px)').matches) window.scrollTo({top:0});
 }
-onDict.push(()=>{ if(!$('#vLesson').hidden&&LES&&(MODE==='shadow'||MODE==='prac')) ({shadow:renderShadow,prac:renderPrac})[MODE](true); });
+onDict.push(()=>{ if(!$('#vLesson').hidden&&LES&&LES.lines.length&&(MODE==='shadow'||MODE==='prac')) ({shadow:renderShadow,prac:renderPrac})[MODE](true); });
 
 /* ======================= display settings ======================= */
 function viewSheet(){
@@ -1381,11 +1412,15 @@ function renderShadow(keepScroll){
   const p=$('#panel');
   const y=keepScroll?window.scrollY:0;
   p.innerHTML=`<div class="dock">
-      <button class="pbtn ${S.loop?'on':''}" id="pLoop" title="Lặp lại câu đang học" aria-label="Lặp câu">${IC.loop}</button>
-      <button class="pbtn" id="pPrev" aria-label="Câu trước">${IC.prev}</button>
-      <button class="pbtn big" id="pPlay" aria-label="Phát">${IC.play}</button>
-      <button class="pbtn" id="pNext" aria-label="Câu sau">${IC.next}</button>
-      <button class="pbtn ${S.shadow?'on':''}" id="pShadow" title="Tự dừng sau mỗi câu để bạn nói theo" aria-label="Nói theo">${IC.mic}</button>
+      <div class="prog"><span id="tCur">0:00</span><input type="range" id="seek" min="0" max="1000" value="0" step="1" aria-label="Tua"><span id="tDur">${P&&P.media?'0:00':LES.lines.length+' câu'}</span></div>
+      <div class="dk-row">
+        <button class="db" id="pPlay" aria-label="Phát">${IC.play}<small>Phát</small></button>
+        <button class="db ${S.loop?'on':''}" id="pLoop" aria-label="Lặp câu">${IC.loop}<small>Lặp</small></button>
+        <button class="db" id="pRate" aria-label="Tốc độ">${IC.speed}<small id="rateV">${S.rate}x</small></button>
+        <button class="db" id="pExplain" aria-label="Giải nghĩa câu">${IC.bulb}<small>Giải</small></button>
+        <button class="db ${S.unpin?'':'on'}" id="pPin" aria-label="Ghim video">${IC.pin}<small>Ghim</small></button>
+        <button class="pbtn big ${S.shadow?'on2':''}" id="pShadow" title="Nói theo: tự dừng sau mỗi câu để bạn nhắc lại" aria-label="Nói theo">${IC.mic}</button>
+      </div>
     </div>
     <p class="hint" id="pHint">${hintText()}</p>
     <div class="lines" id="lines">${LES.lines.map((l,i)=>`<div class="line ${i===CUR?'act':''}" data-i="${i}">
@@ -1507,10 +1542,23 @@ async function viaProxy(u,asJson){
   for(const p of PROXIES){ try{ const r=await fetch(p(u)); if(!r.ok) throw new Error(r.status); const t=await r.text(); if(!t||t.length<20) throw new Error('empty'); return asJson?JSON.parse(t):t; }catch(e){last=e;} }
   throw last||new Error('proxy');
 }
+async function tfetch(u,ms=9000){const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);try{const r=await fetch(u,{signal:c.signal});if(!r.ok)throw new Error(r.status);return r;}finally{clearTimeout(t);}}
+async function zhLines(vtt){const out=[];for(const l of parseSubs(vtt)){if(l.s==null)continue;const zh=await toSimp(l.zh);if(cjkCount(zh))out.push({s:l.s,e:l.e,zh});}return out;}
+const INV=['https://inv.nadeko.net','https://invidious.nerdvpn.de','https://yewtu.be','https://invidious.f5.si'];
+const PIPED=['https://pipedapi.kavin.rocks','https://api.piped.private.coffee'];
+async function altSubs(id){ // public mirrors that allow CORS; often down, so race them
+  const pick=a=>a.find(t=>/^zh-(Hans|CN)/i.test(t.c)&&!t.a)||a.find(t=>/^zh/i.test(t.c)&&!t.a)||a.find(t=>/^zh/i.test(t.c));
+  const tries=[...INV.map(h=>async()=>{const j=await (await tfetch(h+'/api/v1/captions/'+id)).json();const t=pick((j.captions||[]).map(x=>({c:x.languageCode||'',a:/auto/i.test(x.label||''),u:x.url})));if(!t)throw 0;const v=await (await tfetch(new URL(t.u,h).href)).text();const L=await zhLines(v);if(!L.length)throw 0;return L;}),
+    ...PIPED.map(h=>async()=>{const j=await (await tfetch(h+'/streams/'+id)).json();const t=pick((j.subtitles||[]).map(x=>({c:x.code||'',a:x.autoGenerated,u:x.url})));if(!t)throw 0;const v=await (await tfetch(t.u)).text();const L=await zhLines(v);if(!L.length)throw 0;return L;})];
+  return await Promise.any(tries.map(f=>f()));
+}
 async function autoSubsYT(){
   const job={stop:false,running:true,les:LES}; GEN=job; const les=LES, id=les.src.id;
   genUI('Đang lấy phụ đề của video…','Bánh Bao đang hỏi YouTube, chờ chút nha',null);
   try{
+    const alt=await altSubs(id).catch(()=>null);
+    if(job.stop||LES!==les) return;
+    if(alt&&alt.length){job.running=false;finishGen(alt);return;}
     const html=await viaProxy('https://www.youtube.com/watch?v='+id+'&hl=zh-CN');
     const m=html.match(/"captionTracks":(\[.*?\])/); if(!m) throw new Error('none');
     const tracks=JSON.parse(m[1].replace(/\\u0026/g,'&'));
@@ -1533,18 +1581,19 @@ async function autoSubsYT(){
   }catch(e){
     if(job.stop||LES!==les) return;
     job.running=false;
-    noSubs('YouTube không cho lấy phụ đề của video này. Cách chắc ăn nhất: tải video về máy rồi bấm “Chọn file video đã tải”, web sẽ tự nghe và làm phụ đề. Hoặc dán bản chép lời vào ô dưới.');
+    noSubs('Web chưa tự lấy được phụ đề từ link này (YouTube chặn trang web khác lấy phụ đề). Dùng nút “Lấy phụ đề” bên dưới là lấy được, hoặc tải video về rồi bấm “Chọn file video đã tải” để web tự nghe.');
   }
 }
 function noSubs(msg){ // ask for a transcript, or make one from a file
   GEN=null;
   $('#panel').innerHTML=`<div class="pc"><h2 style="font-size:22px">Thêm phụ đề để học</h2>
     <p class="muted" style="margin:6px 0 0">${esc(msg||'Dán bản chép lời tiếng Trung của video vào đây (hoặc mở file .srt) để có pinyin, dịch và các bài luyện.')}</p>
+    ${LES.src&&LES.src.type==='youtube'?grabBox():''}
     <div class="row" style="margin-top:14px">${LES.src&&LES.src.type==='file'&&LES.src.url?`<button class="btn pri" id="lsAuto">${IC.spark}Tự làm phụ đề</button>`:`<label class="btn pri" for="lsVid" style="cursor:pointer">${IC.spark}Chọn file video đã tải</label><input type="file" id="lsVid" accept="video/*,audio/*" hidden>`}</div>
     <div class="or">hoặc dán phụ đề</div>
     <textarea class="in" id="lsSub" placeholder="Dán bản chép lời hoặc nội dung .srt vào đây"></textarea>
     <div class="row" style="margin-top:12px"><button class="btn pri" id="lsGo">${IC.check}Dùng phụ đề này</button><label class="btn out sm" for="lsFile" style="cursor:pointer">Mở file .srt</label><input type="file" id="lsFile" accept=".srt,.vtt,.txt,.ass,text/*" hidden></div>
-    <details class="help"><summary>Lấy phụ đề YouTube thế nào?</summary><ol><li>Mở video trên YouTube bằng máy tính, bấm <b>…thêm</b> dưới video, chọn <b>Hiện bản chép lời</b>.</li><li>Bôi đen toàn bộ bản chép lời, bấm Ctrl + C, rồi dán vào ô trên.</li><li>Hoặc tải phụ đề .srt ở downsub.com rồi bấm “Mở file .srt”.</li></ol></details></div>`;
+    <details class="help"><summary>Cách khác: tự chép phụ đề</summary><ol><li>Mở video trên YouTube bằng máy tính, bấm <b>…thêm</b> dưới video, chọn <b>Hiện bản chép lời</b>.</li><li>Bôi đen toàn bộ bản chép lời, bấm Ctrl + C, rồi dán vào ô trên.</li><li>Hoặc tải phụ đề .srt ở downsub.com rồi bấm “Mở file .srt”.</li></ol></details></div>`;
   $('#lsFile').onchange=async e=>{const f=e.target.files[0];if(f)$('#lsSub').value=await f.text();};
   if($('#lsAuto')) $('#lsAuto').onclick=()=>autoSubsFile();
   if($('#lsVid')) $('#lsVid').onchange=e=>{const f=e.target.files[0];if(!f)return;LES.src={type:'file',name:f.name,url:URL.createObjectURL(f),audio:/^audio/.test(f.type)};mountMedia().then(()=>autoSubsFile());};
@@ -1568,9 +1617,14 @@ function setActive(i,scroll=true){
   CUR=Math.max(0,Math.min(LES.lines.length-1,i));
   $$('#lines .line').forEach(el=>el.classList.toggle('act',+el.dataset.i===CUR));
   const el=$(`#lines .line[data-i="${CUR}"]`);
-  if(el&&scroll){ el.scrollIntoView({behavior:'smooth',block:'center'}); }
+  if(el&&scroll){ // keep the sentence just under the pinned video, not behind it
+    const side=$('.side'), ph=matchMedia('(max-width:959px)').matches&&!document.body.classList.contains('unpin');
+    const top=ph&&side?side.getBoundingClientRect().bottom+12:90;
+    const r=el.getBoundingClientRect(), dockH=ph?150:20;
+    if(r.top<top||r.bottom>innerHeight-dockH) window.scrollTo({top:window.scrollY+r.top-top,behavior:'smooth'});
+  }
 }
-function setPlayIcon(on){const b=$('#pPlay');if(b){b.innerHTML=on?IC.pause:IC.play;b.setAttribute('aria-label',on?'Tạm dừng':'Phát');}}
+function setPlayIcon(on){const b=$('#pPlay');if(b){b.innerHTML=(on?IC.pause:IC.play)+'<small>'+(on?'Dừng':'Phát')+'</small>';b.setAttribute('aria-label',on?'Tạm dừng':'Phát');}}
 async function runFrom(i){
   const run=newRun(); PLAYING=run; setPlayIcon(true);
   for(let k=i;k<LES.lines.length&&!run.dead;k++){
@@ -1608,7 +1662,10 @@ $('#panel').addEventListener('click',async e=>{
   if(id==='pPrev'){ const wasOn=playing(); stopRun(); setActive(CUR-1); if(wasOn) runFrom(CUR); return; }
   if(id==='pNext'){ const wasOn=playing(); stopRun(); setActive(CUR+1); if(wasOn) runFrom(CUR); return; }
   if(id==='pLoop'){S.loop=!S.loop;saveS();$('#pLoop').classList.toggle('on',S.loop);$('#pHint').textContent=hintText();return;}
-  if(id==='pShadow'){S.shadow=!S.shadow;saveS();$('#pShadow').classList.toggle('on',S.shadow);$('#pHint').textContent=hintText();toast(S.shadow?'Đã bật nói theo: web tự dừng sau mỗi câu':'Đã tắt nói theo');return;}
+  if(id==='pRate'){const R=[.5,.75,1,1.25];S.rate=R[(R.indexOf(S.rate)+1)%R.length]||1;saveS();$('#rateV').textContent=S.rate+'x';if(P&&P.media)P.rate(S.rate);toast('Tốc độ '+S.rate+'x');return;}
+  if(id==='pPin'){S.unpin=!S.unpin;saveS();document.body.classList.toggle('unpin',!!S.unpin);$('#pPin').classList.toggle('on',!S.unpin);toast(S.unpin?'Đã bỏ ghim video':'Đã ghim video ở trên');return;}
+  if(id==='pExplain'){explainLine(CUR);return;}
+  if(id==='pShadow'){S.shadow=!S.shadow;saveS();$('#pShadow').classList.toggle('on2',S.shadow);$('#pHint').textContent=hintText();toast(S.shadow?'Đã bật nói theo: web tự dừng sau mỗi câu':'Đã tắt nói theo');return;}
   const a=e.target.closest('[data-a]');
   if(a){
     const i=CUR, act=a.dataset.a;
@@ -1639,6 +1696,39 @@ setInterval(()=>{ // follow the video when it is played with its own controls
   if(i>=0&&i!==CUR) setActive(i);
 },250);
 
+function explainLine(i){
+  const L=LES.lines[i]; if(!L) return; const seen=new Set();
+  const ws=toks(L.zh).filter(t=>t.zh&&!seen.has(t.w)&&seen.add(t.w));
+  openSheet(`<h2>Giải nghĩa câu ${i+1}</h2><div class="ans zh" style="font-size:19px">${esc(L.zh)}</div>${L.vi?`<p class="muted" style="margin:8px 0 0">${esc(L.vi)}</p>`:''}
+    <div class="xl">${ws.map(t=>{const e=entries(t.w)[0];const py=(t.py||[]).join(' ');return `<button class="xw" data-xw="${esc(t.w)}"><b class="zh">${esc(t.w)}</b><span class="pyf">${esc(py)}</span><span class="m">${e?esc(e.m.replace(/\[[^\]]*\]/g,'').split(/[;；]/)[0]):'Chạm để tra'}</span></button>`;}).join('')}</div>`);
+  $$('#sheet [data-xw]').forEach(b=>b.onclick=()=>showWord(b.dataset.xw,L.zh));
+}
+let SEEKING=false;
+$('#panel').addEventListener('input',e=>{if(e.target.id!=='seek')return;SEEKING=true;const v=+e.target.value/1000;
+  if(P&&P.media&&P.dur()){$('#tCur').textContent=fmtT(v*P.dur());}else{const k=Math.round(v*(LES.lines.length-1));$('#tCur').textContent='Câu '+(k+1);}});
+$('#panel').addEventListener('change',e=>{if(e.target.id!=='seek')return;SEEKING=false;const v=+e.target.value/1000;stopRun();
+  if(P&&P.media&&P.dur()){P.seek(v*P.dur());P.play();}else{const k=Math.round(v*(LES.lines.length-1));setActive(k);runFrom(k);}});
+let KARA=-1;
+function karaoke(){ // move the green box word by word while the media plays
+  if(MODE!=='shadow'||!LES||!LES.lines.length||$('#vLesson').hidden) return;
+  const lx=$('#lines'); if(lx) lx.classList.toggle('playing',!!((PLAYING&&!PLAYING.dead)||(P&&P.media&&P.playing())));
+  const sl=$('#seek');
+  if(!(P&&P.media)){ if(sl&&!SEEKING){sl.value=LES.lines.length>1?Math.round(CUR/(LES.lines.length-1)*1000):0;$('#tCur').textContent='Câu '+(CUR+1);} return; }
+  const t=P.time(), d=P.dur();
+  if(sl&&!SEEKING&&d){sl.value=Math.round(t/d*1000);$('#tCur').textContent=fmtT(t);$('#tDur').textContent=fmtT(d);}
+  const L=LES.lines[CUR]; if(!L||L.s==null) return;
+  const tt=t-S.offset; let k=-1;
+  if(tt>=L.s-0.05&&tt<=L.e+0.05){
+    const ws=$$(`#lines .line[data-i="${CUR}"] .w`); if(!ws.length) return;
+    const n=ws.map(w=>w.querySelectorAll('.hz').length||1), tot=n.reduce((a,b)=>a+b,0);
+    const pos=Math.max(0,Math.min(.999,(tt-L.s)/Math.max(.3,L.e-L.s)))*tot; let acc=0;
+    for(let j=0;j<ws.length;j++){acc+=n[j];if(pos<acc){k=j;break;}}
+  }
+  const key=CUR*1000+k; if(key===KARA&&$('#lines .w.kara')) return; KARA=key;
+  $$('#lines .w.kara').forEach(x=>x.classList.remove('kara'));
+  if(k>=0){const w=$$(`#lines .line[data-i="${CUR}"] .w`)[k]; if(w) w.classList.add('kara');}
+}
+setInterval(karaoke,120);
 async function getMic(){ if(MIC&&MIC.active) return MIC; MIC=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}}); return MIC; }
 async function toggleRec(i){
   if(rec){ stopRec(); return; }
@@ -1980,10 +2070,106 @@ function drawFC2(list){
   if($('#fcYes')) $('#fcYes').onclick=()=>grade(true);
 }
 
+async function BBGRAB(){
+  var APP='https://thaoanh1311997-png.github.io/Pinyin/video/';
+  var say=function(m){try{alert('Bánh Bao: '+m);}catch(e){}};
+  var u=new URL(location.href);
+  var id=u.searchParams.get('v')||((location.pathname.match(/\/(?:shorts|live)\/([\w-]{11})/)||[])[1]);
+  if(!/(^|\.)youtube\.com$/.test(location.hostname)&&!window.BB_TEST||!id){say('Mở một video trên YouTube rồi bấm nút này nha.');return;}
+  if(window.BB_TEST&&window.BB_TEST.app) APP=window.BB_TEST.app;
+  var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms);});};
+  var cjk=function(t){return (t.match(/[㐀-鿿]/g)||[]).length;};
+  var P=document.getElementById('movie_player');
+  var pr=null; try{pr=P&&P.getPlayerResponse&&P.getPlayerResponse();}catch(e){}
+  if(!pr||!pr.videoDetails||pr.videoDetails.videoId!==id) pr=window.ytInitialPlayerResponse||pr;
+  var title=(pr&&pr.videoDetails&&pr.videoDetails.title)||document.title.replace(/ - YouTube$/,'');
+  var tracks=[]; try{tracks=pr.captions.playerCaptionsTracklistRenderer.captionTracks||[];}catch(e){}
+  var isZh=function(t){return /^zh/i.test(t.languageCode);};
+  var zh=tracks.filter(function(t){return /^zh-(Hans|CN|SG)/i.test(t.languageCode)&&t.kind!=='asr';})[0]||tracks.filter(function(t){return isZh(t)&&t.kind!=='asr';})[0]||tracks.filter(isZh)[0];
+  var fromJson=function(j){var a=[];(j.events||[]).forEach(function(ev){if(!ev.segs)return;var t=ev.segs.map(function(x){return x.utf8||'';}).join('').replace(/\s*\n\s*/g,' ').trim();if(!t)return;var s=(ev.tStartMs||0)/1000;a.push([Math.round(s*100)/100,Math.round((s+(ev.dDurationMs||3000)/1000)*100)/100,t]);});return a;};
+  var mine={};var get=async function(href){mine[new URL(href,location.href).href]=1;try{var r=await fetch(href,{credentials:'include'});var t=await r.text();if(!t||t.length<30)return[];return fromJson(JSON.parse(t));}catch(e){return[];}};
+  var seenUrl=function(){var n=performance.getEntriesByType('resource').map(function(e){return e.name;}).filter(function(n){return /\/api\/timedtext/.test(n)&&n.indexOf(id)>=0&&!mine[n];});var p=n.filter(function(x){return /[?&]pot=/.test(x);});return p.pop()||n.pop();};
+  var build=function(base,track,tl){var x=new URL(base,location.href);var b=new URL(track.baseUrl,location.href);['lang','kind','name'].forEach(function(k){x.searchParams.delete(k);var v=b.searchParams.get(k);if(v!==null)x.searchParams.set(k,v);});x.searchParams.delete('tlang');if(tl)x.searchParams.set('tlang',tl);x.searchParams.set('fmt','json3');return x.href;};
+  var token=null;
+  var fetchTrack=async function(track,tl){
+    var out=await get(build(track.baseUrl,track,tl)); if(out.length) return out;
+    if(!token){token=seenUrl();
+      if(!token){var cc=document.querySelector('.ytp-subtitles-button');
+        if(cc&&cc.getAttribute('aria-pressed')!=='true'){cc.click();for(var k=0;k<15&&!(token=seenUrl());k++)await sleep(400);cc.click();}
+        else{for(var k2=0;k2<5&&!(token=seenUrl());k2++)await sleep(400);}}}
+    if(token) return await get(build(token,track,tl));
+    return [];
+  };
+  var out=[],note='';
+  if(zh){out=await fetchTrack(zh,null);}
+  else if(tracks.length){
+    var orig=tracks.filter(function(t){return t.kind!=='asr';})[0]||tracks[0];
+    var o=await fetchTrack(orig,null);
+    var withZh=o.filter(function(l){return cjk(l[2])>0;});
+    if(o.length&&withZh.length>=o.length*0.5){out=o;}
+    else{out=await fetchTrack(orig,'zh-Hans');if(out.length){note='mt';if(out.length===o.length)out.forEach(function(l,i){l[3]=o[i][2];});}else if(withZh.length){out=withZh;note='mix';}}
+  }
+  if(!out.length){
+    var sel='ytd-transcript-segment-renderer,transcript-segment-view-model';
+    var segs=document.querySelectorAll(sel);
+    if(!segs.length){
+      var findBtn=function(){return document.querySelector('ytd-video-description-transcript-section-renderer button')||Array.prototype.filter.call(document.querySelectorAll('button'),function(b){return /transcript|chép lời|文字记录|转写/i.test((b.textContent||'')+' '+(b.getAttribute('aria-label')||''));})[0];};
+      var btn=findBtn(); if(!btn){var ex=document.querySelector('#description-inline-expander #expand,#expand');if(ex)ex.click();await sleep(600);btn=findBtn();}
+      if(btn){btn.click();for(var k3=0;k3<25&&!(segs=document.querySelectorAll(sel)).length;k3++)await sleep(400);await sleep(500);segs=document.querySelectorAll(sel);}
+    }
+    var toS=function(t){return t.split(':').reduce(function(a,x){return a*60+(+x);},0);};
+    var a=[];Array.prototype.forEach.call(segs,function(el){var m=(el.innerText||el.textContent||'').trim().match(/^(\d+(?::\d\d)+)\s*([\s\S]*)$/);if(m){var t=m[2].replace(/\s+/g,' ').trim();if(t)a.push([toS(m[1]),0,t]);}});
+    a.forEach(function(x,i){x[1]=a[i+1]?a[i+1][0]:x[0]+4;});
+    out=a;
+  }
+  if(!out.length){say('Video này không có phụ đề nào để lấy. Hãy tải video về rồi mở bằng “Chọn file video”, web sẽ tự nghe và làm phụ đề tiếng Trung.');return;}
+  if(!out.some(function(l){return cjk(l[2]);})){say('Phụ đề của video này không có tiếng Trung. Hãy tải video về rồi mở bằng “Chọn file video”, web sẽ tự nghe tiếng Trung trong video.');return;}
+  var url=APP+'#bbsub='+encodeURIComponent(JSON.stringify({v:id,t:title,n:note,l:out}));
+  var w=null; try{w=window.open(url,'_blank');}catch(e){}
+  if(!w) location.href=url;
+}
+const BM_HREF='javascript:'+encodeURIComponent('('+BBGRAB.toString()+')()');
+function grabBox(){
+  const mob=/iPhone|iPad|Android/i.test(navigator.userAgent);
+  return `<div class="grab"><h3>Nút “Lấy phụ đề” 1 chạm (khuyên dùng)</h3>
+    <div class="muted" style="font-size:14px">Nút này chạy ngay trên trang YouTube bằng tài khoản của bạn, nên lấy được phụ đề tiếng Trung mà web không tự lấy được. Chỉ cần cài 1 lần.</div>
+    <ol><li>Dùng Chrome hoặc Edge trên <b>máy tính</b>. Bấm <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> để hiện thanh dấu trang.</li>
+    <li><b>Kéo</b> nút xanh dưới đây thả lên thanh dấu trang.</li>
+    <li>Mở video trên YouTube, bấm nút <b>Lấy phụ đề → Bánh Bao</b> trên thanh dấu trang. Web này sẽ tự mở lại với chữ Hán, pinyin và nghĩa.</li></ol>
+    <a class="bmk" href="${BM_HREF}" data-bm="1">${IC.spark}Lấy phụ đề → Bánh Bao</a>
+    ${LES&&LES.src&&LES.src.type==='youtube'?`<a class="btn out sm" style="margin-left:8px" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${LES.src.id}">Mở video này trên YouTube</a>`:''}
+    <details class="help" style="background:var(--card)"><summary>Cài trên iPhone (Safari)</summary><ol>
+      <li>Bấm <button class="btn sm pri" data-bmcopy="1" style="display:inline-flex;padding:4px 12px">Chép mã nút</button></li>
+      <li>Trong Safari, bấm nút Chia sẻ › <b>Thêm dấu trang</b> cho trang này, đặt tên “Lấy phụ đề”, bấm Lưu.</li>
+      <li>Mở Dấu trang › Sửa › chọn “Lấy phụ đề”, xóa địa chỉ cũ rồi <b>dán</b> mã vừa chép vào ô địa chỉ.</li>
+      <li>Mở video trên trang m.youtube.com bằng Safari (không phải app YouTube), gõ “Lấy phụ đề” vào thanh địa chỉ và chọn dấu trang đó.</li></ol></details></div>`;
+}
+document.addEventListener('click',async e=>{const c=e.target.closest('[data-bmcopy]');if(!c)return;e.preventDefault();try{await navigator.clipboard.writeText(BM_HREF);toast('Đã chép mã. Giờ dán vào địa chỉ của dấu trang nha.',4500);}catch(err){openSheet('<h2>Chép mã này</h2><textarea class="in" style="min-height:160px;font-size:12px" readonly>'+esc(BM_HREF)+'</textarea>');}});
+document.addEventListener('click',e=>{const a=e.target.closest('[data-bm]');if(a){e.preventDefault();toast('Đừng bấm ở đây nha. Hãy kéo nút này thả lên thanh dấu trang.',4500);}});
+async function importGrab(){
+  const h=location.hash; if(!/^#bbsub=/.test(h)) return false;
+  history.replaceState(null,'',location.pathname+location.search);
+  let d; try{d=JSON.parse(decodeURIComponent(h.slice(7)));}catch(e){toast('Phụ đề gửi qua bị lỗi, thử bấm nút lại nha.',4000);return false;}
+  const lines=[];
+  for(const r of (d.l||[])){
+    let zh=await toSimp(String(r[2]||'').trim()); if(!cjkCount(zh)) continue;
+    const prev=lines[lines.length-1]; if(prev&&prev.zh===zh){prev.e=r[1];continue;}
+    lines.push({s:+r[0],e:+r[1],zh,vi:r[3]?String(r[3]):''});
+  }
+  lines.forEach((l,k)=>{const n=lines[k+1];if(n&&n.s<l.e)l.e=n.s;});
+  if(!lines.length){toast('Phụ đề lấy được không có tiếng Trung.',4000);return false;}
+  const old=lessons().find(x=>x.src&&x.src.type==='youtube'&&x.src.id===d.v);
+  await openLesson({id:old?old.id:'v'+Date.now(),title:d.t||'Video YouTube',src:{type:'youtube',id:d.v},lines});
+  toast(d.n==='mt'?'Video chỉ có phụ đề tiếng Việt nên chữ Trung được YouTube dịch tự động, có thể không khớp lời nói 100%.':'Đã lấy '+lines.length+' câu tiếng Trung! Chạm câu nào để nghe đoạn đó.',6000);
+  return true;
+}
+window.addEventListener('hashchange',()=>importGrab());
+
 /* ======================= start ======================= */
 renderLib(); renderStats(); show('Home');
 const hr=new Date().getHours(); $('#helloHi').textContent=hr<11?'Chào buổi sáng!':hr<14?'Chào buổi trưa!':hr<18?'Chào buổi chiều!':'Chào buổi tối!';
 setTimeout(()=>loadDict(),1500);
+importGrab();
 })();
 </script>
 </body>
