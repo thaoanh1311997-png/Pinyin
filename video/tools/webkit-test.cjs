@@ -6,14 +6,14 @@ const rss = () => { try { return +cp.execSync("ps -eo rss,comm,args | grep -i 'W
 (async () => {
   const b = await webkit.launch();
   for (const [dn, dev] of [['iPhone', devices['iPhone 13']], ['iPad', devices['iPad Pro 11']]]) {
-    for (const [file, key] of [['t.m4a', 'ok'], ['t.mp3', 'ok'], ['t.mp3', '401'], ['t.mp3', ''], ['t60.mp3', '']]) {
+    for (const [file, key] of [['t.m4a', 'ok'], ['t.mp3', 'ok'], ['t.mp3', '401'], ['t.mp3', ''], ['t60.mp3', ''], ['t.mp3', 'paste']]) {
       const ctx = await b.newContext(dev); const p = await ctx.newPage(); const log = [];
       p.on('pageerror', e => log.push('ERR ' + e.message));
       p.on('crash', () => log.push('CRASH'));
       p.on('console', m => { if (m.type() === 'error' || m.type() === 'warning') log.push(m.type() + ' ' + m.text().slice(0, 120)); });
       let loads = 0; p.on('load', () => loads++);
       await p.route(/api\.groq\.com/, r => { if (key === '401') return r.fulfill({ status: 401, body: '{"error":{"message":"Invalid API Key"}}', contentType: 'application/json', headers: { 'access-control-allow-origin': '*' } }); const segs = []; for (let t = 0; t < 600; t += 3) segs.push({ start: t + 0.5, end: t + 2.5, text: '今天我们学习第' + t + '句话，大家好好听。' }); r.fulfill({ body: JSON.stringify({ segments: segs }), contentType: 'application/json', headers: { 'access-control-allow-origin': '*' } }); });
-      await p.goto('http://localhost:8765/Pinyin/video/' + (key ? '?gq=gsk_test_aaaaaaaaaaaaaaaaaaaaaaaa' : ''));
+      await p.goto('http://localhost:8765/Pinyin/video/' + (key && key !== 'paste' ? '?gq=gsk_test_aaaaaaaaaaaaaaaaaaaaaaaa' : ''));
       await p.waitForTimeout(2500);
       const base = rss(); let peak = base; const iv = setInterval(() => { const r = rss(); if (r > peak) peak = r; }, 200);
       await p.click('[data-go=video]'); await p.waitForTimeout(400);
@@ -25,6 +25,11 @@ const rss = () => { try { return +cp.execSync("ps -eo rss,comm,args | grep -i 'W
         if (/lines=[1-9]/.test(st) && Date.now() - t0 > 15000) break;
         if (/vHome/.test(st) && Date.now() - t0 > 3000) break;
         if (MSG.test(st)) break;
+      }
+      if (key === 'paste') {
+        await p.fill('#gqKey', 'https://thaoanh1311997-png.github.io/Pinyin/video/?gq=gsk_test_aaaaaaaaaaaaaaaaaaaaaaaa&sdk=sd_testtesttest');
+        await p.click('#gqSave'); const t1 = Date.now();
+        for (let k = 0; k < 60; k++) { await p.waitForTimeout(1000); st = await p.evaluate(() => [...document.querySelectorAll('main > section')].filter(s => !s.hidden).map(s => s.id).join(',') + ' lines=' + document.querySelectorAll('.line').length + ' key=' + !!localStorage.getItem('bb.groq')); if (/lines=[1-9]/.test(st) && Date.now() - t1 > 8000) break; }
       }
       clearInterval(iv);
       console.log(dn, file, key ? 'groq ' + key : 'no key', ((Date.now() - t0) / 1000).toFixed(0) + 's', 'loads', loads, 'state', st.slice(0, 120), 'webproc +' + (peak - base) + 'MB (peak ' + peak + ')');

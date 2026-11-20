@@ -1247,6 +1247,7 @@ let MEDIA_FILE=null;
 $('#mediaFile').onchange=e=>{MEDIA_FILE=e.target.files[0]||null;if(MEDIA_FILE&&!isMedia(MEDIA_FILE)){toast('File này không phải video hay âm thanh. Hãy chọn file nghe (mp3, m4a…) hoặc video.',4500);MEDIA_FILE=null;e.target.value='';}$('#mediaName').textContent=MEDIA_FILE?'Đã chọn: '+MEDIA_FILE.name:'MP4, MP3, M4A…';if(MEDIA_FILE)$('#ytUrl').value='';};
 $('#subFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;$('#subText').value=await f.text();e.target.value='';toast('Đã mở '+f.name);};
 $('#startVideo').onclick=async()=>{
+  if(/[?&](gq|sdk)=/.test($('#ytUrl').value)&&takeKeys($('#ytUrl').value)){ $('#ytUrl').value=''; toast('Đã lưu mã máy chủ trên máy này! Giờ chọn file nghe hoặc dán link video nha.',4500); return; }
   const url=$('#ytUrl').value.trim(); const id=url?ytId(url):null;
   if(url&&!id){toast('Link YouTube chưa đúng. Hãy dán link dạng youtube.com/watch?v=… hoặc youtu.be/…',4000);return;}
   const lines=parseSubs($('#subText').value);
@@ -1667,6 +1668,10 @@ async function decode16k(file,onProg){
 const GROQ_DEFAULT='';
 // keys arrive once per device through a private link (?gq=…&sdk=…), never stored in the page source
 (()=>{try{const q=new URLSearchParams(location.search),k=q.get('gq'),d=q.get('sdk');if(k&&k.length>20)localStorage.setItem('bb.groq',k);if(d&&d.length>10)localStorage.setItem('bb.sdkey',d);if(k||d)history.replaceState(null,'',location.pathname);}catch(e){}})();
+function takeKeys(t){ t=String(t||''); let n=0;
+  const g=t.match(/gsk_\w{20,}/), d=t.match(/sd_\w{10,}/);
+  try{ if(g){localStorage.setItem('bb.groq',g[0]);n++;} if(d){localStorage.setItem('bb.sdkey',d[0]);n++;} }catch(e){}
+  return n; }
 function groqKey(){try{return localStorage.getItem('bb.groq')||GROQ_DEFAULT;}catch(e){return GROQ_DEFAULT;}}
 function wav16(a){
   const n=a.length, buf=new ArrayBuffer(44+n*2), v=new DataView(buf);
@@ -1791,8 +1796,8 @@ async function autoSubsFile(){
     // and Safari kills the page (it reloads on the home page). So on these devices only the fast server is used.
     { if(IS_MOB){ job.running=false;
         const c=(gErr.match(/groq (\d+)/)||[])[1];
-        noSubs(!groqKey()?'Điện thoại cần máy chủ nhanh để làm phụ đề. Mở link mã máy chủ mà Claude đã gửi 1 lần trên máy này, rồi chọn lại file nha.'
-          :c==='401'||c==='403'?'Mã máy chủ nhanh bị sai hoặc hết hạn. Gửi Claude mã mới để sửa nha.'
+        noSubs(!groqKey()?'Máy này chưa có mã máy chủ nhanh nên chưa làm phụ đề được. Dán mã vào ô bên dưới là xong.'
+          :c==='401'||c==='403'?'Mã máy chủ nhanh bị sai hoặc hết hạn. Dán mã mới vào ô bên dưới nha.'
           :c==='429'?'Máy chủ nhanh đang hết lượt miễn phí trong giờ này. Khoảng 1 tiếng nữa chọn lại file là được nha.'
           :c==='413'?'File này lớn quá với máy chủ nhanh. Bạn đổi sang MP3 rồi chọn lại nha.'
           :'Chưa gọi được máy chủ nhanh'+(gErr?' ('+gErr.slice(0,40)+')':'')+'. Kiểm tra mạng rồi chọn lại file nha.');
@@ -1960,11 +1965,14 @@ function noSubs(msg){ // ask for a transcript, or make one from a file
     ${LES.src&&LES.src.type==='youtube'?`<div class="grab"><h3>Dán link là có phụ đề</h3><div class="muted" style="font-size:14px">Đăng ký miễn phí ở <a href="https://dash.supadata.ai/" target="_blank" rel="noopener">supadata.ai</a> (bằng Google), chép <b>API key</b> rồi dán vào đây. Làm 1 lần thôi.</div>
       <div class="row" style="margin-top:10px;flex-wrap:nowrap"><input class="in" id="sdKey" placeholder="Dán API key vào đây" autocomplete="off" style="flex:1;min-width:0"><button class="btn pri sm" id="sdSave">Lưu</button></div></div>`:''}
     ${LES.src&&LES.src.type==='youtube'&&!IS_MOB?grabBox():''}
+    ${LES.src&&LES.src.type==='file'&&IS_MOB?`<div class="grab"><h3>Dán mã máy chủ nhanh</h3><div class="muted" style="font-size:14px">Chép nguyên cái link mã Claude gửi (hoặc chỉ mã gsk_…), dán vào ô dưới rồi bấm Lưu. Làm 1 lần trên máy này thôi.</div>
+      <div class="row" style="margin-top:10px;flex-wrap:nowrap"><input class="in" id="gqKey" placeholder="Dán link hoặc mã vào đây" autocomplete="off" autocapitalize="off" spellcheck="false" style="flex:1;min-width:0"><button class="btn pri sm" id="gqSave">Lưu</button></div></div>`:''}
     <div class="row" style="margin-top:14px">${LES.src&&LES.src.type==='file'&&LES.src.url?`<button class="btn pri" id="lsAuto">${IC.spark}Tự làm phụ đề</button>`:`<label class="btn pri" for="lsVid" style="cursor:pointer">${IC.spark}Chọn file video đã tải</label><input type="file" id="lsVid" hidden>`}</div>
     <div class="or">hoặc dán phụ đề</div>
     <textarea class="in" id="lsSub" placeholder="Dán bản chép lời hoặc nội dung .srt vào đây"></textarea>
     <div class="row" style="margin-top:12px"><button class="btn pri" id="lsGo">${IC.check}Dùng phụ đề này</button><label class="btn out sm" for="lsFile" style="cursor:pointer">Mở file .srt</label><input type="file" id="lsFile" accept=".srt,.vtt,.txt,.ass,text/*" hidden></div>
     <details class="help"><summary>Cách khác: tự chép phụ đề</summary><ol><li>Mở video trên YouTube bằng máy tính, bấm <b>…thêm</b> dưới video, chọn <b>Hiện bản chép lời</b>.</li><li>Bôi đen toàn bộ bản chép lời, bấm Ctrl + C, rồi dán vào ô trên.</li><li>Hoặc tải phụ đề .srt ở downsub.com rồi bấm “Mở file .srt”.</li></ol></details></div>`;
+  if($('#gqSave')) $('#gqSave').onclick=()=>{ if(!takeKeys($('#gqKey').value)||!groqKey()){toast('Chưa thấy mã gsk_… trong ô. Chép lại link Claude gửi nha.',4000);return;} toast('Đã lưu mã! Đang làm phụ đề…'); autoSubsFile(); };
   if($('#sdSave')) $('#sdSave').onclick=()=>{const k=$('#sdKey').value.trim();if(k.length<10){toast('Dán API key vào ô trước nha.');return;}try{localStorage.setItem('bb.sdkey',k);}catch(e){}toast('Đã lưu! Đang lấy phụ đề…');setMode('shadow');};
   $('#lsFile').onchange=async e=>{const f=e.target.files[0];if(f)$('#lsSub').value=await f.text();};
   if($('#lsAuto')) $('#lsAuto').onclick=()=>autoSubsFile();
