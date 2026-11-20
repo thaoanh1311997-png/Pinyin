@@ -1612,6 +1612,7 @@ function noSubs(msg){ // ask for a transcript, or make one from a file
   GEN=null;
   $('#panel').innerHTML=`<div class="pc"><h2 style="font-size:22px">Thêm phụ đề để học</h2>
     <p class="muted" style="margin:6px 0 0">${esc(msg||'Dán bản chép lời tiếng Trung của video vào đây (hoặc mở file .srt) để có pinyin, dịch và các bài luyện.')}</p>
+    ${LES.src&&LES.src.type==='youtube'&&!subSrv()?`<a class="btn pri" style="margin-top:12px" href="may-chu.html">${IC.spark}Cài máy chủ: dán link là có phụ đề</a>`:''}
     ${LES.src&&LES.src.type==='youtube'?grabBox():''}
     <div class="row" style="margin-top:14px">${LES.src&&LES.src.type==='file'&&LES.src.url?`<button class="btn pri" id="lsAuto">${IC.spark}Tự làm phụ đề</button>`:`<label class="btn pri" for="lsVid" style="cursor:pointer">${IC.spark}Chọn file video đã tải</label><input type="file" id="lsVid" accept="video/*,audio/*" hidden>`}</div>
     <div class="or">hoặc dán phụ đề</div>

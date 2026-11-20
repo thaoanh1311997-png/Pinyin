@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bánh Bao · Máy chủ phụ đề</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F5F7;--card:#fff;--ink:#17202A;--muted:#6B7684;--green:#12A66A;--gd:#0C8653;--soft:#E1F6EB;--line:#E3E7EC}
+@media (prefers-color-scheme:dark){:root{--bg:#11161B;--card:#1A2128;--ink:#EEF2F5;--muted:#9AA6B2;--soft:#14352A;--line:#2A333C}}
+body{margin:0;background:var(--bg);color:var(--ink);font:600 16px/1.55 Nunito,system-ui,sans-serif}
+main{max-width:560px;margin:0 auto;padding:24px 16px 60px}
+h1{font-size:24px;margin:0 0 4px}
+.card{background:var(--card);border-radius:20px;padding:18px;margin-top:14px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.n{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-weight:900;margin-right:8px}
+.btn{display:inline-block;border:0;border-radius:999px;background:var(--green);color:#fff;font:900 16px Nunito,sans-serif;padding:12px 22px;box-shadow:0 4px 0 var(--gd);cursor:pointer;text-decoration:none;margin-top:10px}
+.muted{color:var(--muted);font-size:14px}
+input{width:100%;box-sizing:border-box;border:2px solid var(--line);border-radius:14px;padding:12px;font:700 15px Nunito,sans-serif;background:var(--card);color:var(--ink);margin-top:10px}
+#msg{margin-top:10px;font-weight:800}
+textarea{width:100%;height:140px;margin-top:10px;font-size:12px}
+</style></head><body><main>
+<h1>Cài máy chủ phụ đề</h1>
+<div class="muted">Làm 1 lần trên máy tính. Xong thì dán link YouTube là có phụ đề, trên điện thoại cũng vậy.</div>
+
+<div class="card"><span class="n">1</span><b>Tạo máy chủ</b>
+<div>Mở <a href="https://dash.cloudflare.com/?to=/:account/workers-and-pages/create" target="_blank" rel="noopener">trang Cloudflare này</a>, chọn <b>Start with Hello World!</b>, rồi bấm <b>Deploy</b>.</div></div>
+
+<div class="card"><span class="n">2</span><b>Dán mã</b>
+<div>Bấm nút dưới để chép mã. Bên Cloudflare bấm <b>Edit code</b>, xóa hết chữ cũ, dán mã vào, bấm <b>Deploy</b>.</div>
+<button class="btn" id="copy">Chép mã máy chủ</button><div id="cmsg" class="muted"></div></div>
+
+<div class="card"><span class="n">3</span><b>Dán link máy chủ vào đây</b>
+<div>Cloudflare hiện một link có đuôi <b>.workers.dev</b>. Chép link đó dán vào ô dưới.</div>
+<input id="srv" placeholder="https://....workers.dev" inputmode="url" autocomplete="off">
+<button class="btn" id="save">Lưu và thử</button><div id="msg"></div></div>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+$('#copy').onclick=async()=>{
+  try{const code=await (await fetch('../bb-server/src/index.js',{cache:'no-store'})).text();
+    try{await navigator.clipboard.writeText(code);$('#cmsg').textContent='Đã chép! Qua Cloudflare dán vào nha.';}
+    catch(e){const t=document.createElement('textarea');t.value=code;$('#cmsg').after(t);t.select();$('#cmsg').textContent='Bấm giữ vào ô dưới, chọn tất cả rồi sao chép.';}
+  }catch(e){$('#cmsg').textContent='Chưa tải được mã, thử lại nha.';}
+};
+try{const v=localStorage.getItem('bb.srv');if(v)$('#srv').value=v;}catch(e){}
+$('#save').onclick=async()=>{
+  let u=$('#srv').value.trim().replace(/\/+$/,''); if(u&&!/^https?:\/\//.test(u)) u='https://'+u;
+  if(!/^https:\/\/[\w.-]+\.workers\.dev$/.test(u)){$('#msg').textContent='Link phải có đuôi .workers.dev nha.';return;}
+  $('#msg').textContent='Đang thử…';
+  try{const d=await (await fetch(u+'/?v=dQw4w9WgXcQ')).json();
+    try{localStorage.setItem('bb.srv',u);}catch(e){}
+    $('#msg').innerHTML=d&&(d.ok||d.errors)?(d.ok?'Chạy rồi! Giờ dán link YouTube vào web là có phụ đề. ':'Máy chủ chạy rồi, nhưng YouTube đang chặn nó lấy phụ đề. Gửi ảnh chụp chỗ này cho Claude nha: '+String(d.errors||'').slice(0,300))+' <a href="./">Về Bánh Bao</a>':'Máy chủ chưa đúng mã, xem lại bước 2.';
+  }catch(e){$('#msg').textContent='Không gọi được máy chủ. Kiểm tra lại link hoặc bước 2.';}
+};
+</script></body></html>
