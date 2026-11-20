@@ -1558,6 +1558,30 @@ async function rowsToLines(rows){
   lines.forEach((l,k)=>{const n=lines[k+1];if(n&&n.s<l.e)l.e=n.s;});
   return lines;
 }
+// Supadata transcript API (free 100 requests/month, user's own key)
+const SD_DEFAULT='';
+function sdKey(){try{return localStorage.getItem('bb.sdkey')||SD_DEFAULT;}catch(e){return SD_DEFAULT;}}
+async function fromSupadata(id,onWait){
+  const key=sdKey(); if(!key) return null;
+  const H={'x-api-key':key};
+  const base='https://api.supadata.ai/v1/transcript';
+  const get=async(mode)=>{
+    let r=await tfetch(base+'?url='+encodeURIComponent('https://www.youtube.com/watch?v='+id)+'&lang=zh&mode='+mode,30000,H);
+    let d=await r.json();
+    if(d&&d.jobId){ // AI transcription runs in the background
+      for(let k=0;k<90;k++){ onWait&&onWait(k); await sleep(3000);
+        d=await (await tfetch(base+'/'+d.jobId,20000,H)).json();
+        if(d.status==='completed') break; if(d.status==='failed') throw new Error('job failed'); }
+      if(d.result) d=d.result;
+    }
+    return d;
+  };
+  let d=await get('native').catch(()=>null);
+  const rows=x=>(x&&Array.isArray(x.content)?x.content:[]).map(c=>[c.offset/1000,(c.offset+(c.duration||3000))/1000,c.text]);
+  let lines=await rowsToLines(rows(d));
+  if(!lines.length){ d=await get('auto'); lines=await rowsToLines(rows(d)); }
+  return lines.length?{lines}:null;
+}
 async function fromServer(id){
   const srv=subSrv(); if(!srv) return null;
   const d=await (await tfetch(srv+'/?v='+encodeURIComponent(id),25000)).json();
@@ -1565,7 +1589,7 @@ async function fromServer(id){
   const lines=await rowsToLines(d.lines); if(!lines.length) return null;
   return {lines,title:d.title,mt:d.mt};
 }
-async function tfetch(u,ms=9000){const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);try{const r=await fetch(u,{signal:c.signal});if(!r.ok)throw new Error(r.status);return r;}finally{clearTimeout(t);}}
+async function tfetch(u,ms=9000,headers){const c=new AbortController();const t=setTimeout(()=>c.abort(),ms);try{const r=await fetch(u,{signal:c.signal,headers:headers||{}});if(!r.ok)throw new Error(r.status);return r;}finally{clearTimeout(t);}}
 async function zhLines(vtt){const out=[];for(const l of parseSubs(vtt)){if(l.s==null)continue;const zh=await toSimp(l.zh);if(cjkCount(zh))out.push({s:l.s,e:l.e,zh});}return out;}
 const INV=['https://inv.nadeko.net','https://invidious.nerdvpn.de','https://yewtu.be','https://invidious.f5.si'];
 const PIPED=['https://pipedapi.kavin.rocks','https://api.piped.private.coffee'];
@@ -1579,6 +1603,11 @@ async function autoSubsYT(){
   const job={stop:false,running:true,les:LES}; GEN=job; const les=LES, id=les.src.id;
   genUI('Đang lấy phụ đề của video…','Bánh Bao đang hỏi YouTube, chờ chút nha',null);
   try{
+    let sdErr='';
+    const sd=sdKey()?await fromSupadata(id,k=>{const el=$('#genM');if(el)el.textContent='Đang nghe video để làm phụ đề… '+(k*3)+' giây';}).catch(e=>{sdErr=String(e&&e.message||e);return null;}):null;
+    if(job.stop||LES!==les) return;
+    if(sd){job.running=false;finishGen(sd.lines);return;}
+    if(sdErr) console.warn('supadata',sdErr);
     const sv=await fromServer(id).catch(()=>null);
     if(job.stop||LES!==les) return;
     if(sv){job.running=false;if(sv.title&&/^Video( YouTube)?$/.test(les.title))les.title=sv.title;finishGen(sv.lines);if(sv.mt)toast('Video chỉ có phụ đề '+sv.mt+' nên chữ Trung do YouTube dịch tự động.',5000);return;}
@@ -1607,19 +1636,22 @@ async function autoSubsYT(){
   }catch(e){
     if(job.stop||LES!==les) return;
     job.running=false;
-    noSubs('Web chưa tự lấy được phụ đề từ link này (YouTube chặn trang web khác lấy phụ đề). Dùng nút “Lấy phụ đề” bên dưới là lấy được, hoặc tải video về rồi bấm “Chọn file video đã tải” để web tự nghe.');
+    noSubs(sdKey()?'Chưa lấy được phụ đề cho video này. Kiểm tra lại API key, hoặc dùng cách bên dưới.':'Làm bước dưới 1 lần là từ nay dán link là có phụ đề.');
   }
 }
 function noSubs(msg){ // ask for a transcript, or make one from a file
   GEN=null;
   $('#panel').innerHTML=`<div class="pc"><h2 style="font-size:22px">Thêm phụ đề để học</h2>
     <p class="muted" style="margin:6px 0 0">${esc(msg||'Dán bản chép lời tiếng Trung của video vào đây (hoặc mở file .srt) để có pinyin, dịch và các bài luyện.')}</p>
-    ${LES.src&&LES.src.type==='youtube'?grabBox():''}
+    ${LES.src&&LES.src.type==='youtube'?`<div class="grab"><h3>Dán link là có phụ đề</h3><div class="muted" style="font-size:14px">Đăng ký miễn phí ở <a href="https://dash.supadata.ai/" target="_blank" rel="noopener">supadata.ai</a> (bằng Google), chép <b>API key</b> rồi dán vào đây. Làm 1 lần thôi.</div>
+      <div class="row" style="margin-top:10px;flex-wrap:nowrap"><input class="in" id="sdKey" placeholder="Dán API key vào đây" autocomplete="off" style="flex:1;min-width:0"><button class="btn pri sm" id="sdSave">Lưu</button></div></div>`:''}
+    ${LES.src&&LES.src.type==='youtube'&&!IS_MOB?grabBox():''}
     <div class="row" style="margin-top:14px">${LES.src&&LES.src.type==='file'&&LES.src.url?`<button class="btn pri" id="lsAuto">${IC.spark}Tự làm phụ đề</button>`:`<label class="btn pri" for="lsVid" style="cursor:pointer">${IC.spark}Chọn file video đã tải</label><input type="file" id="lsVid" hidden>`}</div>
     <div class="or">hoặc dán phụ đề</div>
     <textarea class="in" id="lsSub" placeholder="Dán bản chép lời hoặc nội dung .srt vào đây"></textarea>
     <div class="row" style="margin-top:12px"><button class="btn pri" id="lsGo">${IC.check}Dùng phụ đề này</button><label class="btn out sm" for="lsFile" style="cursor:pointer">Mở file .srt</label><input type="file" id="lsFile" accept=".srt,.vtt,.txt,.ass,text/*" hidden></div>
     <details class="help"><summary>Cách khác: tự chép phụ đề</summary><ol><li>Mở video trên YouTube bằng máy tính, bấm <b>…thêm</b> dưới video, chọn <b>Hiện bản chép lời</b>.</li><li>Bôi đen toàn bộ bản chép lời, bấm Ctrl + C, rồi dán vào ô trên.</li><li>Hoặc tải phụ đề .srt ở downsub.com rồi bấm “Mở file .srt”.</li></ol></details></div>`;
+  if($('#sdSave')) $('#sdSave').onclick=()=>{const k=$('#sdKey').value.trim();if(k.length<10){toast('Dán API key vào ô trước nha.');return;}try{localStorage.setItem('bb.sdkey',k);}catch(e){}toast('Đã lưu! Đang lấy phụ đề…');setMode('shadow');};
   $('#lsFile').onchange=async e=>{const f=e.target.files[0];if(f)$('#lsSub').value=await f.text();};
   if($('#lsAuto')) $('#lsAuto').onclick=()=>autoSubsFile();
   if($('#lsVid')) $('#lsVid').onchange=e=>{const f=e.target.files[0];if(!f)return;if(!isMedia(f)){toast('File này không phải video hay âm thanh. Hãy chọn file nghe (mp3, m4a…) hoặc video.',4500);e.target.value='';return;}LES.src={type:'file',name:f.name,url:URL.createObjectURL(f),audio:isAudio(f)};mountMedia().then(()=>autoSubsFile());};
@@ -2155,6 +2187,7 @@ async function BBGRAB(){
   if(!w) location.href=url;
 }
 const BM_HREF='javascript:'+encodeURIComponent('('+BBGRAB.toString()+')()');
+const IS_MOB=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 function grabBox(){
   const mob=/iPhone|iPad|Android/i.test(navigator.userAgent);
   return `<div class="grab"><h3>Nút “Lấy phụ đề” 1 chạm (khuyên dùng)</h3>
