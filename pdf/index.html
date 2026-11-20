@@ -1079,7 +1079,17 @@ setTimeout(loadDict,1500);
 window.__handleFiles=handleFiles;
 // mở sẵn sách từ tủ "Tài liệu miễn phí": ?src=../sach/books/…pdf&p=<trang> (chỉ file cùng trang web)
 (function(){
-  const P=new URLSearchParams(location.search), src=P.get('src');
+  const P=new URLSearchParams(location.search), src=P.get('src'), my=P.get('my');
+  if(my&&/^\w+$/.test(my)){
+    const p=Math.max(1,parseInt(P.get('p'))||1); $('pFrom').value=p; $('pTo').value=p+2;
+    status('Đang mở sách của bạn…',0);
+    const sc=document.createElement('script'); sc.src='../sach/mybooks.js?v=1';
+    sc.onload=()=>window.BM_MYBOOKS.get(my).then(o=>{
+      if(!o||!o.blob) throw new Error('sách không còn trên máy');
+      return handleFiles([new File([o.blob],(o.name||'sach')+'.pdf',{type:'application/pdf'})]).then(()=>{const e=$('out');if(e&&e.firstChild)e.scrollIntoView({behavior:'smooth',block:'start'});});
+    }).catch(e=>status('Không mở được sách ('+e.message+').'));
+    document.head.appendChild(sc); return;
+  }
   if(!src||!/^\.\.\/sach\/books\/[^?#]+\.pdf$/i.test(src)||/\.\.\/.*\.\./.test(src.slice(3))) return;
   const p=Math.max(1,parseInt(P.get('p'))||1);
   $('pFrom').value=p; $('pTo').value=p+2;

@@ -65,19 +65,22 @@ html[data-theme="dark"] .pill input{background:rgba(0,0,0,.08)}
   <button id="next" type="button" aria-label="Trang sau">›</button>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script src="mybooks.js?v=1"></script>
 <script>
 (function(){
   var $=function(i){return document.getElementById(i)};
-  var P=new URLSearchParams(location.search), f=P.get('f')||'';
+  try{history.scrollRestoration='manual'}catch(e){}
+  var P=new URLSearchParams(location.search), f=P.get('f')||'', my=P.get('my')||'';
   function fail(t){ $('ttl').textContent='Không mở được sách'; $('pages').innerHTML='<div class="msg"><div class="e">🥖💭</div><p>'+t+'</p><a href="./">‹ Về tủ sách</a></div>'; }
-  if(!/^books\/[\w\-\/一-鿿%.]+\.pdf$/i.test(f)||/\.\./.test(f)){ fail('Link sách không đúng.'); return; }
+  if(!(my&&/^[\w]+$/.test(my))&&!/^books\/[\w\-\/一-鿿%.]+\.pdf$/i.test(f)||/\.\./.test(f)){ fail('Link sách không đúng.'); return; }
   if(!window.pdfjsLib){ fail('Không tải được bộ đọc PDF. Kiểm tra mạng rồi thử lại nha.'); return; }
   pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
-  var KEY='bm.sach.pg.'+f, zoom=1, doc=null, N=0, sizes=[], els=[], done={}, cur=1;
+  var KEY='bm.sach.pg.'+(my?'my:'+my:f), zoom=1, doc=null, N=0, sizes=[], els=[], done={}, cur=1;
   try{ zoom=+localStorage.getItem('bm.sach.zoom')||1; }catch(e){}
-  $('dl').href=f; $('py').href='../pdf/?src='+encodeURIComponent('../sach/'+f)+'&p=1';
+  function pyHref(p){ return my?'../pdf/?my='+my+'&p='+p:'../pdf/?src='+encodeURIComponent('../sach/'+f)+'&p='+p; }
+  if(my){ $('dl').style.display='none'; } else $('dl').href=f; $('py').href=pyHref(1);
   // tên sách + giấy phép
-  fetch('data/books.json',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){
+  if(!my) fetch('data/books.json',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){
     var b=(d.books||[]).filter(function(x){return x.file===f})[0]; if(!b) return;
     var t=P.get('t')||b.title; $('ttl').textContent=t; document.title=t+' · Bánh Mì'; $('sub').textContent=P.get('g')||b.group;
     $('lic').textContent='Nguồn: '+b.license+' · bản gốc: '+b.from;
@@ -109,10 +112,15 @@ html[data-theme="dark"] .pill input{background:rgba(0,0,0,.08)}
   function setCur(){
     var mid=window.innerHeight/2, best=cur;
     for(var i=0;i<N;i++){ var r=els[i].getBoundingClientRect(); if(r.top<=mid&&r.bottom>=mid){best=i+1;break;} if(r.top>mid){best=Math.max(1,i);break;} }
-    if(best!==cur){ cur=best; $('pno').value=cur; try{localStorage.setItem(KEY,cur)}catch(e){} $('py').href='../pdf/?src='+encodeURIComponent('../sach/'+f)+'&p='+cur; }
+    if(best!==cur){ cur=best; $('pno').value=cur; try{localStorage.setItem(KEY,cur)}catch(e){} $('py').href=pyHref(cur); }
   }
-  function go(p){ p=Math.max(1,Math.min(N,p|0)); var el=els[p-1]; if(el) window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-64}); }
-  pdfjsLib.getDocument({url:f,cMapUrl:'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',cMapPacked:true}).promise.then(function(d){
+  function go(p){ p=Math.max(1,Math.min(N,p|0)); var el=els[p-1]; if(el) window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-64,behavior:'instant'}); }
+  var CM={cMapUrl:'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',cMapPacked:true};
+  var srcP=my?(window.BM_MYBOOKS?window.BM_MYBOOKS.get(my):Promise.reject(new Error('không đọc được bộ nhớ máy'))).then(function(o){
+      if(!o||!o.blob) throw new Error('sách này không còn trên máy, thêm lại ở kệ Sách của tôi nhé');
+      return o.blob.arrayBuffer().then(function(buf){ CM.data=new Uint8Array(buf); return CM; });
+    }):Promise.resolve((CM.url=f,CM));
+  srcP.then(function(src){ return pdfjsLib.getDocument(src).promise; }).then(function(d){
     doc=d; N=d.numPages; $('pn').textContent='/ '+N; $('pno').max=N; $('pill').hidden=false;
     return d.getPage(1).then(function(p){ var v=p.getViewport({scale:1}); for(var i=0;i<N;i++) sizes[i]=[v.width,v.height]; });
   }).then(function(){
@@ -120,7 +128,7 @@ html[data-theme="dark"] .pill input{background:rgba(0,0,0,.08)}
     for(var i=0;i<N;i++) h+='<div class="pg load" data-i="'+i+'"><span class="n">'+(i+1)+'</span></div>';
     box.innerHTML=h; els=[].slice.call(box.children); layout(); els.forEach(function(el){io.observe(el)});
     var last=1; try{last=+localStorage.getItem(KEY)||1}catch(e){}
-    $('pno').value=1; if(last>1){ setTimeout(function(){go(last)},50); }
+    $('pno').value=1; if(last>1){ setTimeout(function(){go(last);setTimeout(function(){go(last);setCur();},300)},60); }
     window.addEventListener('scroll',function(){ clearTimeout(setCur.t); setCur.t=setTimeout(setCur,80); },{passive:true});
   }).catch(function(e){ fail('File sách chưa sẵn sàng hoặc bị lỗi ('+(e&&e.message||e)+').'); });
 

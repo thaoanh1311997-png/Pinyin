@@ -26,3 +26,17 @@ window.SACH_SHELF = {
   // khoá FSI: mã học phần trong tên file → tên tiếng Việt
   fsi: { resourcemodule: 'Học phần nền: phát âm, số đếm, giờ giấc', '01orn': 'Học phần 1: Làm quen', '02bio': 'Học phần 2: Giới thiệu bản thân', '03mon': 'Học phần 3: Tiền bạc', '04dir': 'Học phần 4: Hỏi đường', '05trn': 'Học phần 5: Đi lại', '06mtg': 'Học phần 6: Gặp gỡ', '07hot': 'Học phần 7: Khách sạn', '08foo': 'Học phần 8: Ăn uống' }
 };
+/* link ngoài: chỉ giữ ít, đã kiểm tra mở được */
+window.SACH_LINKS = {
+  hsk: [
+    { emo: '📑', t: 'Đề cương HSK 3.0 (bản mới)', d: 'Danh sách từ vựng, chữ Hán, ngữ pháp từng cấp HSK 1–9', u: 'https://hsk.cn-bj.ufileos.com/3.0/%E6%96%B0%E7%89%88HSK%E8%80%83%E8%AF%95%E5%A4%A7%E7%BA%B21219.pdf', tag: 'PDF' },
+    { emo: '🏆', t: 'Đề mẫu HSK 7–9', d: '98 câu, có đáp án nghe và đọc', u: 'https://download.chinesetest.cn/newhsk-site/model/HSK7-9.pdf', tag: 'PDF' },
+    { emo: '🧋', t: 'Phòng thi HSK của Bánh Mì', d: 'Thi thử HSK 1–6 có chấm điểm', u: '../trasua/#/exam', tag: 'Trong web' }
+  ],
+  web: [
+    { emo: '🇻🇳', t: 'Hanzii', d: 'Từ điển Trung–Việt, có Hán Việt, viết tay tra chữ', u: 'https://hanzii.net/' },
+    { emo: '📲', t: 'Pleco', d: 'App từ điển trên điện thoại, bản miễn phí là đủ dùng', u: 'https://www.pleco.com/' },
+    { emo: '🫘', t: 'Mandarin Bean', d: 'Bài đọc ngắn theo cấp HSK, có audio, bật tắt pinyin', u: 'https://mandarinbean.com/' },
+    { emo: '🧩', t: 'Chinese Grammar Wiki', d: 'Tra từng điểm ngữ pháp, nhiều câu ví dụ (tiếng Anh)', u: 'https://resources.allsetlearning.com/chinese/grammar/Main_Page' }
+  ]
+};

@@ -180,3 +180,31 @@ html[data-theme="dark"] .cv{background:linear-gradient(150deg,#3A2E24,#271E18)}
 .bk small{font-size:13px;font-weight:800;color:var(--bm-ink2);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .bk em{font-style:normal;font-size:12px;color:var(--bm-muted);font-weight:800}
 @media (min-width:720px){ .row{flex-wrap:wrap;overflow:visible;margin:0;padding:4px 0 6px} .bk{width:140px} }
+
+/* 📚 Sách của tôi */
+.mine-sec .cv{--kl:#FFF0DC}
+.bk.my{position:relative}
+.bk .cvl{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:inherit}
+.cv img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff}
+.bk .x{position:absolute;top:6px;right:6px;z-index:2;min-width:30px;height:30px;padding:0 8px;border:0;border-radius:99px;background:rgba(59,36,20,.72);color:#fff;font-size:13px;font-weight:900;cursor:pointer}
+.bk.ask .x{background:#D92D20}
+.bk.add{cursor:pointer}
+.bk.add .cv{border:2.5px dashed #E2A04B;background:#FFF6E8;box-shadow:none;display:grid;place-items:center}
+.bk.add .ph{color:#C2690F;font:900 15px var(--f)}
+.bk.add .ph i{font-size:40px;width:64px;height:64px;border-radius:50%;background:#E2852B;color:#fff;display:grid;place-items:center;box-shadow:0 6px 14px -6px #E2852B}
+.bk.add:active .cv{transform:scale(.96)}
+html[data-theme="dark"] .bk.add .cv{background:#33261A;border-color:#8A5A22}
+html[data-theme="dark"] .bk.add .ph{color:#FFC277}
+
+/* link gọn */
+.lk{display:grid;gap:8px}
+.lkr{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:18px;background:var(--bm-card);border:1px solid var(--bm-line);text-decoration:none;color:var(--bm-ink);box-shadow:var(--bm-sh1);transition:transform .15s}
+.lkr:active{transform:scale(.98)}
+.lkr i{font-style:normal;font-size:24px;flex:none;width:40px;height:40px;border-radius:13px;background:var(--bm-soft);display:grid;place-items:center}
+.lkr span{flex:1;min-width:0}
+.lkr b{display:block;font-size:15.5px;font-weight:900;line-height:1.25}
+.lkr small{display:block;font-size:13px;color:var(--bm-ink2);line-height:1.35}
+.lkr em{flex:none;font-style:normal;font-size:11.5px;font-weight:900;padding:2px 8px;border-radius:99px;background:#FFE1EA;color:#A3254C}
+html[data-theme="dark"] .lkr em{background:#3E1F2A;color:#FF9DB5}
+.lkr u{flex:none;text-decoration:none;font-weight:900;color:var(--bm-muted)}
+@media (min-width:720px){ .lk{grid-template-columns:1fr 1fr} }

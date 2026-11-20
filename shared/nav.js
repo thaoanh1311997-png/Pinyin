@@ -10,7 +10,7 @@
     { id: 'onthi', path: 'on-thi/', name: 'Ôn thi trên lớp', short: 'Ôn thi', emo: '📝', c: '#F2643F', c2: '#FFAE8A', d: 'Ra đề, chấm điểm, tài liệu ôn' },
     { id: 'vo', path: 'vo/', name: 'Vở tập viết', short: 'Tập viết', emo: '✍️', c: '#7C5CDB', c2: '#B39DFF', d: 'Tạo vở ô chữ, in hoặc viết trên iPad' },
     { id: 'game', path: 'game/', name: 'Mini game', short: 'Game', emo: '🎮', c: '#2F7BEA', c2: '#7FB6FF', d: 'Nối chữ, dạo phố, đoán chữ, ghép bộ thủ' },
-    { id: 'sach', path: 'sach/', name: 'Tài liệu miễn phí', short: 'Tài liệu', emo: '📚', c: '#5E9A2B', c2: '#A9D86E', d: 'Giáo trình, đề HSK, truyện đọc, audio chính chủ' },
+    { id: 'sach', path: 'sach/', name: 'Tài liệu miễn phí', short: 'Tài liệu', emo: '📚', c: '#5E9A2B', c2: '#A9D86E', d: 'Đọc sách ngay trong web, đề HSK chính thức' },
     { id: 'pdf', path: 'pdf/', name: 'Đọc PDF có Pinyin', short: 'PDF', emo: '📄', c: '#1593A6', c2: '#6FD0DE', d: 'Mở giáo trình, hiện pinyin từng chữ' }
   ];
   var rel = location.href.indexOf(BASE) === 0 ? location.pathname.slice(new URL(BASE).pathname.length) : '';

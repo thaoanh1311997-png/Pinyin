@@ -1,0 +1,61 @@
+/* Bánh Mì · 📚 "Sách của tôi": sách PDF của chính bạn, lưu NGAY TRÊN MÁY (IndexedDB), không tải lên mạng.
+   Dùng chung cho sach/index.html, sach/doc.html, pdf/index.html. */
+(function () {
+  var DB = 'bm-sach', ST = 'books', dbp = null;
+  function db() {
+    if (dbp) return dbp;
+    dbp = new Promise(function (ok, no) {
+      if (!window.indexedDB) return no(new Error('Trình duyệt không hỗ trợ lưu sách'));
+      var r = indexedDB.open(DB, 1);
+      r.onupgradeneeded = function () { if (!r.result.objectStoreNames.contains(ST)) r.result.createObjectStore(ST, { keyPath: 'id' }); };
+      r.onsuccess = function () { ok(r.result); };
+      r.onerror = function () { dbp = null; no(r.error); };
+    });
+    return dbp;
+  }
+  function tx(mode, fn) {
+    return db().then(function (d) {
+      return new Promise(function (ok, no) {
+        var t = d.transaction(ST, mode), s = t.objectStore(ST), res;
+        res = fn(s);
+        t.oncomplete = function () { ok(res && 'result' in res ? res.result : res); };
+        t.onerror = t.onabort = function () { no(t.error || new Error('Lỗi lưu sách')); };
+      });
+    });
+  }
+  // tên đẹp cho file sách quen thuộc
+  function niceName(fn) {
+    var base = fn.replace(/\.pdf$/i, '').replace(/[_]+/g, ' ').trim();
+    var m = base.match(/han\s*yu\s*jiao\s*cheng\D*(\d)\s*[-–. ]\s*(\d)/i) || base.match(/汉语教程\D*(\d)\D+(\d)/);
+    if (m) {
+      var a = +m[1], b = +m[2], q = (a - 1) * 2 + b, cn = ['一', '二', '三'][a - 1] || a;
+      return { t: 'Hán ngữ quyển ' + q, zh: '汉语教程 第' + cn + '册（' + (b === 1 ? '上' : '下') + '）' };
+    }
+    m = base.match(/^h[aá]n\s*ng[uữ]\D*(\d)/i);
+    if (m) return { t: 'Hán ngữ quyển ' + m[1], zh: '汉语教程' };
+    return { t: base, zh: '' };
+  }
+  function list() {
+    return tx('readonly', function (s) { return s.getAll(); }).then(function (a) {
+      return (a || []).map(function (b) { return { id: b.id, name: b.name, zh: b.zh, file: b.file, size: b.size, added: b.added, cover: b.cover, pages: b.pages }; })
+        .sort(function (x, y) { return x.added - y.added; });
+    });
+  }
+  function get(id) { return tx('readonly', function (s) { return s.get(id); }); }
+  function put(o) { return tx('readwrite', function (s) { return s.put(o); }); }
+  function del(id) { return tx('readwrite', function (s) { return s.delete(id); }); }
+  function add(file) {
+    var nm = niceName(file.name || 'Sách');
+    var o = { id: 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name: nm.t, zh: nm.zh, file: file.name, size: file.size, added: Date.now(), blob: file, cover: '', pages: 0 };
+    try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
+    // lưu dạng Blob (Safari cũ không lưu được File → đổi sang Blob)
+    return (file.arrayBuffer ? file.arrayBuffer() : Promise.resolve(null)).then(function (buf) {
+      if (buf) o.blob = new Blob([buf], { type: 'application/pdf' });
+      return put(o);
+    }).then(function () { return o; });
+  }
+  function setCover(id, cover, pages) {
+    return get(id).then(function (o) { if (!o) return; o.cover = cover; if (pages) o.pages = pages; return put(o); });
+  }
+  window.BM_MYBOOKS = { list: list, get: get, add: add, del: del, setCover: setCover, niceName: niceName };
+})();
