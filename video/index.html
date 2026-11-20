@@ -1591,22 +1591,42 @@ function mp3Hdr(b,i){ // -> {len,samples,sr} or null
   return {len:Math.floor(samples/8*br/sr)+pad,samples,sr};
 }
 // Split an MP3 into pieces of about maxBytes, cut on frame boundaries. Returns [{blob,off,dur}] or null if not MP3.
+// Split an MP3 into pieces of about maxBytes, cut on frame boundaries. Reads the file 4 MB at a time and
+// returns file.slice() pieces, so a big file is never copied into memory (iPhone Safari kills tabs that do).
+async function fileKind(file){
+  const h=new Uint8Array(await file.slice(0,12).arrayBuffer()), t=String.fromCharCode(...h);
+  if((h[0]===0x49&&h[1]===0x44&&h[2]===0x33)||(h[0]===0xFF&&(h[1]&0xE0)===0xE0)) return 'mp3';
+  if(t.slice(0,4)==='RIFF'&&t.slice(8,12)==='WAVE') return 'wav';
+  if(t.slice(4,8)==='ftyp') return /^(qt|M4V|isom|mp4[12]|avc1|iso[2-6])/.test(t.slice(8,12))&&!isAudio(file)?'mp4':'m4a';
+  if(t.slice(0,4)==='OggS') return 'ogg';
+  if(t.slice(0,4)==='fLaC') return 'flac';
+  if(h[0]===0x1A&&h[1]===0x45&&h[2]===0xDF&&h[3]===0xA3) return 'webm';
+  return /\.mp3$/i.test(file.name||'')?'mp3':'';
+}
 async function mp3Pieces(file,maxBytes){
-  const b=new Uint8Array(await file.arrayBuffer());
+  if(await fileKind(file)!=='mp3') return null;
+  const W=4<<20, END=file.size; let bs=0, b=new Uint8Array(0);
+  const need=async p=>{ if(p<bs||(p+3000>bs+b.length&&bs+b.length<END)){ bs=p; b=new Uint8Array(await file.slice(p,Math.min(END,p+W)).arrayBuffer()); } };
+  const hdr=p=>p-bs+4<=b.length?mp3Hdr(b,p-bs):null;
+  const ok=p=>{const h=hdr(p); if(!h||h.len<4) return null; const n=p+h.len; if(n>=END-4) return h; const h2=hdr(n); return h2&&h2.sr===h.sr?h:null;};
+  const lim=()=>bs+b.length>=END?END-4:bs+b.length-3000;
   let i=0;
+  await need(0);
   if(b[0]===0x49&&b[1]===0x44&&b[2]===0x33) i=10+((b[6]&127)<<21|(b[7]&127)<<14|(b[8]&127)<<7|(b[9]&127));
-  const ok=j=>{const h=mp3Hdr(b,j); if(!h||h.len<4) return null; const n=j+h.len; if(n>=b.length-4) return h; const h2=mp3Hdr(b,n); return h2&&h2.sr===h.sr?h:null;};
-  while(i<b.length-4&&!ok(i)) i++;
-  if(i>=b.length-4) return null;
-  { const h=mp3Hdr(b,i), tag=String.fromCharCode(...b.subarray(i+4,Math.min(b.length,i+48))); if(h&&/Xing|Info|VBRI/.test(tag)) i+=h.len; } // skip the VBR info frame (it holds the whole file's length)
+  for(;;){ await need(i); const e=lim(); while(i<e&&!ok(i)) i++; if(i<e) break; if(i>=END-4) return null; }
+  { const h=hdr(i), tag=String.fromCharCode(...b.subarray(i-bs+4,Math.min(b.length,i-bs+48))); if(h&&/Xing|Info|VBRI/.test(tag)) i+=h.len; } // skip the VBR info frame (it holds the whole file's length)
   const pieces=[]; let start=i, t=0, t0=0, frames=0;
-  while(i<b.length-4){
-    let h=mp3Hdr(b,i);
-    if(!h||h.len<4){ let j=i+1; while(j<b.length-4&&!ok(j)) j++; i=j; continue; } // skip junk
-    if(i-start>=maxBytes){ pieces.push({blob:new Blob([b.subarray(start,i)],{type:'audio/mpeg'}),off:t0,dur:t-t0}); start=i; t0=t; }
-    t+=h.samples/h.sr; i+=h.len; frames++;
+  while(i<END-4){
+    await need(i); const e=lim();
+    while(i<e){
+      const h=hdr(i);
+      if(!h||h.len<4){ i++; while(i<e&&!ok(i)) i++; continue; } // skip junk
+      if(i-start>=maxBytes){ pieces.push({blob:file.slice(start,i,'audio/mpeg'),off:t0,dur:t-t0}); start=i; t0=t; }
+      t+=h.samples/h.sr; i+=h.len; frames++;
+    }
+    if(e>=END-4) break;
   }
-  pieces.push({blob:new Blob([b.subarray(start,Math.min(i,b.length))],{type:'audio/mpeg'}),off:t0,dur:t-t0});
+  pieces.push({blob:file.slice(start,Math.min(i,END),'audio/mpeg'),off:t0,dur:t-t0});
   return frames>10?pieces:null;
 }
 async function decode16k(file,onProg){
@@ -1618,13 +1638,13 @@ async function decode16k(file,onProg){
   if(isMp3){
     const pcs=await mp3Pieces(file,1536*1024);
     if(!pcs) return await decodeAt16k(await file.arrayBuffer());
-    for(let k=0;k<pcs.length;k++){
-      let a; try{a=await decodeAt16k(await pcs[k].blob.arrayBuffer());}catch(e){if(k===0)throw e;a=new Float32Array(Math.round(pcs[k].dur*16000));}
-      const want=Math.round(pcs[k].dur*16000); // keep every piece at its true length so timing never drifts
-      if(Math.abs(a.length-want)>160){const f=new Float32Array(want);f.set(a.subarray(0,want));a=f;}
-      parts.push(a); total+=a.length; pcs[k]=null;
+    const lens=pcs.map(x=>Math.round(x.dur*16000)), out=new Float32Array(lens.reduce((x,y)=>x+y,0)); let o=0;
+    for(let k=0;k<pcs.length;k++){ // write straight into one buffer: every piece keeps its true length, so timing never drifts
+      try{const a=await decodeAt16k(await pcs[k].blob.arrayBuffer()); out.set(a.length>lens[k]?a.subarray(0,lens[k]):a,o);}catch(e){if(k===0)throw e;}
+      o+=lens[k]; pcs[k]=null;
       onProg&&onProg((k+1)/pcs.length); await sleep(0);
     }
+    return out;
   }else{ // WAV: copy the header (up to the "data" chunk) onto every slice
     const h=new Uint8Array(await file.slice(0,Math.min(file.size,65536)).arrayBuffer()); const dv=new DataView(h.buffer);
     let off=12, dataAt=-1, align=4;
@@ -1755,14 +1775,19 @@ async function autoSubsFile(){
   try{
     genUI('Bánh Mì đang nghe video…','Đang đọc âm thanh trong file',null);
     const blob=les.src.file||await (await fetch(les.src.url)).blob();
+    const kind0=await fileKind(blob);
     if(groqKey()){
       try{
-        const gl=await groqMp3(blob,f=>genUI('Bánh Mì đang ghi phụ đề…','Đang nghe trên máy chủ nhanh · '+Math.round(f*100)+'%',f));
+        const prog=f=>genUI('Bánh Mì đang ghi phụ đề…','Đang nghe trên máy chủ nhanh · '+Math.round(f*100)+'%',f);
+        let gl=await groqMp3(blob,prog);
+        if(!gl&&blob.size<=24.5*1048576){ const kind=await fileKind(blob)||'m4a'; prog(0.1);
+          gl=await groqLines(await groqSend(blob,'audio.'+(kind==='mp4'?'mp4':kind),0)); gl.dur=P&&P.dur?P.dur():0; prog(1); }
         if(job.stop||LES!==les) return;
         if(gl&&gl.length){ job.running=false; stretchT(gl,gl.dur); finishGen(gl); return; }
       }catch(e){ console.warn('groq mp3',e); }
       if(job.stop||LES!==les) return;
     }
+    if(IS_MOB&&kind0!=='mp3'&&kind0!=='wav'&&blob.size>12*1048576){ job.running=false; noSubs('File này lớn quá (trên 25 MB) nên điện thoại chưa làm phụ đề được. Bạn đổi file sang MP3 rồi chọn lại, hoặc làm trên máy tính nha.'); return; }
     const audio=await decode16k(blob,f=>genUI('Bánh Mì đang nghe video…','Đang đọc âm thanh trong file · '+Math.round(f*100)+'%',f));
     if(job.stop) return;
     const dur=audio.length/16000;
