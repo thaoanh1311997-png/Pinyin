@@ -174,6 +174,10 @@ textarea.ans.para{min-height:150px}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:50;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;text-align:center}
 .toast.on{opacity:1}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.doc-card{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;background:linear-gradient(120deg,#fff8ec,#fff 60%);border-left:5px solid #f2a33a}
+.doc-card .ico{font-size:30px;width:52px;height:52px;border-radius:16px;background:#fde9c8;display:grid;place-items:center;flex:none}
+.doc-card h2{font-size:19px;margin:0}.doc-card .meta{font-size:13px;color:var(--muted)}.doc-card .dc-t{flex:1;min-width:0}
+.doc-card .dc-go{font-size:30px;color:#e0912a;font-weight:700}
 .row2 .btn{padding:13px 8px;font-size:15px}
 .exp{margin-top:12px;padding:12px 12px 10px;border-radius:12px;background:var(--warn-soft);font-size:15px;line-height:1.6}
 .exp.exp-ok{background:#f4f8f3}
@@ -303,6 +307,7 @@ function renderHome(){
       '<div class="row"><button class="btn btn-pri grow" data-go="'+i+'">🎲 Ra đề mới</button>'+
       (st.custom?'<button class="btn btn-line btn-sm" data-edit="'+i+'">Sửa</button>':'')+'</div></div>';
   });
+  html+='<a class="card doc-card" href="tai-lieu.html"><div class="ico">📚</div><div class="dc-t"><h2>Tài liệu ôn</h2><div class="meta">Song ngữ Trung–Việt · Luyện dịch · Ngữ pháp từng bài · In ra giấy</div></div><span class="dc-go">›</span></a>';
   html+='<div class="row2">'+((curSet.cards||[]).length?'<button class="btn btn-line" id="openBook">📖 Sổ ngữ pháp</button>':'')+'<button class="btn btn-ghost" id="newStruct">＋ Tự tạo cấu trúc đề</button></div>';
   var hist=(store("hist")||[]).filter(function(x){return x.set===curSet.id}).slice(0,8);
   if(hist.length){
