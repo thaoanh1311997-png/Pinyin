@@ -44,5 +44,6 @@ for (const [cat, name, url] of FEEDS) {
 }
 const cutoff = Date.now() - 10 * 864e5;
 const items = [...seen.values()].filter(a => a.d > cutoff).sort((a, b) => b.d - a.d).slice(0, 400);
+fs.mkdirSync(new URL('../data/', import.meta.url), { recursive: true });
 fs.writeFileSync(OUT, JSON.stringify({ updated: Date.now(), items }));
 console.log('added', added, 'total', items.length);
