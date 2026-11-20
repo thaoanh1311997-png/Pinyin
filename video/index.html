@@ -1775,7 +1775,7 @@ async function autoSubsFile(){
   try{
     genUI('Bánh Mì đang nghe video…','Đang đọc âm thanh trong file',null);
     const blob=les.src.file||await (await fetch(les.src.url)).blob();
-    const kind0=await fileKind(blob);
+    const kind0=await fileKind(blob); let gErr='';
     if(groqKey()){
       try{
         const prog=f=>genUI('Bánh Mì đang ghi phụ đề…','Đang nghe trên máy chủ nhanh · '+Math.round(f*100)+'%',f);
@@ -1784,9 +1784,20 @@ async function autoSubsFile(){
           gl=await groqLines(await groqSend(blob,'audio.'+(kind==='mp4'?'mp4':kind),0)); gl.dur=P&&P.dur?P.dur():0; prog(1); }
         if(job.stop||LES!==les) return;
         if(gl&&gl.length){ job.running=false; stretchT(gl,gl.dur); finishGen(gl); return; }
-      }catch(e){ console.warn('groq mp3',e); }
+      }catch(e){ console.warn('groq mp3',e); gErr=String(e&&e.message||e); }
       if(job.stop||LES!==les) return;
     }
+    // Phones and iPads: the in-browser speech model needs gigabytes for a long lesson and Safari kills the page
+    // (it reloads on the home page). Only short clips are done on the device; long ones need the fast server.
+    { const md=P&&P.media&&P.dur?P.dur():0, long=md?md>240:blob.size>4*1048576;
+      if(IS_MOB&&long){ job.running=false;
+        const c=(gErr.match(/groq (\d+)/)||[])[1];
+        noSubs(!groqKey()?'Bài dài nên điện thoại cần máy chủ nhanh để làm phụ đề. Mở link mã máy chủ mà Claude đã gửi 1 lần trên máy này, rồi chọn lại file nha.'
+          :c==='401'||c==='403'?'Mã máy chủ nhanh bị sai hoặc hết hạn. Gửi Claude mã mới để sửa nha.'
+          :c==='429'?'Máy chủ nhanh đang hết lượt miễn phí trong giờ này. Khoảng 1 tiếng nữa chọn lại file là được nha.'
+          :c==='413'?'File này lớn quá với máy chủ nhanh. Bạn đổi sang MP3 rồi chọn lại nha.'
+          :'Chưa gọi được máy chủ nhanh'+(gErr?' ('+gErr.slice(0,40)+')':'')+'. Kiểm tra mạng rồi chọn lại file nha.');
+        return; } }
     if(IS_MOB&&kind0!=='mp3'&&kind0!=='wav'&&blob.size>12*1048576){ job.running=false; noSubs('File này lớn quá (trên 25 MB) nên điện thoại chưa làm phụ đề được. Bạn đổi file sang MP3 rồi chọn lại, hoặc làm trên máy tính nha.'); return; }
     const audio=await decode16k(blob,f=>genUI('Bánh Mì đang nghe video…','Đang đọc âm thanh trong file · '+Math.round(f*100)+'%',f));
     if(job.stop) return;
@@ -1799,7 +1810,7 @@ async function autoSubsFile(){
       }catch(e){ console.warn('groq',e); }
       if(job.stop||LES!==les) return;
     }
-    let device='wasm'; try{ if(navigator.gpu&&await navigator.gpu.requestAdapter()) device='webgpu'; }catch(e){}
+    let device='wasm'; try{ if(!IS_MOB&&navigator.gpu&&await navigator.gpu.requestAdapter()) device='webgpu'; }catch(e){}
     const model=device==='webgpu'?'onnx-community/whisper-small':'onnx-community/whisper-base';
     genUI('Đang tải bộ nhận giọng nói','Chỉ tải lần đầu, khoảng '+(device==='webgpu'?'250':'80')+' MB. Các lần sau sẽ nhanh.',0);
     if(!asrWorker||asrWorker._model!==model){ if(asrWorker)asrWorker.terminate(); asrWorker=makeWorker(); asrWorker._model=model; asrWorker._ready=false; }

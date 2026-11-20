@@ -12,7 +12,8 @@ jobs:
         run: |
           $(node -p "require('ffmpeg-static')") -v error -f lavfi -i "sine=frequency=440:duration=1350" -f lavfi -i "anoisesrc=d=1350:a=0.02" -filter_complex amix=inputs=2 -ac 2 -ar 44100 -b:a 160k t.mp3
           $(node -p "require('ffmpeg-static')") -v error -i t.mp3 -c:a aac -b:a 128k t.m4a
-          ls -la t.mp3 t.m4a
+          $(node -p "require('ffmpeg-static')") -v error -i t.mp3 -t 60 -c copy t60.mp3
+          ls -la t.mp3 t.m4a t60.mp3
       - name: Serve site and run WebKit
         run: |
           mkdir -p /tmp/srv && ln -s "$PWD" /tmp/srv/Pinyin
