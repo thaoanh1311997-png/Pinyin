@@ -56,25 +56,32 @@ const old = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : { it
 const known = new Set(old.items.map(x => x.id));
 const today = new Date().toISOString().slice(0, 10);
 const fresh = []; let ok = 0, fail = 0;
-for (const lv of [1, 2, 3, 4, 5, 6]) {
-  for (const q of QUERIES[lv]) {
-    for (const sp of [SP_CC_YEAR, SP_CC]) {
-      try {
-        const res = await search(q, sp); ok++;
-        let n = 0;
-        for (const v of res) {
-          if (!v.id || known.has(v.id) || !v.dur) continue;
-          const d = secs(v.dur);
-          if (d < 90 || d > 40 * 60) continue;           // skip shorts and very long streams
-          if (BAD.test(v.title)) continue;
-          if (!/[一-鿿]|chinese|mandarin|hsk|中文|汉语/i.test(v.title)) continue;
-          known.add(v.id);
-          fresh.push({ id: v.id, lv: levelOf(v.title, lv), tag: tagOf(v.title, v.ch), title: v.title.slice(0, 120), dur: v.dur, ch: v.ch.slice(0, 60), added: today });
-          if (++n >= 4) break; // a few per query keeps every level varied
-        }
-      } catch (e) { fail++; console.warn('search failed', q, e.message); }
-      await sleep(1200);
+// YouTube refuses bursts of searches, so: 2 queries per level (rotating daily), slow pace, one retry
+const day = Math.floor(Date.now() / 864e5);
+const order = [1, 2, 3, 4, 5, 6].sort((a, b) => ((a * 7 + day) % 6) - ((b * 7 + day) % 6));
+for (const lv of order) {
+  const qs = QUERIES[lv], picks = [qs[day % qs.length], qs[(day + 1) % qs.length]];
+  for (const [k, q] of picks.entries()) {
+    const sp = k === 0 ? SP_CC_YEAR : SP_CC;
+    let res = null;
+    for (let t = 0; t < 2 && !res; t++) {
+      try { res = await search(q, sp); ok++; }
+      catch (e) { fail++; console.warn('search failed', q, e.message); await sleep(20000); }
     }
+    if (res) {
+      let n = 0;
+      for (const v of res) {
+        if (!v.id || known.has(v.id) || !v.dur) continue;
+        const d = secs(v.dur);
+        if (d < 90 || d > 40 * 60) continue;           // skip shorts and very long streams
+        if (BAD.test(v.title)) continue;
+        if (!/[\u4e00-\u9fff]|chinese|mandarin|hsk|中文|汉语/i.test(v.title)) continue;
+        known.add(v.id);
+        fresh.push({ id: v.id, lv: levelOf(v.title, lv), tag: tagOf(v.title, v.ch), title: v.title.slice(0, 120), dur: v.dur, ch: v.ch.slice(0, 60), added: today });
+        if (++n >= 4) break; // a few per query keeps every level varied
+      }
+    }
+    await sleep(5000 + Math.random() * 4000);
   }
 }
 console.log('searches ok', ok, 'failed', fail, 'new videos', fresh.length);
