@@ -1,0 +1,26 @@
+/* Bánh Mì · đặt trong <head>: bật hiệu ứng chuyển trang nhẹ (View Transitions) trước khi trang hiện ra */
+(function () {
+  var me = document.currentScript;
+  var BASE = new URL('../', me ? me.src : location.href).pathname;
+  var rel = location.pathname.indexOf(BASE) === 0 ? location.pathname.slice(BASE.length) : '';
+  var id = /^video\//.test(rel) ? 'video' : /^trasua\//.test(rel) ? 'trasua' : /^on-thi\//.test(rel) ? 'onthi' : /^pdf\//.test(rel) ? 'pdf' : 'home';
+  var IN = {
+    video: 'from{opacity:0;transform:translateX(26px)}',
+    trasua: 'from{opacity:0;transform:translateY(18px)}',
+    onthi: 'from{opacity:0;transform:scale(.97)}',
+    pdf: 'from{opacity:0;transform:translateY(-14px)}',
+    home: 'from{opacity:0;transform:scale(1.025)}'
+  };
+  function on() {
+    try { if (localStorage.getItem('bm.fx') === 'off') return false; } catch (e) {}
+    return !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+  var st = document.getElementById('bm-vt');
+  if (!st) { st = document.createElement('style'); st.id = 'bm-vt'; (document.head || document.documentElement).appendChild(st); }
+  window.BM_VT = function () {
+    st.textContent = on() ? '@view-transition{navigation:auto}@keyframes bmVtOut{to{opacity:0}}@keyframes bmVtIn{' + IN[id] + '}' +
+      '::view-transition-old(root){animation:bmVtOut .18s ease-in both}' +
+      '::view-transition-new(root){animation:bmVtIn .32s cubic-bezier(.2,.8,.3,1) both}' : '@view-transition{navigation:none}';
+  };
+  window.BM_VT();
+})();
