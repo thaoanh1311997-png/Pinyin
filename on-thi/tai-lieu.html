@@ -251,7 +251,8 @@ function ls(k,v){try{ if(v===undefined) return localStorage.getItem(k); if(v===n
 var DB=null;
 function db(){ return new Promise(function(res,rej){ if(DB) return res(DB); try{ var r=indexedDB.open("ot-docs",2); r.onupgradeneeded=function(){ var d=r.result; if(!d.objectStoreNames.contains("docs")) d.createObjectStore("docs",{keyPath:"id"}); if(!d.objectStoreNames.contains("pages")) d.createObjectStore("pages",{keyPath:"k"}); }; r.onsuccess=function(){DB=r.result;res(DB)}; r.onerror=function(){rej(r.error)}; }catch(e){rej(e)} }); }
 function dbAll(){ return db().then(function(d){ return new Promise(function(res){ var out=[]; var c=d.transaction("docs").objectStore("docs").openCursor(); c.onsuccess=function(){ var x=c.result; if(x){out.push(x.value);x.continue()} else res(out) }; c.onerror=function(){res(out)}; }); }).catch(function(){return []}); }
-function dbPut(doc){ return db().then(function(d){ return new Promise(function(res,rej){ var t=d.transaction("docs","readwrite"); t.objectStore("docs").put(doc); t.oncomplete=function(){res()}; t.onerror=function(){rej(t.error)}; }); }); }
+var DEAD={}; /* tài liệu đã bị thay bằng gói có sẵn: việc AI cũ đang chạy thì thôi lưu */
+function dbPut(doc){ if(DEAD[doc.id]) return Promise.resolve(); return db().then(function(d){ return new Promise(function(res,rej){ var t=d.transaction("docs","readwrite"); t.objectStore("docs").put(doc); t.oncomplete=function(){res()}; t.onerror=function(){rej(t.error)}; }); }); }
 function dbDel(id){ return db().then(function(d){ return new Promise(function(res){ var t=d.transaction("docs","readwrite"); t.objectStore("docs").delete(id); t.oncomplete=function(){res()}; }); }); }
 
 /* ---------- trạng thái ---------- */
@@ -274,7 +275,7 @@ function loadDocs(){
   });
 }
 function drawDocs(){
-  $("#docs").innerHTML=DOCS.map(function(d){return '<button class="chip'+(cur===d&&$("#upView").classList.contains("hidden")?' on':'')+'" data-doc="'+esc(d.id)+'">'+(d.builtin?'📘 ':(d.pending&&d.pending.length?'⏳ ':'📄 '))+esc(d.name)+'</button>'}).join("")+'<button class="chip add" data-add>＋ Thêm tài liệu</button>';
+  $("#docs").innerHTML=DOCS.map(function(d){return '<button class="chip'+(cur===d&&$("#upView").classList.contains("hidden")?' on':'')+'" data-doc="'+esc(d.id)+'">'+(d.builtin||d.pack?'📘 ':(d.pending&&d.pending.length?'⏳ ':'📄 '))+esc(d.name)+'</button>'}).join("")+'<button class="chip add" data-add>＋ Thêm tài liệu</button>';
 }
 $("#docs").onclick=function(e){ var t=e.target.closest("button"); if(!t) return; if(t.dataset.add!=null){ showUpload(); return; } var d=DOCS.filter(function(x){return x.id===t.dataset.doc})[0]; if(d) openDoc(d); };
 
@@ -500,12 +501,33 @@ function tryPack(key){
   return sha("id|"+hex(key)).then(function(h){ return fetch("data/packs/"+hex(h).slice(0,24)+".bin",{cache:"no-cache"}); })
   .then(function(r){ if(!r.ok) return null; return r.arrayBuffer().then(function(b){
     return crypto.subtle.importKey("raw",key,"AES-GCM",false,["decrypt"]).then(function(k){ return crypto.subtle.decrypt({name:"AES-GCM",iv:b.slice(0,12)},k,b.slice(12)); })
-    .then(function(p){ var d=JSON.parse(new TextDecoder().decode(p)); return d&&d.lessons&&d.lessons.length?d:null; }); }); })
+    .then(function(p){ var d=JSON.parse(new TextDecoder().decode(p)); if(!(d&&d.lessons&&d.lessons.length)) return null; savePackKey(hex(key)); return d; }); }); })
   .catch(function(){ return null; });
 }
+function packKeys(){ try{ var a=JSON.parse(ls("tl.pk")||"[]"); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+function savePackKey(k){ var a=packKeys(); if(a.indexOf(k)<0){ a.push(k); ls("tl.pk",JSON.stringify(a)); } }
+function unhex(h){ var b=new Uint8Array(h.length/2); for(var i=0;i<b.length;i++) b[i]=parseInt(h.substr(i*2,2),16); return b; }
+/* bản tự dịch (AI) cũ của cùng cuốn sách → bỏ đi, kẻo trùng và cứ chạy AI */
+function dropOldCopies(d){
+  var names={}; d.lessons.forEach(function(l){ names[l.zh]=1; });
+  return dbAll().then(function(saved){ return Promise.all(saved.filter(function(x){ return x.id!==d.id&&!x.builtin&&!x.pack&&((x.lessons||[]).some(function(l){return names[l.zh]})||(x.pending||[]).length&&/第三册|三册/.test(x.name||"")||/第三册/.test(x.name||"")); }).map(function(x){ DEAD[x.id]=1; return dbDel(x.id); })); });
+}
+/* sách có sẵn gói: link riêng ?pk=… mở thẳng, không cần chọn file; gói mới hơn tự cập nhật */
+function initPacks(){
+  var m=location.search.match(/[?&]pk=([0-9a-f]{64})/i), keys=packKeys();
+  if(m){ savePackKey(m[1].toLowerCase()); keys=packKeys(); try{ history.replaceState(null,"",location.pathname); }catch(e){} }
+  if(!keys.length||!(window.crypto&&crypto.subtle)) return Promise.resolve();
+  return Promise.all(keys.map(function(k){ return tryPack(unhex(k)); })).then(function(ds){
+    return dbAll().then(function(saved){ return Promise.all(ds.map(function(d){ if(!d) return null;
+      var old=saved.filter(function(x){return x.id===d.id})[0]; if(m) ls("tl.doc",d.id);
+      if(old&&(old.v||0)>=(d.v||0)&&!m) return null;
+      d.created=old?old.created:Date.now(); return dbPut(d).then(function(){ return dropOldCopies(d); });
+    })); });
+  }).catch(function(){});
+}
 function usePack(d){
-  d.created=Date.now(); ls("tl.sel."+d.id,null);
-  return dbPut(d).then(function(){ $("#pickPanel").classList.add("hidden"); $("#fileInfo").classList.add("hidden"); RAW=null; ls("tl.doc",d.id); return loadDocs(); })
+  d.created=Date.now(); ls("tl.sel."+d.id,null); SCAN_ID++;
+  return dbPut(d).then(function(){ return dropOldCopies(d); }).then(function(){ $("#pickPanel").classList.add("hidden"); $("#fileInfo").classList.add("hidden"); RAW=null; ls("tl.doc",d.id); return loadDocs(); })
   .then(function(){ toast("Sách này có bản dịch soạn sẵn, mở liền "+d.lessons.length+" bài 🎉"); });
 }
 /* chữ có sẵn trong PDF (không phải scan) */
@@ -875,6 +897,7 @@ function runJob(doc,segs,box,onFinish){
   var home=[[prog,prog.parentNode,prog.nextSibling],[steps,steps.parentNode,steps.nextSibling]]; RUN[doc.id]={steps:steps,prog:prog};
   function unrun(){ delete RUN[doc.id]; home.forEach(function(x){ var p=x[1]; if(p&&p.isConnected&&x[0].parentNode!==p) p.insertBefore(x[0],x[2]&&x[2].parentNode===p?x[2]:null); }); }
   function live(){ /* bài nào xong hiện ngay để học trước */
+    if(DEAD[doc.id]) return;
     var first=!DOCS.some(function(x){return x.id===doc.id});
     if(first) DOCS.splice(window.ONTHI_DOCS.length,0,doc); else DOCS=DOCS.map(function(x){return x.id===doc.id?doc:x});
     if(first&&!$("#upView").classList.contains("hidden")&&!$("#pickPanel").classList.contains("hidden")){ $("#pickPanel").classList.add("hidden"); $("#fileInfo").classList.add("hidden"); openDoc(doc); toast("Bài đầu xong rồi, học được luôn! Bài sau tự hiện thêm"); return; }
@@ -933,7 +956,7 @@ function runJob(doc,segs,box,onFinish){
       });
     });
   },3); })
-  .then(function(){ busy(false); unrun(); if(!(doc.pending&&doc.pending.length)) delete doc.pending; return dbPut(doc).then(function(){ btns.forEach(function(b){b.disabled=false}); if(doc.pending){ toast("Còn "+doc.pending.length+" bài cần chọn lại file sách"); onFinish(false,new Error("cần chọn lại file sách để đọc tiếp")); } else { toast("Xong rồi! Đã lưu tài liệu"); onFinish(true); } }); })
+  .then(function(){ busy(false); unrun(); if(DEAD[doc.id]) return; if(!(doc.pending&&doc.pending.length)) delete doc.pending; return dbPut(doc).then(function(){ btns.forEach(function(b){b.disabled=false}); if(doc.pending){ toast("Còn "+doc.pending.length+" bài cần chọn lại file sách"); onFinish(false,new Error("cần chọn lại file sách để đọc tiếp")); } else { toast("Xong rồi! Đã lưu tài liệu"); onFinish(true); } }); })
   .catch(function(e){
     busy(false); unrun(); btns.forEach(function(b){b.disabled=false});
     var li=steps.querySelector("li.doing"); if(li){ li.className="err"; li.firstChild.textContent="✗"; li.lastChild.textContent+=" → "+e.message; } else toast(e.message);
@@ -971,7 +994,7 @@ document.addEventListener("click",function(e){
 });
 
 window.__tl={docs:function(){return DOCS},segs:function(){return SEGS},head:function(t){return headInfo(t)}};
-loadDocs();
+initPacks().then(loadDocs);
 })();
 </script>
 </body>
