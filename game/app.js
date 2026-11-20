@@ -243,7 +243,7 @@
   /* ---------- màn hình chính của mục ---------- */
   var GAMES_META = [
     { id: 'noi', name: 'Nối Đôi', zh: '连连看', emo: '🧩', c: '#2F7BEA', c2: '#7FB6FF', d: 'Nối chữ Hán với nghĩa hoặc pinyin. Đường nối không gấp quá 2 lần.' },
-    { id: 'pho', name: 'Dạo phố', zh: '逛一逛', emo: '🚶', c: '#12A66A', c2: '#5CD6A0', d: 'Nuôi Bánh Mì, dạo 21 nơi: nhà, phố, sân bay… Chạm đồ vật nghe câu tiếng Trung, gặp người nói chuyện, làm nhiệm vụ lên cấp.' },
+    { id: 'pho', name: 'Dạo phố', zh: '逛一逛', emo: '🚶', c: '#12A66A', c2: '#5CD6A0', d: 'Nuôi Bánh Mì, dạo phố, nói chuyện' },
     { id: 'doan', name: 'Đoán chữ', zh: '猜字', emo: '🔍', c: '#E8577E', c2: '#FF9DB5', d: 'Chữ hiện dần từng nét, nghe đọc hoặc xem nghĩa. Đoán càng sớm càng nhiều sao.' },
     { id: 'ghep', name: 'Ghép bộ thủ', zh: '拼部首', emo: '🧱', c: '#7C5CDB', c2: '#B39DFF', d: 'Ghép bộ thủ với phần còn lại để thành chữ đúng nghĩa. Có bẫy chữ giống nhau!' }
   ];
@@ -260,14 +260,13 @@
     var v = $('#view');
     var art = window.BM_MASCOT ? BM_MASCOT() : '';
     v.innerHTML =
-      '<section class="ghero in"><div class="gh-tx"><h1>Mini game <span>小游戏</span></h1><p>Vừa chơi vừa học, mỗi ván chỉ vài phút. Chọn bộ từ rồi chọn trò nha!</p></div><div class="gh-art">' + art + '<div class="gh-bub">一起玩吧！</div></div></section>' +
+      '<section class="ghero in"><div class="gh-tx"><h1>Mini game <span>小游戏</span></h1></div><div class="gh-art">' + art + '<div class="gh-bub">一起玩吧！</div></div></section>' +
       G.catBar() +
       '<section class="gmenu">' + GAMES_META.map(function (g, i) {
         return '<a class="gcard in" href="#/' + g.id + '" style="--c:' + g.c + ';--c2:' + g.c2 + ';animation-delay:' + (0.05 + i * 0.06) + 's" data-zh="' + g.zh.charAt(0) + '">' +
-          '<div class="gc-ico">' + g.emo + '</div><div class="gc-tx"><b>' + g.name + ' <small>' + g.zh + '</small></b><p>' + g.d + '</p>' +
-          (G.best[g.id] ? '<span class="gc-best">🏆 Kỷ lục ' + G.best[g.id] + '</span>' : '<span class="gc-best new">✨ Chơi thử</span>') + '</div><div class="gc-go">▶</div></a>';
-      }).join('') + '</section>' +
-      '<p class="gfoot">Mẹo: chạm 🔊 hoặc chạm vào chữ để nghe đọc. Âm thanh trò chơi bật/tắt ở nút 🔔 trong mỗi game.</p>';
+          '<div class="gc-ico">' + g.emo + '</div><div class="gc-tx"><b>' + g.name + '</b><small>' + g.zh + '</small>' +
+          (G.best[g.id] ? '<span class="gc-best">🏆 ' + G.best[g.id] + '</span>' : '') + '</div></a>';
+      }).join('') + '</section>';
     $('#catBtn').onclick = function () { G.openPicker(home); };
   }
 
