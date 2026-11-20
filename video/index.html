@@ -1141,7 +1141,7 @@ function splitLessons(pages){
       if(m&&line.trim().length<70){
         const key=m[1].replace(/\s+/g,'').toLowerCase();
         if(cur&&cur.key===key) continue;
-        cur={key,title:line.trim().replace(/\s+/g,' ').slice(0,60),text:'',page:pg.page||pi+1}; secs.push(cur); continue;
+        cur={key,title:line.replace(/[|｜_]+/g,' ').trim().replace(/\s+/g,' ').slice(0,60),text:'',page:pg.page||pi+1}; secs.push(cur); continue;
       }
       if(!cur){cur={key:'_',title:'Phần đầu',text:'',page:pg.page||pi+1};secs.push(cur);}
       cur.text+=line+'\n';
@@ -1166,11 +1166,18 @@ async function getOcr(){
 }
 function tidyOcr(t){return t.replace(/([^\x00-\x7f])[ \t]+(?=[^\x00-\x7f])/g,'$1');}
 async function ocrCanvas(c){const w=await getOcr();const {data}=await w.recognize(c);return tidyOcr(data.text||'');}
+// Big scanned books: read 20 scanned pages per round (OCR is slow), then offer "Đọc tiếp".
+let DOC=null;
 async function readPdf(f,job){
   await loadScript(LIB.pdf); pdfjsLib.GlobalWorkerOptions.workerSrc=LIB.pdfWorker;
-  const pdf=await pdfjsLib.getDocument({data:new Uint8Array(await f.arrayBuffer()),cMapUrl:LIB.cmaps,cMapPacked:true}).promise;
-  const n=pdf.numPages, pages=[]; let ocrNote=false;
-  for(let p=1;p<=n;p++){
+  if(!DOC||DOC.f!==f){
+    let pdf;
+    try{ pdf=await pdfjsLib.getDocument({data:new Uint8Array(await f.arrayBuffer()),cMapUrl:LIB.cmaps,cMapPacked:true}).promise; }
+    catch(e){ throw new Error(/password/i.test(e&&e.name||'')||/password/i.test(e&&e.message||'')?'File PDF này có mật khẩu nên web không mở được. Gỡ mật khẩu rồi chọn lại nha.':'File PDF này bị lỗi hoặc chưa tải về đủ. Thử mở bằng app khác xem có xem được không, rồi chọn lại nha.'); }
+    DOC={f,pdf,pages:[],next:1};
+  }
+  const pdf=DOC.pdf, n=pdf.numPages; let ocrN=0;
+  for(let p=DOC.next;p<=n;p++){
     if(job.stop) break;
     fStatus('Đang đọc trang '+p+' / '+n+'…',(p-1)/n);
     const page=await pdf.getPage(p);
@@ -1180,45 +1187,55 @@ async function readPdf(f,job){
       if(lastY!=null&&y!=null&&Math.abs(y-lastY)>(it.height||8)*0.6&&!text.endsWith('\n')) text+='\n';
       text+=it.str; if(it.hasEOL) text+='\n'; if(y!=null) lastY=y; }
     if(cjkCount(text)<5){
-      if(!ocrNote){ocrNote=true;}
-      fStatus('Trang '+p+' / '+n+' là ảnh scan, đang nhận dạng chữ (hơi lâu)…',(p-1)/n);
-      const vp=page.getViewport({scale:2}); const c=document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
+      if(ocrN>=20){ page.cleanup(); DOC.next=p; return DOC.pages; }
+      ocrN++;
+      fStatus('Trang '+p+' / '+n+' là ảnh scan, đang nhận dạng chữ (mỗi trang vài giây)…',(p-1)/n);
+      const v1=page.getViewport({scale:1}), vp=page.getViewport({scale:Math.min(2,2000/Math.max(v1.width,v1.height))});
+      const c=document.createElement('canvas'); c.width=Math.floor(vp.width); c.height=Math.floor(vp.height);
       const ctx=c.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height);
       await page.render({canvasContext:ctx,viewport:vp}).promise;
       try{ text=await ocrCanvas(c); }catch(e){ text=''; }
+      c.width=c.height=0; // give the memory back at once (iPhone Safari)
     }
-    pages.push({page:p,text}); page.cleanup();
+    DOC.pages.push({page:p,text}); page.cleanup(); DOC.next=p+1;
   }
-  return pages;
+  return DOC.pages;
 }
 async function readFile(f,job){
   const name=f.name.toLowerCase();
   if(name.endsWith('.pdf')||f.type==='application/pdf') return readPdf(f,job);
-  if(name.endsWith('.docx')){ fStatus('Đang đọc file Word…'); await loadScript(LIB.mammoth); const r=await mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()}); return [{page:1,title:'Toàn bộ',text:r.value}]; }
+  if(name.endsWith('.docx')){ fStatus('Đang đọc file Word…'); await loadScript(LIB.mammoth); let r; try{ r=await mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()}); }catch(e){ throw new Error('File Word này bị lỗi hoặc không phải .docx thật. Mở bằng Word rồi lưu lại (hoặc lưu thành PDF) rồi chọn lại nha.'); } return [{page:1,title:'Toàn bộ',text:r.value}]; }
   if(name.endsWith('.doc')) throw new Error('File .doc đời cũ chưa đọc được. Mở bằng Word rồi lưu lại thành .docx hoặc PDF nha.');
   if(f.type.startsWith('image/')||/\.(png|jpe?g|webp|bmp|gif|heic)$/.test(name)){
     fStatus('Đang nhận dạng chữ trong ảnh (lần đầu hơi lâu)…',.1);
-    const img=new Image(); const url=URL.createObjectURL(f); img.src=url; await img.decode();
-    const sc=Math.min(1,2400/Math.max(img.naturalWidth,img.naturalHeight)); const c=document.createElement('canvas'); c.width=img.naturalWidth*sc; c.height=img.naturalHeight*sc; c.getContext('2d').drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(url);
-    return [{page:1,title:'Ảnh',text:await ocrCanvas(c)}];
+    const img=new Image(); const url=URL.createObjectURL(f); img.src=url;
+    try{ await img.decode(); }catch(e){ URL.revokeObjectURL(url); throw new Error(/heic|heif/i.test(name+f.type)?'Trình duyệt này chưa mở được ảnh HEIC. Chụp màn hình ảnh đó (ra PNG) hoặc đổi sang JPG rồi chọn lại nha.':'Không mở được ảnh này. Thử chụp lại hoặc lưu thành JPG/PNG rồi chọn lại nha.'); }
+    const sc=Math.min(1,2400/Math.max(img.naturalWidth,img.naturalHeight)); const c=document.createElement('canvas'); c.width=Math.round(img.naturalWidth*sc); c.height=Math.round(img.naturalHeight*sc); c.getContext('2d').drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(url);
+    const t=await ocrCanvas(c); c.width=c.height=0;
+    return [{page:1,title:'Ảnh',text:t}];
   }
   let text=await f.text();
   if(/-->/.test(text)||/^\[Script Info\]/m.test(text)) text=parseSubs(text).map(l=>l.zh).join('\n');
   return [{page:1,title:f.name,text}];
 }
 let FILE_SECS=[], FILE_NAME='';
-async function handleDoc(f){
+async function handleDoc(f,more){
   if(!f) return;
+  if(f.size===0){ fStatus('File này trống (0 KB). Có thể file chưa tải về máy xong, mở nó một lần rồi chọn lại nha.'); return; }
   const job={stop:false}; fileJob=job; FILE_NAME=f.name.replace(/\.[^.]+$/,'');
-  $('#secBox').hidden=true;$('#secEdit').hidden=true;$('#fStop').hidden=false;
+  if(!more) DOC=null;
+  $('#secBox').hidden=true;$('#secEdit').hidden=true;$('#fStop').hidden=false; if($('#fMore')) $('#fMore').remove();
   try{
     fStatus('Đang mở '+f.name+'…',0);
     const pages=await readFile(f,job);
     if(fileJob!==job) return;
     FILE_SECS=splitLessons(pages);
     $('#fStop').hidden=true;
-    if(!FILE_SECS.length){fStatus('Không tìm thấy chữ Hán trong file này. Thử file khác, hoặc dán câu vào tab Video.');return;}
-    fStatus((job.stop?'Đã dừng. ':'')+'Tìm thấy '+FILE_SECS.length+' bài / phần. Chọn một bài để học.');
+    const left=DOC&&DOC.f===f&&DOC.next<=DOC.pdf.numPages?DOC.next:0;
+    if(left){ const n=DOC.pdf.numPages, b=document.createElement('button'); b.className='btn sm pri'; b.id='fMore'; b.style.marginTop='10px';
+      b.textContent='Đọc tiếp từ trang '+left+' (còn '+(n-left+1)+' trang)'; b.onclick=()=>handleDoc(f,true); $('#fStatus').appendChild(b); }
+    if(!FILE_SECS.length){fStatus(left?'Đã đọc '+(left-1)+' trang nhưng chưa thấy chữ Hán. Bấm “Đọc tiếp” để đọc thêm.':'Không tìm thấy chữ Hán trong file này. Thử file khác, hoặc dán câu vào tab Video.');return;}
+    fStatus((job.stop?'Đã dừng. ':'')+'Tìm thấy '+FILE_SECS.length+' bài / phần'+(left?' trong '+(left-1)+' trang đầu':'')+'. Chọn một bài để học.');
     $('#secList').innerHTML=FILE_SECS.map((s,i)=>`<button class="sec" data-i="${i}"><span class="n">${i+1}</span><div><b>${esc(s.title)}${s.page?` <span style="display:inline;font-family:var(--f-ui)" class="muted">· trang ${s.page}</span>`:''}</b><span>${s.sents.length} câu · ${esc(s.sents.slice(0,2).join(' '))}</span></div></button>`).join('');
     $('#secBox').hidden=false;
   }catch(e){ console.error(e); $('#fStop').hidden=true; fStatus('Lỗi: '+(e.message||e)); }
@@ -1630,6 +1647,86 @@ async function mp3Pieces(file,maxBytes){
   pieces.push({blob:file.slice(start,Math.min(i,END),'audio/mpeg'),off:t0,dur:t-t0});
   return frames>10?pieces:null;
 }
+// Split an MP4 / M4A / MOV into small audio-only .m4a pieces (each a complete little file), cut on sample boundaries.
+// Only the index (moov) is read into memory; the sound itself stays as file.slice() parts, so even a 1 GB iPhone
+// video never gets copied into memory. Returns [{blob,off,dur}] or null (fragmented or unusual files).
+async function mp4Pieces(file,maxBytes){
+  const END=file.size, rd=async(a,n)=>new Uint8Array(await file.slice(a,Math.min(END,a+n)).arrayBuffer());
+  const u32=(b,i)=>((b[i]<<24)>>>0)+(b[i+1]<<16)+(b[i+2]<<8)+b[i+3], typ=(b,i)=>String.fromCharCode(b[i],b[i+1],b[i+2],b[i+3]);
+  let pos=0, moov=null, ftyp=null;
+  for(let n=0;pos+8<=END&&n<2000;n++){ // top-level boxes
+    const h=await rd(pos,16); let size=u32(h,0); const t=typ(h,4); let hl=8;
+    if(size===1){ size=u32(h,8)*4294967296+u32(h,12); hl=16; } else if(size===0) size=END-pos;
+    if(size<hl) return null;
+    if(t==='moof') return null; // fragmented MP4: not handled here
+    if(t==='ftyp'&&size<4096) ftyp=await rd(pos,size);
+    if(t==='moov'){ if(size>96*1048576) return null; moov=await rd(pos,size); }
+    pos+=size;
+  }
+  if(!moov) return null;
+  const kids=(b,s,e)=>{const o={};for(let i=s;i+8<=e;){let z=u32(b,i);const t=typ(b,i+4);if(z<8||i+z>e)break;(o[t]=o[t]||[]).push([i,z]);i+=z;}return o;};
+  const one=(b,box,path)=>{let cur=box;for(const p of path){const k=kids(b,cur[0]+8,cur[0]+cur[1]);if(!k[p])return null;cur=k[p][0];}return cur;};
+  let tr=null;
+  for(const t of (kids(moov,8,moov.length).trak||[])){ const hd=one(moov,t,['mdia','hdlr']); if(hd&&typ(moov,hd[0]+16)==='soun'){tr=t;break;} }
+  if(!tr) return null;
+  const st=one(moov,tr,['mdia','minf','stbl']), mh=one(moov,tr,['mdia','mdhd']); if(!st||!mh) return null;
+  const S=kids(moov,st[0]+8,st[0]+st[1]), box=k=>S[k]&&S[k][0];
+  const stsd=box('stsd'), stts=box('stts'), stsc=box('stsc'), stsz=box('stsz'), stco=box('stco')||box('co64'), c64=!box('stco');
+  if(!stsd||!stts||!stsc||!stsz||!stco) return null;
+  const mv=moov[mh[0]+8], ts=mv===1?u32(moov,mh[0]+28):u32(moov,mh[0]+20); if(!ts) return null;
+  // sample sizes
+  const zb=stsz[0]+12, fix=u32(moov,zb), N=u32(moov,zb+4); if(!N) return null;
+  const size=new Uint32Array(N); for(let i=0;i<N;i++) size[i]=fix||u32(moov,zb+8+i*4);
+  // sample durations
+  const dur=new Uint32Array(N); { let k=0; const n=u32(moov,stts[0]+12); for(let e=0;e<n&&k<N;e++){ const c=u32(moov,stts[0]+16+e*8), d=u32(moov,stts[0]+20+e*8); for(let j=0;j<c&&k<N;j++) dur[k++]=d; } if(k<N) return null; }
+  // sample offsets (chunks + samples-per-chunk)
+  const nc=u32(moov,stco[0]+12), co=new Float64Array(nc);
+  for(let i=0;i<nc;i++) co[i]=c64?u32(moov,stco[0]+16+i*8)*4294967296+u32(moov,stco[0]+20+i*8):u32(moov,stco[0]+16+i*4);
+  const off=new Float64Array(N); { const ne=u32(moov,stsc[0]+12); let k=0;
+    for(let e=0;e<ne;e++){ const first=u32(moov,stsc[0]+16+e*12)-1, per=u32(moov,stsc[0]+20+e*12), last=e+1<ne?u32(moov,stsc[0]+28+e*12)-1:nc;
+      for(let c=first;c<last&&k<N;c++){ let o=co[c]; for(let j=0;j<per&&k<N;j++){ off[k]=o; o+=size[k]; k++; } } }
+    if(k<N) return null; }
+  if(off[N-1]+size[N-1]>END) return null; // file cut short
+  // little MP4 writer
+  const B=(t,...parts)=>{let n=8;for(const p of parts)n+=p.length;const o=new Uint8Array(n);const v=new DataView(o.buffer);v.setUint32(0,n);for(let i=0;i<4;i++)o[4+i]=t.charCodeAt(i);let q=8;for(const p of parts){o.set(p,q);q+=p.length;}return o;};
+  const W=a=>{const o=new Uint8Array(a.length*4),v=new DataView(o.buffer);a.forEach((x,i)=>v.setUint32(i*4,x>>>0));return o;};
+  const M=[0x10000,0,0,0,0x10000,0,0,0,0x40000000];
+  const sd=moov.slice(stsd[0],stsd[0]+stsd[1]);
+  const fty=ftyp||B('ftyp',W([0x4D344120,0,0x4D344120,0x6D703432,0x69736F6D]));
+  const piece=(a,b)=>{ // samples a..b-1
+    let d=0; for(let i=a;i<b;i++) d+=dur[i];
+    const tt=[]; for(let i=a;i<b;){ let j=i; while(j<b&&dur[j]===dur[i]) j++; tt.push(j-i,dur[i]); i=j; }
+    const zs=new Uint32Array(b-a); let bytes=0; for(let i=a;i<b;i++){ zs[i-a]=size[i]; bytes+=size[i]; }
+    const mk=co0=>B('moov',
+      B('mvhd',W([0,0,0,ts,d,0x10000,0x01000000,0,0,...M,0,0,0,0,0,0,2])),
+      B('trak',B('tkhd',W([3,0,0,1,0,d,0,0,0,0x01000000,...M,0,0])),
+        B('mdia',B('mdhd',W([0,0,0,ts,d,0x55C40000])),B('hdlr',W([0,0,0x736F756E,0,0,0]),new Uint8Array([66,77,0])),
+          B('minf',B('smhd',W([0,0])),B('dinf',B('dref',W([0,1]),B('url ',W([1])))),
+            B('stbl',sd,B('stts',W([0,tt.length/2,...tt])),B('stsc',W([0,1,1,b-a,1])),B('stsz',W([0,0,b-a,...zs])),B('stco',W([0,1,co0])))))));
+    const len=fty.length+mk(0).length+8, mo=mk(len);
+    const parts=[fty,mo,W([bytes+8,0x6D646174])];
+    for(let i=a;i<b;){ let j=i+1, e=off[i]+size[i]; while(j<b&&off[j]===e){ e+=size[j]; j++; } parts.push(file.slice(off[i],e)); i=j; }
+    return {blob:new Blob(parts,{type:'audio/mp4'}),dur:d/ts};
+  };
+  const out=[]; let a=0, t=0;
+  while(a<N){ let b=a, bytes=0; while(b<N&&(b===a||bytes+size[b]<=maxBytes)){ bytes+=size[b]; b++; } const p=piece(a,b); p.off=t; t+=p.dur; out.push(p); a=b; }
+  return out;
+}
+// WAV: header + raw slices (no copying)
+async function wavPieces(file,maxBytes){
+  const h=new Uint8Array(await file.slice(0,Math.min(file.size,65536)).arrayBuffer()), dv=new DataView(h.buffer);
+  if(String.fromCharCode(h[0],h[1],h[2],h[3])!=='RIFF') return null;
+  let o=12, at=-1, align=4, rate=0;
+  while(o+8<=h.length){ const id=String.fromCharCode(h[o],h[o+1],h[o+2],h[o+3]), sz=dv.getUint32(o+4,true);
+    if(id==='fmt '){ align=dv.getUint16(o+20,true)||4; rate=dv.getUint32(o+16,true); }
+    if(id==='data'){ at=o+8; break; } o+=8+sz+(sz&1); }
+  if(at<0||!rate) return null;
+  const hdr=h.slice(0,at), step=Math.max(align,Math.floor(maxBytes/align)*align), out=[];
+  for(let p=at;p<file.size;p+=step){ const e=Math.min(file.size,p+step), n=e-p; const hd=hdr.slice(); const v=new DataView(hd.buffer);
+    v.setUint32(4,hd.length+n-8,true); v.setUint32(hd.length-4,n,true);
+    out.push({blob:new Blob([hd,file.slice(p,e)],{type:'audio/wav'}),off:(p-at)/rate,dur:n/rate}); }
+  return out.length?out:null;
+}
 async function decode16k(file,onProg){
   const head=new Uint8Array(await file.slice(0,12).arrayBuffer());
   const isMp3=(head[0]===0x49&&head[1]===0x44&&head[2]===0x33)||(head[0]===0xFF&&(head[1]&0xE0)===0xE0)||/\.mp3$/i.test(file.name||'');
@@ -1706,13 +1803,19 @@ async function groqLines(res){
   lines.forEach((l,k)=>{const n=lines[k+1];if(n&&n.s<l.e)l.e=Math.max(l.s+0.3,n.s);});
   return lines;
 }
-async function groqMp3(file,onProg){ // whole MP3 in ~10 MB frame-aligned pieces, sent as-is
+// Send a file to the fast server in small pieces cut without decoding (MP3 frames, MP4/M4A/MOV audio samples, WAV slices),
+// so phones never hold the whole sound in memory. Returns lines, or null if this file type can't be cut.
+async function groqPieces(file,onProg){
   if(!groqKey()) return null;
-  const pcs=await mp3Pieces(file,10*1024*1024); if(!pcs) return null;
+  const kind=await fileKind(file), MAX=10*1024*1024;
+  let pcs=null;
+  try{ pcs=kind==='mp3'?await mp3Pieces(file,MAX):(kind==='m4a'||kind==='mp4')?await mp4Pieces(file,MAX):kind==='wav'?await wavPieces(file,MAX):null; }catch(e){ console.warn('pieces',e); pcs=null; }
+  if(!pcs||!pcs.length) return null;
+  const ext=kind==='mp3'?'mp3':kind==='wav'?'wav':'m4a';
   let done=0; onProg&&onProg(0);
   const res=[];
   for(let k=0;k<pcs.length;k+=2){
-    const g=await Promise.all(pcs.slice(k,k+2).map((p,j)=>groqSend(p.blob,'part'+(k+j)+'.mp3',p.off).then(x=>{done++;onProg&&onProg(done/pcs.length);return x;})));
+    const g=await Promise.all(pcs.slice(k,k+2).map((p,j)=>groqSend(p.blob,'part'+(k+j)+'.'+ext,p.off).then(x=>{done++;onProg&&onProg(done/pcs.length);return x;})));
     g.forEach(x=>res.push(...x));
   }
   const lines=await groqLines(res);
@@ -1784,12 +1887,15 @@ async function autoSubsFile(){
     if(groqKey()){
       try{
         const prog=f=>genUI('Bánh Mì đang ghi phụ đề…','Đang nghe trên máy chủ nhanh · '+Math.round(f*100)+'%',f);
-        let gl=await groqMp3(blob,prog);
-        if(!gl&&blob.size<=24.5*1048576){ const kind=await fileKind(blob)||'m4a'; prog(0.1);
+        let gl=null;
+        try{ gl=await groqPieces(blob,prog); }catch(e){ if(!(/groq 400/.test(String(e&&e.message))&&blob.size<=24.5*1048576)) throw e; console.warn('pieces→whole',e); gl=null; }
+        if(!gl&&blob.size<=24.5*1048576){ const kind=kind0||'m4a'; prog(0.1);
           gl=await groqLines(await groqSend(blob,'audio.'+(kind==='mp4'?'mp4':kind),0)); gl.dur=P&&P.dur?P.dur():0; prog(1); }
+        if(!gl) gErr='toobig';
         if(job.stop||LES!==les) return;
         if(gl&&gl.length){ job.running=false; stretchT(gl,gl.dur); finishGen(gl); return; }
-      }catch(e){ console.warn('groq mp3',e); gErr=String(e&&e.message||e); }
+        if(gl){ job.running=false; noSubs('Bánh Mì không nghe ra câu tiếng Trung nào trong file này. Bạn thử file khác, hoặc dán phụ đề vào ô dưới nha.'); return; }
+      }catch(e){ console.warn('groq',e); gErr=String(e&&e.message||e); }
       if(job.stop||LES!==les) return;
     }
     // Phones and iPads: the in-browser speech model needs 1.5+ GB even for a 1-minute clip (measured in WebKit),
@@ -1799,7 +1905,8 @@ async function autoSubsFile(){
         noSubs(!groqKey()?'Máy này chưa có mã máy chủ nhanh nên chưa làm phụ đề được. Dán mã vào ô bên dưới là xong.'
           :c==='401'||c==='403'?'Mã máy chủ nhanh bị sai hoặc hết hạn. Dán mã mới vào ô bên dưới nha.'
           :c==='429'?'Máy chủ nhanh đang hết lượt miễn phí trong giờ này. Khoảng 1 tiếng nữa chọn lại file là được nha.'
-          :c==='413'?'File này lớn quá với máy chủ nhanh. Bạn đổi sang MP3 rồi chọn lại nha.'
+          :c==='413'||gErr==='toobig'?'File loại này lớn quá (trên 25 MB) nên chưa gửi lên máy chủ nhanh được. Bạn đổi sang MP3 hoặc M4A rồi chọn lại nha.'
+          :c==='400'?'Máy chủ nhanh không đọc được âm thanh trong file này. Bạn đổi sang MP3 hoặc M4A rồi chọn lại nha.'
           :'Chưa gọi được máy chủ nhanh'+(gErr?' ('+gErr.slice(0,40)+')':'')+'. Kiểm tra mạng rồi chọn lại file nha.');
         return; } }
     if(IS_MOB&&kind0!=='mp3'&&kind0!=='wav'&&blob.size>12*1048576){ job.running=false; noSubs('File này lớn quá (trên 25 MB) nên điện thoại chưa làm phụ đề được. Bạn đổi file sang MP3 rồi chọn lại, hoặc làm trên máy tính nha.'); return; }

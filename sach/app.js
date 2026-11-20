@@ -93,11 +93,14 @@
     fs = fs.filter(function (f) { return /pdf$/i.test(f.type) || /\.pdf$/i.test(f.name); });
     if (!fs.length) { toast('Chọn file PDF nha'); return; }
     if (!MY) { toast('Máy này không lưu được sách'); return; }
+    var dup = fs.filter(function (f) { return MINE.some(function (b) { return b.file === f.name && b.size === f.size; }); });
+    fs = fs.filter(function (f) { return dup.indexOf(f) < 0; });
+    if (!fs.length) { toast('Cuốn này đã có trong Sách của tôi rồi nha'); var m = $('mine'); if (m) m.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
     toast('Đang lưu ' + fs.length + ' cuốn…');
     var p = Promise.resolve(), names = [];
     fs.forEach(function (f) { p = p.then(function () { return MY.add(f).then(function (o) { names.push(o.name); }); }); });
     p.then(loadMine).then(function () {
-      toast('📚 Đã thêm: ' + names.join(', '));
+      toast('📚 Đã thêm: ' + names.join(', ') + (dup.length ? ' (bỏ qua ' + dup.length + ' cuốn đã có)' : ''));
       var el = $('mine'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }).catch(function (e) { toast('Chưa lưu được: ' + (e && e.message || e) + '. Máy có thể hết dung lượng.'); });
   }
@@ -140,7 +143,7 @@
       return MY.get(my).then(function (o) {
         if (!o || !o.blob) return;
         return o.blob.arrayBuffer().then(function (buf) { return renderCover(lib, { data: new Uint8Array(buf) }, 150); }).then(function (r) {
-          var url = r.cv.toDataURL('image/jpeg', 0.82), img = new Image(); img.alt = ''; img.src = url;
+          var url = r.cv.toDataURL('image/jpeg', 0.82), img = new Image(); img.alt = ''; img.src = url; r.cv.width = r.cv.height = 0;
           el.insertBefore(img, el.firstChild); el.classList.add('has');
           var em = el.closest('.bk').querySelector('em'); if (em) em.textContent = r.n + ' trang · ' + mb(o.size);
           return MY.setCover(my, url, r.n);

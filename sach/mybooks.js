@@ -46,12 +46,17 @@
   function del(id) { return tx('readwrite', function (s) { return s.delete(id); }); }
   function add(file) {
     var nm = niceName(file.name || 'Sách');
-    var o = { id: 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name: nm.t, zh: nm.zh, file: file.name, size: file.size, added: Date.now(), blob: file, cover: '', pages: 0 };
+    var o = { id: 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name: nm.t, zh: nm.zh, file: file.name, size: file.size, added: Date.now(), blob: null, cover: '', pages: 0 };
     try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
-    // lưu dạng Blob (Safari cũ không lưu được File → đổi sang Blob)
-    return (file.arrayBuffer ? file.arrayBuffer() : Promise.resolve(null)).then(function (buf) {
-      if (buf) o.blob = new Blob([buf], { type: 'application/pdf' });
-      return put(o);
+    if (!file.size) return Promise.reject(new Error('file trống (0 KB), có thể chưa tải về máy xong'));
+    // Lưu dạng Blob cắt từ file (không chép cả cuốn vào bộ nhớ). Safari cũ không lưu được → chép ra Blob rồi thử lại.
+    o.blob = file.slice(0, file.size, 'application/pdf');
+    return put(o).catch(function (e) {
+      if (/quota/i.test((e && e.name || '') + (e && e.message || ''))) throw e;
+      return file.arrayBuffer().then(function (buf) { o.blob = new Blob([buf], { type: 'application/pdf' }); return put(o); });
+    }).catch(function (e) {
+      if (/quota/i.test((e && e.name || '') + (e && e.message || ''))) throw new Error('máy hết chỗ lưu sách (cuốn này ' + Math.round(file.size / 1048576) + ' MB). Xoá bớt sách cũ rồi thử lại');
+      throw e;
     }).then(function () { return o; });
   }
   function setCover(id, cover, pages) {

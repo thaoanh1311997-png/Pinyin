@@ -1,0 +1,30 @@
+name: Kiểm tra chọn file trên WebKit (Safari)
+on:
+  workflow_dispatch:
+  push:
+    branches: [upload-test]
+jobs:
+  test:
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - run: npm i --no-save playwright ffmpeg-static && npx playwright install webkit
+      - name: Make test media
+        run: |
+          F=$(node -p "require('ffmpeg-static')"); mkdir -p /tmp/m
+          $F -v error -f lavfi -i "sine=frequency=330:duration=3600" -f lavfi -i "anoisesrc=d=3600:a=0.05" -filter_complex amix=inputs=2 -ac 1 -ar 44100 -c:a aac -b:a 64k /tmp/m/t60.m4a
+          $F -v error -f lavfi -i "testsrc2=size=1280x720:rate=30:duration=180" -f lavfi -i "sine=frequency=440:duration=180" -c:v libx264 -preset ultrafast -b:v 1500k -c:a aac -b:a 128k -f mov /tmp/m/iphone.mov
+          $F -v error -f lavfi -i "sine=frequency=330:duration=600" -ac 2 -c:a libmp3lame -b:a 128k /tmp/m/t.mp3
+          ls -la /tmp/m
+      - name: Run
+        run: |
+          mkdir -p /tmp/srv && ln -s "$PWD" /tmp/srv/Pinyin
+          (cd /tmp/srv && python3 -m http.server 8765 >/dev/null 2>&1 &)
+          sleep 2
+          FFMPEG=$(node -p "require('ffmpeg-static')") MEDIA=/tmp/m node tools/upload-test/webkit-upload.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: report, path: upload-report.txt}

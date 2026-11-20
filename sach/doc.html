@@ -65,7 +65,7 @@ html[data-theme="dark"] .pill input{background:rgba(0,0,0,.08)}
   <button id="next" type="button" aria-label="Trang sau">›</button>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-<script src="mybooks.js?v=1"></script>
+<script src="mybooks.js?v=2"></script>
 <script>
 (function(){
   var $=function(i){return document.getElementById(i)};
@@ -75,7 +75,7 @@ html[data-theme="dark"] .pill input{background:rgba(0,0,0,.08)}
   if(!(my&&/^[\w]+$/.test(my))&&!/^books\/[\w\-\/一-鿿%.]+\.pdf$/i.test(f)||/\.\./.test(f)){ fail('Link sách không đúng.'); return; }
   if(!window.pdfjsLib){ fail('Không tải được bộ đọc PDF. Kiểm tra mạng rồi thử lại nha.'); return; }
   pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
-  var KEY='bm.sach.pg.'+(my?'my:'+my:f), zoom=1, doc=null, N=0, sizes=[], els=[], done={}, cur=1;
+  var drawn={}, KEY='bm.sach.pg.'+(my?'my:'+my:f), zoom=1, doc=null, N=0, sizes=[], els=[], done={}, cur=1;
   try{ zoom=+localStorage.getItem('bm.sach.zoom')||1; }catch(e){}
   function pyHref(p){ return my?'../pdf/?my='+my+'&p='+p:'../pdf/?src='+encodeURIComponent('../sach/'+f)+'&p='+p; }
   if(my){ $('dl').style.display='none'; } else $('dl').href=f; $('py').href=pyHref(1);
@@ -98,16 +98,26 @@ html[data-theme="dark"] .pill input{background:rgba(0,0,0,.08)}
     var el=els[i]; el.classList.add('load');
     doc.getPage(i+1).then(function(page){
       var v1=page.getViewport({scale:1}); sizes[i]=[v1.width,v1.height];
-      var w=width(), dpr=Math.min(window.devicePixelRatio||1,2.5), sc=w/v1.width*dpr, vp=page.getViewport({scale:sc});
+      var w=width(), dpr=Math.min(window.devicePixelRatio||1,2.5), sc=w/v1.width*dpr, px=v1.width*v1.height*sc*sc;
+      if(px>MAXPX) sc*=Math.sqrt(MAXPX/px); // iPhone/iPad Safari: very big canvases come out blank or crash the tab
+      var vp=page.getViewport({scale:sc});
       el.style.height=(w*v1.height/v1.width)+'px';
       var c=document.createElement('canvas'); c.width=Math.floor(vp.width); c.height=Math.floor(vp.height);
       return page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise.then(function(){
-        var old=el.querySelector('canvas'); if(old) el.removeChild(old); el.insertBefore(c,el.firstChild); el.classList.remove('load');
+        if(done[i]!==zoom){ c.width=c.height=0; return; } // scrolled away / zoom changed meanwhile
+        var old=el.querySelector('canvas'); if(old){ el.removeChild(old); old.width=old.height=0; } el.insertBefore(c,el.firstChild); el.classList.remove('load'); drawn[i]=1;
+        page.cleanup();
       });
     }).catch(function(){ done[i]=0; el.classList.remove('load'); });
   }
+  // Only keep the pages near the screen drawn: a 250-page book drawn whole needs GBs and Safari reloads the page
+  var MAXPX=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)?4e6:8e6;
+  function prune(i){
+    for(var j in done){ j=+j; if(Math.abs(j-i)>4) delete done[j]; }
+    for(var k in drawn){ k=+k; if(Math.abs(k-i)>4){ var el=els[k], c=el&&el.querySelector('canvas'); if(c){ el.removeChild(c); c.width=c.height=0; } if(el) el.classList.add('load'); delete drawn[k]; delete done[k]; } }
+  }
   var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){ if(e.isIntersecting){ var i=+e.target.dataset.i; render(i); if(i+1<N) render(i+1); } });
+    es.forEach(function(e){ if(e.isIntersecting){ var i=+e.target.dataset.i; prune(i); render(i); if(i+1<N) render(i+1); } });
   },{rootMargin:'600px 0px'});
   function setCur(){
     var mid=window.innerHeight/2, best=cur;
@@ -130,7 +140,7 @@ html[data-theme="dark"] .pill input{background:rgba(0,0,0,.08)}
     var last=1; try{last=+localStorage.getItem(KEY)||1}catch(e){}
     $('pno').value=1; if(last>1){ setTimeout(function(){go(last);setTimeout(function(){go(last);setCur();},300)},60); }
     window.addEventListener('scroll',function(){ clearTimeout(setCur.t); setCur.t=setTimeout(setCur,80); },{passive:true});
-  }).catch(function(e){ fail('File sách chưa sẵn sàng hoặc bị lỗi ('+(e&&e.message||e)+').'); });
+  }).catch(function(e){ var m=(e&&e.name||'')+' '+(e&&e.message||e); fail(/password/i.test(m)?'Sách này có mật khẩu nên web không mở được. Gỡ mật khẩu rồi thêm lại nha.':/Invalid PDF|Missing PDF|Unexpected/i.test(m)?'File sách bị lỗi hoặc chưa tải về đủ. Xoá rồi thêm lại file khác nha.':'File sách chưa sẵn sàng hoặc bị lỗi ('+(e&&e.message||e)+').'); });
 
   function rezoom(z){ var p=cur; zoom=Math.max(.6,Math.min(2.5,z)); try{localStorage.setItem('bm.sach.zoom',zoom)}catch(e){} layout(); done={}; els.forEach(function(el){io.unobserve(el);io.observe(el)}); go(p); }
   $('zi').onclick=function(){rezoom(zoom+.25)}; $('zo').onclick=function(){rezoom(zoom-.25)};

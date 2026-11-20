@@ -154,6 +154,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-ui);
 .status .msg{font-weight:600}
 .bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden}
 .bar i{display:block;height:100%;width:0;border-radius:99px;background:repeating-linear-gradient(45deg,var(--jade) 0 10px,color-mix(in srgb,var(--jade) 75%,var(--paper)) 10px 20px);transition:width .3s}
+.more-btn{display:block;margin:18px auto;padding:12px 22px;font-size:16px}
 .note{background:var(--sun-soft);border-left:4px solid var(--sun);border-radius:10px;padding:10px 12px}
 
 /* ---------- page cards ---------- */
@@ -509,14 +510,14 @@ function render(sec,page){
   const old=sec.querySelector('.view.book'); if(old) old.remove();
   const tv=sec.querySelector('.view.text'); tv.innerHTML=''; tv.dataset.done='';
   if(page.canvas){
-    const {canvas,moved}=stretch(page.canvas,page.lines);
-    page.canvas=null;
+    const orig=page.canvas, {canvas,moved}=stretch(orig,page.lines);
+    page.canvas=null; if(orig!==canvas) orig.width=orig.height=0; // iPhone Safari frees canvas memory only when told
     const v=document.createElement('div'); v.className='view book';
     const sc=document.createElement('div'); sc.className='scroller';
     const fig=document.createElement('figure'); fig.className='fig fresh';
     const img=document.createElement('img'); img.alt='Trang sách'; img.decoding='async';
     img.style.aspectRatio=canvas.width+' / '+canvas.height;
-    canvas.toBlob(bl=>{img.src=URL.createObjectURL(bl);},'image/jpeg',0.88);
+    canvas.toBlob(bl=>{if(bl) img.src=URL.createObjectURL(bl); canvas.width=canvas.height=0;},'image/jpeg',0.88);
     const ov=document.createElement('div'); ov.className='ov';
     const W=canvas.width,H=canvas.height; let html='';
     page.lines.forEach((L,li)=>{
@@ -934,7 +935,7 @@ async function textLines(page,vp){
 const cjkCount=lines=>lines.reduce((n,l)=>n+[...l.t].filter(isCJK).length,0);
 
 /* ======================= main flow ======================= */
-async function handleFiles(files){
+async function handleFiles(files,keep){
   const typed=[];
   for(const f of [...files]){
     let kind=null;
@@ -946,10 +947,10 @@ async function handleFiles(files){
     if(!kind&&(/\.pdf$/i.test(f.name)||f.type==='application/pdf')) kind='pdf';
     if(kind){f._kind=kind;typed.push(f);}
   }
-  if(!typed.length){status('File vừa chọn không phải PDF hay ảnh. Hãy chọn lại.');return;}
+  if(!typed.length){status(/\.(docx?|pages|txt)$/i.test(files[0]&&files[0].name||'')?'Trang này đọc PDF và ảnh. File Word thì lưu thành PDF trước (Word: Lưu thành → PDF), hoặc dán chữ vào ô bên dưới nha.':'File vừa chọn không phải PDF hay ảnh. Hãy chọn lại.');return;}
   loadDict();
   const job={stop:false}; curJob=job; hidePop();
-  $('out').innerHTML=''; $('stop').hidden=false;
+  if(!keep) $('out').innerHTML=''; $('stop').hidden=false;
   try{
     for(const f of typed){
       if(job.stop) break;
@@ -964,7 +965,8 @@ async function handleFiles(files){
 }
 async function doImage(f,job){
   const url=URL.createObjectURL(f);
-  const img=new Image(); img.src=url; await img.decode();
+  const img=new Image(); img.src=url;
+  try{ await img.decode(); }catch(e){ URL.revokeObjectURL(url); note(/heic|heif/i.test(f.name+f.type)?'Trình duyệt này chưa mở được ảnh HEIC “'+f.name+'”. Chụp màn hình ảnh đó hoặc đổi sang JPG rồi chọn lại nha.':'Không mở được ảnh “'+f.name+'”. Lưu lại thành JPG/PNG rồi chọn lại nha.'); return; }
   const scale=Math.min(1,2400/Math.max(img.naturalWidth,img.naturalHeight));
   const c=document.createElement('canvas'); c.width=Math.round(img.naturalWidth*scale); c.height=Math.round(img.naturalHeight*scale);
   c.getContext('2d').drawImage(img,0,0,c.width,c.height);
@@ -977,20 +979,26 @@ async function doImage(f,job){
 async function doPdf(f,job,multi){
   if(!window.pdfjsLib) throw new Error('Không tải được bộ đọc PDF (kiểm tra mạng).');
   status('Đang mở '+f.name+'…',0);
-  const pdf=await pdfjsLib.getDocument({data:new Uint8Array(await f.arrayBuffer()),
-    cMapUrl:CDN.cmaps,cMapPacked:true,CMapReaderFactory:BundledCMaps,useWorkerFetch:false,useSystemFonts:true}).promise;
+  if(!f.size){ note('File “'+f.name+'” trống (0 KB). Có thể file chưa tải về máy xong, mở nó một lần rồi chọn lại nha.'); return; }
+  let pdf;
+  try{ pdf=f._pdf||await pdfjsLib.getDocument({data:new Uint8Array(await f.arrayBuffer()),
+    cMapUrl:CDN.cmaps,cMapPacked:true,CMapReaderFactory:BundledCMaps,useWorkerFetch:false,useSystemFonts:true}).promise; }
+  catch(e){ note(/password/i.test((e&&e.name||'')+(e&&e.message||''))?'File “'+f.name+'” có mật khẩu nên web không mở được. Gỡ mật khẩu rồi chọn lại nha.':'File “'+f.name+'” bị lỗi hoặc chưa tải về đủ, web không mở được. Thử mở bằng app khác xem có xem được không, rồi chọn lại nha.'); return; }
+  f._pdf=pdf;
   const n=pdf.numPages;
   let from=Math.max(1,parseInt($('pFrom').value)||1), to=parseInt($('pTo').value)||n;
+  if(f._next) from=f._next, to=f._to;
   from=Math.min(from,n); to=Math.min(n,Math.max(from,to));
+  // long books: 10 pages per round (each page is a big picture; phones run out of memory), then "Đọc tiếp"
+  const BATCH=10, endAll=to; if(to-from+1>BATCH) to=from+BATCH-1;
   const total=to-from+1;
-  if(total>40) note('Có '+total+' trang cần xử lý. Bản scan có thể mất vài phút, bấm "Dừng lại" bất cứ lúc nào.');
   for(let p=from;p<=to;p++){
-    if(job.stop) break;
+    if(job.stop){ to=p-1; break; }
     const done=(p-from)/total;
     status('Trang '+p+' / '+to+'…',done);
     const page=await pdf.getPage(p);
     const vp1=page.getViewport({scale:1});
-    const scale=Math.min(3,Math.max(1.5,2000/Math.max(vp1.width,vp1.height)));
+    const scale=Math.min(3,2000/Math.max(vp1.width,vp1.height)); // ≤2000 px: sharp enough to read, light enough for iPhone
     const vp=page.getViewport({scale});
     const c=document.createElement('canvas'); c.width=Math.floor(vp.width); c.height=Math.floor(vp.height);
     const ctx=c.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height);
@@ -1006,6 +1014,12 @@ async function doPdf(f,job,multi){
     render(sec,{lines:finishLines(lines),canvas:c});
     page.cleanup();
   }
+  if(to<endAll&&!multi){
+    const nx=to+1, k=Math.min(BATCH,endAll-to), b=document.createElement('button');
+    b.className='btn more-btn'; b.textContent='Đọc tiếp '+k+' trang ('+nx+'–'+(nx+k-1)+' / '+n+')';
+    b.onclick=()=>{ b.remove(); f._next=nx; f._to=endAll; f._kind='pdf'; handleFiles([f],true); };
+    $('out').appendChild(b);
+  } else { pdf.destroy&&pdf.destroy(); f._pdf=null; }
 }
 
 /* ======================= example page (drawn, so it works before any file) ======================= */
@@ -1083,7 +1097,7 @@ window.__handleFiles=handleFiles;
   if(my&&/^\w+$/.test(my)){
     const p=Math.max(1,parseInt(P.get('p'))||1); $('pFrom').value=p; $('pTo').value=p+2;
     status('Đang mở sách của bạn…',0);
-    const sc=document.createElement('script'); sc.src='../sach/mybooks.js?v=1';
+    const sc=document.createElement('script'); sc.src='../sach/mybooks.js?v=2';
     sc.onload=()=>window.BM_MYBOOKS.get(my).then(o=>{
       if(!o||!o.blob) throw new Error('sách không còn trên máy');
       return handleFiles([new File([o.blob],(o.name||'sach')+'.pdf',{type:'application/pdf'})]).then(()=>{const e=$('out');if(e&&e.firstChild)e.scrollIntoView({behavior:'smooth',block:'start'});});
