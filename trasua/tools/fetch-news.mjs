@@ -19,23 +19,14 @@ const dec = s => s.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
   .replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
 const strip = s => dec(s).replace(/<[^>]+>/g, '').replace(/[　\s]+/g, ' ').trim();
 const tag = (x, t) => { const m = x.match(new RegExp('<' + t + '[^>]*>([\\s\\S]*?)</' + t + '>')); return m ? m[1] : ''; };
-// photo of the article: from the RSS item, else the first content photo on the article page
-function absUrl(u, base) { try { return new URL(u.replace(/&amp;/g, '&'), base).href; } catch (e) { return ''; } }
-function pickImg(html, base = 'https://www.chinanews.com.cn/') {
-  if (!html) return '';
-  const meta = html.match(/<meta[^>]+(?:property|name)=["'](?:og:image|twitter:image)["'][^>]+content=["']([^"']+)["']/i);
-  if (meta) return absUrl(meta[1], base);
-  const zone = (() => { const i = html.search(/class=["'][^"']*(left_zw|content_desc|content|article)/i); return i >= 0 ? html.slice(i) : html; })();
-  for (const m of zone.matchAll(/<img[^>]+(?:data-src|src)=["']([^"']+)["']/gi)) {
-    const u = m[1];
-    if (!/\.(jpe?g|png|webp)(\?|$)/i.test(u)) continue;
-    if (/logo|icon|ewm|qrcode|erweima|share|weixin|wx_|banner|ad[_/]|blank|loading|avatar|button|btn/i.test(u)) continue;
-    return absUrl(u, base);
-  }
-  return '';
-}
+// photo of the article: first photo inside the article body (same extractor the reader uses).
+// og:image / RSS images are a generic chinanews logo, so they are not used.
+import { createRequire } from 'node:module';
+const { extract } = createRequire(import.meta.url)('../lib/article.js');
+const pickImg = (html, base) => { try { return extract(html, base).imgs[0] || ''; } catch (e) { return ''; } };
 let old = [];
 try { old = JSON.parse(fs.readFileSync(OUT, 'utf8')).items || []; } catch (e) {}
+for (const a of old) if (a.img && /\/fileftp\//.test(a.img)) delete a.img; // old runs stored the site logo: look again
 const seen = new Map(old.map(a => [a.link, a]));
 let added = 0;
 for (const [cat, name, url] of FEEDS) {
@@ -54,8 +45,7 @@ for (const [cat, name, url] of FEEDS) {
       { const seenS = new Set(); body = body.replace(/\s*[^。！？]*?[\u4e00-\u9fff]{1,4}\s*摄\s*/g, '。').split(/(?<=[。！？])/).map(x => x.trim()).filter(x => x && x !== '。' && !/^图为/.test(x) && !seenS.has(x) && seenS.add(x)).join(''); }
       if (body.length < 30) continue;
       if (seen.has(link)) { const a = seen.get(link); if (a.c === 'xh' && cat !== 'xh') a.c = cat; continue; }
-      const im0 = pickImg(rawDesc);
-      seen.set(link, { id: link.replace(/\D/g, '').slice(-12), t: title, b: body.slice(0, 600), c: cat, s: '中国新闻网', link, d: isNaN(date) ? Date.now() : date.getTime(), ...(im0 ? { img: im0 } : {}) });
+      seen.set(link, { id: link.replace(/\D/g, '').slice(-12), t: title, b: body.slice(0, 600), c: cat, s: '中国新闻网', link, d: isNaN(date) ? Date.now() : date.getTime() });
       n++; added++;
     }
     console.log('ok', name, n);

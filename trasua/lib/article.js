@@ -19,13 +19,13 @@
     return '';
   }
   function extract(html, base) {
-    var z = zone(html); if (!z) return { paras: [], imgs: [] };
-    var imgs = [], paras = [];
+    var z = zone(html); if (!z) return { paras: [], imgs: [], pos: [] };
+    var imgs = [], pos = [], paras = [];
     var re = /<img[^>]+(?:data-src|src)=["']([^"']+)["'][^>]*>|<p[^>]*>([\s\S]*?)<\/p>/gi, m;
     while ((m = re.exec(z))) {
       if (m[1]) {
         var u = m[1];
-        if (/\.(jpe?g|png|webp)(\?|$)/i.test(u) && !/logo|icon|ewm|qrcode|erweima|share|weixin|wx_|banner|blank|loading|avatar|btn/i.test(u)) { u = abs(u, base); if (u && imgs.indexOf(u) < 0) imgs.push(u); }
+        if (/\.(jpe?g|png|webp)(\?|$)/i.test(u) && !/logo|icon|ewm|qrcode|erweima|share|weixin|wx_|banner|blank|loading|avatar|btn|\/fileftp\//i.test(u)) { u = abs(u, base); if (u && imgs.indexOf(u) < 0) { imgs.push(u); pos.push(paras.length); } }
         continue;
       }
       var t = dec(m[2].replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '')).replace(/[ \t　 ]+/g, ' ').trim();
@@ -35,7 +35,7 @@
       if (t.length < 4) continue;
       if (paras.indexOf(t) < 0) paras.push(t);
     }
-    return { paras: paras, imgs: imgs.slice(0, 6) };
+    return { paras: paras, imgs: imgs.slice(0, 6), pos: pos.slice(0, 6) };
   }
   function decode(buf) { // chinanews pages are UTF-8; some older ones are GBK
     var u8 = new Uint8Array(buf), head = new TextDecoder('utf-8').decode(u8.slice(0, 3000));

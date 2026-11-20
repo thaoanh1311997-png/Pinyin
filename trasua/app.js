@@ -382,18 +382,78 @@ routes.news = function (cat) {
     $('#lvseg').onclick = function (e) { var b = e.target.closest('[data-s]'); if (!b) return; LS.set('nsort', b.dataset.s); routes.news(cat); };
   });
 };
+/* ---- full article: fetched on the reader's own device at read time (never stored on the site) ---- */
+var RELAYS = [
+  function (u) { return 'https://api.cors.lol/?url=' + encodeURIComponent(u); },
+  function (u) { return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u); },
+  function (u) { return 'https://api.codetabs.com/v1/proxy/?quest=' + encodeURIComponent(u); },
+];
+function splitSents(t) { return (t.match(/[^。！？!?]+[。！？!?]*[”」』）)]*/g) || [t]).map(function (x) { return x.trim(); }).filter(Boolean); }
+function fetchFull(it) {
+  var k = 'fa.' + it.id, c = LS.get(k, null); if (c && c.paras && c.paras.length) return Promise.resolve(c);
+  if (!window.TSArticle) return Promise.resolve(null);
+  var link = it.link.replace(/^http:/, 'https:'), i = 0;
+  var one = function () {
+    if (i >= RELAYS.length) return Promise.resolve(null);
+    var ctl = window.AbortController ? new AbortController() : null, tm = setTimeout(function () { if (ctl) ctl.abort(); }, 15000);
+    return fetch(RELAYS[i++](link), ctl ? { signal: ctl.signal } : {}).then(function (r) { if (!r.ok) throw 0; return r.arrayBuffer(); })
+      .then(function (b) { clearTimeout(tm); var x = TSArticle.extract(TSArticle.decode(b), link); if (!x.paras.length || x.paras.join('').length < 60) throw 0; return x; })
+      .catch(function () { clearTimeout(tm); return one(); });
+  };
+  return one().then(function (x) {
+    if (!x) return null;
+    var idx = LS.get('fa.idx', []).filter(function (y) { return y !== it.id; }); idx.push(it.id);
+    while (idx.length > 30) { var o = idx.shift(); LS.del('fa.' + o); LS.del('trf.' + o); }
+    LS.set('fa.idx', idx); LS.set(k, x); return x;
+  });
+}
+function translateSmart(lines, onPart) { // AI (Groq key of this device) when available, else Google/MyMemory; chunked, reports progress
+  var out = lines.map(function () { return ''; }), useAI = !!groqKey(), size = useAI ? 12 : 8, chunks = [];
+  for (var i = 0; i < lines.length; i += size) chunks.push(i);
+  var viaAI = function (part) {
+    return groqJSON([{ role: 'system', content: 'Bạn là biên dịch viên Trung–Việt chuyên nghiệp. Dịch từng câu tin tức tiếng Trung sang tiếng Việt chuẩn, tự nhiên, sát nghĩa, không thêm bớt ý, không bình luận. Tên người/địa danh Trung Quốc viết theo âm Hán Việt quen dùng (北京 → Bắc Kinh, 习近平 → Tập Cận Bình); tên nước ngoài viết theo cách báo Việt Nam thường dùng. Số liệu, ngày tháng giữ chính xác. Trả về JSON {"vi":[...]} với đúng số phần tử như đầu vào, theo đúng thứ tự.' },
+      { role: 'user', content: JSON.stringify({ zh: part }) }]).then(function (j) { if (!j || !Array.isArray(j.vi) || j.vi.length !== part.length) throw 0; return j.vi.map(function (x) { return String(x || '').trim(); }); });
+  };
+  var seq = Promise.resolve();
+  chunks.forEach(function (st) {
+    seq = seq.then(function () {
+      var part = lines.slice(st, st + size);
+      return (useAI ? viaAI(part).catch(function () { useAI = false; return translateLines(part); }) : translateLines(part))
+        .then(function (v) { v.forEach(function (x, j) { out[st + j] = x || ''; }); if (onPart) onPart(out, st, part.length); });
+    });
+  });
+  return seq.then(function () { return out; });
+}
+function readBodyHTML(art) {
+  var h = '', imgs = art.imgs || [], pos = art.pos || [], used = {};
+  var pic = function (u) { return '<figure class="hero-img inl"><img src="' + esc(u) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"><figcaption>Ảnh: ' + esc(art.s || '') + '</figcaption></figure>'; };
+  art.paras.forEach(function (ids, pi) {
+    imgs.forEach(function (u, k) { if (!used[k] && pos[k] <= pi) { used[k] = 1; h += pic(u); } });
+    h += '<div class="para">' + ids.map(function (i) { return '<div class="sent" data-i="' + i + '"><button class="say" data-sent="' + i + '">🔊</button><div class="zline">' + wordsHTML(art.sents[i]) + '</div><div class="vi">' + (art.vis && art.vis[i] ? esc(art.vis[i]) : '<span class="muted">…</span>') + '</div></div>'; }).join('') + '</div>';
+  });
+  imgs.forEach(function (u, k) { if (!used[k]) h += pic(u); });
+  return h;
+}
 routes.read = async function (id) {
   APP.innerHTML = top('', '#/news') + '<div class="empty">Đang mở bài… ⏳</div>';
   var easy = window.EASY.find(function (e) { return e.id === id; }) || (window.STORY || []).find(function (e) { return e.id === id; });
   var art; var rt = RT;
   await loadVocab(); if (rt !== RT) return;
+  var it = null;
   if (easy) art = { id: id, t: easy.t, sents: easy.s.map(function (x) { return x[0]; }), vis: easy.s.map(function (x) { return x[1]; }), tv: easy.tv, lv: easy.lv, easy: true, g: easy.g, m: easy.m };
   else {
-    var j = await loadNews(); var it = j && j.items.find(function (x) { return x.id === id; });
+    var j = await loadNews(); it = j && j.items.find(function (x) { return x.id === id; });
     if (!it) { APP.innerHTML = top('Không tìm thấy', '#/news') + '<div class="card">Bài này đã cũ và không còn trong danh sách. <a href="#/news">Quay lại</a></div>'; return; }
-    var sents = it.b.match(/[^。！？!?]+[。！？!?”」』]*/g) || [it.b];
-    sents = sents.map(function (s) { return s.trim(); }).filter(Boolean);
-    art = { id: id, t: it.t, sents: sents, vis: LS.get('tr.' + id, null), lv: it.lv, ez: it.ez, img: thumbOf(it), link: it.link, s: it.s, d: it.d, c: it.c };
+    art = { id: id, t: it.t, sents: splitSents(it.b), vis: LS.get('tr.' + id, null), lv: it.lv, ez: it.ez, img: thumbOf(it), link: it.link, s: it.s, d: it.d, c: it.c, full: 0 };
+    var fa = LS.get('fa.' + id, null); if (fa && fa.paras && fa.paras.length) useFull(fa);
+  }
+  if (!art.paras) art.paras = [art.sents.map(function (_, i) { return i; })];
+  function useFull(x) { // switch the reader to the whole article
+    var ss = [], ps = [];
+    x.paras.forEach(function (p) { var ids = []; splitSents(p).forEach(function (t) { ids.push(ss.length); ss.push(t); }); ps.push(ids); });
+    var im = [], po = [];
+    (x.imgs || []).forEach(function (u, k) { if (art.img && u === it.img) return; im.push(u); po.push((x.pos || [])[k] || 0); });
+    art.sents = ss; art.paras = ps; art.imgs = im; art.pos = po; art.full = 1; art.vis = LS.get('trf.' + id, null);
   }
   var S = LS.get('rd', { py: true, vi: true, zs: 21 });
   if (rt !== RT) return;
@@ -403,21 +463,45 @@ routes.read = async function (id) {
     '<div class="zline title" style="--zs:' + (S.zs + 4) + 'px">' + wordsHTML(art.t) + '</div>' +
     '<div class="meta">' + (art.easy ? '<span class="badge b' + art.lv + '">HSK ' + art.lv + '</span>' : art.ez ? easeBadge(art.ez) : '') + (art.easy ? '<span>' + esc(art.tv) + '</span>' : '<span>' + esc(art.s) + ' · ' + ago(art.d) + '</span>') + '</div>' +
     '<div class="note" style="margin-top:0">👆 Chạm vào từ bất kỳ để xem nghĩa, Hán Việt, phát âm và lưu vào sổ tay.' + (art.easy ? '' : '<br>🤖 Bản dịch tin tức là <b>dịch máy</b> nên có thể chưa sát, chỉ để tham khảo — nghĩa từng từ khi chạm vào là từ điển chuẩn.') + '</div>' +
-    art.sents.map(function (s, i) { return '<div class="sent" data-i="' + i + '"><button class="say" data-sent="' + i + '">🔊</button><div class="zline">' + wordsHTML(s) + '</div><div class="vi">' + (art.vis && art.vis[i] ? esc(art.vis[i]) : '<span class="muted">…</span>') + '</div></div>'; }).join('') +
+    '<div id="fullst"></div><div id="rbody">' + readBodyHTML(art) + '</div>' +
     (art.m ? '<div class="note" style="margin-top:4px">💡 <b>Ý nghĩa:</b> ' + esc(art.m) + '</div>' : '') +
-    (art.link ? '<div class="srcbox">Đoạn trích từ RSS của ' + esc(art.s) + '. <a href="' + esc(art.link) + '" target="_blank" rel="noopener">Đọc bài gốc đầy đủ ↗</a></div>' : '') +
+    (art.link ? '<div class="srcbox" id="srcbox"></div>' : '') +
     '<div class="tools"><button class="btn sky" id="rdPlay">▶ Nghe cả bài</button><button class="btn ghost" id="rdDone">✓ Đọc xong</button></div></div>';
-  var rd = $('#reader');
+  var rd = $('#reader'), trGen = 0;
+  var viEl = function (i) { return $('.sent[data-i="' + i + '"] .vi', rd); };
   var doTr = function () {
     if (art.vis) return;
+    var gen = ++trGen, full = art.full;
     $$('.vi', rd).forEach(function (x) { x.innerHTML = '<span class="muted">Đang dịch…</span>'; });
-    translateLines(art.sents).then(function (v) {
-      if (!v.some(Boolean)) { $$('.vi', rd).forEach(function (x) { x.innerHTML = '<span class="muted">Chưa dịch được (mạng yếu). Chạm từng từ để xem nghĩa nhé.</span>'; }); return; }
-      art.vis = v; LS.set('tr.' + art.id, v);
-      $$('.vi', rd).forEach(function (x, i) { x.textContent = v[i] || ''; });
+    translateSmart(art.sents, function (v, st, n) {
+      if (gen !== trGen || rt !== RT) return;
+      for (var i = st; i < st + n; i++) { var el = viEl(i); if (el) { if (v[i]) el.textContent = v[i]; else el.innerHTML = '<span class="muted">Chưa dịch được câu này (mạng yếu), chạm từng từ để xem nghĩa nhé.</span>'; } }
+    }).then(function (v) {
+      if (gen !== trGen || rt !== RT || !v.some(Boolean)) return;
+      art.vis = v; LS.set((full ? 'trf.' : 'tr.') + art.id, v);
+    });
+  };
+  var srcNote = function (st) {
+    var bx = $('#srcbox'); if (!bx) return;
+    var a = '<a href="' + esc(art.link) + '" target="_blank" rel="noopener">Xem bài gốc ↗</a>';
+    bx.innerHTML = art.full ? 'Bài đầy đủ được tải thẳng từ ' + esc(art.s) + ' về máy bạn lúc mở. ' + a : 'Đang hiện đoạn đầu (tóm tắt RSS) của ' + esc(art.s) + '. ' + a;
+    var fs = $('#fullst');
+    fs.innerHTML = st === 'load' ? '<div class="fullst">⏳ Đang tải <b>cả bài</b> từ ' + esc(art.s) + '…</div>'
+      : st === 'fail' ? '<div class="fullst bad">😕 Chưa tải được cả bài (mạng yếu hoặc trang gốc đang chặn), đang hiện đoạn đầu. <button class="btn ghost sm" id="faRetry">Thử lại</button></div>' : '';
+    var rb = $('#faRetry'); if (rb) rb.onclick = loadFull;
+  };
+  var loadFull = function () {
+    srcNote('load');
+    fetchFull(it).then(function (x) {
+      if (rt !== RT) return;
+      if (!x) { srcNote('fail'); return; }
+      if (playing) $('#rdPlay').click();
+      useFull(x); $('#rbody').innerHTML = readBodyHTML(art); srcNote('');
+      if (S.vi) doTr();
     });
   };
   if (S.vi) doTr();
+  if (it) { if (art.full) srcNote(''); else loadFull(); }
   rd.addEventListener('click', function (e) {
     var b = e.target.closest('[data-sent]'); if (b) { var i = +b.dataset.sent; speakLines([{ text: art.sents[i] }]); }
   });
