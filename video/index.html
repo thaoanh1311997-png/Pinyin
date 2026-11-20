@@ -1577,7 +1577,8 @@ async function decode16k(file,onProg){
 }
 // Groq cloud Whisper (large-v3-turbo): a 12-minute lesson takes seconds instead of minutes
 const GROQ_DEFAULT='';
-(()=>{try{const k=new URLSearchParams(location.search).get('gq');if(k&&k.length>20){localStorage.setItem('bb.groq',k);history.replaceState(null,'',location.pathname);}}catch(e){}})();
+// keys arrive once per device through a private link (?gq=…&sdk=…), never stored in the page source
+(()=>{try{const q=new URLSearchParams(location.search),k=q.get('gq'),d=q.get('sdk');if(k&&k.length>20)localStorage.setItem('bb.groq',k);if(d&&d.length>10)localStorage.setItem('bb.sdkey',d);if(k||d)history.replaceState(null,'',location.pathname);}catch(e){}})();
 function groqKey(){try{return localStorage.getItem('bb.groq')||GROQ_DEFAULT;}catch(e){return GROQ_DEFAULT;}}
 function wav16(a){
   const n=a.length, buf=new ArrayBuffer(44+n*2), v=new DataView(buf);
@@ -1767,7 +1768,7 @@ async function rowsToLines(rows){
   return lines;
 }
 // Supadata transcript API (free 100 requests/month, user's own key)
-const SD_DEFAULT='sd_60eac8f2f50a130b891b945cd2323c8d';
+const SD_DEFAULT='';
 (()=>{try{const k=new URLSearchParams(location.search).get('sdk');if(k&&k.length>10){localStorage.setItem('bb.sdkey',k);history.replaceState(null,'',location.pathname);}}catch(e){}})();
 function sdKey(){try{return localStorage.getItem('bb.sdkey')||SD_DEFAULT;}catch(e){return SD_DEFAULT;}}
 async function fromSupadata(id,onWait){
