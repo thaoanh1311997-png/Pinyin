@@ -92,19 +92,45 @@ function findSegs(o, out = []) {
   for (const k in o) findSegs(o[k], out);
   return out;
 }
+// The transcript panel (same data the "Show transcript" button uses) does not need a PO token.
+const WEB_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36';
+function grab(html, re) { const m = html.match(re); return m ? m[1] : ''; }
+function langItems(o, out = []) {
+  if (!o || typeof o !== 'object') return out;
+  if (o.title && o.continuation && o.continuation.reloadContinuationData) out.push({ title: o.title, params: o.continuation.reloadContinuationData.continuation, selected: !!o.selected });
+  for (const k in o) langItems(o[k], out);
+  return out;
+}
+async function transcriptCall(params, ver, vis) {
+  const r = await fetch('https://www.youtube.com/youtubei/v1/get_transcript?prettyPrint=false', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'User-Agent': WEB_UA, 'Origin': 'https://www.youtube.com', 'Referer': 'https://www.youtube.com/', 'X-Youtube-Client-Name': '1', 'X-Youtube-Client-Version': ver, ...(vis ? { 'X-Goog-Visitor-Id': vis } : {}) },
+    body: JSON.stringify({ context: { client: { clientName: 'WEB', clientVersion: ver, hl: 'zh-CN', gl: 'US', visitorData: vis || undefined } }, params }),
+  });
+  if (!r.ok) throw new Error('transcript ' + r.status);
+  return r.json();
+}
 async function viaTranscript(id, errs) {
   try {
-    const params = btoa('\n\x0b' + id);
-    const c = CLIENTS[3];
-    const r = await fetch('https://www.youtube.com/youtubei/v1/get_transcript?prettyPrint=false', {
-      method: 'POST', headers: { 'Content-Type': 'application/json', 'User-Agent': c.ua, 'Origin': 'https://www.youtube.com' },
-      body: JSON.stringify({ context: { client: { clientName: 'WEB', clientVersion: c.ver, hl: 'zh-CN' } }, params }),
+    const r = await fetch('https://www.youtube.com/watch?v=' + id + '&hl=zh-CN&bpctr=9999999999&has_verified=1', {
+      headers: { 'User-Agent': WEB_UA, 'Accept-Language': 'zh-CN,zh;q=0.9,vi;q=0.8,en;q=0.7', 'Cookie': 'CONSENT=YES+cb; SOCS=CAI' },
     });
-    if (!r.ok) { errs.push('transcript ' + r.status); return null; }
-    const L = findSegs(await r.json());
-    if (L.length) return { title: '', lang: '?', via: 'transcript', lines: L };
+    const html = await r.text();
+    const ver = grab(html, /"INNERTUBE_CLIENT_VERSION":"([^"]+)"/) || '2.20250312.04.00';
+    const vis = grab(html, /"VISITOR_DATA":"([^"]+)"/);
+    const title = grab(html, /<meta name="title" content="([^"]*)"/);
+    const params = [...html.matchAll(/"getTranscriptEndpoint":\{"params":"([^"]+)"/g)].map(m => m[1]);
+    if (!params.length) { errs.push('watch page: no transcript (' + r.status + (/confirm you.re not a bot|unusual traffic/i.test(html) ? ', bot check' : '') + ')'); return null; }
+    let j = await transcriptCall(params[0], ver, vis);
+    let L = findSegs(j);
+    // switch to a Chinese transcript if the default one is another language
+    if (!L.some(l => cjk(l[2]))) {
+      const zh = langItems(j).find(x => /中文|Chinese|Trung|漢語|汉语/i.test(x.title));
+      if (zh && !zh.selected) { try { j = await transcriptCall(zh.params, ver, vis); const Z = findSegs(j); if (Z.length) L = Z; } catch (e) { errs.push('zh switch ' + (e.message || e)); } }
+    }
+    if (L.length) return { title, lang: L.some(l => cjk(l[2])) ? 'zh' : '?', via: 'transcript', lines: L };
     errs.push('transcript empty');
-  } catch (e) { errs.push('transcript ' + (e.message || e)); }
+  } catch (e) { errs.push(String(e.message || e)); }
   return null;
 }
 
@@ -114,10 +140,11 @@ export default {
     const url = new URL(req.url);
     const id = (url.searchParams.get('v') || '').trim();
     if (!/^[\w-]{11}$/.test(id)) return json({ ok: true, hello: 'Bánh Bao caption server. Use ?v=VIDEO_ID' });
-    const cache = caches.default, key = new Request('https://bb-cache/' + id + '/v3');
+    const cache = caches.default, key = new Request('https://bb-cache/' + id + '/v4');
     const hit = await cache.match(key); if (hit) return hit;
     const errs = [];
-    const res = (await viaPlayer(id, errs)) || (await viaTranscript(id, errs));
+    let res = await viaPlayer(id, errs);
+    if (!res || res.mt) { const t = await viaTranscript(id, errs); if (t && (!res || t.lines.some(l => cjk(l[2])))) res = t; }
     if (!res) return json({ ok: false, errors: errs }, 200);
     const resp = json({ ok: true, ...res }, 200, { 'Cache-Control': 'public, max-age=86400' });
     ctx.waitUntil(cache.put(key, resp.clone()));

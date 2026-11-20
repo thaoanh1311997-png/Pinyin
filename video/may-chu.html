@@ -46,7 +46,7 @@ $('#save').onclick=async()=>{
   $('#msg').textContent='Đang thử…';
   try{const d=await (await fetch(u+'/?v=dQw4w9WgXcQ')).json();
     try{localStorage.setItem('bb.srv',u);}catch(e){}
-    $('#msg').innerHTML=d&&(d.ok||d.errors)?(d.ok?'Chạy rồi! Giờ dán link YouTube vào web là có phụ đề. ':'Máy chủ chạy rồi, nhưng YouTube đang chặn nó lấy phụ đề. Gửi ảnh chụp chỗ này cho Claude nha: '+String(d.errors||'').slice(0,300))+' <a href="./">Về Bánh Bao</a>':'Máy chủ chưa đúng mã, xem lại bước 2.';
+    $('#msg').innerHTML=d&&(d.ok||d.errors)?(d.ok?'Chạy rồi! Lấy thử được '+(d.lines||[]).length+' câu. Giờ dán link YouTube vào web là có phụ đề. ':'Máy chủ chạy rồi, nhưng YouTube đang chặn nó lấy phụ đề. Gửi ảnh chụp chỗ này cho Claude nha: '+String(d.errors||'').slice(0,300))+' <a href="./">Về Bánh Bao</a>':'Máy chủ chưa đúng mã, xem lại bước 2.';
   }catch(e){$('#msg').textContent='Không gọi được máy chủ. Kiểm tra lại link hoặc bước 2.';}
 };
 </script></body></html>
