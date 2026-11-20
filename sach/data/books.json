@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-20T09:33:31.284Z",
+ "updated": "2026-11-20T09:35:17.740Z",
  "books": [
   {
    "src": "mit",
@@ -9,8 +9,8 @@
     "so",
     "trung"
    ],
-   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
-   "file": "books/mit/01-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "title": "pdf 368 kB · MITRES_21G_003S11_ack_pfe",
+   "file": "books/mit/01-pdf-368-kb-mitres-21g-003s11-ack-pfe.pdf",
    "bytes": 376366,
    "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/b3dc57500a4cccbb985f5bbed48ccaf4_MITRES_21G_003S11_ack_pfe.pdf"
   },
@@ -22,8 +22,8 @@
     "so",
     "trung"
    ],
-   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
-   "file": "books/mit/02-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "title": "pdf 311 kB · MITRES_21G_003S11_toc",
+   "file": "books/mit/02-pdf-311-kb-mitres-21g-003s11-toc.pdf",
    "bytes": 318610,
    "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/2b54a654efa499bda977ef90772e9be7_MITRES_21G_003S11_toc.pdf"
   },
@@ -35,8 +35,8 @@
     "so",
     "trung"
    ],
-   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
-   "file": "books/mit/03-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "title": "pdf 309 kB · MITRES_21G_003S11_char_hts",
+   "file": "books/mit/03-pdf-309-kb-mitres-21g-003s11-char-hts.pdf",
    "bytes": 316366,
    "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/31d70b1507af0fda7044306b356df3d0_MITRES_21G_003S11_char_hts.pdf"
   },
@@ -48,8 +48,8 @@
     "so",
     "trung"
    ],
-   "title": "Learning Chinese: A Foundation Course in Mandarin (汉语基础教材)",
-   "file": "books/mit/04-learning-chinese-a-foundation-course-in-mandarin-汉语基础教材.pdf",
+   "title": "pdf 116 kB · MITRES_21G_003S11_grid",
+   "file": "books/mit/04-pdf-116-kb-mitres-21g-003s11-grid.pdf",
    "bytes": 119017,
    "from": "https://ocw.mit.edu/courses/res-21g-003-learning-chinese-a-foundation-course-in-mandarin-spring-2011/360fd54104f3cf7ebfc810fffb00f6d7_MITRES_21G_003S11_grid.pdf"
   },
@@ -541,8 +541,8 @@
     "so",
     "trung"
    ],
-   "title": "SC Structure",
-   "file": "books/fsi/01-sc-structure.pdf",
+   "title": "Structure Text",
+   "file": "books/fsi/01-structure-text.pdf",
    "bytes": 24710,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/SC%20Structure.pdf"
   },
@@ -554,8 +554,8 @@
     "so",
     "trung"
    ],
-   "title": "0002 FSI StandardChinese ResourceModule StudentText",
-   "file": "books/fsi/02-0002-fsi-standardchinese-resourcemodule-studenttext.pdf",
+   "title": "Introduction Text",
+   "file": "books/fsi/02-introduction-text.pdf",
    "bytes": 9506819,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/0002-FSI-StandardChinese-ResourceModule-StudentText.pdf"
   },
@@ -567,8 +567,8 @@
     "so",
     "trung"
    ],
-   "title": "FSI StandardChinese Module01ORN StudentText",
-   "file": "books/fsi/03-fsi-standardchinese-module01orn-studenttext.pdf",
+   "title": "Student Text",
+   "file": "books/fsi/03-student-text.pdf",
    "bytes": 2264935,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2001%20ORN/FSI-StandardChinese-Module01ORN-StudentText.pdf"
   },
@@ -580,8 +580,8 @@
     "so",
     "trung"
    ],
-   "title": "FSI StandardChinese Module01ORN StudentWorkbook",
-   "file": "books/fsi/04-fsi-standardchinese-module01orn-studentworkbook.pdf",
+   "title": "Student Workbook",
+   "file": "books/fsi/04-student-workbook.pdf",
    "bytes": 1036714,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2001%20ORN/FSI-StandardChinese-Module01ORN-StudentWorkbook.pdf"
   },
@@ -593,8 +593,8 @@
     "so",
     "trung"
    ],
-   "title": "FSI StandardChinese Module02BIO StudentText",
-   "file": "books/fsi/05-fsi-standardchinese-module02bio-studenttext.pdf",
+   "title": "Student Text",
+   "file": "books/fsi/05-student-text.pdf",
    "bytes": 4040576,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2002%20BIO/FSI-StandardChinese-Module02BIO-StudentText.pdf"
   },
@@ -606,8 +606,8 @@
     "so",
     "trung"
    ],
-   "title": "FSI StandardChinese Module02BIO StudentWorkbook",
-   "file": "books/fsi/06-fsi-standardchinese-module02bio-studentworkbook.pdf",
+   "title": "Student Workbook",
+   "file": "books/fsi/06-student-workbook.pdf",
    "bytes": 2538428,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2002%20BIO/FSI-StandardChinese-Module02BIO-StudentWorkbook.pdf"
   },
@@ -619,8 +619,8 @@
     "so",
     "trung"
    ],
-   "title": "FSI StandardChinese Module03MON StudentText",
-   "file": "books/fsi/07-fsi-standardchinese-module03mon-studenttext.pdf",
+   "title": "Student Text",
+   "file": "books/fsi/07-student-text.pdf",
    "bytes": 11776025,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2003%20MON/FSI-StandardChinese-Module03MON-StudentText.pdf"
   },
@@ -632,8 +632,8 @@
     "so",
     "trung"
    ],
-   "title": "FSI StandardChinese Module03MON StudentWorkbook",
-   "file": "books/fsi/08-fsi-standardchinese-module03mon-studentworkbook.pdf",
+   "title": "Student Workbook",
+   "file": "books/fsi/08-student-workbook.pdf",
    "bytes": 9044879,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2003%20MON/FSI-StandardChinese-Module03MON-StudentWorkbook.pdf"
   },
@@ -645,8 +645,8 @@
     "so",
     "trung"
    ],
-   "title": "FSI StandardChinese Module04DIR StudentText",
-   "file": "books/fsi/09-fsi-standardchinese-module04dir-studenttext.pdf",
+   "title": "Student Text",
+   "file": "books/fsi/09-student-text.pdf",
    "bytes": 11416893,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2004%20DIR/FSI-StandardChinese-Module04DIR-StudentText.pdf"
   },
@@ -658,8 +658,8 @@
     "so",
     "trung"
    ],
-   "title": "FSI StandardChinese Module04DIR StudentWorkbook",
-   "file": "books/fsi/10-fsi-standardchinese-module04dir-studentworkbook.pdf",
+   "title": "Student Workbook",
+   "file": "books/fsi/10-student-workbook.pdf",
    "bytes": 9444734,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2004%20DIR/FSI-StandardChinese-Module04DIR-StudentWorkbook.pdf"
   },
@@ -671,8 +671,8 @@
     "so",
     "trung"
    ],
-   "title": "FSI StandardChinese Module05TRN StudentText",
-   "file": "books/fsi/11-fsi-standardchinese-module05trn-studenttext.pdf",
+   "title": "Student Text",
+   "file": "books/fsi/11-student-text.pdf",
    "bytes": 4097626,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2005%20TRN/FSI-StandardChinese-Module05TRN-StudentText.pdf"
   },
@@ -684,10 +684,23 @@
     "so",
     "trung"
    ],
-   "title": "FSI StandardChinese Module05TRN StudentWorkbook",
-   "file": "books/fsi/12-fsi-standardchinese-module05trn-studentworkbook.pdf",
+   "title": "Student Workbook",
+   "file": "books/fsi/12-student-workbook.pdf",
    "bytes": 3159027,
    "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2005%20TRN/FSI-StandardChinese-Module05TRN-StudentWorkbook.pdf"
+  },
+  {
+   "src": "fsi",
+   "group": "FSI Standard Chinese",
+   "license": "Phạm vi công cộng · US Foreign Service Institute",
+   "lv": [
+    "so",
+    "trung"
+   ],
+   "title": "Student Text",
+   "file": "books/fsi/13-student-text.pdf",
+   "bytes": 3747826,
+   "from": "https://fsi-language-courses-media.nyc3.cdn.digitaloceanspaces.com/languages/Chinese/Standard%20Chinese/Module%2006%20MTG/FSI-StandardChinese-Module06MTG-StudentText.pdf"
   }
  ]
 }
