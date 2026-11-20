@@ -71,7 +71,7 @@ function zhHTML(text, withPy) { return withPy ? ruby(text) : esc(text).replace(/
 var VOC = null, VMAP = null, vocP = null;
 function loadVocab() {
   if (vocP) return vocP;
-  vocP = fetch('data/vocab.json').then(function (r) { return r.json(); }).then(function (a) {
+  vocP = fetch('data/vocab.json?v=20261120c').then(function (r) { return r.json(); }).then(function (a) {
     VOC = a.map(function (x) { return { w: x[0], p: x[1].replace(/ /g, ''), hv: x[2], m: x[3], o: x[4], t: x[5], n: x[6] || 0 }; });
     VMAP = new Map(); VOC.forEach(function (v) { if (!VMAP.has(v.w)) VMAP.set(v.w, v); });
     return VOC;
@@ -410,7 +410,7 @@ function fetchFull(it) {
   var k = 'fa.' + it.id, c = LS.get(k, null); if (c && c.paras && c.paras.length) return Promise.resolve(c);
   if (!window.TSArticle) return Promise.resolve(null);
   var link = it.link.replace(/^http:/, 'https:');
-  return new Promise(function (done) {
+  var race = function () { return new Promise(function (done) {
     var left = RELAYS.length, won = false, ctls = [];
     var finish = function (x) { if (won) return; if (x) { won = true; ctls.forEach(function (c2) { try { c2.abort(); } catch (e) {} }); done(x); } else if (--left === 0) done(null); };
     RELAYS.forEach(function (rl) {
@@ -420,7 +420,8 @@ function fetchFull(it) {
         .then(function (b) { clearTimeout(tm); var x = rl[0] === 'm' ? fromMarkdown(b, it) : TSArticle.extract(TSArticle.decode(b), link); if (!x.paras.length || x.paras.join('').length < 60) throw 0; finish(x); })
         .catch(function () { clearTimeout(tm); finish(null); });
     });
-  }).then(function (x) {
+  }); };
+  return race().then(function (x) { return x || new Promise(function (ok) { setTimeout(ok, 2500); }).then(race); }).then(function (x) {
     if (!x) return null;
     var idx = LS.get('fa.idx', []).filter(function (y) { return y !== it.id; }); idx.push(it.id);
     while (idx.length > 30) { var o = idx.shift(); LS.del('fa.' + o); LS.del('trf.' + o); }
@@ -446,7 +447,7 @@ function translateSmart(lines, onPart) { // AI (Groq key of this device) when av
 }
 function readBodyHTML(art) {
   var h = '', imgs = art.imgs || [], pos = art.pos || [], used = {};
-  var pic = function (u) { return '<figure class="hero-img inl"><img src="' + esc(u) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"><figcaption>Ảnh: ' + esc(art.s || '') + '</figcaption></figure>'; };
+  var pic = function (u) { return '<figure class="hero-img inl"><img src="' + esc(u) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onload="if(this.naturalWidth<240)this.parentNode.remove()" onerror="this.parentNode.remove()"><figcaption>Ảnh: ' + esc(art.s || '') + '</figcaption></figure>'; };
   art.paras.forEach(function (ids, pi) {
     imgs.forEach(function (u, k) { if (!used[k] && pos[k] <= pi) { used[k] = 1; h += pic(u); } });
     h += '<div class="para">' + ids.map(function (i) { return '<div class="sent" data-i="' + i + '"><button class="say" data-sent="' + i + '">🔊</button><div class="zline">' + wordsHTML(art.sents[i]) + '</div><div class="vi">' + (art.vis && art.vis[i] ? esc(art.vis[i]) : '<span class="muted">…</span>') + '</div></div>'; }).join('') + '</div>';
@@ -994,11 +995,11 @@ var SYSCNT = {"3.0": {"1": 500, "2": 772, "3": 973, "4": 1000, "5": 1071, "6": 1
 var SYSNOTE = {
   '3.0': '📘 <b>HSK 3.0 – chuẩn 2021</b> (GF0025-2021, Bộ Giáo dục TQ): HSK 1 có 500 từ, HSK 2 có 772, HSK 3 có 973, HSK 4 có 1.000, HSK 5 có 1.071, HSK 6 có 1.140, HSK 7–9 có 5.636 (tổng 11.092). Mỗi cấp là <b>từ mới</b> của cấp đó.',
   '2025': '📗 <b>Đề cương thi HSK mới bản 2025</b> — dùng cho kỳ thi HSK 3.0 từ 13/12/2026. Mỗi cấp là từ mới của cấp đó (cộng dồn ≈ 300 · 500 · 1.000 · 2.000 · 3.600 · 5.400 · 11.000 từ).',
-  '2.0': '📙 <b>HSK 2.0</b> (danh sách Hanban 2012, dùng cho kỳ thi HSK 1–6 cũ đến hết 2026): mỗi cấp là từ mới của cấp đó, tổng khoảng 5.000 từ.'
+  '2.0': '📙 <b>HSK 2.0</b> (danh sách Hanban 2012, dùng cho kỳ thi HSK 1–6 cũ đến hết 2026): HSK 1 có <b>150</b> từ, HSK 2 có <b>150</b>, HSK 3 có <b>300</b>, HSK 4 có <b>600</b>, HSK 5 có <b>1.300</b>, HSK 6 có <b>2.500</b> — mỗi cấp là <b>từ mới</b> của cấp đó, cộng dồn: HSK 3 = 600 từ, HSK 4 = 1.200, HSK 6 = <b>5.000 từ</b>. Bấm <b>📚 Tất cả</b> để xem đủ 5.000 từ.'
 };
 function vocabList(sys, lv) {
   if (lv === 'nb') { var nb = saved(); return nb.map(function (w) { return VMAP.get(w) || { w: w, p: pyWord(w), hv: '', m: '', o: 0, t: 0, n: 0 }; }); }
-  var f = SYSF[sys] || 'n'; return VOC.filter(function (v) { return hasL(v[f], lv); });
+  var f = SYSF[sys] || 'n'; if (lv === 'all') return VOC.filter(function (v) { return minL(v[f]) > 0; }); return VOC.filter(function (v) { return hasL(v[f], lv); });
 }
 function srsInfo(w) { return LS.get('srs', {})[w]; }
 routes.vocab = async function (a, b) {
@@ -1008,7 +1009,7 @@ routes.vocab = async function (a, b) {
   var sys = a === 'nb' ? LS.get('vsys', '3.0') : (a || LS.get('vsys', '3.0')); if (!SYSF[sys]) sys = '3.0'; var lv = a === 'nb' ? 'nb' : (b || LS.get('vlv', '1'));
   if (lv !== 'nb' && sys === '2.0' && +lv > 6) lv = '6';
   LS.set('vsys', sys); if (lv !== 'nb') LS.set('vlv', lv);
-  var levels = sys === '2.0' ? [1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5, 6, 7];
+  var levels = sys === '2.0' ? [1, 2, 3, 4, 5, 6, 'all'] : [1, 2, 3, 4, 5, 6, 7, 'all'];
   var list = vocabList(sys, lv);
   var srs = LS.get('srs', {});
   var learned = list.filter(function (v) { return srs[v.w] && srs[v.w].i >= 3; }).length;
@@ -1016,7 +1017,7 @@ routes.vocab = async function (a, b) {
   var fresh = list.filter(function (v) { return !srs[v.w]; }).length;
   APP.innerHTML = top('🃏 <span>Từ vựng</span>') +
     '<div class="seg" id="sysseg">' + SYS.map(function (s) { return '<button data-s="' + s[0] + '" class="' + (sys === s[0] && lv !== 'nb' ? 'on' : '') + '">' + s[1] + '</button>'; }).join('') + '<button data-s="nb" class="' + (lv === 'nb' ? 'on' : '') + '">⭐ Sổ tay</button></div>' +
-    (lv !== 'nb' ? '<div class="chips">' + levels.map(function (l) { return '<a class="chip' + (String(l) === String(lv) ? ' on' : '') + '" style="text-decoration:none;color:inherit" href="#/vocab/' + sys + '/' + l + '">HSK ' + (l === 7 ? '7–9' : l) + '</a>'; }).join('') + '</div>' : '') +
+    (lv !== 'nb' ? '<div class="chips">' + levels.map(function (l) { return '<a class="chip' + (String(l) === String(lv) ? ' on' : '') + '" style="text-decoration:none;color:inherit" href="#/vocab/' + sys + '/' + l + '">' + (l === 'all' ? '📚 Tất cả' : 'HSK ' + (l === 7 ? '7–9' : l)) + '</a>'; }).join('') + '</div>' : '') +
     (lv !== 'nb' ? '<div class="note" style="margin-top:0">' + SYSNOTE[sys] + '</div>' : '') +
     '<div class="card row" style="gap:6px;justify-content:space-around;text-align:center"><div><b style="font-size:22px">' + (lv !== 'nb' && SYSCNT[sys][lv] ? SYSCNT[sys][lv] : list.length) + '</b><div class="small muted" style="font-weight:800">từ' + (lv !== 'nb' && SYSCNT[sys][lv] > list.length ? '<br><span style="font-weight:700;font-size:10.5px">(' + (SYSCNT[sys][lv] - list.length) + ' từ đa nghĩa tính 2 lần)</span>' : '') + '</div></div><div><b style="font-size:22px;color:var(--mint)">' + learned + '</b><div class="small muted" style="font-weight:800">đã thuộc</div></div><div><b style="font-size:22px;color:var(--pink)">' + due + '</b><div class="small muted" style="font-weight:800">cần ôn</div></div><div><b style="font-size:22px;color:var(--sky)">' + fresh + '</b><div class="small muted" style="font-weight:800">từ mới</div></div></div>' +
     (list.length >= 4 ? '<div class="modes"><button class="mode" style="background:linear-gradient(150deg,#fff,#ffe1ea)" data-m="cards"><span class="em">🃏</span>Học thẻ<small>' + (due ? due + ' ôn + ' : '') + 'từ mới</small></button><button class="mode" style="background:linear-gradient(150deg,#fff,#dcecff)" data-m="quiz"><span class="em">🎯</span>Trắc nghiệm<small>10 câu</small></button><button class="mode" style="background:linear-gradient(150deg,#fff,#d8f6ec)" data-m="listen"><span class="em">🎧</span>Nghe chọn từ<small>10 câu</small></button></div>' : '') +
@@ -1026,7 +1027,7 @@ routes.vocab = async function (a, b) {
   var draw = function () {
     var f = q ? list.filter(function (v) { var s = q.toLowerCase(); return v.w.indexOf(q) >= 0 || stripTone(v.p).indexOf(stripTone(s).replace(/\s/g, '')) >= 0 || v.m.toLowerCase().indexOf(s) >= 0 || (v.hv || '').toLowerCase().indexOf(s) >= 0; }) : list;
     $('#vlist').innerHTML = f.length ? f.slice(0, shown).map(function (v) { var s = srs[v.w]; var lvc = !s ? '' : s.i >= 3 ? 'l3' : s.i >= 1 ? 'l2' : 'l1'; return '<div class="vrow" data-vw="' + esc(v.w) + '"><span class="h">' + esc(v.w) + '</span><div class="m"><div class="p1">' + esc(v.p) + (v.hv ? ' <span class="muted" style="font-family:var(--ui);font-size:12px;font-weight:800">· ' + esc(v.hv) + '</span>' : '') + '</div><div class="p2">' + esc(v.m) + '</div></div><span class="dot ' + lvc + '"></span></div>'; }).join('') + (f.length > shown ? '<button class="btn ghost block" id="vmore" style="margin:10px 0">Xem thêm (' + (f.length - shown) + ')</button>' : '') : '<div class="empty">' + (lv === 'nb' ? 'Sổ tay trống. Khi đọc báo, chạm vào từ rồi bấm ☆ Lưu nhé!' : 'Không tìm thấy 🙈') + '</div>';
-    if ($('#vmore')) $('#vmore').onclick = function () { shown += 120; draw(); };
+    if ($('#vmore')) { $('#vmore').onclick = function () { shown += 200; draw(); }; if (window.IntersectionObserver) { var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); shown += 200; draw(); } }, { rootMargin: '600px' }); io.observe($('#vmore')); } }
   };
   draw();
   $('#vsearch').oninput = function () { q = this.value.trim(); shown = 60; draw(); };
