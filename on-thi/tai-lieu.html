@@ -417,7 +417,7 @@ function groq(messages,onWait){
   var key=groqKey(), mi=0, tries=0;
   function go(){
     return fetch("https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},
-      body:JSON.stringify({model:MODELS[mi],messages:messages,temperature:0.2,max_tokens:6000,response_format:{type:"json_object"}})})
+      body:JSON.stringify({model:MODELS[mi],messages:messages,temperature:0,max_tokens:6000,response_format:{type:"json_object"}})})
     .then(function(r){
       if(r.status===429||r.status>=500){ tries++; if(tries>6) throw new Error("AI đang quá tải, thử lại sau ít phút"); var wait=Math.min(60,parseFloat(r.headers.get("retry-after"))||8*tries); if(onWait) onWait(wait); return sleep(wait*1000).then(go); }
       if(r.status===401) throw new Error("Key AI không đúng hoặc hết hạn");
@@ -428,7 +428,7 @@ function groq(messages,onWait){
   }
   return go();
 }
-var SYS="Bạn là giáo viên tiếng Trung giỏi, dạy người Việt. Luôn trả lời bằng JSON hợp lệ, tiếng Việt tự nhiên, chữ Hán giản thể.";
+var SYS="Bạn là giáo viên tiếng Trung giỏi, dạy người Việt, dịch rất cẩn thận và chính xác. Không bịa câu, không thêm, không bỏ ý. Luôn trả lời bằng JSON hợp lệ, tiếng Việt tự nhiên, chữ Hán giản thể.";
 function chunks(text,max){ var parts=text.split(/\n+/), out=[], cur_=""; parts.forEach(function(p){ if((cur_+p).length>max&&cur_){out.push(cur_);cur_="";} cur_+=p+"\n"; }); if(cur_.trim()) out.push(cur_); return out; }
 function aiTranslate(seg,onWait){
   var parts=chunks(seg.text,2600), res={title_zh:"",title_vi:"",sections:[]};
@@ -436,15 +436,27 @@ function aiTranslate(seg,onWait){
     return groq([{role:"system",content:SYS},{role:"user",content:
       "Đây là "+(parts.length>1?"phần "+(pi+1)+"/"+parts.length+" của ":"")+"một bài trong giáo trình tiếng Trung (chữ có thể bị lỗi do đọc ảnh).\n"+
       "Việc cần làm:\n1. Chỉ giữ BÀI KHÓA chính và các ĐOẠN VĂN/HỘI THOẠI trong phần luyện tập (bài khóa phụ). Bỏ bảng từ mới, phần giải thích ngữ pháp, bài tập điền từ/chọn đáp án, số trang, chữ rác.\n"+
-      "2. Sửa lỗi chữ do OCR nếu rõ ràng. Nếu bài khóa có chỗ trống (综合填空) thì điền từ đúng vào.\n3. Tách thành từng câu hoặc từng lượt thoại (giữ tên người nói), đúng thứ tự.\n4. Dịch mỗi câu sang tiếng Việt tự nhiên, sát nghĩa.\n"+
+      "2. Giữ NGUYÊN VĂN chữ Hán như trong văn bản, không viết lại, không tự thêm câu. Chỉ sửa chữ bị lỗi do đọc ảnh khi chắc chắn. Nếu bài khóa có chỗ trống (综合填空) thì điền từ đúng vào.\n3. Tách thành từng câu hoặc từng lượt thoại (giữ tên người nói), đúng thứ tự, không sót câu nào.\n4. Dịch mỗi câu sang tiếng Việt chính xác, sát nghĩa, đủ ý, tự nhiên như giáo viên dịch; tên người dịch theo cách quen dùng (玛丽 → Mary, 大卫 → David, 小王 → Tiểu Vương); giữ đúng sắc thái của 把/被/了/着/过, bổ ngữ và thành ngữ.\n"+
       'Trả về JSON: {"title_zh":"tên bài","title_vi":"tên bài tiếng Việt","sections":[{"title_zh":"tên đoạn (VD （一）…)","title_vi":"…","phu":false,"pairs":[{"zh":"…","vi":"…"}]}]} (phu=true nếu là bài khóa phụ trong luyện tập).\n\nVĂN BẢN:\n'+part}],onWait)
     .then(function(j){ if(!res.title_zh&&j.title_zh){res.title_zh=j.title_zh;res.title_vi=j.title_vi||"";} (j.sections||[]).forEach(function(s){ var pairs=(s.pairs||[]).filter(function(p){return p&&p.zh}).map(function(p){return [String(p.zh).trim(),String(p.vi||"").trim()]}); if(pairs.length) res.sections.push({zh:s.title_zh||"",vi:s.title_vi||"",phu:!!s.phu,pairs:pairs}); }); });
+  }); },Promise.resolve()).then(function(){ return reviewPairs(res,onWait); });
+}
+/* lượt 2: AI tự soát lại từng câu dịch, sửa câu sai nghĩa / thiếu ý */
+function reviewPairs(res,onWait){
+  var all=[]; res.sections.forEach(function(sec){ sec.pairs.forEach(function(p){ all.push(p); }); });
+  var batches=[]; for(var i=0;i<all.length;i+=25) batches.push(all.slice(i,i+25));
+  return batches.reduce(function(pr,b){ return pr.then(function(){
+    return groq([{role:"system",content:SYS},{role:"user",content:
+      "KIỂM TRA bản dịch Trung → Việt dưới đây như một giáo viên chấm bài. Với từng câu, so kỹ nghĩa tiếng Việt với chữ Hán: sai nghĩa, thiếu ý, thừa ý, dịch sai từ, sai thì/sắc thái (了/过/着/把/被, bổ ngữ), sai tên người → sửa lại cho đúng. Câu nào đã đúng thì bỏ qua.\n"+
+      'Trả về JSON: {"fixes":[{"i":số thứ tự,"vi":"bản dịch đúng"}]} (fixes rỗng nếu tất cả đều đúng).\n\n'+b.map(function(p,j){return j+". "+p[0]+"\n   → "+p[1]}).join("\n")}],onWait)
+    .then(function(j){ (j.fixes||[]).forEach(function(f){ var k=+f.i; if(b[k]&&f.vi&&String(f.vi).trim()) b[k][1]=String(f.vi).trim(); }); })
+    .catch(function(e){ if(/Key/.test(e.message)) throw e; /* lỗi soát lại thì giữ bản dịch lượt 1 */ });
   }); },Promise.resolve()).then(function(){ return res; });
 }
 function aiGrammar(seg,onWait){
   return groq([{role:"system",content:SYS},{role:"user",content:
-    "Từ bài học tiếng Trung dưới đây, soạn phần NGỮ PHÁP để ôn thi: lấy đủ các điểm trong mục 语法, 注释 và cấu trúc quan trọng xuất hiện trong bài khóa.\n"+
-    "Mỗi điểm gồm: title (tên điểm: cấu trúc chữ Hán — nghĩa tiếng Việt ngắn), formula (1–3 dòng công thức, VD \"Chủ ngữ + 把 + Tân ngữ + Động từ + 在/到 + nơi chốn\"), explain (giải thích ngắn gọn, dễ hiểu bằng tiếng Việt), examples (2–4 câu, ưu tiên câu trong bài, kèm dịch), warn (0–2 lỗi hay sai, VD \"Sai: *… → Đúng: …\").\n"+
+    "Từ bài học tiếng Trung dưới đây, soạn phần NGỮ PHÁP để ôn thi: lấy đủ các điểm trong mục 语法, 注释 và cấu trúc quan trọng xuất hiện trong bài khóa. Chỉ viết những gì đúng theo ngữ pháp chuẩn, không bịa quy tắc; giải thích phải khớp với nội dung giáo trình.\n"+
+    "Mỗi điểm gồm: title (tên điểm: cấu trúc chữ Hán — nghĩa tiếng Việt ngắn), formula (1–3 dòng công thức, VD \"Chủ ngữ + 把 + Tân ngữ + Động từ + 在/到 + nơi chốn\"), explain (giải thích ngắn gọn, dễ hiểu bằng tiếng Việt), examples (2–4 câu, ưu tiên lấy NGUYÊN VĂN câu trong bài; câu tự đặt phải đúng ngữ pháp chuẩn, kèm bản dịch tiếng Việt chính xác), warn (0–2 lỗi hay sai, VD \"Sai: *… → Đúng: …\").\n"+
     'Trả về JSON: {"points":[{"title":"…","formula":["…"],"explain":"…","examples":[{"zh":"…","vi":"…"}],"warn":["…"]}]}\n\nBÀI HỌC:\n'+seg.text.slice(0,7000)}],onWait)
   .then(function(j){ return (j.points||[]).filter(function(p){return p&&p.title}).map(function(p){ return {title:String(p.title),f:(p.formula||[]).map(String),note:String(p.explain||""),ex:(p.examples||[]).filter(function(e){return e&&e.zh}).map(function(e){return [String(e.zh),String(e.vi||"")]}),warn:(p.warn||[]).map(String)}; }); });
 }
