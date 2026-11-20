@@ -87,6 +87,10 @@ input,textarea,select{font:inherit;color:inherit}
 .history{font-size:14px}
 .history .h{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line)}
 .history .h:last-child{border:0}
+.history .hbtn{width:100%;background:none;border:0;border-bottom:1px dashed var(--line);font:inherit;color:inherit;text-align:left;cursor:pointer;align-items:center;gap:8px;border-radius:0}
+.history .hbtn:hover{background:var(--soft)}
+.history .hbtn .go{display:inline-block;margin-left:8px;font-size:13px;color:var(--pri,#ff7a59);font-weight:700}
+.history .hbtn.old{cursor:default}
 .tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:999px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}
 
 /* exam */
@@ -266,7 +270,7 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return
 function store(k,v){try{ if(v===undefined){var x=localStorage.getItem("ot."+k);return x?JSON.parse(x):null} localStorage.setItem("ot."+k,JSON.stringify(v)); }catch(e){return null}}
 function toast(m){var t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove("on")},2200)}
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
-function norm(s){return String(s||"").replace(/[\s，。！？、；：“”"'‘’…—·.,!?;:()（）《》\-]/g,"").replace(/儿/g,"")}
+function norm(s){s=String(s||""); try{s=s.normalize("NFKC")}catch(e){} return s.replace(/[~～]/g,"").replace(/[\s，。！？、；：“”"'‘’…—·.,!?;:()（）《》\-]/g,"").replace(/儿/g,"")}
 function fmt(n){return (Math.round(n*100)/100).toString().replace(".",",")}
 function sum(a){return a.reduce(function(x,y){return x+y},0)}
 
@@ -313,8 +317,10 @@ function renderHome(){
   html+='<div class="row2">'+((curSet.cards||[]).length?'<button class="btn btn-line" id="openBook">📖 Sổ ngữ pháp</button>':'')+'<button class="btn btn-ghost" id="newStruct">＋ Tự tạo cấu trúc đề</button></div>';
   var hist=(store("hist")||[]).filter(function(x){return x.set===curSet.id}).slice(0,8);
   if(hist.length){
-    html+='<div class="card history" style="margin-top:14px"><h3 style="font-size:18px;margin-bottom:6px">Điểm các lần làm</h3>'+hist.map(function(x){
-      return '<div class="h"><span>'+esc(x.name)+' <span class="tag">'+esc(x.when)+'</span></span><b>'+fmt(x.score)+' / '+fmt(x.total)+'</b></div>'}).join("")+'</div>';
+    var dids=store("doneIds")||[];
+    html+='<div class="card history" style="margin-top:14px"><h3 style="font-size:18px;margin-bottom:2px">📝 Bài đã làm</h3><div class="hint small" style="margin-bottom:6px">Bấm vào một bài để xem lại đề, bài mày làm, đáp án và giải thích.</div>'+hist.map(function(x){
+      var has=dids.indexOf(x.id)>=0;
+      return '<button class="h hbtn'+(has?'':' old')+'" data-review="'+x.id+'"><span>'+esc(x.name)+' <span class="tag">'+esc(x.when)+'</span></span><b>'+fmt(x.score)+' / '+fmt(x.total)+(has?' <span class="go">Xem lại ›</span>':'')+'</b></button>'}).join("")+'</div>';
   }
   var b=curSet.banks;
   html+='<div class="bankinfo">📚 <b>'+esc(curSet.name)+'</b> · câu lấy từ bài khóa, bài tập SGK và 10 đề thi thử. Đề sau ưu tiên câu chưa gặp.<div class="chips">'+Object.keys(TYPES).filter(function(k){return b[k]}).map(function(k){return '<span>'+esc(TYPES[k].name)+' · '+b[k].length+'</span>'}).join("")+'</div></div>';
@@ -326,6 +332,7 @@ function renderHome(){
     else if(t.dataset.edit!=null){openEditor(structures()[+t.dataset.edit]);}
     else if(t.id==="newStruct"){openEditor(null);}
     else if(t.id==="openBook"){openBook();}
+    else if(t.dataset.review){reviewDone(+t.dataset.review);}
   };
   window.scrollTo(0,0);
 }
@@ -478,7 +485,10 @@ var MARKERS=["越来越","起来","出来","下来","下去","只有","只要","
 function lcs(a,b){ var m=a.length,n=b.length,prev=new Array(n+1).fill(0),cur; for(var i=1;i<=m;i++){cur=new Array(n+1).fill(0);for(var j=1;j<=n;j++){cur[j]=a[i-1]===b[j-1]?prev[j-1]+1:Math.max(prev[j],cur[j-1]);}prev=cur;} return prev[n]; }
 function viTokens(s){ return String(s).toLowerCase().normalize("NFC").replace(/[^0-9a-zà-ỹđ\s]/g," ").split(/\s+/).filter(Boolean); }
 function similarity(user,ref,toVi){
-  if(toVi){ var u=viTokens(user), r=viTokens(ref); if(!u.length||!r.length) return 0; var cnt={},hit=0; r.forEach(function(w){cnt[w]=(cnt[w]||0)+1}); u.forEach(function(w){if(cnt[w]){hit++;cnt[w]--}}); var p=hit/u.length, rc=hit/r.length; return 0.3*p+0.7*rc; }
+  if(toVi){ var u=viTokens(user), r=viTokens(ref); if(!u.length||!r.length) return 0;
+    var sc=function(U,R){ var cnt={},hit=0; R.forEach(function(w){cnt[w]=(cnt[w]||0)+1}); U.forEach(function(w){if(cnt[w]){hit++;cnt[w]--}}); return 0.3*hit/U.length+0.7*hit/R.length; };
+    var strip=function(a){ return a.map(function(w){ return w.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d"); }); };
+    return Math.max(sc(u,r), 0.9*sc(strip(u),strip(r))); /* gõ không dấu vẫn được tính, trừ nhẹ */ }
   var a=norm(user), b=norm(ref); if(!a||!b) return 0; var l=lcs(a,b); return 0.3*l/a.length+0.7*l/b.length;
 }
 function transGrade(q){
@@ -496,9 +506,15 @@ function submit(){
   var left=all.filter(function(q){return !answered(q)}).length;
   if(left && !window.confirm("Còn "+left+" câu chưa làm. Nộp luôn?")) return;
   exam.done=true; exam.took=Math.round((Date.now()-exam.start)/1000); clearInterval(timerH);
+  exam.secs.forEach(function(sec){ sec.items.forEach(function(q){ q.grade=autoGrade(q); }); });
+  decorateAll();
+  renderFoot(); renderScore(true);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function decorateAll(){
   var paper=$("#paper"); paper.classList.add("done");
   exam.secs.forEach(function(sec,si){ sec.items.forEach(function(q,qi){
-    var qe=$("#q"+si+"_"+qi); q.grade=autoGrade(q);
+    var qe=$("#q"+si+"_"+qi);
     qe.querySelectorAll("textarea,input").forEach(function(x){x.readOnly=true});
     if(q.type==="mcq"){
       qe.querySelectorAll(".opt").forEach(function(o){var oi=+o.dataset.opt; if(oi===q.it.a)o.classList.add("right"); else if(oi===q.user)o.classList.add("wrong"); o.classList.remove("sel")});
@@ -509,8 +525,29 @@ function submit(){
     if(q.grade!=null){ var gb=qe.querySelector('.grade button[data-g="'+q.grade+'"]'); if(gb) gb.classList.add("on"); }
     markQ(qe,q);
   })});
-  renderFoot(); renderScore(true);
-  window.scrollTo({top:0,behavior:"smooth"});
+}
+/* ---------- BÀI ĐÃ LÀM: lưu cả đề + bài làm, mở lại xem được ---------- */
+function saveDone(){
+  try{
+    var snap={st:exam.st,start:exam.start,took:exam.took,set:curSet.id,secs:exam.secs.map(function(sec){ return {s:sec.s,items:sec.items.map(function(q){ return {type:q.type,it:q.it,pts:q.pts,user:q.user,grade:q.grade,order:q.order,sim:q.sim,missing:q.missing,manual:q.manual}; })}; })};
+    localStorage.setItem("ot.done."+exam.start,JSON.stringify(snap));
+    var ids=(store("doneIds")||[]).filter(function(x){return x!==exam.start}); ids.unshift(exam.start);
+    ids.slice(30).forEach(function(x){ try{localStorage.removeItem("ot.done."+x)}catch(e){} }); store("doneIds",ids.slice(0,30));
+  }catch(e){}
+}
+function reviewDone(id){
+  var snap=null; try{ snap=JSON.parse(localStorage.getItem("ot.done."+id)); }catch(e){}
+  if(!snap){ alert("Bài này làm trước khi có mục xem lại nên không còn lưu chi tiết. Từ giờ bài nào làm xong cũng xem lại được nha."); return; }
+  exam={st:snap.st,start:snap.start,took:snap.took,done:true,review:true,secs:snap.secs};
+  renderExam();
+  exam.secs.forEach(function(sec,si){ sec.items.forEach(function(q,qi){
+    var qe=$("#q"+si+"_"+qi); if(!qe) return;
+    if(q.type==="mcq"&&q.user!=null){ var o=qe.querySelector('.opt[data-opt="'+q.user+'"]'); if(o) o.classList.add("sel"); }
+    else if(q.type==="sx"){ q.user=q.user||[]; drawSx(qe,q); }
+    else if(q.type==="dt"){ var b=qe.querySelector(".blank"); if(b) b.value=q.user||""; }
+    else { var ta=qe.querySelector("textarea"); if(ta) ta.value=q.user||""; }
+  }); });
+  decorateAll(); renderScore(false);
 }
 function markQ(qe,q){
   qe.classList.remove("is-ok","is-bad","is-half");
@@ -531,6 +568,8 @@ function renderScore(save){
   var msg=pend?"Chấm nốt phần tự luận nha ✍️":pct>=85?"Đỉnh quá! 🎉":pct>=65?"Khá lắm, cố thêm chút nữa 💪":pct>=45?"Ổn rồi, xem lại câu sai nha 📖":"Xem kỹ các câu sai bên dưới, đề sau sẽ tốt hơn 🌱";
   $("#scoreBox").innerHTML='<div class="card"><div class="score"><div class="ring" style="--p:'+pct+'"><div>'+fmt(Math.round(got*100)/100)+'<small>/ '+fmt(total)+'</small></div></div><div><h2 style="font-size:22px">'+msg+'</h2><div class="hint">Làm trong '+m+' phút '+(exam.took%60)+' giây</div>'+
     (pend?'<div class="pending small" style="margin-top:4px">Còn '+pend+' câu tự luận: đọc đáp án rồi bấm Đúng / Gần đúng / Sai để tính điểm.</div>':'')+'</div></div><div class="brk" style="margin-top:12px">'+rows.join("")+'</div><div class="filter"><button data-f="all" class="'+(exam.onlyWrong?'':'on')+'">Xem tất cả</button><button data-f="wrong" class="'+(exam.onlyWrong?'on':'')+'">Chỉ xem câu sai</button></div></div>';
+  if(save===false) return;
+  saveDone();
   var hist=store("hist")||[]; var d=new Date(exam.start);
   var rec={id:exam.start,set:curSet.id,name:exam.st.name,score:Math.round(got*100)/100,total:total,when:d.getDate()+"/"+(d.getMonth()+1)+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")};
   hist=hist.filter(function(x){return x.id!==rec.id}); hist.unshift(rec); store("hist",hist.slice(0,40));

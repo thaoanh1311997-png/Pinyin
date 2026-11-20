@@ -74,6 +74,16 @@ table.bi col.num{width:28px}
 .c-write textarea:focus{border-color:var(--pri);border-style:solid}
 .c-write .ans{margin-top:4px;color:var(--teal);font-size:16px}
 .c-write .ans.hide{display:none}
+.sim{font-size:12.5px;font-weight:700;margin-top:2px}.sim.ok{color:#15803d}.sim.mid{color:#b45309}.sim.bad{color:var(--bad)}
+@media print{.sim{display:none}}
+.pad{position:relative;border:1.5px dashed #e5d5c4;border-radius:10px;background-color:#fffdfb;background-image:linear-gradient(#f3e6d8 1px,transparent 1px);background-size:100% 46px;background-position:0 45px;height:140px;overflow:hidden;touch-action:pan-y}
+.pad.finger{touch-action:none;border-color:var(--pri)}
+.pad canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.padtools{position:absolute;right:4px;top:4px;display:flex;gap:4px;z-index:2}
+.padtools button{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff;font-size:14px;cursor:pointer;color:#6b5d51}
+.pad .ph{position:absolute;left:10px;top:8px;font-size:12.5px;color:#c9b8a6;pointer-events:none}
+@media (max-width:700px){ .paper.ink table.bi tr{display:grid;grid-template-columns:24px 1fr} .paper.ink table.bi td.c-write{grid-column:1/-1;padding-top:0} .paper.ink .pad{height:150px} }
+.tool.mode{background:#2f2520;color:#fff;border-color:#2f2520}
 .show-all .c-write .ans.hide{display:block}
 .peek{font-size:12px;color:var(--teal);font-weight:600;margin-top:4px}
 
@@ -128,6 +138,12 @@ table.bi col.num{width:28px}
 .toast.on{opacity:1}
 .del{color:var(--bad);font-size:13px;font-weight:600}
 .lpick .pg{font-size:12px;color:var(--muted);margin-left:2px}
+.lpick .lrow{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;border:1.5px solid var(--line);border-radius:12px;padding:5px 6px 5px 10px;background:#fffdfb}
+.lpick .lrow label{border:0;padding:2px 0;background:none}
+.lpick .pg.est{color:#c2410c;font-weight:600}
+.lpick .pged{border:0;background:#fff1e6;color:#c2410c;border-radius:8px;width:30px;height:30px;font-size:15px;cursor:pointer}
+.lpick .pgform{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:6px 0 4px}
+.lpick .pgform .inp{width:74px;padding:7px 8px}
 .resume{background:linear-gradient(120deg,#fff4e0,#fff);border:1.5px solid #f6cf8f;border-radius:16px;padding:12px 14px;margin:0 0 12px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between}
 .resume .steps,.resume .progress{flex-basis:100%;margin-top:4px}
 .resume .steps:empty{display:none}
@@ -160,7 +176,7 @@ table.bi col.num{width:28px}
   table.bi td{padding:3pt 5pt;font-size:10.5pt;line-height:1.45}
   table.bi td.c-zh{font-size:12pt}
   table.bi tr:nth-child(even) td{background:#fbf6f0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .c-write textarea{display:none}
+  .c-write textarea,.pad{display:none!important}
   .c-write .ans,.peek{display:none!important}
   .c-write{height:34pt;border-bottom:1px dotted #bbb}
   .practice-print td.c-write{background:#fff!important}
@@ -197,7 +213,7 @@ table.bi col.num{width:28px}
     <div class="panel">
       <h2>📄 Thêm tài liệu mới</h2>
       <p class="hint" style="margin:0 0 12px">Bỏ file giáo trình vào (PDF, Word, ảnh chụp, hoặc dán chữ). Web sẽ đọc chữ, chia theo bài, rồi nhờ AI dịch và soạn ngữ pháp. Làm xong sẽ được lưu lại trên máy này, lần sau mở ra xem liền.</p>
-      <label class="drop" id="drop"><input type="file" id="file" accept=".pdf,.docx,.txt,image/*" hidden><div style="font-size:30px">📥</div><b>Chọn file hoặc kéo thả vào đây</b><span>PDF · Word (.docx) · ảnh · .txt</span></label>
+      <label class="drop" id="drop"><input type="file" id="file" accept=".pdf,.docx,.txt,image/*" multiple hidden><div style="font-size:30px">📥</div><b>Chọn file hoặc kéo thả vào đây</b><span>PDF · Word (.docx) · ảnh chụp (chọn nhiều ảnh được) · .txt</span></label>
       <details style="margin-top:10px"><summary class="hint" style="cursor:pointer">Hoặc dán chữ vào</summary><textarea class="inp" id="paste" rows="6" style="margin-top:8px" placeholder="Dán nội dung bài học (chữ Hán)…"></textarea><button class="btn btn-line" id="usePaste" style="margin-top:8px">Dùng đoạn chữ này</button></details>
       <div id="fileInfo" class="hidden" style="margin-top:14px"></div>
     </div>
@@ -269,7 +285,10 @@ function drawTabs(){
   var all=sel.length===cur.lessons.length;
   $("#lesbar").innerHTML='<button class="lchip'+(all?' on':'')+'" data-l="all">Tất cả</button>'+cur.lessons.map(function(l){return '<button class="lchip'+(!all&&sel.indexOf(l.n)>=0?' on':'')+'" data-l="'+l.n+'">'+lesLabel(l)+'</button>'}).join("");
   var t='';
-  if(tab==="lt") t+='<button class="tool" data-tool="showall">👁 Hiện tất cả đáp án</button><button class="tool" data-tool="clear">🧹 Xoá bài đã viết</button>';
+  if(tab==="lt"){ var ink=ls("tl.mode")==="ink";
+    t+='<button class="tool'+(ink?' mode':'')+'" data-tool="mode">'+(ink?'✍️ Đang viết tay · đổi sang gõ phím':'⌨️ Đang gõ phím · đổi sang viết tay')+'</button>';
+    if(ink&&MOBILE) t+='<button class="tool'+(FINGER?' mode':'')+'" data-tool="finger">👆 Viết bằng ngón tay: '+(FINGER?'bật':'tắt')+'</button>';
+    t+='<button class="tool" data-tool="showall">👁 Hiện tất cả đáp án</button><button class="tool" data-tool="clear">🧹 Xoá bài đã viết</button>'; }
   if(!cur.builtin) t+='<button class="tool del" data-tool="del">🗑 Xoá tài liệu này</button>';
   $("#tools").innerHTML=t;
 }
@@ -284,7 +303,9 @@ $("#lesbar").onclick=function(e){
 $("#tools").onclick=function(e){
   var t=e.target.closest(".tool"); if(!t) return;
   if(t.dataset.tool==="showall"){ var o=$("#out"); o.classList.toggle("show-all"); t.classList.toggle("on"); t.textContent=o.classList.contains("show-all")?"🙈 Ẩn đáp án":"👁 Hiện tất cả đáp án"; }
-  if(t.dataset.tool==="clear"){ if(!confirm("Xoá hết bài dịch đã viết trong các bài đang chọn?")) return; document.querySelectorAll(".c-write textarea").forEach(function(x){ x.value=""; ls(x.dataset.k,null); }); }
+  if(t.dataset.tool==="mode"){ ls("tl.mode",ls("tl.mode")==="ink"?"key":"ink"); drawTabs(); render(); return; }
+  if(t.dataset.tool==="finger"){ FINGER=!FINGER; drawTabs(); document.querySelectorAll(".pad").forEach(function(p){p.classList.toggle("finger",FINGER)}); toast(FINGER?"Giờ viết bằng ngón tay được, cuộn trang thì kéo ngoài khung viết":"Ngón tay để cuộn trang, viết bằng bút"); return; }
+  if(t.dataset.tool==="clear"){ if(!confirm("Xoá hết bài dịch đã viết (cả gõ phím và viết tay) trong các bài đang chọn?")) return; document.querySelectorAll(".c-write textarea").forEach(function(x){ x.value=""; ls(x.dataset.k,null); }); document.querySelectorAll(".pad").forEach(function(p){ ls("tl.ink."+p.dataset.k,null); p._ink.length=0; p._draw(); }); }
   if(t.dataset.tool==="del"){ if(!confirm("Xoá tài liệu “"+cur.name+"” khỏi máy này?")) return; dbDel(cur.id).then(function(){ ls("tl.doc",null); toast("Đã xoá"); loadDocs(); }); }
 };
 
@@ -293,15 +314,16 @@ function lessonsSel(){ return cur.lessons.filter(function(l){return sel.indexOf(
 function lesHead(l){ return '<div class="les-h"><div class="n">'+(l.n>0?'BÀI '+l.n+'&nbsp; ':'')+'<span class="zh">'+esc(l.zh||'')+'</span></div>'+(l.vi?'<div class="v">'+esc(l.vi)+'</div>':'')+'</div>'; }
 function rangeText(){ var ls_=lessonsSel(); if(!ls_.length) return ''; var a=ls_[0].n,b=ls_[ls_.length-1].n; return a>0?(a===b?'Bài '+a:'Bài '+a+' – '+b):''; }
 function txtHead(t){ return '<div class="txt-h"><span class="zh">'+esc(t.zh||'')+'</span>'+(t.vi?'<span class="v">'+esc(t.vi)+'</span>':'')+(t.phu?'<span class="badge">bài khóa phụ</span>':'')+'</div>'; }
-function render(){
-  var o=$("#out"); o.classList.remove("show-all"); var L=lessonsSel(), h='<div class="paper'+(tab==="lt"?' practice-print':'')+'">';
+var INKMODE=false, FINGER=/iPhone|iPod|Android.*Mobile/i.test(navigator.userAgent);
+function render(){ INKMODE=ls("tl.mode")==="ink";
+  var o=$("#out"); o.classList.remove("show-all"); var L=lessonsSel(), h='<div class="paper'+(tab==="lt"?' practice-print':'')+(tab==="lt"&&INKMODE?' ink':'')+'">';
   var sub=esc(cur.name)+(rangeText()&&sel.length<cur.lessons.length?' · '+rangeText():'');
   if(tab==="bi"){
     h+='<div class="doc-title"><h1>DỊCH BÀI KHÓA</h1><p>'+sub+' · Trung – Việt</p></div>';
     L.forEach(function(l){ h+=lesHead(l); (l.texts||[]).forEach(function(t){ h+=txtHead(t)+'<table class="bi"><colgroup><col class="num"><col><col></colgroup><tbody>'+t.pairs.map(function(p,i){return '<tr><td class="c-num">'+(i+1)+'</td><td class="c-zh zh">'+esc(p[0])+'</td><td class="c-vi">'+esc(p[1])+'</td></tr>'}).join("")+'</tbody></table>'; }); if(!(l.texts||[]).length) h+='<p class="hint">Bài này chưa có phần bài khóa.</p>'; });
   } else if(tab==="lt"){
     h+='<div class="doc-title"><h1>LUYỆN DỊCH VIỆT → TRUNG</h1><p>'+sub+' · đọc tiếng Việt, tự viết chữ Hán vào cột bên phải</p></div>';
-    L.forEach(function(l){ h+=lesHead(l); (l.texts||[]).forEach(function(t,ti){ h+=txtHead(t)+'<table class="bi"><colgroup><col class="num"><col><col></colgroup><tbody>'+t.pairs.map(function(p,i){ var k="tl.w."+cur.id+"."+l.n+"."+ti+"."+i, v=ls(k)||""; return '<tr><td class="c-num">'+(i+1)+'</td><td class="c-vi">'+esc(p[1])+'</td><td class="c-write"><textarea data-k="'+esc(k)+'" lang="zh" placeholder="写中文…">'+esc(v)+'</textarea><button class="peek noprint" data-peek>Xem đáp án</button><div class="ans zh hide">'+esc(p[0])+'</div></td></tr>'}).join("")+'</tbody></table>'; }); });
+    L.forEach(function(l){ h+=lesHead(l); (l.texts||[]).forEach(function(t,ti){ h+=txtHead(t)+'<table class="bi"><colgroup><col class="num"><col><col></colgroup><tbody>'+t.pairs.map(function(p,i){ var k="tl.w."+cur.id+"."+l.n+"."+ti+"."+i, v=ls(k)||""; return '<tr><td class="c-num">'+(i+1)+'</td><td class="c-vi">'+esc(p[1])+'</td><td class="c-write">'+(INKMODE?'<div class="pad'+(FINGER?' finger':'')+'" data-k="'+esc(k)+'"><span class="ph">✍️ Viết chữ Hán vào đây</span><canvas></canvas><div class="padtools"><button type="button" data-undo title="Xoá nét vừa viết">↶</button><button type="button" data-clr title="Xoá hết">✕</button></div></div>':'<textarea data-k="'+esc(k)+'" lang="zh" placeholder="写中文…">'+esc(v)+'</textarea>')+'<button class="peek noprint" data-peek>Xem đáp án</button><div class="ans zh hide">'+esc(p[0])+'</div></td></tr>'}).join("")+'</tbody></table>'; }); });
   } else {
     h+='<div class="doc-title"><h1>TỔNG HỢP NGỮ PHÁP</h1><p>'+sub+'</p></div>';
     var rows=[]; L.forEach(function(l){ (l.grammar||[]).forEach(function(g){ rows.push('<tr><td>'+(l.n>0?l.n:'')+'</td><td>'+esc(g.title.split(" — ")[0])+'</td><td class="zh">'+esc((g.f||[]).slice(0,2).join(" · "))+'</td></tr>'); }); });
@@ -315,11 +337,54 @@ function render(){
       h+='</div>'; }); });
     if(!rows.length) h+='<p class="empty">Các bài đang chọn chưa có phần ngữ pháp.</p>';
   }
-  if(!L.length) h+='<p class="empty">Chưa có bài nào dịch xong. Bấm “Làm tiếp” ở trên nha.</p>';
+  if(!L.length&&cur.pending&&cur.pending.length) h+='<p class="empty">Chưa có bài nào dịch xong. Bấm “Làm tiếp” ở trên nha.</p>';
   o.innerHTML=h+'</div>';
+  if(tab==="lt"&&INKMODE) initPads();
 }
 $("#out").addEventListener("input",function(e){ var t=e.target; if(t.dataset&&t.dataset.k) ls(t.dataset.k,t.value); });
-$("#out").addEventListener("click",function(e){ var b=e.target.closest("[data-peek]"); if(!b) return; var a=b.nextElementSibling; a.classList.toggle("hide"); b.textContent=a.classList.contains("hide")?"Xem đáp án":"Ẩn đáp án"; });
+function zn(t){ t=String(t||""); try{t=t.normalize("NFKC")}catch(e){} return t.replace(/[^\u4e00-\u9fff]/g,""); }
+function lcsN(a,b){ var prev=new Array(b.length+1).fill(0),cur; for(var i=1;i<=a.length;i++){ cur=new Array(b.length+1).fill(0); for(var j=1;j<=b.length;j++) cur[j]=a[i-1]===b[j-1]?prev[j-1]+1:Math.max(prev[j],cur[j-1]); prev=cur; } return prev[b.length]; }
+$("#out").addEventListener("click",function(e){ var b=e.target.closest("[data-peek]"); if(!b) return; var a=b.nextElementSibling; a.classList.toggle("hide"); b.textContent=a.classList.contains("hide")?"Xem đáp án":"Ẩn đáp án";
+  /* gõ phím thì chấm nhanh: giống đáp án bao nhiêu % */
+  var td=b.closest("td"), ta=td.querySelector("textarea"), old=td.querySelector(".sim"); if(old) old.remove();
+  if(ta&&!a.classList.contains("hide")&&zn(ta.value)){ var u=zn(ta.value), r=zn(a.textContent), l=lcsN(u,r), f=r.length?Math.round((0.3*l/u.length+0.7*l/r.length)*100):0;
+    var d=document.createElement("div"); d.className="sim "+(f>=85?"ok":f>=60?"mid":"bad"); d.textContent=(f>=85?"✓ Đúng ý ":f>=60?"≈ Gần đúng ":"✗ Còn xa ")+f+"% giống đáp án"; a.after(d); } });
+/* ---------- viết tay (Apple Pencil / bút / chuột; ngón tay để cuộn trừ khi bật) ---------- */
+var penSeen=false;
+function initPads(){ document.querySelectorAll(".pad").forEach(bindPad); }
+window.addEventListener("resize",function(){ clearTimeout(initPads.t); initPads.t=setTimeout(function(){ document.querySelectorAll(".pad").forEach(function(p){ if(p._fit) p._fit(); }); },200); });
+function bindPad(pad){
+  if(pad._ink) return;
+  var k="tl.ink."+pad.dataset.k, cv=pad.querySelector("canvas"), ctx=cv.getContext("2d"), cur=null, W=1;
+  var ink=[]; try{ ink=JSON.parse(ls(k)||"[]")||[]; }catch(e){ ink=[]; }
+  pad._ink=ink;
+  function fit(){ var r=pad.getBoundingClientRect(), d=Math.min(2,window.devicePixelRatio||1); W=r.width; cv.width=Math.round(r.width*d); cv.height=Math.round(r.height*d); ctx.setTransform(d,0,0,d,0,0); draw(); }
+  function stroke(st){ var P=st, sc=W/1000; if(!P.length) return; ctx.strokeStyle="#1f3a8a"; ctx.lineCap="round"; ctx.lineJoin="round";
+    if(P.length===1){ ctx.beginPath(); ctx.arc(P[0][0]*sc,P[0][1]*sc,1.6,0,7); ctx.fillStyle="#1f3a8a"; ctx.fill(); return; }
+    for(var i=1;i<P.length;i++){ var a=P[i-1], b=P[i]; ctx.lineWidth=Math.max(1.4,(1.2+2.4*(b[2]||0.5))*Math.min(1.4,W/420)); ctx.beginPath(); ctx.moveTo(a[0]*sc,a[1]*sc); ctx.lineTo(b[0]*sc,b[1]*sc); ctx.stroke(); } }
+  function draw(){ ctx.clearRect(0,0,cv.width,cv.height); ink.forEach(stroke); pad.querySelector(".ph").style.display=ink.length?"none":""; }
+  pad._draw=draw; pad._fit=fit;
+  function pt(e){ var r=cv.getBoundingClientRect(), s=1000/r.width; return [Math.round((e.clientX-r.left)*s*10)/10,Math.round((e.clientY-r.top)*s*10)/10,e.pointerType==="pen"?Math.round((e.pressure||0.5)*100)/100:0.5]; }
+  function save(){ try{ ls(k,ink.length?JSON.stringify(ink):null); }catch(e){ toast("Bộ nhớ máy đầy, chưa lưu được nét viết"); } }
+  cv.addEventListener("pointerdown",function(e){
+    if(e.pointerType==="pen") penSeen=true;
+    if(e.pointerType==="touch"&&(!FINGER||(e.width>40||e.height>40))) return; /* ngón tay / lòng bàn tay → để cuộn */
+    if(cur) return; e.preventDefault(); try{ cv.setPointerCapture(e.pointerId); }catch(x){}
+    cur={id:e.pointerId,p:[pt(e)]}; ink.push(cur.p); draw();
+  });
+  cv.addEventListener("pointermove",function(e){
+    if(!cur||e.pointerId!==cur.id) return; e.preventDefault();
+    var evs=e.getCoalescedEvents?e.getCoalescedEvents():null; if(!evs||!evs.length) evs=[e];
+    evs.forEach(function(ce){ var p=pt(ce), l=cur.p[cur.p.length-1]; if(Math.abs(l[0]-p[0])+Math.abs(l[1]-p[1])<1.2) return; cur.p.push(p);
+      var sc=W/1000; ctx.strokeStyle="#1f3a8a"; ctx.lineCap="round"; ctx.lineWidth=Math.max(1.4,(1.2+2.4*p[2])*Math.min(1.4,W/420)); ctx.beginPath(); ctx.moveTo(l[0]*sc,l[1]*sc); ctx.lineTo(p[0]*sc,p[1]*sc); ctx.stroke(); });
+  });
+  function end(e){ if(!cur||e.pointerId!==cur.id) return; cur=null; save(); }
+  cv.addEventListener("pointerup",end); cv.addEventListener("pointercancel",end);
+  cv.addEventListener("touchstart",function(e){ if(e.touches.length===1&&e.touches[0].touchType==="stylus") e.preventDefault(); },{passive:false});
+  pad.querySelector("[data-undo]").onclick=function(){ ink.pop(); draw(); save(); };
+  pad.querySelector("[data-clr]").onclick=function(){ if(ink.length&&!confirm("Xoá hết chữ đã viết ở câu này?")) return; ink.length=0; draw(); save(); };
+  fit();
+}
 $("#printBtn").onclick=function(){ window.print(); };
 
 /* ---------- thêm tài liệu ---------- */
@@ -368,7 +433,29 @@ function runAll(items,fn,conc,onStep){
   });
 }
 var PDF=null, FKEY="";
-$("#file").onchange=function(){ var f=this.files[0]; if(f) handleFile(f); this.value=""; };
+$("#file").onchange=function(){ var fs=[].slice.call(this.files||[]); this.value=""; if(!fs.length) return;
+  if(fs.length>1){ var imgs=fs.filter(isImg); if(imgs.length===fs.length) return handleImages(imgs); toast("Chọn nhiều file thì chỉ được là ảnh. Web lấy file đầu tiên nha"); }
+  handleFile(fs[0]); };
+function isImg(f){ return /^image\//.test(f.type)||/\.(jpe?g|png|heic|heif|webp|bmp|gif)$/i.test(f.name); }
+/* ảnh: thu nhỏ còn tối đa 2000px (đỡ tốn bộ nhớ, đọc nhanh), Safari tự giải mã HEIC */
+function imgCanvas(f){
+  return new Promise(function(res,rej){ var u=URL.createObjectURL(f), im=new Image();
+    im.onload=function(){ var k=Math.min(1,2000/Math.max(im.naturalWidth,im.naturalHeight)), c=document.createElement("canvas"); c.width=Math.round(im.naturalWidth*k); c.height=Math.round(im.naturalHeight*k);
+      var x=c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,c.width,c.height); x.drawImage(im,0,0,c.width,c.height); URL.revokeObjectURL(u); res(c); };
+    im.onerror=function(){ URL.revokeObjectURL(u); rej(new Error("máy không mở được ảnh này (thử chụp lại dạng JPG)")); }; im.src=u; });
+}
+function handleImages(fs){
+  fs.sort(function(a,b){ return a.name.localeCompare(b.name,undefined,{numeric:true}); });
+  $("#pickPanel").classList.add("hidden"); SCAN_ID++; busy(true);
+  fileInfo('<p class="hint" id="imsg">⏳ Đang đọc chữ '+fs.length+' ảnh…</p><div class="progress" id="iprog"><i></i></div>');
+  runAll(fs,function(f){ return imgCanvas(f).then(ocrFree); },poolSize(),function(d,t){ $("#iprog").firstChild.style.width=(d/t*100)+"%"; $("#imsg").textContent="⏳ Đã đọc "+d+"/"+t+" ảnh…"; })
+  .then(function(arr){ busy(false); RAW={name:fs[0].name.replace(/\.[^.]+$/,"")+" (+"+(fs.length-1)+" ảnh)",text:arr.join("\n")}; fileInfo('<p><b>🖼 '+fs.length+' ảnh</b> · đã đọc chữ xong</p>');
+    /* mỗi ảnh như 1 trang: ảnh nào có tiêu đề bài thì bắt đầu bài mới */
+    var groups=[], g=null; arr.forEach(function(t){ var h=headInfo(t.split("\n").slice(0,12).join("\n")); if(h&&h.n&&!groups.some(function(x){return x.n===h.n})){ g={n:h.n,head:h.title,t:[]}; groups.push(g); } if(!g){ g={n:0,head:"",t:[]}; groups.push(g); } g.t.push(t); });
+    if(groups.some(function(x){return x.n>0})){ SEGS=groups.map(function(x){return {n:x.n,head:x.head,text:x.t.join("\n")}}).filter(function(x){return x.text.replace(/\s/g,"").length>20}); showPick(); }
+    else splitAndPick(); })
+  .catch(function(e){ busy(false); fileInfo('<p class="del">Không đọc được ảnh: '+esc(e.message)+'</p>'); });
+}
 var dr=$("#drop"); ["dragover","dragenter"].forEach(function(ev){dr.addEventListener(ev,function(e){e.preventDefault();dr.style.background="#ffe2d6"})});
 ["dragleave","drop"].forEach(function(ev){dr.addEventListener(ev,function(e){e.preventDefault();dr.style.background=""})});
 dr.addEventListener("drop",function(e){ var f=e.dataTransfer.files[0]; if(f) handleFile(f); });
@@ -386,13 +473,14 @@ function handleFile(f){
     (window.mammoth?Promise.resolve():loadScript(LIB.mammoth)).then(function(){ return f.arrayBuffer(); }).then(function(buf){ return mammoth.extractRawText({arrayBuffer:buf}); })
     .then(function(r){ RAW={name:name,text:r.value}; fileInfo('<p><b>📘 '+esc(f.name)+'</b> · đã đọc '+r.value.length+' ký tự</p>'); splitAndPick(); })
     .catch(function(e){ fileInfo('<p class="del">Không đọc được file Word: '+esc(e.message)+'</p>'); });
-  } else if(/^image\//.test(f.type)){
+  } else if(isImg(f)){
     fileInfo('<p class="hint">⏳ Đang đọc chữ trong ảnh…</p>'); busy(true);
-    ocr(f).then(function(t){ busy(false); RAW={name:name,text:t}; fileInfo('<p><b>🖼 '+esc(f.name)+'</b> · đã đọc chữ trong ảnh</p>'); splitAndPick(); })
+    imgCanvas(f).then(ocrFree).then(function(t){ busy(false); RAW={name:name,text:t}; fileInfo('<p><b>🖼 '+esc(f.name)+'</b> · đã đọc chữ trong ảnh</p>'); splitAndPick(); })
     .catch(function(e){ busy(false); fileInfo('<p class="del">Không đọc được ảnh: '+esc(e.message)+'</p>'); });
   } else if(/\.txt$/i.test(f.name)||f.type.indexOf("text")===0){
     f.text().then(function(t){ RAW={name:name,text:t}; fileInfo('<p><b>📄 '+esc(f.name)+'</b></p>'); splitAndPick(); });
-  } else toast("File này chưa hỗ trợ, dùng PDF, Word, ảnh hoặc .txt nha");
+  } else if(/\.(doc|ppt|pptx|xls|xlsx|pages|key)$/i.test(f.name)){ fileInfo('<p class="del">File '+esc(f.name.split(".").pop().toUpperCase())+' web chưa đọc được. Mở file rồi “Lưu thành PDF” (hoặc Word .docx) rồi bỏ vào lại nha.</p>'); }
+  else toast("File này chưa hỗ trợ, dùng PDF, Word, ảnh hoặc .txt nha");
 }
 /* chữ có sẵn trong PDF (không phải scan) */
 function pageText(p){
@@ -416,8 +504,10 @@ function pageImg(p,w,top){
 function cacheGet(k){ return db().then(function(d){ return new Promise(function(res){ var r=d.transaction("pages").objectStore("pages").get(k); r.onsuccess=function(){ res(r.result?r.result.t:null) }; r.onerror=function(){res(null)}; }); }).catch(function(){return null}); }
 function cachePut(k,t){ return db().then(function(d){ return new Promise(function(res){ var tx=d.transaction("pages","readwrite"); tx.objectStore("pages").put({k:k,t:t}); tx.oncomplete=function(){res()}; tx.onerror=function(){res()}; }); }).catch(function(){}); }
 function cached(k,make){ return cacheGet(k).then(function(t){ if(t!=null) return t; return make().then(function(t){ return cachePut(k,t).then(function(){return t}); }); }); }
-function readHead(p){ return cached(FKEY+"|h|"+p,function(){ return pageImg(p,760,0.36).then(ocr); }); }
-function readFull(p){ return cached(FKEY+"|f|"+p,function(){ return pageImg(p,1500,1).then(ocr); }); }
+function ocrFree(c){ return ocr(c).then(function(t){ c.width=c.height=0; return t; },function(e){ c.width=c.height=0; throw e; }); } /* trả bộ nhớ ảnh ngay (iPhone dễ tràn) */
+function readHead(p){ return cached(FKEY+"|h|"+p,function(){ return pageImg(p,760,0.36).then(ocrFree); }); }
+function readHead2(p){ return cached(FKEY+"|h3|"+p,function(){ return pageImg(p,1300,1).then(ocrFree); }); } /* dò kỹ hơn cho chỗ nghi bị sót */
+function readFull(p){ return cached(FKEY+"|f|"+p,function(){ return pageImg(p,1500,1).then(ocrFree); }); }
 
 var SCAN_ID=0;
 function openPdf(fname,name){
@@ -445,7 +535,7 @@ function openPdf(fname,name){
   });
 }
 function range(a,b){ var r=[]; for(var i=a;i<=b;i++) r.push(i); return r; }
-var LES_RE=/第\s*([0-9一二三四五六七八九十百两]{1,4})\s*[课課]|Lesson\s*(\d{1,3})\b|Bài\s*(\d{1,3})\b/gi;
+var LES_RE=/第\s*([0-9一二三四五六七八九十百两]{1,4})\s*(?:[课課读果谋诛]|单元)|(?:Lesson|Unit)\s*(\d{1,3})\b|Bài\s*(\d{1,3})\b/gi;
 function lessonNums(t){ var m,out=[]; LES_RE.lastIndex=0; while((m=LES_RE.exec(t))){ var k=cnNum(m[1]||m[2]||m[3]); if(k>0&&k<200&&out.indexOf(k)<0) out.push(k); } return out; }
 function outlineLessons(){
   return PDF.getOutline().then(function(ol){
@@ -453,41 +543,119 @@ function outlineLessons(){
     var hits=flat.map(function(it){ var ns=lessonNums(it.title||""); return ns.length?{n:ns[0],title:it.title,dest:it.dest}:null; }).filter(Boolean);
     if(hits.length<2) return null;
     return Promise.all(hits.map(function(h){ return (typeof h.dest==="string"?PDF.getDestination(h.dest):Promise.resolve(h.dest)).then(function(d){ return d&&d[0]?PDF.getPageIndex(d[0]):-1; }).then(function(ix){ h.page=ix+1; return h; },function(){ h.page=0; return h; }); }));
-  }).then(function(hits){ return hits?buildLessons(hits.filter(function(h){return h.page>0}).map(function(h){return {n:h.n,page:h.page,head:h.title}})):null; }).catch(function(){ return null; });
+  }).then(function(hits){ return hits?buildLessons(hits.filter(function(h){return h.page>0}).map(function(h){return {n:h.n,page:h.page,head:String(h.title||"").replace(LES_RE,"").replace(/[^\u4e00-\u9fff·（）()]/g,"").slice(0,14)}})):null; }).catch(function(){ return null; });
 }
 /* từ các trang đầu bài → khoảng trang của từng bài */
-function buildLessons(starts){
-  starts.sort(function(a,b){return a.page-b.page});
-  var first={}; starts.forEach(function(s){ if(!first[s.n]) first[s.n]=s; });
-  var c=Object.keys(first).map(function(k){return first[k]}).sort(function(a,b){return a.page-b.page});
-  // giữ dãy số bài tăng dần dài nhất (bỏ chỗ đọc nhầm)
-  var L=c.map(function(){return 1}), P=c.map(function(){return -1}), bi=-1;
-  for(var i=0;i<c.length;i++){ for(var j=0;j<i;j++) if(c[j].n<c[i].n&&L[j]+1>L[i]){L[i]=L[j]+1;P[i]=j;} if(bi<0||L[i]>L[bi]) bi=i; }
-  var keep=[]; for(var k=bi;k>=0;k=P[k]) keep.unshift(c[k]); if(!keep.length) return [];
-  var n=PDF.numPages, lens=[];
-  keep.forEach(function(s,i){ if(i+1<keep.length) lens.push(keep[i+1].page-s.page); });
-  lens.sort(function(a,b){return a-b}); var med=lens.length?lens[Math.floor(lens.length/2)]:12;
-  return keep.map(function(s,i){ var end=i+1<keep.length?keep[i+1].page-1:Math.min(n,s.page+Math.round(med*1.3)); return {n:s.n,head:s.head||"",pages:range(s.page,Math.max(s.page,end))}; });
+/* số bài viết bằng pinyin: "Dì-sān kè" (OCR hay ra "Disan ke", "pksanke") */
+var PYN={yi:1,er:2,san:3,si:4,wu:5,liu:6,qi:7,ba:8,jiu:9,shi:10};
+function pinyinNum(line){
+  var l=String(line).toLowerCase().replace(/[ìíīǐ]/g,"i").replace(/[èéēě]/g,"e").replace(/[àáāǎ]/g,"a").replace(/[ùúūǔ]/g,"u").replace(/[^a-z]/g,"");
+  var NUMW="shi(?:yi|er|san|si|wu|liu|qi|ba|jiu)?|(?:er|san|si)shi(?:yi|er|san|si|wu|liu|qi|ba|jiu)?|yi|er|san|si|wu|liu|qi|ba|jiu";
+  var m=l.length<=16?l.match(/^[a-z]{1,3}?(shi(?:yi|er|san|si|wu|liu|qi|ba|jiu)?|(?:er|san|si)shi(?:yi|er|san|si|wu|liu|qi|ba|jiu)?|yi|er|san|si|wu|liu|qi|ba|jiu)ke$/):null;
+  if(!m) m=l.match(new RegExp("di("+NUMW+")ke"));
+  if(!m) return 0; var w=m[1], n=0;
+  var t=w.match(/^(er|san|si)shi(.*)$/); if(t) return PYN[t[1]]*10+(PYN[t[2]]||0);
+  if(w.indexOf("shi")===0) return 10+(PYN[w.slice(3)]||0);
+  return PYN[w]||0;
+}
+var UNK_RE=/第\s*\S{1,3}?\s*[课課]/;
+/* thông tin đầu trang: số bài (0 = có tiêu đề bài nhưng đọc không ra số), dòng tiêu đề; null nếu không phải trang đầu bài */
+function headInfo(t){
+  var lines=String(t||"").split("\n").filter(function(l){return l.trim()}), hits=0, res=null;
+  for(var i=0;i<lines.length;i++){
+    var ns=lessonNums(lines[i]), n=ns.length===1?ns[0]:0, pn=pinyinNum(lines[i]);
+    if(ns.length>1){ hits+=ns.length; continue; }
+    if(n||pn||UNK_RE.test(lines[i])){ hits++; if(!res) res={n:n||pn,at:i}; else if(!res.n&&(n||pn)) res.n=n||pn; if(pn) res.pin=true; }
+  }
+  if(!res||hits>=3) return null; /* nhiều tiêu đề bài trong 1 trang → mục lục */
+  res.title=cleanTitle(lines,res.at); return res;
+}
+/* tên bài: chỉ lấy dòng chữ Hán rõ ràng gần tiêu đề, không chắc thì để trống */
+function cleanTitle(lines,at){
+  if(at<0) return "";
+  var best="";
+  lines.slice(at,at+5).forEach(function(l){
+    l=l.replace(LES_RE,"").replace(UNK_RE,""); if(hanCount(l)>10) return; /* dòng dài = nội dung, không phải tên bài */
+    (l.match(/[一-鿿]{2,14}/g)||[]).forEach(function(r){
+      if(/课|汉语教程|教程|第.?册|生词|课文|注释|语法|练习/.test(r)) return;
+      if(r.length>best.length) best=r; });
+  });
+  return best.length>=2?best:"";
+}
+/* từ các trang có tiêu đề bài (trang đầu bài + tiêu đề chạy ở đầu trang) → khoảng trang từng bài */
+function buildLessons(all){
+  all=all.slice().sort(function(a,b){return a.page-b.page});
+  var known=all.filter(function(s){return s.n>0}); if(!known.length) return [];
+  // dãy số bài không giảm dài nhất theo thứ tự trang (bỏ chỗ OCR đọc nhầm số)
+  var L=known.map(function(){return 1}), P=known.map(function(){return -1}), bi=0;
+  for(var i=0;i<known.length;i++){ for(var j=0;j<i;j++) if(known[j].n<=known[i].n&&L[j]+1>L[i]){L[i]=L[j]+1;P[i]=j;} if(L[i]>L[bi]) bi=i; }
+  var keep=[]; for(var k=bi;k>=0;k=P[k]) keep.unshift(known[k]);
+  var by={}, order=[]; keep.forEach(function(x){ if(!by[x.n]){ by[x.n]={n:x.n,first:x.page,last:x.page,titles:{}}; order.push(x.n); } var g=by[x.n]; g.last=x.page; if(x.head) g.titles[x.head]=(g.titles[x.head]||0)+(x.pin?2:1); });
+  var n=PDF.numPages, out=[];
+  order.forEach(function(num,i){
+    var g=by[num], prevLast=i?by[order[i-1]].last:0, st=g.first;
+    // trang đầu bài thật có thể nằm ngay trước (số bài bị đọc sai / không đọc ra): lấy trang có tiêu đề gần nhất trong khoảng trống
+    var gap=all.filter(function(x){ return x.page>prevLast&&x.page<g.first&&keep.indexOf(x)<0; });
+    var pin=gap.filter(function(x){return x.pin}); var cand=pin.length?pin[pin.length-1]:gap[gap.length-1];
+    if(cand&&g.first-cand.page<=2){ st=cand.page; if(cand.head) g.titles[cand.head]=(g.titles[cand.head]||0)+2; }
+    var best=voteTitle(g.titles);
+    out.push({n:num,head:best,pages:[st],last:g.last});
+  });
+  /* chữ trang trí lặp ở đầu/cuối tên của nhiều bài (VD biểu tượng bị đọc thành 个) → bỏ */
+  ["first","last"].forEach(function(side){ var cnt={}; out.forEach(function(s){ if(s.head.length>2){ var ch=side==="first"?s.head[0]:s.head[s.head.length-1]; cnt[ch]=(cnt[ch]||0)+1; } });
+    Object.keys(cnt).forEach(function(ch){ if(cnt[ch]>=3&&cnt[ch]>=out.length*0.25) out.forEach(function(s){ if(s.head.length>2){ if(side==="first"&&s.head[0]===ch) s.head=s.head.slice(1); if(side==="last"&&s.head[s.head.length-1]===ch) s.head=s.head.slice(0,-1); } }); }); });
+  var lens=[]; out.forEach(function(s,i){ if(i+1<out.length) lens.push(out[i+1].pages[0]-s.pages[0]); }); lens.sort(function(a,b){return a-b}); var med=lens.length?lens[Math.floor(lens.length/2)]:12;
+  return out.map(function(s,i){ var a=s.pages[0], end=i+1<out.length?out[i+1].pages[0]-1:Math.min(n,s.last-a>=3?s.last+1:a+Math.round(med*1.1));
+    return {n:s.n,head:s.head,pages:range(a,Math.max(a,end))}; });
+}
+/* tên bài = đoạn chữ chung của nhiều lần đọc (bỏ chữ rác OCR dính hai đầu) */
+function voteTitle(T){
+  var ks=Object.keys(T); if(!ks.length) return ""; var tot=0; ks.forEach(function(k){tot+=T[k]});
+  var best="",bs=0;
+  ks.forEach(function(k){ for(var a=0;a<k.length;a++) for(var b=a+2;b<=k.length;b++){ var sub=k.slice(a,b), w=0; ks.forEach(function(x){ if(x.indexOf(sub)>=0) w+=T[x]; });
+    if(w>=Math.max(2,tot*0.4)&&(sub.length>best.length||(sub.length===best.length&&w>bs))){ best=sub; bs=w; } } });
+  if(best) return best;
+  ks.sort(function(a,b){return T[b]-T[a]||b.length-a.length}); return ks[0];
+}
+function medLen(L){ var a=L.slice(0,-1).map(function(s){return s.pages.length}).sort(function(x,y){return x-y}); return a.length?a[Math.floor(a.length/2)]:12; }
+/* chỗ đáng ngờ: số bài nhảy cóc hoặc bài dài bất thường */
+function suspects(L){ var med=medLen(L), out=[]; L.forEach(function(s,i){ var nx=L[i+1]; if((nx&&nx.n-s.n>1)||(nx&&s.pages.length>Math.max(med*1.6,med+6))) out.push(i); }); return out; }
+/* vẫn sót → chèn bài còn thiếu, chia đều khoảng trang (ghi "ước chừng") */
+function fillMissing(L){
+  var out=[]; L.forEach(function(s,i){ var nx=L[i+1]; out.push(s); if(!nx||nx.n-s.n<=1) return;
+    var miss=nx.n-s.n-1, a=s.pages[0], b=nx.pages[0]-1, step=(b-a+1)/(miss+1);
+    if(step<2) return; s.pages=range(a,Math.round(a+step)-1);
+    for(var k=1;k<=miss;k++){ var st=Math.round(a+step*k), en=k===miss?b:Math.round(a+step*(k+1))-1; out.push({n:s.n+k,head:"",pages:range(st,Math.max(st,en)),est:true}); } });
+  return out;
 }
 function scanHeads(name,msg,bar,my){
   var n=PDF.numPages, found={}, t0=Date.now();
   bar.classList.remove("hidden"); busy(true);
   msg.innerHTML="🔎 Sách scan: web đang dò trang đầu của từng bài (chỉ làm 1 lần, lần sau mở lại file này là có liền)…";
   return runAll(range(1,n),function(p){ if(my!==SCAN_ID) return Promise.reject(new Error("stop")); return readHead(p).then(function(t){ return {p:p,t:t}; }); },poolSize()+1,function(d,tot,v){
-    var ns=lessonNums(v.t); if(ns.length===1) found[ns[0]]=1;
+    var h=headInfo(v.t); if(h&&h.n) found[h.n]=1;
     bar.firstChild.style.width=(d/tot*100)+"%";
     var sec=(Date.now()-t0)/1000, left=d>3?Math.round(sec/d*(tot-d)):0;
     msg.innerHTML="🔎 Đang dò trang đầu mỗi bài: "+d+"/"+tot+" trang · thấy "+Object.keys(found).length+" bài"+(left>5?" · còn khoảng "+(left>90?Math.round(left/60)+" phút":left+" giây"):"")+'<br><span class="small">Cứ để màn hình mở. Lỡ thoát ra thì chọn lại file này, web làm tiếp từ chỗ đã dò.</span>';
   }).then(function(arr){
     busy(false); if(my!==SCAN_ID) return; bar.classList.add("hidden");
-    var starts=[]; arr.forEach(function(v){ var ns=lessonNums(v.t); if(ns.length===1){ var line=(v.t.split("\n").filter(function(l){return lessonNums(l).length})[0]||"").trim(); starts.push({n:ns[0],page:v.p,head:line}); } });
-    var L=buildLessons(starts);
+    var starts=[]; arr.forEach(function(v){ var h=headInfo(v.t); if(h) starts.push({n:h.n,page:v.p,head:h.title,pin:h.pin}); });
+    var L=buildLessons(starts), sus=L.length?suspects(L):[];
+    if(!sus.length) return L;
+    // dò lại kỹ hơn những khoảng trang đáng ngờ
+    var pages=[]; sus.forEach(function(i){ pages=pages.concat(L[i].pages.slice(1)); });
+    msg.textContent="🔎 Có chỗ nghi bị sót bài, đang dò kỹ lại "+pages.length+" trang…"; bar.classList.remove("hidden"); busy(true);
+    return runAll(pages,function(p){ if(my!==SCAN_ID) return Promise.reject(new Error("stop")); return readHead2(p).then(function(t){return {p:p,t:t}}); },poolSize()+1,function(d,t){ bar.firstChild.style.width=(d/t*100)+"%"; })
+      .then(function(more){ busy(false); bar.classList.add("hidden"); more.forEach(function(v){ var h=headInfo(v.t); if(h&&!starts.some(function(x){return x.page===v.p&&x.n})) starts.push({n:h.n,page:v.p,head:h.title,pin:h.pin}); }); return fillMissing(buildLessons(starts)); });
+  }).then(function(L){
+    if(!L||my!==SCAN_ID) return;
     if(!L.length){ msg.innerHTML='<span class="del">Không dò được tiêu đề bài (第…课).</span> Mở “Tự nhập số trang” bên dưới để chọn trang nha.'; $("#manual").open=true; return; }
-    msg.textContent="Dò xong: tìm thấy "+L.length+" bài."; RAW={name:name,text:""}; SEGS=L; showPick();
+    var est=L.filter(function(s){return s.est}).length;
+    msg.textContent="Dò xong: tìm thấy "+L.length+" bài."+(est?" Có "+est+" bài web chỉ ước chừng số trang, mày xem lại giúp (bấm ✎ để sửa).":""); RAW={name:name,text:""}; SEGS=L; showPick();
   },function(e){ busy(false); if(e.message!=="stop"&&my===SCAN_ID) msg.innerHTML='<span class="del">Lỗi khi dò: '+esc(e.message)+'</span>'; });
 }
 function splitLessons(text){
-  var re=/^[ \t]*(?:第\s*([0-9一二三四五六七八九十百两]+)\s*课|Bài\s*(\d+)\b|Lesson\s*(\d+)\b)[^\n]*$/gim, m, marks=[];
+  var re=/^[ \t]*(?:第\s*([0-9一二三四五六七八九十百两]+)\s*(?:[课課]|单元)|Bài\s*(\d+)\b|(?:Lesson|Unit)\s*(\d+)\b)[^\n]*$/gim, m, marks=[];
   while((m=re.exec(text))){ marks.push({n:cnNum(m[1]||m[2]||m[3]),i:m.index,head:m[0].trim()}); }
   if(!marks.length) return [{n:0,head:"",text:text}];
   var segs=marks.map(function(k,j){ return {n:k.n,head:k.head,text:text.slice(k.i,j+1<marks.length?marks[j+1].i:text.length)}; });
@@ -503,53 +671,93 @@ function showPick(allOn){
   var pp=$("#pickPanel"), scan=SEGS.some(function(s){return s.pages}), many=scan&&SEGS.length>3&&!allOn;
   pp.classList.remove("hidden");
   $("#pickHint").textContent=SEGS.length===1&&SEGS[0].n===0?(scan?"Web sẽ đọc chữ các trang này rồi tự chia bài.":"Không thấy tiêu đề “第…课 / Bài …”, web sẽ coi cả tài liệu là một bài."):(many?"Tìm thấy "+SEGS.length+" bài. Chọn những bài cần học, web chỉ đọc trang của các bài đó.":"Tìm thấy "+SEGS.length+" bài. Bỏ chọn những bài không cần.");
-  $("#lpick").innerHTML=SEGS.map(function(s,i){ var head=String(s.head||"").replace(/\s+/g," ").replace(/^第\s*\S+?[课課]\s*/,"").slice(0,22);
-    return '<label><input type="checkbox" data-i="'+i+'"'+(many?'':' checked')+'> '+(s.n>0?'<b>Bài '+s.n+'</b> ':'')+'<span class="zh">'+esc(s.n>0?head:(head||"Toàn bộ tài liệu"))+'</span>'+(s.pages?'<span class="pg">tr. '+s.pages[0]+(s.pages.length>1?'–'+s.pages[s.pages.length-1]:'')+'</span>':'')+'</label>'; }).join("");
+  drawPick(many?[]:SEGS.map(function(_,i){return i}));
   $("#docName").value=RAW.name; nameFromPick();
   $("#keyBox").classList.toggle("hidden",!!groqKey());
   $("#steps").innerHTML=""; $("#prog").classList.add("hidden");
   pp.scrollIntoView({behavior:"smooth",block:"start"});
 }
+function drawPick(on){
+  $("#lpick").innerHTML=SEGS.map(function(s,i){ var head=s.pages?String(s.head||""):String(s.head||"").replace(/\s+/g," ").replace(/^第\s*\S+?[课課]\s*/,"").slice(0,22);
+    var pg=s.pages?'<span class="pg'+(s.est?' est':'')+'">tr. '+s.pages[0]+(s.pages.length>1?'–'+s.pages[s.pages.length-1]:'')+(s.est?' (ước chừng)':'')+'</span><button type="button" class="pged" data-e="'+i+'" aria-label="Sửa số trang">✎</button>':'';
+    return '<div class="lrow"><label><input type="checkbox" data-i="'+i+'"'+(on.indexOf(i)>=0?' checked':'')+'> '+(s.n>0?'<b>Bài '+s.n+'</b> ':'')+(head||s.n<=0?'<span class="zh">'+esc(s.n>0?head:(head||"Toàn bộ tài liệu"))+'</span>':'')+'</label>'+pg+
+      (s.pages?'<div class="pgform hidden" id="pf'+i+'"><span class="hint small">Từ trang</span><input class="inp" type="number" min="1" value="'+s.pages[0]+'"><span class="hint small">đến</span><input class="inp" type="number" min="1" value="'+s.pages[s.pages.length-1]+'"><button type="button" class="btn btn-pri btn-sm" data-ok="'+i+'">Lưu</button></div>':'')+'</div>'; }).join("");
+}
+$("#lpick").addEventListener("click",function(e){
+  var ed=e.target.closest("[data-e]"); if(ed){ $("#pf"+ed.dataset.e).classList.toggle("hidden"); return; }
+  var ok=e.target.closest("[data-ok]"); if(!ok) return; var i=+ok.dataset.ok, ins=$("#pf"+i).querySelectorAll("input"), n=PDF?PDF.numPages:9999;
+  var a=Math.max(1,Math.min(n,+ins[0].value||1)), b=Math.max(a,Math.min(n,+ins[1].value||a));
+  var on=[].slice.call(document.querySelectorAll("#lpick input[type=checkbox]:checked")).map(function(x){return +x.dataset.i}); if(on.indexOf(i)<0) on.push(i);
+  SEGS[i].pages=range(a,b); SEGS[i].est=false; drawPick(on); nameFromPick(); toast("Đã sửa: Bài "+SEGS[i].n+" trang "+a+"–"+b);
+});
 var nameTouched=false;
 $("#docName").addEventListener("input",function(){ nameTouched=true; });
 function nameFromPick(){ if(nameTouched||!RAW) return; var ns=pickedSegs().filter(function(s){return s.n>0}).map(function(s){return s.n}); $("#docName").value=RAW.name+(ns.length?" · Bài "+ns[0]+(ns.length>1?"–"+ns[ns.length-1]:""):""); }
-function pickedSegs(){ return [].slice.call(document.querySelectorAll("#lpick input:checked")).map(function(x){return SEGS[+x.dataset.i]}); }
+function pickedSegs(){ return [].slice.call(document.querySelectorAll("#lpick input[type=checkbox]:checked")).map(function(x){return SEGS[+x.dataset.i]}); }
 $("#lpick").addEventListener("change",nameFromPick);
 $("#cancelBtn").onclick=function(){ SCAN_ID++; $("#pickPanel").classList.add("hidden"); $("#fileInfo").classList.add("hidden"); RAW=null; if(DOCS.length) openDoc(cur||DOCS[0]); };
 
 /* ---------- AI (Groq, miễn phí) ---------- */
 (function(){ try{ var k=new URLSearchParams(location.search).get("gq"); if(k&&k.length>20){ ls("bb.groq",k); history.replaceState(null,"",location.pathname); } }catch(e){} })();
 function groqKey(){ return ls("bb.groq")||""; }
-var MODELS=["llama-3.3-70b-versatile","openai/gpt-oss-120b","llama-3.1-8b-instant"];
+/* nhiều model miễn phí của Groq, mỗi model có hạn mức riêng → bị giới hạn thì đổi model, không ngồi đợi */
+var MODELS=[
+  {id:"llama-3.3-70b-versatile"},
+  {id:"openai/gpt-oss-120b",x:{reasoning_effort:"low"}},
+  {id:"meta-llama/llama-4-maverick-17b-128e-instruct"},
+  {id:"meta-llama/llama-4-scout-17b-16e-instruct"},
+  {id:"llama-3.1-8b-instant"}
+];
+var MST={}; /* trạng thái từng model: until = nghỉ tới lúc nào, dead = không dùng được */
 function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
-function groq(messages,onWait){
-  var key=groqKey(), mi=0, tries=0;
+function pickModel(){ var now=Date.now(), best=null;
+  for(var i=0;i<MODELS.length;i++){ var st=MST[MODELS[i].id]||{}; if(st.dead) continue; if(!(st.until>now)) return {m:MODELS[i],wait:0}; if(!best||st.until<best.wait+now) best={m:MODELS[i],wait:st.until-now}; }
+  return best; }
+function groq(messages,onWait,maxTok){
+  var key=groqKey(), net=0, srv=0;
   function go(){
-    return fetch("https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},
-      body:JSON.stringify({model:MODELS[mi],messages:messages,temperature:0,max_tokens:6000,response_format:{type:"json_object"}})})
+    var pk=pickModel();
+    if(!pk) return Promise.reject(new Error("Hết lượt AI miễn phí hôm nay. Phần đã xong được lưu, mai bấm “Làm tiếp” nha"));
+    if(pk.wait>0){ if(pk.wait>10*60*1000) return Promise.reject(new Error("Hết lượt AI miễn phí hôm nay. Phần đã xong được lưu, mai bấm “Làm tiếp” nha")); if(onWait) onWait(Math.ceil(pk.wait/1000)); return sleep(pk.wait+300).then(go); }
+    var m=pk.m, st=MST[m.id]=MST[m.id]||{}, ctl=window.AbortController?new AbortController():null, to=setTimeout(function(){ if(ctl) ctl.abort(); },90000);
+    var body={model:m.id,messages:messages,temperature:0,max_tokens:maxTok||3000,response_format:{type:"json_object"}}; for(var k in (m.x||{})) body[k]=m.x[k];
+    return fetch("https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},body:JSON.stringify(body),signal:ctl?ctl.signal:undefined})
     .then(function(r){
-      if(r.status===429){ return r.text().then(function(t){ var ra=parseFloat(r.headers.get("retry-after"))||0;
-        if(/per day|TPD|RPD/i.test(t)||ra>90){ if(mi<MODELS.length-1){ mi++; return go(); } throw new Error("Hết lượt AI miễn phí hôm nay. Phần đã xong được lưu, mai bấm “Làm tiếp” nha"); }
-        tries++; if(tries>8) throw new Error("AI đang quá tải, lát bấm “Làm tiếp” nha"); var wait=Math.min(60,ra||8*tries); if(onWait) onWait(wait); return sleep(wait*1000).then(go); }); }
-      if(r.status>=500){ tries++; if(tries>6) throw new Error("AI đang quá tải, thử lại sau ít phút"); var wait=Math.min(60,parseFloat(r.headers.get("retry-after"))||8*tries); if(onWait) onWait(wait); return sleep(wait*1000).then(go); }
+      clearTimeout(to); net=0;
       if(r.status===401) throw new Error("Key AI không đúng hoặc hết hạn");
-      if(r.status===400||r.status===404||r.status===413){ return r.text().then(function(t){ if(mi<MODELS.length-1&&!/context|too long|maximum/i.test(t)){ mi++; return go(); } throw new Error("AI báo lỗi: "+t.slice(0,160)); }); }
+      if(r.status===429) return r.text().then(function(t){ var ra=parseFloat(r.headers.get("retry-after"))||0;
+        st.until=Date.now()+(/per day|TPD|RPD/i.test(t)?6*3600:Math.max(ra,6))*1000; return go(); });
+      if(r.status>=500){ srv++; if(srv>6) throw new Error("Máy chủ AI đang lỗi, lát bấm “Làm tiếp” nha"); st.until=Date.now()+5000*srv; return go(); }
+      if(r.status===400||r.status===404||r.status===413) return r.text().then(function(t){
+        if(/json_validate_failed|failed_generation/i.test(t)&&!st.jsonFail){ st.jsonFail=1; return go(); } /* AI viết JSON hỏng → thử lại 1 lần */
+        st.dead=true; if(MODELS.every(function(x){return (MST[x.id]||{}).dead})) throw new Error("AI báo lỗi: "+t.slice(0,140)); return go(); });
       if(!r.ok) throw new Error("AI lỗi "+r.status);
-      return r.json().then(function(j){ var c=j.choices[0].message.content; try{ return JSON.parse(c); }catch(e){ var m=c.match(/\{[\s\S]*\}/); if(m) return JSON.parse(m[0]); throw new Error("AI trả về sai định dạng"); } });
+      return r.json().then(function(j){ var c=(j.choices&&j.choices[0].message.content)||""; try{ return JSON.parse(c); }catch(e){ var mm=c.match(/\{[\s\S]*\}/); if(mm) try{ return JSON.parse(mm[0]); }catch(e2){} st.until=Date.now()+2000; return go(); } });
+    },function(e){
+      clearTimeout(to); /* mất mạng / màn hình tắt / quá lâu → đợi rồi thử lại */
+      net++; if(net>6) throw new Error("Mạng chập chờn, kiểm tra mạng rồi bấm “Làm tiếp” nha");
+      var w=Math.min(30,4*net); if(onWait) onWait(w,"net"); return sleep(w*1000).then(go);
     });
   }
   return go();
 }
+/* bỏ dòng rác (pinyin, tiếng Anh, số trang, từ đơn lẻ) cho gọn trước khi gửi AI */
+function slimText(t){
+  return String(t).split("\n").map(function(l){return l.trim()}).filter(function(l){
+    var h=hanCount(l); if(h<2) return false;
+    if(h<=4&&/[a-zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]{3,}/i.test(l)&&!/[。！？，]/.test(l)) return false; /* dòng từ mới: 京剧 jīngjù (名) */
+    return true; }).join("\n");
+}
 var SYS="Bạn là giáo viên tiếng Trung giỏi, dạy người Việt, dịch rất cẩn thận và chính xác. Không bịa câu, không thêm, không bỏ ý. Luôn trả lời bằng JSON hợp lệ, tiếng Việt tự nhiên, chữ Hán giản thể.";
 function chunks(text,max){ var parts=text.split(/\n+/), out=[], cur_=""; parts.forEach(function(p){ if((cur_+p).length>max&&cur_){out.push(cur_);cur_="";} cur_+=p+"\n"; }); if(cur_.trim()) out.push(cur_); return out; }
 function aiTranslate(seg,onWait){
-  var parts=chunks(seg.text,2600), res={title_zh:"",title_vi:"",sections:[]};
+  var parts=chunks(slimText(seg.text),1500), res={title_zh:"",title_vi:"",sections:[]};
   return parts.reduce(function(pr,part,pi){ return pr.then(function(){
     return groq([{role:"system",content:SYS},{role:"user",content:
       "Đây là "+(parts.length>1?"phần "+(pi+1)+"/"+parts.length+" của ":"")+"một bài trong giáo trình tiếng Trung (chữ có thể bị lỗi do đọc ảnh).\n"+
       "Việc cần làm:\n1. Chỉ giữ BÀI KHÓA chính và các ĐOẠN VĂN/HỘI THOẠI trong phần luyện tập (bài khóa phụ). Bỏ bảng từ mới, phần giải thích ngữ pháp, bài tập điền từ/chọn đáp án, số trang, chữ rác.\n"+
       "2. Giữ NGUYÊN VĂN chữ Hán như trong văn bản, không viết lại, không tự thêm câu. Chỉ sửa chữ bị lỗi do đọc ảnh khi chắc chắn. Nếu bài khóa có chỗ trống (综合填空) thì điền từ đúng vào.\n3. Tách thành từng câu hoặc từng lượt thoại (giữ tên người nói), đúng thứ tự, không sót câu nào.\n4. Dịch mỗi câu sang tiếng Việt chính xác, sát nghĩa, đủ ý, tự nhiên như giáo viên dịch; tên người dịch theo cách quen dùng (玛丽 → Mary, 大卫 → David, 小王 → Tiểu Vương); giữ đúng sắc thái của 把/被/了/着/过, bổ ngữ và thành ngữ.\n"+
-      'Trả về JSON: {"title_zh":"tên bài","title_vi":"tên bài tiếng Việt","sections":[{"title_zh":"tên đoạn (VD （一）…)","title_vi":"…","phu":false,"pairs":[{"zh":"…","vi":"…"}]}]} (phu=true nếu là bài khóa phụ trong luyện tập).\n\nVĂN BẢN:\n'+part}],onWait)
+      'Trả về JSON: {"title_zh":"tên bài","title_vi":"tên bài tiếng Việt","sections":[{"title_zh":"tên đoạn (VD （一）…)","title_vi":"…","phu":false,"pairs":[{"zh":"…","vi":"…"}]}]} (phu=true nếu là bài khóa phụ trong luyện tập).\n\nVĂN BẢN:\n'+part}],onWait,3200)
     .then(function(j){ if(!res.title_zh&&j.title_zh){res.title_zh=j.title_zh;res.title_vi=j.title_vi||"";} (j.sections||[]).forEach(function(s){ var pairs=(s.pairs||[]).filter(function(p){return p&&p.zh}).map(function(p){return [String(p.zh).trim(),String(p.vi||"").trim()]}); if(pairs.length) res.sections.push({zh:s.title_zh||"",vi:s.title_vi||"",phu:!!s.phu,pairs:pairs}); }); });
   }); },Promise.resolve()).then(function(){ return reviewPairs(res,onWait); });
 }
@@ -560,7 +768,7 @@ function reviewPairs(res,onWait){
   return batches.reduce(function(pr,b){ return pr.then(function(){
     return groq([{role:"system",content:SYS},{role:"user",content:
       "KIỂM TRA bản dịch Trung → Việt dưới đây như một giáo viên chấm bài. Với từng câu, so kỹ nghĩa tiếng Việt với chữ Hán: sai nghĩa, thiếu ý, thừa ý, dịch sai từ, sai thì/sắc thái (了/过/着/把/被, bổ ngữ), sai tên người → sửa lại cho đúng. Câu nào đã đúng thì bỏ qua.\n"+
-      'Trả về JSON: {"fixes":[{"i":số thứ tự,"vi":"bản dịch đúng"}]} (fixes rỗng nếu tất cả đều đúng).\n\n'+b.map(function(p,j){return j+". "+p[0]+"\n   → "+p[1]}).join("\n")}],onWait)
+      'Trả về JSON: {"fixes":[{"i":số thứ tự,"vi":"bản dịch đúng"}]} (fixes rỗng nếu tất cả đều đúng).\n\n'+b.map(function(p,j){return j+". "+p[0]+"\n   → "+p[1]}).join("\n")}],onWait,1500)
     .then(function(j){ (j.fixes||[]).forEach(function(f){ var k=+f.i; if(b[k]&&f.vi&&String(f.vi).trim()) b[k][1]=String(f.vi).trim(); }); })
     .catch(function(e){ if(/Key/.test(e.message)) throw e; /* lỗi soát lại thì giữ bản dịch lượt 1 */ });
   }); },Promise.resolve()).then(function(){ return res; });
@@ -569,7 +777,7 @@ function aiGrammar(seg,onWait){
   return groq([{role:"system",content:SYS},{role:"user",content:
     "Từ bài học tiếng Trung dưới đây, soạn phần NGỮ PHÁP để ôn thi: lấy đủ các điểm trong mục 语法, 注释 và cấu trúc quan trọng xuất hiện trong bài khóa. Chỉ viết những gì đúng theo ngữ pháp chuẩn, không bịa quy tắc; giải thích phải khớp với nội dung giáo trình.\n"+
     "Mỗi điểm gồm: title (tên điểm: cấu trúc chữ Hán — nghĩa tiếng Việt ngắn), formula (1–3 dòng công thức, VD \"Chủ ngữ + 把 + Tân ngữ + Động từ + 在/到 + nơi chốn\"), explain (giải thích ngắn gọn, dễ hiểu bằng tiếng Việt), examples (2–4 câu, ưu tiên lấy NGUYÊN VĂN câu trong bài; câu tự đặt phải đúng ngữ pháp chuẩn, kèm bản dịch tiếng Việt chính xác), warn (0–2 lỗi hay sai, VD \"Sai: *… → Đúng: …\").\n"+
-    'Trả về JSON: {"points":[{"title":"…","formula":["…"],"explain":"…","examples":[{"zh":"…","vi":"…"}],"warn":["…"]}]}\n\nBÀI HỌC:\n'+seg.text.slice(0,7000)}],onWait)
+    'Trả về JSON: {"points":[{"title":"…","formula":["…"],"explain":"…","examples":[{"zh":"…","vi":"…"}],"warn":["…"]}]}\n\nBÀI HỌC:\n'+slimText(seg.text).slice(0,4500)}],onWait,3500)
   .then(function(j){ return (j.points||[]).filter(function(p){return p&&p.title}).map(function(p){ return {title:String(p.title),f:(p.formula||[]).map(String),note:String(p.explain||""),ex:(p.examples||[]).filter(function(e){return e&&e.zh}).map(function(e){return [String(e.zh),String(e.vi||"")]}),warn:(p.warn||[]).map(String)}; }); });
 }
 /* ---------- làm tài liệu: đọc chữ (nếu là sách scan) → AI dịch + soạn ngữ pháp, lưu sau MỖI bài ---------- */
@@ -597,7 +805,7 @@ function runJob(doc,segs,box,onFinish){
     // trang tự nhập có thể chứa nhiều bài → tự chia
     var out=[]; segs.forEach(function(s){
       if(s.n===0&&s.heads){ var groups=[], g=null;
-        s.pages.forEach(function(pg,k){ var ns=lessonNums(s.heads[k]); if(ns.length===1&&!groups.some(function(x){return x.n===ns[0]})){ g={n:ns[0],head:(s.heads[k].split("\n").filter(function(l){return lessonNums(l).length})[0]||"").trim(),t:[]}; groups.push(g); } if(!g){ g={n:0,head:s.head,t:[]}; groups.push(g); } g.t.push(s.ptext[k]); });
+        s.pages.forEach(function(pg,k){ var h=headInfo(s.heads[k]); if(h&&h.n&&!groups.some(function(x){return x.n===h.n})){ g={n:h.n,head:h.title,t:[]}; groups.push(g); } if(!g){ g={n:0,head:s.head,t:[]}; groups.push(g); } g.t.push(s.ptext[k]); });
         groups.forEach(function(x){ out.push({n:x.n,head:x.head,text:x.t.join("\n")}); }); return; }
       out.push({n:s.n,head:s.head,text:s.text}); });
     if(out.length!==segs.length){ segs=out; draw(); units=done+segs.length*2; }
@@ -605,7 +813,7 @@ function runJob(doc,segs,box,onFinish){
   });
   // bước 2: AI từng bài, xong bài nào lưu bài đó
   return p1.then(function(){ return segs.reduce(function(pr,s,i){ return pr.then(function(){
-    var wait=function(sec){ mark(i,"⏳","AI đang bận, đợi "+Math.round(sec)+" giây rồi làm tiếp…","doing"); };
+    var wait=function(sec,why){ mark(i,"⏳",(why==="net"?"mạng chập chờn, thử lại sau ":"AI miễn phí đang giới hạn, tự làm tiếp sau ")+Math.round(sec)+" giây…","doing"); };
     mark(i,"✱","AI đang dịch bài khóa…","doing");
     var les={n:s.n>0?s.n:0,zh:"",vi:"",texts:[],grammar:[]};
     return aiTranslate(s,wait).then(function(t){ les.zh=t.title_zh||String(s.head||"").replace(/^第\s*\S+?[课課]\s*/,""); les.vi=t.title_vi; les.texts=t.sections; tick(1); mark(i,"✱","AI đang soạn ngữ pháp…","doing"); return aiGrammar(s,wait); })
@@ -648,7 +856,7 @@ document.addEventListener("click",function(e){
   var d=cur; runJob(d,d.pending.slice(),{id:"rs",steps:$("#rsteps"),prog:$("#rprog2"),btns:[$("#resumeBtn")]},function(){ var keep=d.id; dbAll().then(function(s){ DOCS=window.ONTHI_DOCS.concat(s.sort(function(a,b){return (b.created||0)-(a.created||0)})); var nd=DOCS.filter(function(x){return x.id===keep})[0]; if(nd&&!(nd.pending&&nd.pending.length)) openDoc(nd); else { cur=nd||cur; drawDocs(); render(); } }); });
 });
 
-window.__tl={docs:function(){return DOCS}};
+window.__tl={docs:function(){return DOCS},segs:function(){return SEGS},head:function(t){return headInfo(t)}};
 loadDocs();
 })();
 </script>
