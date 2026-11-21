@@ -1,0 +1,400 @@
+## 46
+D: K | What does a doctor do? | Bác sĩ làm gì hả mẹ?
+D: M | A doctor helps sick people. | Bác sĩ giúp người bị bệnh.
+D: K | I want to be a doctor! | Con muốn làm bác sĩ!
+D: M | That's a great dream! | Ước mơ tuyệt quá!
+A: M | What do you want to be when you grow up? | Lớn lên con muốn làm nghề gì?
+A: K | I want to be a firefighter! | Con muốn làm lính cứu hỏa!
+A: M | Why? | Tại sao vậy?
+A: K | Because they help people. | Vì họ giúp mọi người.
+A: M | That's right. What does a teacher do? | Đúng rồi. Còn cô giáo làm gì?
+A: K | A teacher teaches children. | Cô giáo dạy các bạn nhỏ.
+A: M | And what does a chef do? | Còn đầu bếp làm gì?
+A: K | A chef cooks yummy food! | Đầu bếp nấu đồ ăn ngon!
+V: doctor | bác sĩ
+V: teacher | giáo viên
+V: firefighter | lính cứu hỏa
+V: police officer | cảnh sát
+V: chef | đầu bếp
+V: farmer | nông dân
+P: I want to be a ___. | Con muốn làm ___.
+E: I want to be a teacher. | Con muốn làm giáo viên.
+E: I want to be a pilot. | Con muốn làm phi công.
+P: A ___ helps ___. | ___ giúp ___.
+E: A doctor helps sick people. | Bác sĩ giúp người bị bệnh.
+E: A farmer helps plants grow. | Nông dân giúp cây lớn lên.
+## 47
+D: K | Look, I did it! | Mẹ nhìn nè, con làm được rồi!
+D: M | Good job! | Giỏi lắm!
+D: K | Am I clever? | Con có giỏi không?
+D: M | Yes! I'm so proud of you. | Có! Mẹ rất tự hào về con.
+A: K | Mommy, I put on my shoes by myself! | Mẹ ơi, con tự mang giày rồi!
+A: M | Wow, well done! | Wow, làm tốt lắm!
+A: K | And I cleaned up my toys. | Con còn dọn đồ chơi nữa.
+A: M | You're such a big helper! | Con đúng là người giúp việc giỏi!
+A: K | Can I have a sticker? | Con được một cái nhãn dán không?
+A: M | Of course! Here's a star sticker. | Tất nhiên rồi! Đây là nhãn dán ngôi sao.
+A: K | Yay! Thank you, Mommy! | Yeah! Con cảm ơn mẹ!
+A: M | You worked hard today. High five! | Hôm nay con chăm chỉ lắm. Đập tay nào!
+V: good job | làm tốt lắm
+V: well done | giỏi lắm
+V: proud | tự hào
+V: try | cố gắng, thử
+V: sticker | nhãn dán
+V: high five | đập tay
+P: You ___ by yourself! | Con tự ___ được rồi!
+E: You ate by yourself! | Con tự ăn được rồi!
+E: You got dressed by yourself! | Con tự mặc đồ được rồi!
+P: I'm proud of you for ___. | Mẹ tự hào vì con đã ___.
+E: I'm proud of you for sharing. | Mẹ tự hào vì con đã biết chia sẻ.
+E: I'm proud of you for trying. | Mẹ tự hào vì con đã cố gắng.
+## 48
+D: K | Let's play together! | Mình chơi chung đi!
+D: F | Okay! What do you want to play? | Ừ! Bạn muốn chơi gì?
+D: K | Let's play with the ball. | Mình chơi bóng đi.
+D: F | Yay! | Yeah!
+A: K | Hi! What's your name? | Chào bạn! Bạn tên gì?
+A: F | My name is Lily. What's yours? | Mình tên Lily. Còn bạn?
+A: K | I'm Banh Mi. Can I play with you? | Mình là Bánh Mì. Mình chơi với bạn được không?
+A: F | Sure! Let's build a sandcastle. | Được chứ! Mình xây lâu đài cát nhé.
+A: K | Can I use your shovel? | Cho mình mượn cái xẻng của bạn nha?
+A: F | Yes, here you are. | Ừ, đây nè.
+A: K | Thank you! Now it's your turn. | Cảm ơn bạn! Giờ tới lượt bạn.
+A: F | This is fun! You're my friend. | Vui quá! Bạn là bạn của mình.
+V: friend | bạn
+V: share | chia sẻ
+V: turn | lượt
+V: together | cùng nhau
+V: hide and seek | trốn tìm
+V: swing | xích đu
+P: Can I play with ___? | Mình chơi với ___ được không?
+E: Can I play with you? | Mình chơi với bạn được không?
+E: Can I play with your car? | Mình chơi xe của bạn được không?
+P: It's my turn to ___. | Tới lượt mình ___.
+E: It's my turn to slide. | Tới lượt mình trượt cầu tuột.
+E: It's my turn to hide. | Tới lượt mình trốn.
+## 49
+D: K | Up, up! | Bế con lên!
+D: M | Do you want to go up? | Con muốn mẹ bế lên hả?
+D: K | Yes! Now down, please. | Dạ! Giờ cho con xuống ạ.
+D: M | Down you go! | Xuống nào!
+A: K | Mommy, pick me up, please! | Mẹ ơi, bế con lên đi!
+A: M | Are you tired? | Con mệt hả?
+A: K | Yes, my legs are tired. | Dạ, chân con mỏi rồi.
+A: M | Okay, up you go! Hold on tight. | Được rồi, lên nào! Ôm chặt nha.
+A: K | I'm so high! I can see everything. | Con cao quá! Con thấy hết mọi thứ.
+A: M | You're getting heavy! | Con nặng lên rồi đó!
+A: K | Put me down, please. I want to walk. | Cho con xuống đi mẹ. Con muốn tự đi.
+A: M | Here you go. Hold my hand. | Đây nè. Nắm tay mẹ nha.
+V: up | lên
+V: down | xuống
+V: pick up | bế lên
+V: put down | đặt xuống
+V: heavy | nặng
+V: hold on | ôm chặt, bám chặt
+P: Pick me ___, please. | Bế con ___ đi ạ.
+E: Pick me up, please. | Bế con lên đi ạ.
+E: Put me down, please. | Cho con xuống đi ạ.
+P: Hold my ___. | Nắm ___ của mẹ nha.
+E: Hold my hand. | Nắm tay mẹ nha.
+E: Hold my finger. | Nắm ngón tay mẹ nha.
+## 50
+D: M | How do you feel? | Con thấy thế nào?
+D: K | I feel happy! | Con thấy vui!
+D: M | Why are you happy? | Sao con vui vậy?
+D: K | Because we're playing! | Vì mình đang chơi!
+A: M | Why are you crying, sweetie? | Sao con khóc vậy cưng?
+A: K | I'm sad. My tower fell down. | Con buồn. Tháp của con đổ rồi.
+A: M | Oh, I'm sorry. Come here, give me a hug. | Ôi, tội con. Lại đây, ôm mẹ nào.
+A: K | I'm angry too! | Con còn giận nữa!
+A: M | It's okay to feel angry. Let's take a deep breath. | Giận cũng không sao. Mình hít thở sâu nào.
+A: K | In… and out. | Hít vào… thở ra.
+A: M | Do you feel better now? | Giờ con thấy đỡ hơn chưa?
+A: K | Yes. Let's build it again! | Dạ rồi. Mình xây lại đi!
+V: happy | vui
+V: sad | buồn
+V: angry | giận
+V: scared | sợ
+V: tired | mệt
+V: excited | háo hức
+P: I feel ___ because ___. | Con thấy ___ vì ___.
+E: I feel happy because Daddy is home. | Con thấy vui vì ba về rồi.
+E: I feel sad because my balloon flew away. | Con thấy buồn vì bóng bay của con bay mất.
+P: Are you ___? | Con có ___ không?
+E: Are you scared? | Con có sợ không?
+E: Are you tired? | Con có mệt không?
+## 51
+D: K | Mommy, I need to pee! | Mẹ ơi, con muốn đi tè!
+D: M | Okay, let's go to the toilet. | Được, mình vào nhà vệ sinh nào.
+D: K | I did it! | Con đi xong rồi!
+D: M | Great! Now wash your hands. | Giỏi lắm! Giờ rửa tay nha.
+A: M | Do you need to go potty? | Con có cần đi vệ sinh không?
+A: K | Yes, I need to poop. | Dạ, con muốn đi ị.
+A: M | Okay, sit on the potty. | Được rồi, ngồi lên bô nào.
+A: K | Mommy, I'm finished! | Mẹ ơi, con xong rồi!
+A: M | Good job! Let's wipe. | Giỏi quá! Mình lau nào.
+A: K | Can I flush? | Con giật nước được không?
+A: M | Yes, push the button. Now wash your hands with soap. | Được, nhấn nút đi. Giờ rửa tay với xà phòng nha.
+A: K | All clean! I'm a big kid now. | Sạch rồi! Con lớn rồi đó.
+V: toilet | bồn cầu, nhà vệ sinh
+V: potty | cái bô
+V: pee | đi tè
+V: poop | đi ị
+V: flush | giật nước
+V: toilet paper | giấy vệ sinh
+P: I need to ___. | Con cần ___.
+E: I need to pee. | Con cần đi tè.
+E: I need to go potty. | Con cần đi vệ sinh.
+P: Wash your hands with ___. | Rửa tay với ___ nha.
+E: Wash your hands with soap. | Rửa tay với xà phòng nha.
+E: Wash your hands with water. | Rửa tay với nước nha.
+## 52
+D: K | Read me a story, please! | Mẹ đọc truyện cho con đi!
+D: M | Which book do you want? | Con muốn cuốn nào?
+D: K | This one, with the bear! | Cuốn này, có con gấu!
+D: M | Okay. Once upon a time… | Được. Ngày xửa ngày xưa…
+A: M | It's story time! Pick a book. | Tới giờ đọc truyện rồi! Con chọn sách đi.
+A: K | I want the dinosaur book. | Con muốn cuốn khủng long.
+A: M | Let's sit here. Can you turn the page? | Mình ngồi đây nha. Con lật trang được không?
+A: K | Yes! Look, a big dinosaur! | Dạ! Nhìn kìa, con khủng long to!
+A: M | What do you think will happen next? | Con nghĩ tiếp theo sẽ ra sao?
+A: K | He will find his mommy! | Bạn ấy sẽ tìm được mẹ!
+A: M | Let's see… Yes! The end. | Để xem… Đúng rồi! Hết truyện.
+A: K | Again, again! One more time! | Nữa, nữa! Thêm một lần nữa!
+V: book | cuốn sách
+V: story | câu chuyện
+V: page | trang sách
+V: picture | hình
+V: once upon a time | ngày xửa ngày xưa
+V: the end | hết truyện
+P: Can you turn the ___? | Con lật ___ được không?
+E: Can you turn the page? | Con lật trang được không?
+E: Can you find the cat? | Con tìm con mèo được không?
+P: I want the ___ book. | Con muốn cuốn sách về ___.
+E: I want the animal book. | Con muốn cuốn sách về động vật.
+E: I want the car book. | Con muốn cuốn sách về xe.
+## 53
+D: K | Can I ride my bike? | Con đạp xe được không?
+D: M | Yes, put on your helmet. | Được, đội mũ bảo hiểm vào.
+D: K | Look, I'm fast! | Mẹ nhìn nè, con chạy nhanh!
+D: M | Slow down, please! | Chạy chậm lại nha!
+A: M | Let's go to Grandma's house. Get in the car. | Mình qua nhà bà nha. Lên xe đi con.
+A: K | Can I sit by the window? | Con ngồi cạnh cửa sổ được không?
+A: M | Sure. Put on your seat belt. | Được. Thắt dây an toàn vào.
+A: K | Click! Done. | Tách! Xong rồi.
+A: M | Look outside. What do you see? | Nhìn ra ngoài đi. Con thấy gì?
+A: K | A bus and a motorbike! | Xe buýt với xe máy!
+A: M | The light is red. We stop. | Đèn đỏ rồi. Mình dừng lại.
+A: K | Green light! Go, go, go! | Đèn xanh! Đi, đi, đi!
+V: bike | xe đạp
+V: car | xe hơi
+V: bus | xe buýt
+V: motorbike | xe máy
+V: helmet | mũ bảo hiểm
+V: seat belt | dây an toàn
+P: Let's go by ___. | Mình đi bằng ___ nha.
+E: Let's go by bus. | Mình đi bằng xe buýt nha.
+E: Let's go by motorbike. | Mình đi bằng xe máy nha.
+P: Put on your ___. | Mang/đội/thắt ___ vào nha.
+E: Put on your helmet. | Đội mũ bảo hiểm vào nha.
+E: Put on your seat belt. | Thắt dây an toàn vào nha.
+## 54
+D: K | It's raining! | Trời mưa rồi!
+D: M | Let's take an umbrella. | Mình lấy cây dù nha.
+D: K | Can I jump in the puddle? | Con nhảy vào vũng nước được không?
+D: M | Put on your boots first! | Mang ủng vào trước đã!
+A: K | Mommy, listen! What's that sound? | Mẹ ơi, nghe nè! Tiếng gì vậy?
+A: M | That's thunder. Don't be scared. | Đó là tiếng sấm. Đừng sợ nha.
+A: K | Look at the rain! Pitter-patter. | Nhìn mưa kìa! Lộp độp.
+A: M | We can't go to the park today. | Hôm nay mình không đi công viên được.
+A: K | Oh no! What can we do? | Ôi không! Vậy mình làm gì?
+A: M | Let's play inside. We can draw. | Mình chơi trong nhà. Mình vẽ tranh nha.
+A: K | Look, the rain stopped! A rainbow! | Nhìn kìa, tạnh mưa rồi! Cầu vồng!
+A: M | Wow, it's beautiful! | Wow, đẹp quá!
+V: rain | mưa
+V: umbrella | cây dù
+V: raincoat | áo mưa
+V: boots | đôi ủng
+V: puddle | vũng nước
+V: rainbow | cầu vồng
+P: It's ___ outside. | Bên ngoài trời đang ___.
+E: It's raining outside. | Bên ngoài trời đang mưa.
+E: It's sunny outside. | Bên ngoài trời đang nắng.
+P: Let's take ___. | Mình mang theo ___ nha.
+E: Let's take a raincoat. | Mình mang theo áo mưa nha.
+E: Let's take an umbrella. | Mình mang theo cây dù nha.
+## 55
+D: K | Brr, I'm cold! | Brr, con lạnh quá!
+D: M | Put on your jacket. | Mặc áo khoác vào nha.
+D: K | Now I'm warm. | Giờ con ấm rồi.
+D: M | Good! | Tốt rồi!
+A: M | It's very cold today. Let's get dressed warmly. | Hôm nay lạnh lắm. Mình mặc đồ ấm nha.
+A: K | Where's my hat? | Mũ của con đâu?
+A: M | Here it is. And put on your scarf. | Đây nè. Quàng khăn vào nữa.
+A: K | My hands are cold too. | Tay con cũng lạnh nữa.
+A: M | Here are your gloves. | Găng tay của con đây.
+A: K | Can I have some hot milk? | Con uống sữa nóng được không?
+A: M | Sure. Be careful, it's hot. Blow on it. | Được. Cẩn thận nóng nha. Thổi đi con.
+A: K | Mmm, so warm and cozy! | Ừm, ấm áp quá!
+V: cold | lạnh
+V: warm | ấm
+V: jacket | áo khoác
+V: hat | mũ
+V: scarf | khăn quàng cổ
+V: gloves | găng tay
+P: My ___ is cold. | ___ của con bị lạnh.
+E: My nose is cold. | Mũi của con bị lạnh.
+E: My hands are cold. | Tay của con bị lạnh.
+P: Put on your ___. | Mặc/đội/đeo ___ vào nha.
+E: Put on your hat. | Đội mũ vào nha.
+E: Put on your gloves. | Đeo găng tay vào nha.
+## 56
+D: M | I love you! | Mẹ thương con!
+D: K | I love you too, Mommy! | Con cũng thương mẹ!
+D: M | Give me a hug! | Ôm mẹ nào!
+D: K | Big hug! | Ôm thật chặt!
+A: K | Mommy, how much do you love me? | Mẹ ơi, mẹ thương con nhiều cỡ nào?
+A: M | I love you this much! | Mẹ thương con nhiều thế này nè!
+A: K | I love you to the moon! | Con thương mẹ tới tận mặt trăng!
+A: M | And I love you to the moon and back! | Còn mẹ thương con tới mặt trăng rồi quay về!
+A: K | Do you love Daddy too? | Mẹ có thương ba không?
+A: M | Yes, I love our whole family. | Có chứ, mẹ thương cả nhà mình.
+A: K | Can I give Daddy a kiss? | Con hôn ba một cái được không?
+A: M | Of course! He will be so happy. | Tất nhiên rồi! Ba sẽ vui lắm.
+V: love | thương, yêu
+V: hug | cái ôm
+V: kiss | nụ hôn
+V: family | gia đình
+V: kind | tốt bụng
+V: care | quan tâm
+P: I love you ___. | Mẹ thương con ___.
+E: I love you so much. | Mẹ thương con nhiều lắm.
+E: I love you to the moon. | Mẹ thương con tới tận mặt trăng.
+P: Give ___ a ___. | Cho ___ một ___ nào.
+E: Give Daddy a kiss. | Hôn ba một cái nào.
+E: Give Grandma a hug. | Ôm bà một cái nào.
+## 57
+D: K | What are you cooking? | Mẹ đang nấu gì vậy?
+D: M | I'm making soup. | Mẹ đang nấu canh.
+D: K | Can I help? | Con phụ được không?
+D: M | Yes! Stir it, please. | Được! Con khuấy giùm mẹ nha.
+A: M | Let's make pancakes together! | Mình cùng làm bánh kếp nha!
+A: K | Yay! What do we need? | Yeah! Mình cần gì hả mẹ?
+A: M | We need eggs, milk and flour. | Mình cần trứng, sữa và bột.
+A: K | Can I crack the egg? | Con đập trứng được không?
+A: M | Yes, gently. Now pour the milk. | Được, nhẹ tay thôi. Giờ đổ sữa vào.
+A: K | Mix, mix, mix! | Trộn, trộn, trộn!
+A: M | Don't touch the pan. It's hot! | Đừng đụng vào chảo. Nóng đó!
+A: K | Mmm, it smells good! | Ừm, thơm quá!
+V: cook | nấu ăn
+V: pan | cái chảo
+V: pot | cái nồi
+V: spoon | cái muỗng
+V: stir | khuấy
+V: pour | đổ, rót
+P: Can I ___ the ___? | Con ___ được không?
+E: Can I crack the egg? | Con đập trứng được không?
+E: Can I wash the vegetables? | Con rửa rau được không?
+P: We need ___ and ___. | Mình cần ___ và ___.
+E: We need rice and water. | Mình cần gạo và nước.
+E: We need eggs and milk. | Mình cần trứng và sữa.
+## 58
+D: N | Open your mouth, please. | Con há miệng ra nha.
+D: K | Aaah! | Aaa!
+D: N | Your teeth are very clean! | Răng con sạch lắm!
+D: K | I brush every day! | Con đánh răng mỗi ngày!
+A: M | Today we're going to the dentist. | Hôm nay mình đi nha sĩ nha.
+A: K | Will it hurt? | Có đau không mẹ?
+A: M | No, the dentist will just look at your teeth. | Không đâu, nha sĩ chỉ xem răng con thôi.
+A: N | Hello! Sit in this big chair. | Chào con! Ngồi lên cái ghế to này nha.
+A: K | The chair is moving up! | Cái ghế đang nâng lên kìa!
+A: N | Open wide. Let me count your teeth. | Há to ra. Để cô đếm răng con nha.
+A: N | All done! Remember, don't eat too much candy. | Xong rồi! Nhớ đừng ăn nhiều kẹo quá nha.
+A: K | Thank you! I was brave! | Con cảm ơn! Con dũng cảm lắm!
+V: dentist | nha sĩ
+V: tooth | cái răng
+V: teeth | răng (nhiều cái)
+V: mouth | miệng
+V: toothbrush | bàn chải đánh răng
+V: brave | dũng cảm
+P: Open your ___, please. | Con ___ ra nha.
+E: Open your mouth, please. | Con há miệng ra nha.
+E: Open wide, please. | Con há to ra nha.
+P: Don't eat too much ___. | Đừng ăn nhiều ___ quá nha.
+E: Don't eat too much candy. | Đừng ăn nhiều kẹo quá nha.
+E: Don't eat too much sugar. | Đừng ăn nhiều đường quá nha.
+## 59
+D: K | Look at the moon! | Nhìn mặt trăng kìa!
+D: M | It's big and round. | Nó to và tròn.
+D: K | I want to go to space! | Con muốn bay vào vũ trụ!
+D: M | Let's fly in a rocket! | Mình bay bằng tên lửa nha!
+A: K | Mommy, what's up in the sky? | Mẹ ơi, trên trời có gì vậy?
+A: M | There's the sun, the moon and many stars. | Có mặt trời, mặt trăng và nhiều ngôi sao.
+A: K | What's a planet? | Hành tinh là gì hả mẹ?
+A: M | Earth is a planet. We live on Earth. | Trái Đất là một hành tinh. Mình sống trên Trái Đất.
+A: K | Can people go to the moon? | Người ta lên mặt trăng được không?
+A: M | Yes! Astronauts fly there in a rocket. | Được! Phi hành gia bay lên đó bằng tên lửa.
+A: K | Let's count down! Five, four, three, two, one… | Mình đếm ngược nha! Năm, bốn, ba, hai, một…
+A: M | Blast off! | Phóng!
+V: space | vũ trụ
+V: rocket | tên lửa
+V: moon | mặt trăng
+V: star | ngôi sao
+V: planet | hành tinh
+V: astronaut | phi hành gia
+P: I want to go to ___. | Con muốn đi ___.
+E: I want to go to the moon. | Con muốn đi lên mặt trăng.
+E: I want to go to space. | Con muốn đi vào vũ trụ.
+P: There are many ___ in the sky. | Trên trời có nhiều ___.
+E: There are many stars in the sky. | Trên trời có nhiều ngôi sao.
+E: There are many clouds in the sky. | Trên trời có nhiều đám mây.
+## 60
+D: M | Good morning, sunshine! | Chào buổi sáng, nắng mai của mẹ!
+D: K | Good morning, Mommy! | Con chào mẹ buổi sáng!
+D: M | Did you sleep well? | Con ngủ ngon không?
+D: K | Yes! | Dạ ngon!
+A: M | Wake up, sleepyhead! The sun is up. | Dậy đi bé ngủ nướng! Mặt trời lên rồi.
+A: K | Five more minutes, please… | Thêm năm phút nữa thôi mà…
+A: M | It's a new day! Let's open the curtains. | Ngày mới rồi! Mình kéo rèm ra nào.
+A: K | Wow, it's sunny! | Wow, trời nắng!
+A: M | What do you want to do today? | Hôm nay con muốn làm gì?
+A: K | I want to go to the park! | Con muốn đi công viên!
+A: M | First, let's stretch. Arms up high! | Trước tiên, mình vươn vai nào. Giơ tay lên cao!
+A: K | Stretch! I'm ready for the day! | Vươn vai! Con sẵn sàng cho ngày mới rồi!
+V: morning | buổi sáng
+V: wake up | thức dậy
+V: sun | mặt trời
+V: curtains | rèm cửa
+V: stretch | vươn vai
+V: today | hôm nay
+P: Today I want to ___. | Hôm nay con muốn ___.
+E: Today I want to draw. | Hôm nay con muốn vẽ.
+E: Today I want to visit Grandma. | Hôm nay con muốn thăm bà.
+P: Did you ___ well? | Con ___ ngon không?
+E: Did you sleep well? | Con ngủ ngon không?
+E: Did you eat well? | Con ăn ngon không?
+## 61
+D: M | It's bedtime. | Tới giờ đi ngủ rồi.
+D: K | Goodnight, Mommy! | Chúc mẹ ngủ ngon!
+D: M | Goodnight. Sweet dreams! | Chúc con ngủ ngon. Mơ đẹp nha!
+D: K | I love you! | Con thương mẹ!
+A: M | Time for bed. Let's put on your pajamas. | Tới giờ ngủ rồi. Mình mặc đồ ngủ nha.
+A: K | Can I take my teddy bear? | Con ôm gấu bông được không?
+A: M | Of course. Lie down and close your eyes. | Tất nhiên. Nằm xuống và nhắm mắt lại nha.
+A: K | Can you sing me a song? | Mẹ hát cho con nghe được không?
+A: M | Twinkle, twinkle, little star… | Lấp lánh, lấp lánh, ngôi sao nhỏ…
+A: K | Mommy, leave the night light on, please. | Mẹ ơi, để đèn ngủ sáng giùm con.
+A: M | Okay. Goodnight, sleep tight! | Được rồi. Chúc con ngủ ngon, ngủ say nha!
+A: K | See you in the morning! | Sáng mai gặp lại mẹ nha!
+V: bedtime | giờ đi ngủ
+V: pajamas | đồ ngủ
+V: pillow | cái gối
+V: blanket | cái chăn
+V: dream | giấc mơ
+V: night light | đèn ngủ
+P: Goodnight, ___! | Chúc ___ ngủ ngon!
+E: Goodnight, Daddy! | Chúc ba ngủ ngon!
+E: Goodnight, moon! | Chúc mặt trăng ngủ ngon!
+P: Can you ___ me a ___? | Mẹ ___ cho con nghe một ___ được không?
+E: Can you sing me a song? | Mẹ hát cho con nghe một bài được không?
+E: Can you read me a story? | Mẹ đọc cho con nghe một câu chuyện được không?

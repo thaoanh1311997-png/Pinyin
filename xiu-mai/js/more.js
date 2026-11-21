@@ -10,38 +10,7 @@
 
   /* ================= Học giao tiếp: data ================= */
   // [en, vi, icon, word to read]
-  const STOPS = [
-    { k: 'hello', vi: 'Chào hỏi', en: 'Hello & bye', ic: 'waving-hand', c: '#FFD6E2', p: [
-      ['Hello!', 'Xin chào!', 'waving-hand', 'hello'], ['Bye-bye!', 'Tạm biệt!', 'door', 'bye'],
-      ['Good morning!', 'Chào buổi sáng!', 'sunrise', 'morning'], ['Good night!', 'Chúc ngủ ngon!', 'crescent-moon', 'night']] },
-    { k: 'manners', vi: 'Lễ phép', en: 'Please & thank you', ic: 'folded-hands', c: '#FFF1C9', p: [
-      ['Please.', 'Làm ơn ạ.', 'folded-hands', 'please'], ['Thank you!', 'Cảm ơn ạ!', 'wrapped-gift', 'thank you'],
-      ["I'm sorry.", 'Con xin lỗi.', 'pleading-face', 'sorry'], ['Yes, please!', 'Dạ, con muốn ạ!', 'thumbs-up', 'yes']] },
-    { k: 'feel', vi: 'Cảm xúc', en: 'Feelings', ic: 'grinning-face', c: '#E6F5FF', p: [
-      ["I'm happy.", 'Con vui.', 'grinning-face', 'happy'], ["I'm sad.", 'Con buồn.', 'crying-face', 'sad'],
-      ["I'm tired.", 'Con mệt.', 'tired-face', 'tired'], ["I'm angry.", 'Con giận.', 'angry-face', 'angry']] },
-    { k: 'eat', vi: 'Ăn uống', en: 'Eating', ic: 'bowl-with-spoon', c: '#E9FBE2', p: [
-      ["I'm hungry.", 'Con đói bụng.', 'face-savoring-food', 'hungry'], ['More, please.', 'Cho con thêm ạ.', 'bowl-with-spoon', 'more'],
-      ["I'm thirsty.", 'Con khát nước.', 'cup-with-straw', 'thirsty'], ['All done!', 'Con ăn xong rồi!', 'check-mark-button', 'done']] },
-    { k: 'clean', vi: 'Vệ sinh', en: 'Clean up', ic: 'soap', c: '#DDF3FF', p: [
-      ['Wash your hands.', 'Rửa tay nào.', 'soap', 'wash'], ['Brush your teeth.', 'Đánh răng nào.', 'toothbrush', 'brush'],
-      ['Bath time!', 'Đến giờ tắm rồi!', 'bathtub', 'bath'], ['I need to pee.', 'Con muốn đi tè.', 'toilet', 'pee']] },
-    { k: 'dress', vi: 'Mặc đồ', en: 'Getting dressed', ic: 't-shirt', c: '#F1EAFF', p: [
-      ['Put on your shirt.', 'Mặc áo vào nào.', 't-shirt', 'shirt'], ['Put on your shoes.', 'Mang giày vào nào.', 'running-shoe', 'shoes'],
-      ['Put on your hat.', 'Đội mũ vào nào.', 'billed-cap', 'hat'], ['Take off your socks.', 'Cởi vớ ra nào.', 'socks', 'socks']] },
-    { k: 'play', vi: 'Cùng chơi', en: "Let's play", ic: 'teddy-bear', c: '#FFF0E3', p: [
-      ["Let's play!", 'Mình chơi nào!', 'teddy-bear', 'play'], ['Throw the ball!', 'Ném bóng đi!', 'soccer-ball', 'ball'],
-      ["Let's sing!", 'Mình hát nào!', 'musical-notes', 'sing'], ["Let's dance!", 'Mình nhảy nào!', 'woman-dancing', 'dance']] },
-    { k: 'out', vi: 'Đi chơi', en: 'Going out', ic: 'automobile', c: '#E9FBE2', p: [
-      ["Let's go!", 'Đi thôi!', 'person-walking', 'go'], ['Get in the car.', 'Lên xe nào.', 'automobile', 'car'],
-      ['Look, a bird!', 'Nhìn kìa, con chim!', 'bird', 'bird'], ['Hold my hand.', 'Nắm tay mẹ nhé.', 'hand-with-fingers-splayed', 'hand']] },
-    { k: 'help', vi: 'Nhờ giúp đỡ', en: 'Help me', ic: 'raising-hands', c: '#FFE3B8', p: [
-      ['Help me, please.', 'Giúp con với ạ.', 'raising-hands', 'help'], ["I'm hurt.", 'Con bị đau.', 'adhesive-bandage', 'hurt'],
-      ['Where is Mommy?', 'Mẹ đâu rồi?', 'woman', 'Mommy'], ['Hug me!', 'Ôm con đi!', 'people-hugging', 'hug']] },
-    { k: 'bed', vi: 'Đi ngủ', en: 'Bedtime', ic: 'bed', c: '#E4E6FF', p: [
-      ['Time for bed.', 'Đến giờ đi ngủ rồi.', 'bed', 'bed'], ['Read a book, please.', 'Đọc sách cho con nhé.', 'open-book', 'book'],
-      ['Close your eyes.', 'Nhắm mắt lại nào.', 'sleeping-face', 'eyes'], ['I love you.', 'Con yêu mẹ.', 'red-heart', 'love']] },
-  ];
+  const STOPS = window.XM_STOPS || [];
   const TASKS = [['l', '👂', 'Nghe', 'Nghe và chọn hình'], ['s', '🗣️', 'Nói', 'Nói theo Xíu Mại'], ['r', '📖', 'Đọc', 'Đọc chữ, chọn hình']];
   const gt = () => LS.get('gt', {});
   const starsOf = i => { const g = gt()[i] || {}; return ['l', 's', 'r'].filter(t => g[t]).length; };
@@ -68,7 +37,8 @@
             <span class="b" style="background:${s.c}"><img src="${W(s.ic)}" alt="">${lk ? '<em>🔒</em>' : ''}</span>
             <span class="st">${[0, 1, 2].map(k => `<i class="${k < n ? 'y' : ''}">★</i>`).join('')}</span>
             <span class="lb"><small>Chặng ${i + 1}</small>${s.vi}</span></a>`; }).join('')}
-        ${STOPS.map((s, i) => { const L = ['deciduous-tree', 'sunflower', 'evergreen-tree', 'tulip', 'mushroom', 'blossom', 'deciduous-tree', 'four-leaf-clover', 'evergreen-tree', 'sunflower'][i]; const x = xs[i] > 50 ? 8 + (i % 3) * 4 : 80 - (i % 3) * 4; return `<img class="gtdeco" src="${W(L)}" alt="" style="left:${x}%;top:${pts[i][1] - 10 + (i % 2) * 30}px">`; }).join('')}
+        ${STOPS.map((s, i) => { const L = ['deciduous-tree', 'sunflower', 'evergreen-tree', 'tulip', 'mushroom', 'blossom', 'deciduous-tree', 'four-leaf-clover', 'evergreen-tree', 'sunflower'][i % 10]; const x = xs[i] > 50 ? 8 + (i % 3) * 4 : 80 - (i % 3) * 4; return `<img class="gtdeco" src="${W(L)}" alt="" style="left:${x}%;top:${pts[i][1] - 10 + (i % 2) * 30}px">`; }).join('')}
+        ${STOPS.map((s, i) => i && i % 10 === 0 ? `<div class="gtch" style="top:${pts[i][1] - H / 2 - 4}px">🏁 Vùng ${i / 10 + 1}</div>` : '').join('')}
         <div class="gtend" style="top:${total - 70}px"><img src="${W('trophy')}" alt=""></div>
       </div></div>`);
     app.querySelectorAll('.gtn.lk').forEach(a => a.onclick = e => { e.preventDefault(); say('Get three stars first!'); toast('Hoàn thành chặng trước (đủ 3 ⭐) để mở chặng này nhé!'); });
@@ -80,12 +50,14 @@
     const i = n - 1, s = STOPS[i]; if (!s) return go('#/giao-tiep');
     if (!unlocked(i)) return go('#/giao-tiep');
     setTabs('kid', '');
+    if (task === 'ba-me') return parentPage(i);
     if (task) return runTask(i, task);
     const g = gt()[i] || {};
     view(bar(`Chặng ${n}. ${s.vi}`, '#/giao-tiep', starPill()) + `<div class="gtstop">
       <div class="gtsh" style="background:${s.c}"><img src="${W(s.ic)}" alt=""><div><b>${s.en}</b><small>${s.vi} · ${starsOf(i)}/3 ⭐</small></div></div>
       <div class="gtph">${s.p.map((p, k) => `<button class="gtp" data-k="${k}"><img src="${W(p[2])}" alt=""><span><b>${esc(p[0])}</b><small>${esc(p[1])}</small></span><i>🔊</i></button>`).join('')}</div>
       <div class="gttasks">${TASKS.map(t => `<a class="gtt ${g[t[0]] ? 'done' : ''}" href="#/giao-tiep/${n}/${t[0]}"><span class="e">${t[1]}</span><b>${t[2]}</b><small>${t[3]}</small><span class="s">${g[t[0]] ? '⭐' : '☆'}</span></a>`).join('')}</div>
+      <a class="gtpar" href="#/giao-tiep/${n}/ba-me"><span>👩‍👧</span><div><b>Ba mẹ học cùng con</b><small>Luyện nói 4 câu này, rồi cùng con đóng vai</small></div><span class="go">›</span></a>
       ${starsOf(i) >= 3 && STOPS[i + 1] ? `<a class="btn gtnext" href="#/giao-tiep/${n + 1}">Chặng tiếp: ${STOPS[i + 1].vi} ▶</a>` : ''}</div>`);
     app.querySelectorAll('.gtp').forEach(b => b.onclick = () => { const p = s.p[b.dataset.k]; say(p[0]); });
   }
@@ -95,6 +67,33 @@
     const all = starsOf(i) >= 3;
     cheer(all ? 'Three stars! Hooray!' : 'Great job!', fresh);
     setTimeout(() => go(all && STOPS[i + 1] ? '#/giao-tiep' : '#/giao-tiep/' + (i + 1)), 1900);
+  }
+  function parentPage(i) {
+    const s = STOPS[i], n = i + 1;
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const done = LS.get('gtp', {})[i] || [];
+    view(bar(`👩‍👧 Học cùng con · ${s.vi}`, '#/giao-tiep/' + n) + `<div class="gtstop">
+      <div class="panel"><div class="ph">1️⃣ Ba mẹ luyện nói</div><p class="muted" style="margin:0 0 8px;font-size:15px">Nghe mẫu, rồi bấm 🎤 đọc thử. Chữ xanh là đúng, chữ đỏ đọc lại nhé.</p>
+      ${s.p.map((p, k) => `<div class="pp"><div class="ppl" id="pl${k}">${p[0].split(' ').map(w => `<span class="pw">${esc(w)}</span>`).join(' ')}</div><small>${esc(p[1])}</small>
+        <div class="ppb"><button data-a="n" data-k="${k}">🔊 Nghe</button><button data-a="s" data-k="${k}">🐢 Chậm</button>${SR ? `<button data-a="m" data-k="${k}" class="pri">🎤 Đọc thử</button>` : ''}<span class="ppr" id="pr${k}"></span></div></div>`).join('')}</div>
+      <div class="panel"><div class="ph">2️⃣ Cùng con đóng vai</div>
+        <ol class="ppol"><li>Ba mẹ nói câu và làm động tác, bé nhìn và nghe.</li><li>Bé nói theo (nói 1 chữ cũng được, khen thật to!).</li><li>Đổi vai: bé nói, ba mẹ làm theo.</li><li>Dùng lại các câu này trong ngày, đúng lúc thật.</li></ol>
+        ${s.p.map((p, k) => `<label class="ppc"><input type="checkbox" data-k="${k}" ${done.includes(k) ? 'checked' : ''}><span>Hôm nay đã nói “${esc(p[0])}” với con</span></label>`).join('')}</div>
+      <a class="btn gtnext" href="#/giao-tiep/${n}">Xong, cho bé làm nhiệm vụ ▶</a></div>`);
+    const norm = x => x.toLowerCase().replace(/[’]/g, "'").replace(/[^a-z0-9' ]+/g, ' ').trim();
+    app.querySelectorAll('.ppb button').forEach(b => b.onclick = () => {
+      const k = +b.dataset.k, p = s.p[k];
+      if (b.dataset.a === 'n') return say(p[0], { rate: 0.9 });
+      if (b.dataset.a === 's') return say(p[0], { rate: 0.6 });
+      const r = new SR(); r.lang = 'en-US'; r.maxAlternatives = 3; b.disabled = true; b.textContent = '👂…';
+      r.onresult = e => { const heard = new Set(); [...e.results[0]].forEach(a => norm(a.transcript).split(' ').forEach(w => heard.add(w)));
+        let ok = 0, tot = 0; $('#pl' + k).querySelectorAll('.pw').forEach(sp => { const w = norm(sp.textContent); if (!w) return; tot++; const g = heard.has(w); ok += g; sp.classList.toggle('good', g); sp.classList.toggle('bad', !g); });
+        const pc = tot ? Math.round(ok / tot * 100) : 0; $('#pr' + k).textContent = pc + '% ' + (pc >= 80 ? '🌟' : pc >= 50 ? '👍' : '💪'); };
+      r.onerror = () => { $('#pr' + k).textContent = 'Chưa nghe rõ'; };
+      r.onend = () => { b.disabled = false; b.textContent = '🎤 Đọc thử'; };
+      try { r.start(); } catch (e) { r.onend(); }
+    });
+    app.querySelectorAll('.ppc input').forEach(c => c.onchange = () => { const G = LS.get('gtp', {}); const a = new Set(G[i] || []); c.checked ? a.add(+c.dataset.k) : a.delete(+c.dataset.k); G[i] = [...a]; LS.set('gtp', G); if (c.checked) toast('Tuyệt vời! 💛'); });
   }
   function runTask(i, t) {
     const s = STOPS[i], order = shuffle(s.p.slice()); let k = 0;
@@ -140,27 +139,40 @@
   }
 
   /* ================= Video dialogues (Ba Mẹ) ================= */
-  const DVIDS = [
-    { k: 'rang', vi: 'Đánh răng', id: 'ARhIce1VEpg', ch: 'Everyday English For Kids', t: 'Learn English with Adam & Mom: Brush Your Teeth', alt: 'rmm4GCfaJhY', p: [
-      ["Let's brush your teeth.", 'Mình đi đánh răng nào.'], ["Here's your toothbrush.", 'Bàn chải của con đây.'],
-      ['Just a little toothpaste.', 'Một chút kem đánh răng thôi.'], ['Open wide!', 'Há miệng to ra nào!'],
-      ['Brush up and down.', 'Chải lên, chải xuống.'], ['Round and round.', 'Chải xoay tròn.'],
-      ['Spit it out.', 'Nhổ ra nào.'], ["Rinse your mouth. Don't swallow the water.", 'Súc miệng nhé. Đừng nuốt nước nha.'],
-      ['Show me your teeth. So clean!', 'Cho mẹ xem răng nào. Sạch quá!'], ['I did it!', 'Con làm được rồi!']] },
-  ];
-  function dvList() {
-    return `<div class="panel dvbox"><div class="ph">🎬 Hội thoại qua video <span class="new">MỚI</span></div><p class="muted" style="margin:0 0 8px;font-size:15px">Hoạt hình mẹ và bé nói chuyện, có phụ đề chạy kèm nghĩa, chạm câu để tua, nghe lại từng câu.</p>
-      ${DVIDS.map(v => `<a class="dvc" href="#/bame/video-hoi-thoai/${v.k}"><img src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="" onerror="this.src='${W(v.k === 'rang' ? 'toothbrush' : 'television')}'"><div><b>${v.vi}</b><small>${esc(v.t)}</small></div><span class="go">›</span></a>`).join('')}</div>`;
+  // Hội thoại thường ngày = short dialogue videos (gentle channels), phrases reuse the checked EPISODES lines
+  const VIDMAP = {
+    sang: [['_nwUf5vMsqI', 'Good Morning! (Max, Mia & Teddy)']],
+    rang: [['ARhIce1VEpg', 'Adam & Mom: Brush Your Teeth'], ['rmm4GCfaJhY', 'Brushing My Teeth! (Max, Mia & Teddy)']],
+    an: [['hjVdugdX9jE', 'Asking for Water (Mom & Sweetie)'], ['-MvYOA4pdvk', 'At the Restaurant (Max, Mia & Teddy)']],
+    mac: [['Cyv6cAlrRn8', 'My Shoes (Max, Mia & Teddy)']],
+    rua: [['kO7xBbPdk6U', 'Bathroom Words (Max, Mia & Teddy)']],
+    choi: [['NFkFvY41VzY', 'Play with Mom (Mom & Sweetie)'], ['iEGtvzE469s', 'Toy Names (Max, Mia & Teddy)']],
+    don: [['bANTGOT_T44', 'My Bedroom (Max, Mia & Teddy)'], ['PJJe0rAPLE8', 'My House (Max, Mia & Teddy)']],
+    congvien: [['qp7n4s57f4I', 'Jump, Run, Walk! (Max, Mia & Teddy)']],
+    tam: [['kO7xBbPdk6U', 'Bathroom Words (Max, Mia & Teddy)']],
+    ngu: [['o5XlK7wU9Cw', 'Bedtime Routine (Mom & Sweetie)'], ['_DQi_w0CD9M', 'Adam & Mom: Time for Bed']],
+    sieuthi: [['ZeFxoT1vDGU', 'At the Supermarket (Mom & Sweetie)'], ['UxRXL4wNNXo', 'At the Supermarket (Max, Mia & Teddy)']],
+    dau: [['vgzpJM4sac4', 'How Do You Feel? (Max, Mia & Teddy)'], ['nM9vPg0PZ0o', 'Body Parts (Max, Mia & Teddy)']],
+    tamviet: [['3p2-bb3H8CY', 'My Family (Max, Mia & Teddy)']],
+    mua: [['5U2LZY39AsI', 'Forgot Umbrella (Mom & Sweetie)'], ['n8bU-PGOADc', 'Weather (Max, Mia & Teddy)']],
+  };
+  const EPS = () => (window.EPISODES || []).filter(e => VIDMAP[e.id]);
+  const epPhrases = e => { const seen = new Set(), out = []; e.panels.forEach(p => p.lines.forEach(l => { if (!seen.has(l[1])) { seen.add(l[1]); out.push([l[1], l[2], l[0]]); } })); return out; };
+  function epsPage() {
+    setTabs('parent', '');
+    view(bar('Hội thoại thường ngày', '#/bame') + `<p class="muted" style="margin:0 0 10px;font-size:16px">Video hoạt hình mẹ và bé nói chuyện theo từng lúc trong ngày. Có phụ đề chạy kèm nghĩa, nghe lại từng câu, luyện nói, và câu mẫu để dùng với con.</p>
+      <div class="dvgrid">${EPS().map((e, i) => `<a class="dvt" href="#/bame/hoi-thoai/${e.id}"><div class="th"><img loading="lazy" src="https://i.ytimg.com/vi/${VIDMAP[e.id][0][0]}/mqdefault.jpg" alt="" onerror="this.src='${W(e.icon)}'"><span>▶</span></div><b>${i + 1}. ${esc(e.vi)}</b><small>${esc(e.en)} · ${VIDMAP[e.id].length} video</small></a>`).join('')}</div>`);
   }
-  function dvPage(k, alt) {
-    const v = DVIDS.find(x => x.k === k); if (!v) return go('#/bame/hoi-thoai');
-    const id = alt && v.alt ? v.alt : v.id;
-    const extra = `<div class="panel dvp"><div class="ph">💬 Câu mẫu dùng hằng ngày với con</div>
-      ${v.p.map(p => `<button class="dvl"><span>🔊</span><div><b>${esc(p[0])}</b><small>${esc(p[1])}</small></div></button>`).join('')}
-      ${v.alt ? `<a class="dvalt" href="#/bame/video-hoi-thoai/${v.k}${alt ? '' : '/2'}">🎞️ ${alt ? 'Xem video 1' : 'Xem thêm 1 video khác cùng chủ đề'}</a>` : ''}</div>`;
-    R.play(id, { title: `🎬 ${v.vi}`, back: '#/bame/hoi-thoai', vt: alt ? 'Brushing My Teeth (Max, Mia & Teddy)' : v.t, extra }).then(() => {
+  function epPage(id, n) {
+    const e = EPS().find(x => x.id === id); if (!e) return go('#/bame/hoi-thoai');
+    const vs = VIDMAP[id]; const k = Math.min(vs.length - 1, Math.max(0, (+n || 1) - 1));
+    const P = epPhrases(e);
+    const extra = `${vs.length > 1 ? `<div class="dvsw">${vs.map((v, j) => `<a class="${j === k ? 'on' : ''}" href="#/bame/hoi-thoai/${id}/${j + 1}">🎞️ Video ${j + 1}</a>`).join('')}</div>` : ''}
+      <div class="panel dvp"><div class="ph">💬 Câu mẫu dùng với con: ${esc(e.vi)}</div>
+      ${P.map(p => `<button class="dvl"><span>${p[2] === 'k' ? '🧒' : '👩'}</span><div><b>${esc(p[0])}</b><small>${esc(p[1])}</small></div></button>`).join('')}</div>`;
+    R.play(vs[k][0], { title: `🎬 ${e.vi}`, back: '#/bame/hoi-thoai', vt: vs[k][1], extra }).then(() => {
       setTabs('parent', '');
-      app.querySelectorAll('.dvl').forEach((b, j) => b.onclick = () => say(v.p[j][0]));
+      app.querySelectorAll('.dvl').forEach((b, j) => b.onclick = () => say(P[j][0]));
     });
   }
 
@@ -292,15 +304,13 @@
   }
 
   /* ================= hooks into existing pages ================= */
-  const origEps = R.eps;
-  R.eps = () => { origEps(); const bx = app.querySelector('.eplist'); if (bx) bx.insertAdjacentHTML('beforebegin', dvList()); };
-  const origRang = R.ep;
-  R.ep = id => { origRang(id); const v = DVIDS.find(x => x.k === id); const t = app.querySelector('.tool'); if (v && t) t.insertAdjacentHTML('afterend', `<a class="dvc mini" href="#/bame/video-hoi-thoai/${v.k}"><span>🎬</span><div><b>Xem video hoạt hình chủ đề này</b><small>Có phụ đề chạy, nghe lại từng câu</small></div><span class="go">›</span></a>`); };
+  R.eps = epsPage; R.ep = id => epPage(id, 1);
 
   window.XMX = {
     route(a, b, c, d) {
       if (a === 'giao-tiep') { b ? stopPage(+b, c) : mapPage(); return true; }
-      if (a === 'bame' && b === 'video-hoi-thoai') { dvPage(c, d === '2'); return true; }
+      if (a === 'bame' && b === 'hoi-thoai') { c ? epPage(c, d) : epsPage(); return true; }
+      if (a === 'bame' && b === 'video-hoi-thoai') { epPage(c || 'rang', d); return true; }
       if (a === 'bame' && b === 'gio-xem') { stPage(); return true; }
       if (a === 'bame' && b === 'so-tien-bo') { bookPage(); return true; }
       if (a === 'bame' && b === 'giong-doc') { voicePage(); return true; }

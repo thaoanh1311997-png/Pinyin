@@ -13,19 +13,19 @@ rabbit | con thỏ | Rabbit face | Domestic rabbit
 hamster | chuột hamster | Hamster |
 mouse | con chuột | Mouse face | House mouse
 cow | con bò | Cow face | Cattle
-calf | con bê | Ox | Calf
+calf | con bê | Ox | File:Close-up photograph of a calf's head looking at the viewer with pricked ears in Don Det Laos.jpg
 pig | con heo | Pig face | Domestic pig
 horse | con ngựa | Horse face |
 pony | ngựa con | Horse | Pony
 donkey | con lừa | Donkey |
 sheep | con cừu | Ewe |
-lamb | cừu con | Ram | -
+lamb | cừu con | Ram | Lambing
 goat | con dê | Goat |
 buffalo | con trâu | Water buffalo | Water buffalo
 chicken | con gà | Chicken |
 rooster | gà trống | Rooster |
-hen | gà mái | Chicken | Hen
-chick | gà con | Baby chick | -
+hen | gà mái | Chicken | File:3 Chickens.jpg
+chick | gà con | Baby chick | File:Fuzzy yellow chicks in a brooder.jpg
 duck | con vịt | Duck | Mallard
 duckling | vịt con | Duck | Duckling
 goose | con ngỗng | Goose | Domestic goose
@@ -68,7 +68,7 @@ beaver | hải ly | Beaver |
 skunk | chồn hôi | Skunk | Striped skunk
 badger | con lửng | Badger | European badger
 bison | bò rừng | Bison | American bison
-mammoth | voi ma mút | Mammoth | -
+mammoth | voi ma mút | Mammoth | File:Woolly Mammoth-RBC.jpg
 """),
 ('birds', 'Các loài chim', 'Birds', '#D9F0FF', True, """
 bird | con chim | Bird | House sparrow
@@ -89,7 +89,7 @@ seagull | hải âu | - | Gull
 kingfisher | bói cá | - | Common kingfisher
 stork | con cò | - | White stork
 nest | tổ chim | Nest with eggs | Bird nest
-feather | lông vũ | Feather | -
+feather | lông vũ | Feather | File:A single white feather closeup.jpg
 """),
 ('sea', 'Dưới biển', 'Sea animals', '#CDEBFF', True, """
 fish | con cá | Tropical fish | Clownfish
@@ -100,19 +100,19 @@ octopus | bạch tuộc | Octopus | Common octopus
 crab | con cua | Crab |
 jellyfish | con sứa | Jellyfish |
 seal | hải cẩu | Seal | Harbor seal
-sea lion | sư tử biển | Seal | -
+sea lion | sư tử biển | Seal | Sea lion
 walrus | hải mã | - | Walrus
-shrimp | con tôm | Shrimp | -
+shrimp | con tôm | Shrimp | Shrimp
 squid | con mực | Squid |
 lobster | tôm hùm | Lobster | American lobster
 starfish | sao biển | - | Starfish
 seahorse | cá ngựa | - | Seahorse
 sea turtle | rùa biển | Turtle | Green sea turtle
-clam | con nghêu | Oyster | Clam
+clam | con nghêu | Oyster | File:Clams, Mumbai seafood 02.jpg
 oyster | con hàu | Oyster |
-shell | vỏ sò | Spiral shell | -
+shell | vỏ sò | Spiral shell | File:Flexopecten ponticus 2008 G1.jpg
 coral | san hô | Coral |
-pufferfish | cá nóc | Blowfish | -
+pufferfish | cá nóc | Blowfish | File:Takifugu poecilonotus by DaijuAzuma.JPG
 stingray | cá đuối | - | Stingray
 eel | con lươn | - | Eel
 """),
@@ -132,7 +132,7 @@ grasshopper | châu chấu | Cricket | Grasshopper
 cricket | con dế | Cricket | Cricket (insect)
 dragonfly | chuồn chuồn | - | Dragonfly
 firefly | đom đóm | - | Firefly
-cockroach | con gián | Cockroach | -
+cockroach | con gián | Cockroach | File:Blatta orientalis Trento 03.jpg
 scorpion | bọ cạp | Scorpion |
 moth | bướm đêm | - | Moth
 spider web | mạng nhện | Spider web |
@@ -149,14 +149,14 @@ melon | dưa lưới | Melon | Cantaloupe
 strawberry | dâu tây | Strawberry |
 pineapple | quả thơm (dứa) | Pineapple |
 mango | quả xoài | Mango |
-peach | quả đào | Peach | -
+peach | quả đào | Peach | File:Silver ring with chalcedony and peaches by ASQ.jpg
 pear | quả lê | Pear |
 cherries | anh đào | Cherries | Cherry
 lemon | chanh vàng | Lemon |
 lime | chanh xanh | Lemon | Key lime
-coconut | quả dừa | Coconut | -
+coconut | quả dừa | Coconut | File:Coconut (halved) (3330701660).jpg
 blueberries | việt quất | Blueberries | Blueberry
-kiwi | quả kiwi | Kiwi fruit | -
+kiwi | quả kiwi | Kiwi fruit | File:Kiwi aka.jpg
 papaya | đu đủ | - | -
 guava | quả ổi | - | Guava
 dragon fruit | thanh long | - | Pitaya
@@ -183,18 +183,18 @@ olive | quả ô liu | Olive |
 ('vegetables', 'Rau củ', 'Vegetables', '#D8F5D0', True, """
 carrot | cà rốt | Carrot |
 tomato | cà chua | Tomato |
-corn | bắp (ngô) | Ear of corn | -
+corn | bắp (ngô) | Ear of corn | File:Corn on the cob - Massachusetts.jpg
 potato | khoai tây | Potato |
 sweet potato | khoai lang | Roasted sweet potato | Sweet potato
 cucumber | dưa leo | Cucumber |
 broccoli | bông cải xanh | Broccoli |
 cauliflower | bông cải trắng | - | Cauliflower
 cabbage | bắp cải | Leafy green | Cabbage
-lettuce | xà lách | Leafy green | -
+lettuce | xà lách | Leafy green | Lettuce
 spinach | rau chân vịt | Leafy green | Spinach
-onion | củ hành | Onion | -
-garlic | củ tỏi | Garlic | -
-ginger | gừng | Ginger root | -
+onion | củ hành | Onion | Onion
+garlic | củ tỏi | Garlic | File:Garlic bulbs and cloves.jpg
+ginger | gừng | Ginger root | File:Ginger Root.jpg
 mushroom | cây nấm | Mushroom | Agaricus bisporus
 eggplant | cà tím | Eggplant |
 bell pepper | ớt chuông | Bell pepper |
@@ -202,7 +202,7 @@ chili | trái ớt | Hot pepper | Chili pepper
 pumpkin | bí đỏ | Jack-o-lantern | Pumpkin
 peas | đậu Hà Lan | Pea pod | Pea
 green beans | đậu que | - | Green bean
-peanut | đậu phộng | Peanuts | -
+peanut | đậu phộng | Peanuts | File:Roasted Peanuts with shell.jpg
 beans | hạt đậu | Beans | Bean
 radish | củ cải | - | Radish
 beet | củ dền | - | Beetroot
@@ -216,27 +216,27 @@ taro | khoai môn | - | -
 cassava | khoai mì | - | -
 bamboo shoot | măng | - | -
 bean sprouts | giá đỗ | - | Mung bean sprout
-herbs | rau thơm | Herb | -
+herbs | rau thơm | Herb | File:Fresh Herbs (Unsplash).jpg
 """),
 ('food', 'Món ăn', 'Food', '#FFF0C2', True, """
-rice | cơm | Cooked rice | -
-bread | bánh mì | Bread | -
+rice | cơm | Cooked rice | Cooked rice
+bread | bánh mì | Bread | Bread
 baguette | bánh mì que | Baguette bread | Baguette
 egg | quả trứng | Egg | Egg as food
 fried egg | trứng chiên | Cooking | Fried egg
-noodles | mì sợi | Steaming bowl | -
+noodles | mì sợi | Steaming bowl | Noodle
 pho | phở | Steaming bowl | Pho
 soup | canh (súp) | Pot of food | Soup
 porridge | cháo | Bowl with spoon | Congee
 meat | thịt | Cut of meat | Meat
-chicken meat | thịt gà | Poultry leg | -
-fish meat | cá (món ăn) | Fried shrimp | -
-sausage | xúc xích | Hot dog | -
+chicken meat | thịt gà | Poultry leg | File:Max's Roasted Chicken - Evan Swigart.jpg
+fish meat | cá (món ăn) | Fried shrimp | File:Fish fry (90626).jpg
+sausage | xúc xích | Hot dog | File:German sausages in Tokyo, plus sauerkraut and mustard.jpg
 hamburger | bánh hamburger | Hamburger |
 hot dog | bánh mì xúc xích | Hot dog |
 sandwich | bánh sandwich | Sandwich |
 pizza | bánh pizza | Pizza |
-spaghetti | mì Ý | Spaghetti | -
+spaghetti | mì Ý | Spaghetti | File:Spaghetti with Meat Sauce in Plastic Container.jpg
 french fries | khoai tây chiên | French fries |
 salad | rau trộn | Green salad | Salad
 dumpling | há cảo | Dumpling |
@@ -246,11 +246,11 @@ rice ball | cơm nắm | Rice ball | Onigiri
 pancake | bánh kếp | Pancakes | Pancake
 waffle | bánh waffle | Waffle |
 taco | bánh taco | Taco |
-cheese | phô mai | Cheese wedge | -
+cheese | phô mai | Cheese wedge | Cheese
 butter | bơ | Butter |
 honey | mật ong | Honey pot | Honey
 jam | mứt | - | Fruit preserves
-salt | muối | Salt | -
+salt | muối | Salt | File:Salt and pepper by Sierra.jpg
 sugar | đường | - | Sugar
 tofu | đậu hũ | - | Tofu
 yogurt | sữa chua | - | Yogurt
@@ -275,11 +275,11 @@ cake | bánh kem | Birthday cake | Birthday cake
 cupcake | bánh cupcake | Cupcake |
 cookie | bánh quy | Cookie | Chocolate chip cookie
 ice cream | kem | Soft ice cream | Ice cream
-candy | kẹo | Candy | -
+candy | kẹo | Candy | Candy
 lollipop | kẹo mút | Lollipop |
 chocolate | sô-cô-la | Chocolate bar | Chocolate
 donut | bánh vòng | Doughnut |
-popcorn | bắp rang | Popcorn | -
+popcorn | bắp rang | Popcorn | File:Popcorn 1.jpg
 pie | bánh nướng | Pie |
 pudding | bánh flan | Custard | Crème caramel
 croissant | bánh sừng bò | Croissant |
@@ -385,8 +385,8 @@ princess | công chúa | Princess |
 shirt | áo thun | T-shirt | T-shirt
 pants | quần dài | Jeans | Jeans
 jeans | quần jean | Jeans |
-shorts | quần đùi | Shorts |
-dress | cái đầm | Dress | -
+shorts | quần đùi | Shorts | File:Men's Shorts - Old Bull Lee - Orange.jpg
+dress | cái đầm | Dress | File:Dress with circle skirt in the wind - pose 1.jpg
 skirt | chân váy | - | -
 socks | đôi vớ | Socks | Sock
 shoes | đôi giày | Running shoe | Sneakers
@@ -396,7 +396,7 @@ boots | đôi ủng | Womans boot | Wellington boot
 hat | cái nón | Billed cap | Baseball cap
 cap | mũ lưỡi trai | Billed cap | Baseball cap
 helmet | mũ bảo hiểm | Rescue workers helmet | Bicycle helmet
-coat | áo khoác | Coat | -
+coat | áo khoác | Coat | File:Polo Ralph Lauren winter coat jacket.jpg
 jacket | áo gió | Coat | Jacket
 sweater | áo len | - | Sweater
 scarf | khăn quàng | Scarf |
@@ -404,15 +404,15 @@ gloves | găng tay | Gloves | Glove
 glasses | mắt kính | Glasses |
 sunglasses | kính râm | Sunglasses |
 pajamas | đồ ngủ | - | -
-swimsuit | đồ bơi | One-piece swimsuit | -
+swimsuit | đồ bơi | One-piece swimsuit | File:Chloe Sutton - USA Swimsuit (4661622460) (alternate version).jpg
 raincoat | áo mưa | - | Raincoat
-tie | cà vạt | Necktie |
+tie | cà vạt | Necktie | File:Knoten 003 2024 02 20.jpg
 belt | thắt lưng | - | Belt (clothing)
 button | cái nút áo | - | Button
 bag | cái túi | Handbag |
 watch | đồng hồ đeo tay | Watch |
 necklace | vòng cổ | Prayer beads | Necklace
-ring | nhẫn | Ring |
+ring | nhẫn | Ring | File:Black Opal Ring with Gold Nuggets.JPG
 umbrella | cây dù | Umbrella |
 """),
 ('baby', 'Đồ của bé', 'Baby things', '#FFE8F2', True, """
@@ -438,15 +438,15 @@ comb | cái lược | - | Comb
 ('toys', 'Đồ chơi', 'Toys', '#FFE0EC', True, """
 ball | quả bóng | Soccer ball | Ball
 teddy bear | gấu bông | Teddy bear |
-doll | búp bê | Nesting dolls | -
+doll | búp bê | Nesting dolls | File:Baby doll-Calineczka-2006.jpg
 balloon | bong bóng | Balloon | Toy balloon
 kite | con diều | Kite |
 yo-yo | con yo-yo | Yo-yo |
 puzzle | xếp hình | Puzzle piece | Jigsaw puzzle
 blocks | khối gỗ | Brick | Toy block
-robot | người máy | Robot | -
+robot | người máy | Robot | Toy robot
 bubbles | bong bóng xà phòng | Bubbles | Soap bubble
-slide | cầu tuột | Playground slide | -
+slide | cầu tuột | Playground slide | File:Playground Slide Metal.jpg
 swing | xích đu | - | -
 seesaw | bập bênh | - | -
 sandbox | hố cát | - | Sandpit
@@ -456,16 +456,15 @@ dice | xúc xắc | Game die | Dice
 crayons | bút sáp | Crayon | Crayon
 play dough | đất nặn | - | -
 rocking horse | ngựa gỗ | Carousel horse | Rocking horse
-kick scooter | xe trượt | Kick scooter | -
+kick scooter | xe trượt | Kick scooter | File:Gabriel riding a kick scooter in a cycle lane, Lisbon, Portugal (PPL1-Corrected) julesvernex2.jpg
 tricycle | xe ba bánh | - | -
 spinning top | con quay | - | Spinning top
-magic wand | đũa thần | Magic wand | -
 """),
 ('vehicles', 'Xe cộ', 'Vehicles', '#FFE5D2', True, """
 car | xe hơi | Automobile |
 bus | xe buýt | Bus |
 school bus | xe đưa đón | Bus | School bus
-taxi | xe taxi | Taxi | -
+taxi | xe taxi | Taxi | Taxicab
 truck | xe tải | Delivery truck |
 fire truck | xe cứu hỏa | Fire engine | Fire engine
 police car | xe cảnh sát | Police car |
@@ -477,7 +476,7 @@ train | tàu hỏa | Locomotive | Train
 subway | tàu điện ngầm | Metro | Rapid transit
 airplane | máy bay | Airplane | Airliner
 helicopter | trực thăng | Helicopter |
-boat | thuyền | Sailboat | -
+boat | thuyền | Sailboat | Boat
 ship | tàu thủy | Ship | Cruise ship
 canoe | xuồng | Canoe | Canoe
 rocket | tên lửa | Rocket |
@@ -487,7 +486,7 @@ crane | xe cẩu | Building construction | Mobile crane
 bulldozer | xe ủi | - | Bulldozer
 cement mixer | xe trộn bê tông | - | -
 garbage truck | xe rác | - | Garbage truck
-race car | xe đua | Racing car | Formula One car
+race car | xe đua | Racing car | File:2015 BMW M4 DTM touring race car at Hockenheimring, Germany (Ank Kumar, Infosys Limited) 01.jpg
 cable car | cáp treo | Aerial tramway | Gondola lift
 hot air balloon | khinh khí cầu | - | Hot air balloon
 submarine | tàu ngầm | - | Submarine
@@ -495,17 +494,17 @@ cyclo | xích lô | - | -
 skateboard | ván trượt | Skateboard |
 """),
 ('home', 'Trong nhà', 'Home', '#F3E6D8', True, """
-house | ngôi nhà | House with garden | -
-bed | cái giường | Bed | -
+house | ngôi nhà | House with garden | File:Ranch style home in Salinas, California.JPG
+bed | cái giường | Bed | File:Cozy bedroom with a large bed and simple decor in a modern home.jpg
 chair | cái ghế | Chair |
 table | cái bàn | - | -
-door | cánh cửa | Door | -
-window | cửa sổ | Window | -
+door | cánh cửa | Door | File:Front door refinishing.jpg
+window | cửa sổ | Window | File:Fischerkirche (window), Born a. Darß.jpg
 sofa | ghế sofa | Couch and lamp | Couch
-TV | ti vi | Television | -
-lamp | đèn | Light bulb | Lamp
+TV | ti vi | Television | Television set
+lamp | đèn | Light bulb | File:Lamp with a lampshade illuminated by sunlight.jpg
 clock | đồng hồ | Alarm clock | Alarm clock
-mirror | cái gương | Mirror | -
+mirror | cái gương | Mirror | File:Mirror MET DP105758.jpg
 stairs | cầu thang | - | -
 fan | quạt máy | - | Electric fan
 air conditioner | máy lạnh | - | -
@@ -516,14 +515,14 @@ broom | cây chổi | Broom |
 bucket | cái xô | Bucket |
 basket | cái giỏ | Basket |
 box | cái hộp | Package | Cardboard box
-key | chìa khóa | Key |
-picture | bức tranh | Framed picture | -
+key | chìa khóa | Key | File:Key,.,.jpg
+picture | bức tranh | Framed picture | File:2014 Tarnobrzeg, kościół Wniebowzięcia NMP, 35.JPG
 curtain | rèm cửa | - | Curtain
 carpet | tấm thảm | - | Carpet
 shelf | kệ sách | - | -
 toilet | bồn cầu | Toilet |
 bathtub | bồn tắm | Bathtub |
-shower | vòi sen | Shower | -
+shower | vòi sen | Shower | File:High speed shower filtered.jpg
 soap | xà phòng | Soap | Soap
 sink | bồn rửa | - | Sink
 toilet paper | giấy vệ sinh | Roll of paper | Toilet paper
@@ -531,21 +530,21 @@ toilet paper | giấy vệ sinh | Roll of paper | Toilet paper
 ('kitchen', 'Nhà bếp', 'Kitchen', '#FFF2DE', True, """
 cup | cái ly | Cup with straw | Cup
 mug | cái ca | Hot beverage | Mug
-glass | ly thủy tinh | Tumbler glass | -
+glass | ly thủy tinh | Tumbler glass | Tumbler (glass)
 plate | cái dĩa | - | -
-bowl | cái chén | Bowl with spoon | -
+bowl | cái chén | Bowl with spoon | Bowl
 spoon | cái muỗng | Spoon |
 fork | cái nĩa | Fork and knife | Fork
-knife | con dao | Kitchen knife | -
+knife | con dao | Kitchen knife | Kitchen knife
 chopsticks | đôi đũa | Chopsticks |
-pot | cái nồi | Pot of food | -
+pot | cái nồi | Pot of food | File:Pot with no background.png
 pan | cái chảo | Cooking | Frying pan
 kettle | ấm nước | - | Kettle
 rice cooker | nồi cơm điện | - | Rice cooker
 microwave | lò vi sóng | - | Microwave oven
 oven | lò nướng | - | -
 stove | bếp ga | - | -
-bottle | cái chai | Baby bottle | -
+bottle | cái chai | Baby bottle | Bottle
 jar | hũ (lọ) | Honey pot | Jar
 lunch box | hộp cơm | Bento box | Bento
 apron | tạp dề | - | Apron
@@ -556,20 +555,20 @@ computer | máy tính | Laptop | Laptop
 tablet | máy tính bảng | Mobile phone | Tablet computer
 camera | máy ảnh | Camera |
 headphones | tai nghe | Headphone | Headphones
-radio | đài radio | Radio | -
-battery | cục pin | Battery |
+radio | đài radio | Radio | Radio receiver
+battery | cục pin | Battery | File:AA VARTA battery-side PNr°0782.jpg
 light bulb | bóng đèn | Light bulb | Incandescent light bulb
 flashlight | đèn pin | Flashlight |
 candle | cây nến | Candle |
 remote control | điều khiển | - | Remote control
 keyboard | bàn phím | Keyboard | Computer keyboard
 mouse (computer) | chuột máy tính | Computer mouse | Computer mouse
-money | tiền | Dollar banknote | -
+money | tiền | Dollar banknote | Money
 coin | đồng xu | Coin |
 wallet | cái ví | Purse | Wallet
 letter | lá thư | Envelope | Envelope
 gift | món quà | Wrapped gift |
-paper | tờ giấy | Page facing up | -
+paper | tờ giấy | Page facing up | File:Scattered white paper (Unsplash).jpg
 newspaper | tờ báo | Newspaper |
 """),
 ('tools', 'Dụng cụ', 'Tools', '#EAE4DA', True, """
@@ -584,15 +583,15 @@ rake | cái cào | - | Rake (tool)
 axe | cái rìu | Axe |
 tape | băng keo | - | Adhesive tape
 rope | sợi dây | Knot | Rope
-magnet | nam châm | Magnet | -
+magnet | nam châm | Magnet | File:Horseshoe magnet metal shavings.jpg
 lock | ổ khóa | Locked | Padlock
 watering can | bình tưới | - | Watering can
 wheelbarrow | xe rùa | - | Wheelbarrow
-needle | cây kim | Sewing needle |
-thread | cuộn chỉ | Thread |
+needle | cây kim | Sewing needle | File:Sewing needles 20260817.jpg
+thread | cuộn chỉ | Thread | File:Wooden spools of sewing thread in different colors 6.jpg
 """),
 ('school', 'Đồ dùng học tập', 'School', '#E8F7D9', True, """
-book | quyển sách | Books | -
+book | quyển sách | Books | Book
 notebook | quyển vở | Notebook | Notebook
 backpack | cặp sách | Backpack |
 pencil | bút chì | Pencil |
@@ -600,45 +599,45 @@ pen | cây bút | Pen | Ballpoint pen
 crayon | bút sáp màu | Crayon |
 eraser | cục gôm | - | Eraser
 scissors | cái kéo | Scissors |
-ruler | cây thước | Straight ruler | -
+ruler | cây thước | Straight ruler | File:Ruler image.jpg
 glue | keo dán | - | Glue stick
 paintbrush | cọ vẽ | Paintbrush |
 paint | màu vẽ | Artist palette | Palette (painting)
 paper clip | kẹp giấy | Paperclip | Paper clip
 calculator | máy tính tay | Abacus | Calculator
 globe | quả địa cầu | Globe showing americas | Globe
-map | bản đồ | World map | -
+map | bản đồ | World map | File:1944 map of the world showing events of World War II.jpg
 chalk | phấn | - | -
 blackboard | bảng đen | - | -
 desk | bàn học | - | -
-teacher | cô giáo | Woman teacher | -
-student | học sinh | Student | -
+teacher | cô giáo | Woman teacher | File:A public high school teacher in a classroom in the United States 06.jpg
+student | học sinh | Student | File:Rwanda Classroom edited.png
 """),
 ('nature', 'Thiên nhiên', 'Nature', '#D6F3FF', True, """
-sun | mặt trời | Sun | -
+sun | mặt trời | Sun | File:Blue sky and sun.png
 moon | mặt trăng | Crescent moon | Moon
-star | ngôi sao | Star | -
-sky | bầu trời | Sun behind cloud | -
-cloud | đám mây | Cloud | -
+star | ngôi sao | Star | File:Bright Night Sky.jpg
+sky | bầu trời | Sun behind cloud | File:Cirrus uncinus clouds in the morning sky.jpg
+cloud | đám mây | Cloud | Cumulus cloud
 tree | cái cây | Deciduous tree | Tree
-palm tree | cây dừa | Palm tree | -
+palm tree | cây dừa | Palm tree | Arecaceae
 leaf | chiếc lá | Leaf fluttering in wind | Leaf
 flower | bông hoa | Tulip | Tulip
 grass | bãi cỏ | Herb | Lawn
-rock | hòn đá | Rock |
+rock | hòn đá | Rock | File:A small potential rocking stone, Warley Moor - geograph.org.uk - 6932323.jpg
 sand | cát | - | Sand
 mountain | ngọn núi | Mountain |
 volcano | núi lửa | Volcano |
 river | dòng sông | - | River
 lake | cái hồ | - | Lake
-sea | biển | Water wave | -
+sea | biển | Water wave | File:Havelock Island, Mangrove tree on the beach, Andaman Islands.jpg
 beach | bãi biển | Beach with umbrella | Beach
-island | hòn đảo | Desert island | -
+island | hòn đảo | Desert island | File:Unnamed island, Cheow Lan Lake.jpg
 waterfall | thác nước | - | Waterfall
-forest | khu rừng | Evergreen tree | -
-desert | sa mạc | Desert | -
+forest | khu rừng | Evergreen tree | Forest
+desert | sa mạc | Desert | Desert
 cave | hang động | - | Cave
-fire | lửa | Fire | -
+fire | lửa | Fire | Campfire
 wood | khúc gỗ | Wood | Lumber
 """),
 ('weather', 'Thời tiết', 'Weather', '#E3F1FF', False, """
@@ -670,47 +669,47 @@ daisy | hoa cúc | Blossom | Bellis perennis
 orchid | hoa lan | - | Orchidaceae
 lily | hoa ly | - | Lilium
 apricot blossom | hoa mai | - | Ochna integerrima
-peach blossom | hoa đào | Cherry blossom | -
-cactus | cây xương rồng | Cactus | -
+peach blossom | hoa đào | Cherry blossom | File:Pink Peach Blossom (248772049).jpeg
+cactus | cây xương rồng | Cactus | File:Pachycereus pringlei forest.jpg
 bamboo | cây tre | Tanabata tree |
 seed | hạt giống | Seedling | Seed
 sprout | mầm cây | Seedling | Seedling
 potted plant | chậu cây | Potted plant | Houseplant
-bouquet | bó hoa | Bouquet |
-clover | cỏ ba lá | Four leaf clover | -
+bouquet | bó hoa | Bouquet | File:Rose and carnation flower bouquet 01.jpg
+clover | cỏ ba lá | Four leaf clover | File:Green Clovers.jpg
 pine tree | cây thông | Evergreen tree | Pine
 """),
 ('places', 'Nơi chốn', 'Places', '#F4E9FF', True, """
-home | nhà | House | -
-school | trường học | School | -
+home | nhà | House | File:Hawes Summer Home -- Galveston.jpg
+school | trường học | School | School
 kindergarten | trường mầm non | Children crossing | Kindergarten
-hospital | bệnh viện | Hospital | -
-park | công viên | Fountain | -
+hospital | bệnh viện | Hospital | Hospital
+park | công viên | Fountain | Park
 playground | sân chơi | Playground slide | Playground
-zoo | sở thú | Elephant | -
+zoo | sở thú | Elephant | Zoo
 farm | nông trại | Tractor | Farm
-market | chợ | Shopping cart | -
+market | chợ | Shopping cart | File:Fruit Market Yau Ma Tei.jpg
 supermarket | siêu thị | Shopping cart | Supermarket
 bakery | tiệm bánh | Croissant | Bakery
 restaurant | nhà hàng | Fork and knife with plate | Restaurant
 library | thư viện | Books | Library
 pool | hồ bơi | Person swimming | Swimming pool
 beach | bãi biển | Beach with umbrella | Beach
-airport | sân bay | Airplane departure | -
+airport | sân bay | Airplane departure | File:Singapore Changi Airport, Terminal 1, A340, Dec 05.JPG
 train station | nhà ga | Station | Train station
 bus stop | trạm xe buýt | Bus stop |
-police station | đồn cảnh sát | Police car light | -
-fire station | trạm cứu hỏa | Fire engine | -
-post office | bưu điện | Post office | -
-bank | ngân hàng | Bank | -
-church | nhà thờ | Church | -
+police station | đồn cảnh sát | Police car light | Police station
+fire station | trạm cứu hỏa | Fire engine | Fire station
+post office | bưu điện | Post office | Post office
+bank | ngân hàng | Bank | Bank
+church | nhà thờ | Church | Church (building)
 pagoda | chùa | Shinto shrine | Buddhist temple
 castle | lâu đài | Castle |
-tent | cái lều | Tent |
+tent | cái lều | Tent | File:Camping tent on tarp.jpg
 bridge | cây cầu | Bridge at night | Bridge
-road | con đường | Motorway | -
+road | con đường | Motorway | File:A591 road, Lake District - June 2009 Edit 1.jpg
 street | đường phố | Cityscape | Street
-city | thành phố | Cityscape | -
+city | thành phố | Cityscape | City
 village | làng quê | Houses | Village
 garden | khu vườn | House with garden | Garden
 """),
@@ -745,27 +744,27 @@ volleyball | bóng chuyền | Volleyball |
 tennis | quần vợt | Tennis |
 badminton | cầu lông | Badminton |
 baseball | bóng chày | Baseball |
-football | bóng bầu dục | American football | -
+football | bóng bầu dục | American football | Association football
 table tennis | bóng bàn | Ping pong | Table tennis
 golf | đánh gôn | Flag in hole | Golf
 bowling | bowling | Bowling |
-swimming | bơi lội | Person swimming | -
-running | chạy bộ | Person running | -
-cycling | đạp xe | Person biking | -
-boxing | đấm bốc | Boxing glove | -
-karate | võ thuật | Martial arts uniform | -
-skiing | trượt tuyết | Skier | -
-skating | trượt băng | Ice skate |
-surfing | lướt sóng | Person surfing | -
-gymnastics | thể dục dụng cụ | Person cartwheeling | -
-yoga | yoga | Person in lotus position | -
-fishing | câu cá | Fishing pole | -
-medal | huy chương | 1st place medal | -
-trophy | cúp | Trophy | -
+swimming | bơi lội | Person swimming | Swimming
+running | chạy bộ | Person running | Running
+cycling | đạp xe | Person biking | Cycling
+boxing | đấm bốc | Boxing glove | File:Boxing gloves Bail 10-OZ (3).jpg
+karate | võ thuật | Martial arts uniform | File:2019 Karate International tournament fight.jpg
+skiing | trượt tuyết | Skier | File:Skiing 32 (3324883708).jpg
+skating | trượt băng | Ice skate | File:Ice skating hand stand stunt.jpg
+surfing | lướt sóng | Person surfing | Surfing
+gymnastics | thể dục dụng cụ | Person cartwheeling | Gymnastics
+yoga | yoga | Person in lotus position | File:Upward-facing dog pose.jpg
+fishing | câu cá | Fishing pole | File:Kühlungsborn, Blick von der Seebrücke, Sonnenuntergang -- 2024 -- 4895-9.jpg
+medal | huy chương | 1st place medal | File:EMACS gold medal 2023 Pescara.jpg
+trophy | cúp | Trophy | Trophy
 """),
 ('music', 'Âm nhạc', 'Music', '#FFF0F8', True, """
-music | âm nhạc | Musical notes | -
-song | bài hát | Musical note | -
+music | âm nhạc | Musical notes | File:Music Sheet.jpg
+song | bài hát | Musical note | Singing
 piano | đàn piano | Musical keyboard | Piano
 guitar | đàn guitar | Guitar | Classical guitar
 violin | đàn violin | Violin |
@@ -775,11 +774,11 @@ saxophone | kèn saxophone | Saxophone |
 flute | ống sáo | Flute | Western concert flute
 harmonica | kèn harmonica | - | Harmonica
 xylophone | đàn mộc cầm | - | -
-bell | cái chuông | Bell | -
+bell | cái chuông | Bell | File:Le Boulou Church Bell 1436.jpg
 microphone | micro | Microphone |
 maracas | trống lắc | Maracas |
 accordion | đàn accordion | Accordion |
-banjo | đàn banjo | Banjo |
+banjo | đàn banjo | Banjo | File:Bluegrass banjo.png
 """),
 ('feelings', 'Cảm xúc', 'Feelings', '#FFF4B8', False, """
 happy | vui | Grinning face |
@@ -920,12 +919,10 @@ earth | trái đất | Globe showing asia-australia | Earth
 planet | hành tinh | Ringed planet | Saturn
 rocket | tên lửa | Rocket |
 astronaut | phi hành gia | Astronaut | Astronaut
-alien | người ngoài hành tinh | Alien | -
-UFO | đĩa bay | Flying saucer | -
 satellite | vệ tinh | Satellite | Satellite
 telescope | kính thiên văn | Telescope |
 comet | sao chổi | Comet |
-shooting star | sao băng | Shooting star | -
+shooting star | sao băng | Shooting star | File:Meteor, 8.5.2016.jpg
 galaxy | dải ngân hà | Milky way | Milky Way
 """),
 ('fantasy', 'Khủng long & cổ tích', 'Dinosaurs & fairy tales', '#E2FFE9', False, """
@@ -941,6 +938,9 @@ mermaid | nàng tiên cá | Woman merpeople |
 superhero | siêu nhân | Woman superhero |
 troll | yêu tinh | Troll |
 zombie | thây ma | Woman zombie |
+magic wand | đũa thần | Magic wand | -
+alien | người ngoài hành tinh | Alien | -
+UFO | đĩa bay | Flying saucer | -
 """),
 ('health', 'Sức khỏe', 'Health', '#FFEFEF', False, """
 medicine | thuốc | Pill |

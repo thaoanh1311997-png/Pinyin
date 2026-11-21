@@ -1,0 +1,306 @@
+# Học giao tiếp stops. Block: "## vi | en | icon | bg". Lines: en | vi | icon | word to read (must appear in en)
+## Chào hỏi | Hello & bye | waving-hand | #FFD6E2
+Hello! | Xin chào! | waving-hand | Hello
+Bye-bye! | Tạm biệt! | door | Bye
+Good morning! | Chào buổi sáng! | sunrise | morning
+Good night! | Chúc ngủ ngon! | crescent-moon | night
+## Lễ phép | Please & thank you | folded-hands | #FFF1C9
+Please. | Làm ơn ạ. | folded-hands | Please
+Thank you! | Cảm ơn ạ! | wrapped-gift | Thank
+I'm sorry. | Con xin lỗi. | pleading-face | sorry
+Yes, please! | Dạ, con muốn ạ! | thumbs-up | Yes
+## Cảm xúc | Feelings | grinning-face | #E6F5FF
+I'm happy. | Con vui. | grinning-face | happy
+I'm sad. | Con buồn. | crying-face | sad
+I'm tired. | Con mệt. | tired-face | tired
+I'm angry. | Con giận. | angry-face | angry
+## Ăn uống | Eating | bowl-with-spoon | #E9FBE2
+I'm hungry. | Con đói bụng. | face-savoring-food | hungry
+More, please. | Cho con thêm ạ. | bowl-with-spoon | More
+I'm thirsty. | Con khát nước. | cup-with-straw | thirsty
+All done! | Con ăn xong rồi! | check-mark-button | done
+## Vệ sinh | Clean up | soap | #DDF3FF
+Wash your hands. | Rửa tay nào. | soap | Wash
+Brush your teeth. | Đánh răng nào. | toothbrush | Brush
+Bath time! | Đến giờ tắm rồi! | bathtub | Bath
+I need to pee. | Con muốn đi tè. | toilet | pee
+## Mặc đồ | Getting dressed | t-shirt | #F1EAFF
+Put on your shirt. | Mặc áo vào nào. | t-shirt | shirt
+Put on your shoes. | Mang giày vào nào. | running-shoe | shoes
+Put on your hat. | Đội mũ vào nào. | billed-cap | hat
+Take off your socks. | Cởi vớ ra nào. | socks | socks
+## Cùng chơi | Let's play | teddy-bear | #FFF0E3
+Let's play! | Mình chơi nào! | teddy-bear | play
+Throw the ball! | Ném bóng đi! | soccer-ball | ball
+Let's sing! | Mình hát nào! | musical-notes | sing
+Let's dance! | Mình nhảy nào! | woman-dancing | dance
+## Đi chơi | Going out | automobile | #E9FBE2
+Let's go! | Đi thôi! | person-walking | go
+Get in the car. | Lên xe nào. | automobile | car
+Look, a bird! | Nhìn kìa, con chim! | bird | bird
+Hold my hand. | Nắm tay mẹ nhé. | hand-with-fingers-splayed | hand
+## Nhờ giúp đỡ | Help me | raising-hands | #FFE3B8
+Help me, please. | Giúp con với ạ. | raising-hands | Help
+I'm hurt. | Con bị đau. | adhesive-bandage | hurt
+Where is Mommy? | Mẹ đâu rồi? | woman | Mommy
+Hug me! | Ôm con đi! | people-hugging | Hug
+## Đi ngủ | Bedtime | bed | #E4E6FF
+Time for bed. | Đến giờ đi ngủ rồi. | bed | bed
+Read a book, please. | Đọc sách cho con nhé. | open-book | book
+Close your eyes. | Nhắm mắt lại nào. | sleeping-face | eyes
+I love you. | Con yêu mẹ. | red-heart | love
+## Gia đình | My family | people-hugging | #FFD6E2
+This is Mommy. | Đây là mẹ. | woman | Mommy
+This is Daddy. | Đây là ba. | man | Daddy
+I love Grandma. | Con yêu bà. | old-woman | Grandma
+I love Grandpa. | Con yêu ông. | old-man | Grandpa
+## Cơ thể | My body | ear | #FFF1C9
+Touch your nose. | Chạm vào mũi nào. | nose | nose
+Touch your ears. | Chạm vào tai nào. | ear | ears
+Clap your hands. | Vỗ tay nào. | clapping-hands | hands
+Stamp your feet. | Dậm chân nào. | foot | feet
+## Tiếng con vật | Animal sounds | dog | #E9FBE2
+The dog says woof. | Con chó kêu gâu gâu. | dog | dog
+The cat says meow. | Con mèo kêu meo meo. | cat | cat
+The duck says quack. | Con vịt kêu cạp cạp. | duck | duck
+The cow says moo. | Con bò kêu ò ò. | cow | cow
+## Màu sắc | Colors | artist-palette | #F1EAFF
+It's red. | Nó màu đỏ. | red-circle | red
+It's blue. | Nó màu xanh dương. | blue-circle | blue
+It's yellow. | Nó màu vàng. | yellow-circle | yellow
+It's green. | Nó màu xanh lá. | green-circle | green
+## Đếm số | Counting | abacus | #E6F5FF
+One, two, three! | Một, hai, ba! | keycap-3 | three
+I am two years old. | Con hai tuổi. | keycap-2 | two
+Show me one finger. | Giơ một ngón tay nào. | keycap-1 | one
+Count with me! | Đếm cùng mẹ nào! | abacus | Count
+## Trái cây | Fruit | banana | #FFF0E3
+I want a banana. | Con muốn ăn chuối. | banana | banana
+I like apples. | Con thích táo. | red-apple | apples
+This is a mango. | Đây là quả xoài. | mango | mango
+Let's eat watermelon! | Mình ăn dưa hấu nào! | watermelon | watermelon
+## Đồ uống | Drinks | glass-of-milk | #DDF3FF
+I want milk. | Con muốn uống sữa. | glass-of-milk | milk
+Water, please. | Cho con nước ạ. | potable-water | Water
+Drink your juice. | Con uống nước ép đi. | beverage-box | juice
+It's hot. Be careful! | Nóng đó, cẩn thận nhé! | hot-beverage | hot
+## Thời tiết | Weather | sun-behind-cloud | #E6F5FF
+It's sunny. | Trời nắng. | sun | sunny
+It's raining. | Trời đang mưa. | cloud-with-rain | raining
+It's windy. | Trời có gió. | wind-face | windy
+It's cold. | Trời lạnh. | snowflake | cold
+## Đồ chơi | Toys | teddy-bear | #FFD6E2
+Where is my ball? | Quả bóng của con đâu? | soccer-ball | ball
+I want my teddy bear. | Con muốn gấu bông. | teddy-bear | teddy
+Let's build a tower. | Mình xây tháp nào. | brick | build
+Push the car. | Đẩy xe đi con. | racing-car | Push
+## Xe cộ | Vehicles | bus | #FFF1C9
+Look, a bus! | Nhìn kìa, xe buýt! | bus | bus
+Beep beep! A car! | Bíp bíp! Xe hơi! | automobile | car
+Choo choo! A train! | Tu tu! Tàu hỏa! | locomotive | train
+I see an airplane. | Con thấy máy bay. | airplane | airplane
+## Công viên | At the park | playground-slide | #E9FBE2
+Let's go to the park. | Mình đi công viên nào. | deciduous-tree | park
+Go down the slide! | Trượt xuống nào! | playground-slide | slide
+Run, run, run! | Chạy, chạy, chạy! | person-running | Run
+Look at the flowers. | Nhìn những bông hoa kìa. | tulip | flowers
+## Tắm rửa | Bath time | bathtub | #DDF3FF
+Let's take a bath. | Mình đi tắm nào. | bathtub | bath
+Bubbles! | Bong bóng xà phòng! | bubbles | Bubbles
+Wash your hair. | Gội đầu nào. | shower | hair
+All clean! | Sạch sẽ rồi! | sparkles | clean
+## Bữa ăn | Mealtime | fork-and-knife-with-plate | #FFF0E3
+Sit down, please. | Con ngồi xuống nhé. | chair | Sit
+Use your spoon. | Con dùng muỗng nhé. | spoon | spoon
+Yummy! | Ngon quá! | face-savoring-food | Yummy
+I'm full. | Con no rồi. | bowl-with-spoon | full
+## Bị ốm | Feeling sick | face-with-thermometer | #FFE3B8
+I feel sick. | Con thấy mệt trong người. | face-with-thermometer | sick
+My tummy hurts. | Con đau bụng. | face-with-head-bandage | tummy
+Take your medicine. | Con uống thuốc nhé. | pill | medicine
+I feel better. | Con thấy khỏe hơn rồi. | flexed-biceps | better
+## An toàn | Be safe | stop-sign | #FFD6E2
+Stop! | Dừng lại! | stop-sign | Stop
+Hot! Don't touch. | Nóng! Đừng chạm vào. | fire | touch
+Wait for me. | Đợi con với. | person-standing | Wait
+Be careful! | Cẩn thận nhé! | warning | careful
+## Thiên nhiên | Nature | deciduous-tree | #E9FBE2
+Look at the moon. | Nhìn mặt trăng kìa. | crescent-moon | moon
+I see a star. | Con thấy một ngôi sao. | star | star
+The sun is up. | Mặt trời lên rồi. | sun-with-face | sun
+A big tree! | Cái cây to quá! | deciduous-tree | tree
+## Ở nhà | At home | house | #FFF1C9
+Open the door. | Mở cửa ra. | door | door
+Turn on the light. | Bật đèn lên. | light-bulb | light
+Sit on the chair. | Ngồi lên ghế. | chair | chair
+Lie on the bed. | Nằm lên giường. | bed | bed
+## Hỏi đáp | Asking questions | thinking-face | #E6F5FF
+What's this? | Đây là cái gì? | thinking-face | What
+Who is it? | Ai đó? | person | Who
+Where is it? | Nó ở đâu? | magnifying-glass-tilted-left | Where
+I don't know. | Con không biết. | neutral-face | know
+## Âm nhạc | Music | musical-notes | #F1EAFF
+Let's sing a song. | Mình hát một bài nào. | microphone | song
+Play the drum. | Đánh trống nào. | drum | drum
+Play the piano. | Đánh đàn piano nào. | musical-keyboard | piano
+Dance with me! | Nhảy với mẹ nào! | woman-dancing | Dance
+## Đi siêu thị | Shopping | shopping-cart | #FFF0E3
+Let's go shopping. | Mình đi mua sắm nào. | shopping-cart | shopping
+I want a cookie. | Con muốn bánh quy. | cookie | cookie
+Let's buy some bread. | Mình mua bánh mì nào. | bread | bread
+Here's the money. | Tiền đây ạ. | dollar-banknote | money
+## Thú rừng | Wild animals | lion | #E9FBE2
+The lion says roar! | Sư tử gầm "gừ"! | lion | lion
+Look, an elephant! | Nhìn kìa, con voi! | elephant | elephant
+The monkey can climb. | Con khỉ biết leo trèo. | monkey | monkey
+The giraffe is tall. | Hươu cao cổ cao quá. | giraffe | giraffe
+## Dưới biển | Under the sea | tropical-fish | #DDF3FF
+I see a fish. | Con thấy một con cá. | tropical-fish | fish
+The whale is big. | Cá voi to lắm. | spouting-whale | whale
+A crab! | Con cua kìa! | crab | crab
+Swim, swim! | Bơi nào, bơi nào! | person-swimming | Swim
+## Côn trùng | Little bugs | butterfly | #FFF1C9
+Look, a butterfly! | Nhìn kìa, con bướm! | butterfly | butterfly
+The bee says buzz. | Con ong kêu vo ve. | honeybee | bee
+A little ant. | Một con kiến nhỏ. | ant | ant
+A ladybug! | Con bọ rùa kìa! | lady-beetle | ladybug
+## Các loài chim | Birds | bird | #E6F5FF
+The bird can fly. | Con chim biết bay. | bird | fly
+The owl says hoo. | Con cú kêu hu hu. | owl | owl
+The chick says cheep. | Gà con kêu chiếp chiếp. | baby-chick | chick
+The rooster says cock-a-doodle-doo! | Gà trống gáy ò ó o! | rooster | rooster
+## Rau củ | Vegetables | carrot | #E9FBE2
+Eat your carrots. | Con ăn cà rốt đi. | carrot | carrots
+I like corn. | Con thích bắp. | ear-of-corn | corn
+This is broccoli. | Đây là bông cải xanh. | broccoli | broccoli
+A red tomato. | Quả cà chua đỏ. | tomato | tomato
+## Đồ ăn vặt | Snacks | soft-ice-cream | #FFD6E2
+I want ice cream. | Con muốn ăn kem. | soft-ice-cream | ice
+Popcorn, please. | Cho con bỏng ngô ạ. | popcorn | Popcorn
+A yummy cupcake. | Bánh cupcake ngon quá. | cupcake | cupcake
+Just one candy. | Chỉ một viên kẹo thôi nhé. | candy | candy
+## Sinh nhật | Birthday | birthday-cake | #FFF0E3
+Happy birthday! | Chúc mừng sinh nhật! | birthday-cake | birthday
+Blow out the candles. | Thổi nến nào. | candle | candles
+Here's a present. | Quà của con đây. | wrapped-gift | present
+Let's have a party! | Mình làm tiệc nào! | party-popper | party
+## Đi học | Going to school | school | #F1EAFF
+Let's go to school. | Mình đi học nào. | school | school
+Hello, teacher! | Con chào cô ạ! | woman-teacher | teacher
+This is my backpack. | Đây là cặp sách của con. | backpack | backpack
+Let's read a book. | Mình đọc sách nào. | books | read
+## Vẽ tranh | Drawing | crayon | #FFF1C9
+Let's draw. | Mình vẽ nào. | crayon | draw
+Let's paint. | Mình tô màu nào. | artist-palette | paint
+Use the pencil. | Con dùng bút chì nhé. | pencil | pencil
+Look at my picture! | Nhìn tranh của con nè! | framed-picture | picture
+## Vận động | Moving | person-running | #E9FBE2
+Jump like a kangaroo! | Nhảy như chuột túi nào! | kangaroo | Jump
+Walk slowly. | Đi chậm thôi. | person-walking | Walk
+Run fast! | Chạy nhanh nào! | person-running | fast
+Climb up! | Leo lên nào! | person-climbing | Climb
+## Trong ngày | Times of day | sunrise | #E6F5FF
+It's morning. | Trời sáng rồi. | sunrise | morning
+Lunch time! | Đến giờ ăn trưa rồi! | fork-and-knife-with-plate | Lunch
+Nap time. | Đến giờ ngủ trưa rồi. | sleeping-face | Nap
+It's night. | Trời tối rồi. | night-with-stars | night
+## Giúp mẹ | Helping at home | broom | #FFF0E3
+Clean up your toys. | Con dọn đồ chơi nhé. | teddy-bear | toys
+Put it in the trash. | Bỏ vào thùng rác nhé. | wastebasket | trash
+Help me sweep. | Giúp mẹ quét nhà nào. | broom | sweep
+Water the plants. | Tưới cây nào. | potted-plant | plants
+## Lễ Tết | Holidays | red-envelope | #FFD6E2
+Here's your lucky money. | Lì xì của con đây. | red-envelope | lucky
+Look at the lanterns. | Nhìn những chiếc lồng đèn kìa. | red-paper-lantern | lanterns
+Fireworks! Boom! | Pháo hoa! Bùm! | fireworks | Fireworks
+Merry Christmas! | Giáng sinh vui vẻ! | christmas-tree | Christmas
+## Đi biển | At the beach | beach-with-umbrella | #DDF3FF
+Let's go to the beach. | Mình đi biển nào. | beach-with-umbrella | beach
+Let's make a sandcastle. | Mình xây lâu đài cát nào. | castle | sandcastle
+Look at the waves. | Nhìn sóng kìa. | water-wave | waves
+Put on your sunglasses. | Đeo kính râm vào nào. | sunglasses | sunglasses
+## Nông trại | On the farm | tractor | #E9FBE2
+The pig says oink. | Con heo kêu ụt ịt. | pig | pig
+The sheep says baa. | Con cừu kêu be be. | ewe | sheep
+The horse says neigh. | Con ngựa hí hí. | horse | horse
+The hen lays an egg. | Gà mái đẻ trứng. | egg | egg
+## Nghề nghiệp | Jobs | health-worker | #F1EAFF
+She is a doctor. | Cô ấy là bác sĩ. | health-worker | doctor
+He is a firefighter. | Chú ấy là lính cứu hỏa. | man-firefighter | firefighter
+He is a police officer. | Chú ấy là cảnh sát. | man-police-officer | police
+She is a cook. | Cô ấy là đầu bếp. | woman-cook | cook
+## Lời khen | Praise | thumbs-up | #FFF1C9
+Good job! | Giỏi lắm! | thumbs-up | Good
+You did it! | Con làm được rồi! | trophy | did
+Well done! | Tốt lắm! | hundred-points | Well
+High five! | Đập tay nào! | hand-with-fingers-splayed | five
+## Chơi với bạn | Playing with friends | children-crossing | #E6F5FF
+Let's share. | Mình chia nhau nhé. | two-hearts | share
+Your turn! | Tới lượt bạn! | backhand-index-pointing-right | turn
+Here you are. | Của bạn đây. | wrapped-gift | Here
+Thank you, friend! | Cảm ơn bạn nhé! | smiling-face-with-hearts | friend
+## Bế con | Up and down | up-arrow | #FFE3B8
+Pick me up! | Bế con lên! | up-arrow | up
+Put me down. | Cho con xuống. | down-arrow | down
+Come here. | Lại đây nào. | backhand-index-pointing-up | Come
+Look at me. | Nhìn mẹ nè. | eyes | Look
+## Cảm giác | How I feel | hot-face | #FFD6E2
+I'm cold. | Con lạnh. | cold-face | cold
+I'm hot. | Con nóng. | hot-face | hot
+I'm sleepy. | Con buồn ngủ. | sleeping-face | sleepy
+I'm scared. | Con sợ. | fearful-face | scared
+## Đi vệ sinh | Potty time | toilet | #DDF3FF
+I need to go potty. | Con muốn đi vệ sinh. | toilet | potty
+Flush the toilet. | Giật nước nào. | droplet | Flush
+Wash your hands. | Rửa tay nào. | soap | Wash
+Blow your nose. | Hỉ mũi nào. | sneezing-face | nose
+## Đọc truyện | Story time | open-book | #FFF0E3
+Let's read a story. | Mình đọc truyện nào. | open-book | story
+Turn the page. | Lật trang nào. | page-facing-up | page
+What's this animal? | Con vật này là gì? | cat-face | animal
+The end! | Hết rồi! | check-mark-button | end
+## Đi xe | Riding | bicycle | #E9FBE2
+Let's ride the bike. | Mình đạp xe nào. | bicycle | bike
+Wear your helmet. | Đội mũ bảo hiểm vào. | rescue-workers-helmet | helmet
+Go, go, go! | Đi nào, đi nào! | motor-scooter | Go
+Stop at the red light. | Dừng lại ở đèn đỏ. | red-circle | red
+## Trời mưa | Rainy day | umbrella | #E6F5FF
+Open the umbrella. | Mở ô ra nào. | umbrella | umbrella
+Put on your boots. | Mang ủng vào nào. | womans-boot | boots
+It's raining. Splash! | Trời mưa rồi. Tõm tõm! | cloud-with-rain | raining
+Look, a rainbow! | Nhìn kìa, cầu vồng! | rainbow | rainbow
+## Trời lạnh | Cold day | snowman | #DDF3FF
+Put on your coat. | Mặc áo khoác vào. | coat | coat
+Put on your scarf. | Quàng khăn vào. | scarf | scarf
+Wear your gloves. | Đeo găng tay vào. | gloves | gloves
+Let's make a snowman. | Mình làm người tuyết nào. | snowman | snowman
+## Yêu thương | Love | red-heart | #FFD6E2
+Give me a kiss. | Hôn mẹ một cái nào. | kiss-mark | kiss
+Big hug! | Ôm thật chặt nào! | people-hugging | hug
+You make me happy. | Con làm mẹ vui lắm. | smiling-face-with-hearts | happy
+I love you, Daddy. | Con yêu ba. | red-heart | Daddy
+## Nấu ăn | Cooking | cooking | #FFF0E3
+Let's cook. | Mình nấu ăn nào. | cooking | cook
+Stir, stir, stir! | Khuấy, khuấy, khuấy! | spoon | Stir
+Crack the egg. | Đập trứng nào. | egg | egg
+Let's make pancakes. | Mình làm bánh kếp nào. | pancakes | pancakes
+## Nha sĩ | At the dentist | tooth | #E6F5FF
+Say "ah"! | Nói "a" nào! | mouth | ah
+Count your teeth. | Đếm răng nào. | tooth | teeth
+The dentist is nice. | Nha sĩ hiền lắm. | health-worker | dentist
+You are brave! | Con dũng cảm lắm! | flexed-biceps | brave
+## Vũ trụ | Space | rocket | #E4E6FF
+Look at the rocket! | Nhìn tên lửa kìa! | rocket | rocket
+Hello, astronaut! | Chào phi hành gia! | astronaut | astronaut
+Twinkle, little star. | Lấp lánh ngôi sao nhỏ. | glowing-star | star
+I see a planet. | Con thấy một hành tinh. | ringed-planet | planet
+## Chào ngày mới | New day | sun-with-face | #FFF1C9
+Wake up, sleepyhead! | Dậy thôi, con sâu ngủ! | alarm-clock | Wake
+Open the window. | Mở cửa sổ ra nào. | window | window
+Hello, sunshine! | Chào ánh nắng! | sun-with-face | sunshine
+Let's start the day! | Bắt đầu ngày mới nào! | sunrise | day
+## Chúc ngủ ngon | Goodnight | night-with-stars | #E4E6FF
+Bye-bye, sun! | Tạm biệt mặt trời! | sunset | sun
+Turn off the light. | Tắt đèn nào. | light-bulb | light
+Sweet dreams. | Ngủ ngon nhé. | crescent-moon | dreams
+See you tomorrow! | Hẹn gặp lại ngày mai! | waving-hand | tomorrow

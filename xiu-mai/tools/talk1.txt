@@ -1,0 +1,375 @@
+## 1
+D: M | Good morning, sweetie! | Chào buổi sáng, con yêu!
+D: K | Good morning, Mommy! | Con chào mẹ buổi sáng!
+D: M | Say hello to Daddy. | Con chào ba đi.
+D: K | Hello, Daddy! | Con chào ba!
+A: M | Good morning! Did you sleep well? | Chào buổi sáng! Con ngủ ngon không?
+A: K | Yes, I did. Good morning, Mommy! | Dạ ngon. Con chào mẹ buổi sáng!
+A: M | Look, Grandma is here. Say hello! | Nhìn kìa, bà tới rồi. Con chào bà đi!
+A: K | Hello, Grandma! How are you? | Con chào bà! Bà khỏe không ạ?
+A: G | I'm fine, thank you. And you? | Bà khỏe, cảm ơn con. Còn con?
+A: K | I'm good! | Con khỏe ạ!
+A: M | Now wave bye-bye. Grandma has to go. | Giờ vẫy tay tạm biệt nào. Bà phải về rồi.
+A: K | Bye-bye, Grandma! See you soon! | Tạm biệt bà! Hẹn gặp lại bà!
+V: hello | xin chào
+V: goodbye | tạm biệt
+V: good afternoon | chào buổi chiều
+V: good evening | chào buổi tối
+V: see you soon | hẹn sớm gặp lại
+V: how are you | bạn khỏe không
+P: Good ___! | Chào buổi ___!
+E: Good morning! | Chào buổi sáng!
+E: Good evening! | Chào buổi tối!
+P: Hello, ___! | Con chào ___!
+E: Hello, Grandpa! | Con chào ông!
+E: Hello, teacher! | Con chào cô ạ!
+## 2
+D: M | Do you want some water? | Con muốn uống nước không?
+D: K | Yes, please! | Dạ, con muốn ạ!
+D: M | Here you are. | Của con đây.
+D: K | Thank you, Mommy! | Con cảm ơn mẹ!
+A: K | Mommy, can I have a cookie, please? | Mẹ ơi, cho con một cái bánh quy được không ạ?
+A: M | Sure. Here you are. | Được chứ. Của con đây.
+A: K | Thank you! | Con cảm ơn mẹ!
+A: M | You're welcome. | Không có gì con.
+A: K | Oops! I spilled the milk. I'm sorry. | Ối! Con làm đổ sữa rồi. Con xin lỗi.
+A: M | That's okay. Let's clean it up together. | Không sao. Mình cùng lau nhé.
+A: K | Excuse me, Mommy. Can you help me? | Mẹ ơi, mẹ giúp con được không ạ?
+A: M | Of course! What a polite boy! | Tất nhiên rồi! Con lễ phép quá!
+V: please | làm ơn
+V: thank you | cảm ơn
+V: you're welcome | không có gì
+V: sorry | xin lỗi
+V: excuse me | xin phép, làm ơn cho hỏi
+V: that's okay | không sao đâu
+P: Can I have ___, please? | Cho con ___ được không ạ?
+E: Can I have some water, please? | Cho con xin nước được không ạ?
+E: Can I have a banana, please? | Cho con một quả chuối được không ạ?
+P: Thank you for ___. | Cảm ơn vì ___.
+E: Thank you for the toy. | Cảm ơn vì món đồ chơi.
+E: Thank you for helping me. | Cảm ơn đã giúp con.
+## 3
+D: M | Are you happy? | Con có vui không?
+D: K | Yes! I'm happy. | Dạ! Con vui lắm.
+D: M | Why are you sad? | Sao con buồn vậy?
+D: K | I'm sad. I want a hug. | Con buồn. Con muốn được ôm.
+A: M | You look sad. What's wrong? | Trông con buồn quá. Có chuyện gì vậy?
+A: K | My tower fell down. | Cái tháp của con đổ rồi.
+A: M | Oh no! Are you angry? | Ôi không! Con có giận không?
+A: K | Yes, I'm angry and sad. | Dạ, con vừa giận vừa buồn.
+A: M | It's okay to feel sad. Let's take a deep breath. | Buồn cũng không sao. Mình hít thở thật sâu nào.
+A: K | In… and out. I feel better. | Hít vào… thở ra. Con thấy đỡ hơn rồi.
+A: M | Let's build it again together. | Mình cùng xây lại nhé.
+A: K | Yay! Now I'm happy! | Yeah! Giờ con vui rồi!
+V: happy | vui
+V: sad | buồn
+V: angry | tức giận
+V: scared | sợ
+V: excited | háo hức
+V: calm | bình tĩnh
+P: I feel ___. | Con thấy ___.
+E: I feel happy. | Con thấy vui.
+E: I feel scared. | Con thấy sợ.
+P: Are you ___? | Con có ___ không?
+E: Are you tired? | Con có mệt không?
+E: Are you excited? | Con có háo hức không?
+## 4
+D: M | Are you hungry? | Con đói chưa?
+D: K | Yes, I'm hungry. | Dạ, con đói rồi.
+D: M | Do you want more? | Con muốn ăn thêm không?
+D: K | No, thank you. All done! | Dạ thôi, con ăn xong rồi!
+A: M | It's lunch time. What do you want to eat? | Đến giờ ăn trưa rồi. Con muốn ăn gì?
+A: K | I want rice and chicken. | Con muốn ăn cơm với thịt gà.
+A: M | Good choice! Here's your plate. | Chọn hay lắm! Đĩa của con đây.
+A: K | Can I have some water, too? | Cho con xin nước nữa được không?
+A: M | Sure. Is it yummy? | Được chứ. Có ngon không con?
+A: K | Yes, it's yummy! More rice, please. | Dạ ngon! Cho con thêm cơm ạ.
+A: M | Wow, you ate everything! | Wow, con ăn hết sạch rồi!
+A: K | I'm full. All done! | Con no rồi. Con ăn xong rồi!
+V: breakfast | bữa sáng
+V: lunch | bữa trưa
+V: dinner | bữa tối
+V: plate | cái đĩa
+V: full | no
+V: delicious | ngon
+P: I want ___. | Con muốn ăn ___.
+E: I want noodles. | Con muốn ăn mì.
+E: I want some fruit. | Con muốn ăn trái cây.
+P: More ___, please. | Cho con thêm ___ ạ.
+E: More soup, please. | Cho con thêm canh ạ.
+E: More milk, please. | Cho con thêm sữa ạ.
+## 5
+D: M | Your hands are dirty. | Tay con dơ rồi.
+D: K | Wash my hands? | Rửa tay hả mẹ?
+D: M | Yes! Soap, soap, rub, rub. | Đúng rồi! Xà phòng nè, chà chà.
+D: K | Clean hands! | Tay sạch rồi!
+A: M | We're home! First, let's wash our hands. | Về nhà rồi! Trước tiên mình đi rửa tay nào.
+A: K | Can I turn on the water? | Con mở nước được không?
+A: M | Yes. Now take some soap. | Được. Giờ lấy chút xà phòng nhé.
+A: K | Rub, rub, rub! Bubbles! | Chà, chà, chà! Bong bóng nè!
+A: M | Don't forget between your fingers. | Đừng quên kẽ ngón tay nhé.
+A: K | Now rinse and dry. | Giờ xả nước rồi lau khô.
+A: M | Here's the towel. | Khăn đây con.
+A: K | My hands are clean now! | Tay con sạch rồi!
+V: soap | xà phòng
+V: towel | khăn
+V: water | nước
+V: dirty | dơ
+V: clean | sạch
+V: rinse | xả nước
+P: My ___ is dirty. | ___ của con dơ rồi.
+E: My face is dirty. | Mặt con dơ rồi.
+E: My shirt is dirty. | Áo con dơ rồi.
+P: Let's wash ___. | Mình rửa ___ nào.
+E: Let's wash your face. | Mình rửa mặt nào.
+E: Let's wash your feet. | Mình rửa chân nào.
+## 6
+D: M | Let's get dressed. | Mình mặc đồ nào.
+D: K | I want my red shirt. | Con muốn cái áo đỏ.
+D: M | Arms up! Shirt on. | Giơ tay lên! Mặc áo vào.
+D: K | I did it! | Con mặc xong rồi!
+A: M | It's cold today. What do you want to wear? | Hôm nay trời lạnh. Con muốn mặc gì?
+A: K | My blue jacket! | Áo khoác xanh của con!
+A: M | Good idea. First, put on your pants. | Ý hay đó. Trước tiên mặc quần vào nhé.
+A: K | One leg, two legs. Done! | Một chân, hai chân. Xong!
+A: M | Now your socks and shoes. | Giờ tới vớ với giày.
+A: K | Can you help me with my shoes? | Mẹ giúp con mang giày được không?
+A: M | Sure. Left foot, right foot. | Được. Chân trái, chân phải.
+A: K | I'm ready to go! | Con sẵn sàng đi rồi!
+V: jacket | áo khoác
+V: pants | quần dài
+V: dress | váy đầm
+V: button | cúc áo
+V: zipper | dây kéo
+V: wear | mặc, đội, mang
+P: Put on your ___. | Con mặc/mang ___ vào nhé.
+E: Put on your jacket. | Con mặc áo khoác vào nhé.
+E: Put on your hat. | Con đội mũ vào nhé.
+P: Take off your ___. | Con cởi ___ ra nhé.
+E: Take off your shoes. | Con cởi giày ra nhé.
+E: Take off your jacket. | Con cởi áo khoác ra nhé.
+## 7
+D: K | Let's play! | Mình chơi đi!
+D: M | What do you want to play? | Con muốn chơi gì?
+D: K | Ball! Throw the ball! | Bóng! Ném bóng đi!
+D: M | Catch! Good job! | Bắt nè! Giỏi lắm!
+A: K | Mommy, can you play with me? | Mẹ ơi, mẹ chơi với con nhé?
+A: M | Sure! Do you want to play hide-and-seek? | Được chứ! Con muốn chơi trốn tìm không?
+A: K | Yes! You count. I'll hide. | Có! Mẹ đếm nha. Con đi trốn.
+A: M | One, two, three… ten! Ready or not, here I come! | Một, hai, ba… mười! Mẹ đi tìm đây!
+A: K | You can't find me! | Mẹ không tìm thấy con đâu!
+A: M | Is he under the table? No… Behind the door? | Con ở dưới bàn hả? Không… Sau cửa hả?
+A: K | Here I am! Boo! | Con ở đây nè! Hù!
+A: M | Found you! Now it's your turn to count. | Tìm thấy rồi! Giờ tới lượt con đếm.
+V: hide-and-seek | trốn tìm
+V: count | đếm
+V: hide | trốn
+V: find | tìm thấy
+V: catch | bắt
+V: turn | lượt
+P: Let's play ___. | Mình chơi ___ nhé.
+E: Let's play with blocks. | Mình chơi xếp khối nhé.
+E: Let's play tag. | Mình chơi đuổi bắt nhé.
+P: It's your turn to ___. | Tới lượt con ___.
+E: It's your turn to throw. | Tới lượt con ném.
+E: It's your turn to hide. | Tới lượt con trốn.
+## 8
+D: M | Let's go outside. | Mình ra ngoài chơi nào.
+D: K | Yay! Let's go! | Yeah! Đi thôi!
+D: M | Hold my hand. | Nắm tay mẹ nhé.
+D: K | Look, a bird! | Nhìn kìa, con chim!
+A: M | Put on your shoes. We're going out. | Mang giày vào nhé. Mình đi ra ngoài.
+A: K | Where are we going? | Mình đi đâu vậy mẹ?
+A: M | We're going to the market. | Mình đi chợ.
+A: K | Can I ride in the car? | Con đi xe hơi được không?
+A: M | Yes. Get in the car and buckle up. | Được. Lên xe và cài dây an toàn nhé.
+A: K | Look! A big truck! | Nhìn kìa! Xe tải to quá!
+A: M | Wow! What color is it? | Wow! Nó màu gì vậy con?
+A: K | It's yellow! | Màu vàng ạ!
+V: outside | bên ngoài
+V: market | chợ
+V: street | đường phố
+V: truck | xe tải
+V: seat belt | dây an toàn
+V: walk | đi bộ
+P: We're going to the ___. | Mình đi ___.
+E: We're going to the park. | Mình đi công viên.
+E: We're going to the zoo. | Mình đi sở thú.
+P: Look! A ___! | Nhìn kìa! ___!
+E: Look! A dog! | Nhìn kìa! Con chó!
+E: Look! A motorbike! | Nhìn kìa! Xe máy!
+## 9
+D: K | Help me, please! | Giúp con với!
+D: M | What's wrong? | Có chuyện gì vậy con?
+D: K | I'm hurt. | Con bị đau.
+D: M | Let me see. A big hug! | Để mẹ xem nào. Ôm một cái nào!
+A: K | Mommy! Mommy! Help me! | Mẹ ơi! Mẹ ơi! Giúp con với!
+A: M | I'm here. What happened? | Mẹ đây. Chuyện gì vậy?
+A: K | I fell down. My knee hurts. | Con bị té. Đầu gối con đau.
+A: M | Let me see. Oh, a little scratch. | Để mẹ xem. Ồ, trầy một chút.
+A: K | Can I have a bandage? | Cho con miếng băng dán được không?
+A: M | Sure. Here's a bandage. | Được. Miếng băng dán đây.
+A: K | Thank you. It feels better. | Con cảm ơn mẹ. Con đỡ đau rồi.
+A: M | You're so brave! | Con dũng cảm lắm!
+V: help | giúp đỡ
+V: hurt | đau
+V: fall down | té ngã
+V: knee | đầu gối
+V: bandage | băng dán
+V: brave | dũng cảm
+P: My ___ hurts. | ___ của con đau.
+E: My head hurts. | Đầu con đau.
+E: My hand hurts. | Tay con đau.
+P: Can you help me ___? | Mẹ giúp con ___ được không?
+E: Can you help me open it? | Mẹ giúp con mở cái này được không?
+E: Can you help me find my toy? | Mẹ giúp con tìm đồ chơi được không?
+## 10
+D: M | It's time for bed. | Đến giờ đi ngủ rồi.
+D: K | One more story, please. | Đọc thêm một truyện nữa đi mẹ.
+D: M | Okay. Close your eyes. | Được. Nhắm mắt lại nhé.
+D: K | Good night, Mommy. I love you. | Chúc mẹ ngủ ngon. Con yêu mẹ.
+A: M | It's eight o'clock. Time for bed. | Tám giờ rồi. Đến giờ đi ngủ.
+A: K | But I'm not sleepy! | Nhưng con chưa buồn ngủ!
+A: M | Let's put on your pajamas and brush your teeth. | Mình thay đồ ngủ và đánh răng nhé.
+A: K | Can you read me a story? | Mẹ đọc truyện cho con nhé?
+A: M | Sure. Which book do you want? | Được. Con muốn cuốn nào?
+A: K | The bunny book, please. | Cuốn con thỏ ạ.
+A: M | The end. Now close your eyes. Sweet dreams. | Hết rồi. Giờ nhắm mắt lại nhé. Ngủ ngon.
+A: K | Good night, Mommy. I love you. | Chúc mẹ ngủ ngon. Con yêu mẹ.
+V: pajamas | đồ ngủ
+V: pillow | cái gối
+V: blanket | cái chăn
+V: sleepy | buồn ngủ
+V: story | câu chuyện
+V: dream | giấc mơ
+P: It's time for ___. | Đến giờ ___ rồi.
+E: It's time for a bath. | Đến giờ tắm rồi.
+E: It's time for a nap. | Đến giờ ngủ trưa rồi.
+P: Can you read me ___? | Mẹ đọc ___ cho con nhé?
+E: Can you read me a book? | Mẹ đọc sách cho con nhé?
+E: Can you read me one more story? | Mẹ đọc thêm một truyện cho con nhé?
+## 11
+D: M | Who is this? | Ai đây con?
+D: K | It's Daddy! | Là ba!
+D: M | And who is this? | Còn đây là ai?
+D: K | It's Grandma! I love Grandma. | Là bà! Con yêu bà.
+A: M | Let's look at our family photo. | Mình xem ảnh gia đình nào.
+A: K | That's me! And that's Daddy. | Đây là con! Còn đây là ba.
+A: M | Who is next to Daddy? | Ai đứng cạnh ba vậy?
+A: K | That's Grandpa. He's tall. | Đó là ông. Ông cao.
+A: M | And who is holding the baby? | Còn ai đang bế em bé?
+A: K | Grandma! She's smiling. | Bà ạ! Bà đang cười.
+A: M | We are a big, happy family. | Nhà mình là một gia đình lớn, vui vẻ.
+A: K | I love my family! | Con yêu gia đình mình!
+V: family | gia đình
+V: brother | anh/em trai
+V: sister | chị/em gái
+V: uncle | chú, bác, cậu
+V: aunt | cô, dì
+V: cousin | anh chị em họ
+P: This is my ___. | Đây là ___ của con.
+E: This is my brother. | Đây là anh trai con.
+E: This is my aunt. | Đây là dì của con.
+P: I love ___. | Con yêu ___.
+E: I love Grandpa. | Con yêu ông.
+E: I love my sister. | Con yêu chị gái.
+## 12
+D: M | Where is your nose? | Mũi con đâu?
+D: K | Here is my nose! | Mũi con đây!
+D: M | Clap your hands! | Vỗ tay nào!
+D: K | Clap, clap, clap! | Bốp, bốp, bốp!
+A: M | Let's play Simon Says. Simon says touch your head. | Mình chơi "Simon bảo" nhé. Simon bảo chạm vào đầu.
+A: K | Head! | Đầu đây!
+A: M | Simon says touch your shoulders. | Simon bảo chạm vào vai.
+A: K | Shoulders! | Vai đây!
+A: M | Touch your knees. | Chạm vào đầu gối.
+A: K | Ha! Simon didn't say! | Ha! Simon chưa bảo mà!
+A: M | You're right! Simon says wiggle your toes. | Đúng rồi! Simon bảo ngọ nguậy ngón chân.
+A: K | Wiggle, wiggle! That tickles! | Ngọ nguậy! Nhột quá!
+V: head | cái đầu
+V: shoulders | đôi vai
+V: knees | đầu gối
+V: toes | ngón chân
+V: tummy | cái bụng
+V: fingers | ngón tay
+P: Touch your ___. | Chạm vào ___ nào.
+E: Touch your tummy. | Chạm vào bụng nào.
+E: Touch your toes. | Chạm vào ngón chân nào.
+P: I have two ___. | Con có hai ___.
+E: I have two eyes. | Con có hai mắt.
+E: I have two hands. | Con có hai bàn tay.
+## 13
+D: M | What does the dog say? | Con chó kêu sao?
+D: K | Woof, woof! | Gâu gâu!
+D: M | What does the cat say? | Con mèo kêu sao?
+D: K | Meow! | Meo meo!
+A: M | Let's sing Old MacDonald! What animal is on the farm? | Mình hát Old MacDonald nào! Nông trại có con gì?
+A: K | A cow! | Con bò!
+A: M | What does the cow say? | Con bò kêu sao?
+A: K | Moo, moo! | Ò ò!
+A: M | And what about the duck? | Còn con vịt thì sao?
+A: K | Quack, quack! | Cạp cạp!
+A: M | Which animal do you like best? | Con thích con nào nhất?
+A: K | I like the dog best. It's so cute! | Con thích con chó nhất. Nó dễ thương lắm!
+V: puppy | chó con
+V: kitten | mèo con
+V: duck | con vịt
+V: pig | con heo
+V: cute | dễ thương
+V: farm | nông trại
+P: The ___ says ___. | Con ___ kêu ___.
+E: The pig says oink. | Con heo kêu ụt ịt.
+E: The sheep says baa. | Con cừu kêu be be.
+P: I like the ___ best. | Con thích con ___ nhất.
+E: I like the cat best. | Con thích con mèo nhất.
+E: I like the duck best. | Con thích con vịt nhất.
+## 14
+D: M | What color is it? | Nó màu gì?
+D: K | It's red! | Màu đỏ!
+D: M | And this one? | Còn cái này?
+D: K | Blue! | Màu xanh dương!
+A: M | What's your favorite color? | Con thích màu gì nhất?
+A: K | My favorite color is blue. | Con thích màu xanh dương nhất.
+A: M | Can you find something blue? | Con tìm được cái gì màu xanh dương không?
+A: K | My cup is blue! | Cái ly của con màu xanh dương!
+A: M | Great! Now find something yellow. | Giỏi! Giờ tìm cái gì màu vàng nào.
+A: K | The banana is yellow! | Quả chuối màu vàng!
+A: M | What color is the grass? | Cỏ màu gì nhỉ?
+A: K | The grass is green! | Cỏ màu xanh lá!
+V: pink | màu hồng
+V: purple | màu tím
+V: orange | màu cam
+V: white | màu trắng
+V: black | màu đen
+V: favorite | yêu thích nhất
+P: The ___ is ___. | ___ màu ___.
+E: The sky is blue. | Bầu trời màu xanh dương.
+E: The apple is red. | Quả táo màu đỏ.
+P: Can you find something ___? | Con tìm được cái gì màu ___ không?
+E: Can you find something pink? | Con tìm được cái gì màu hồng không?
+E: Can you find something white? | Con tìm được cái gì màu trắng không?
+## 15
+D: M | How many apples? | Có mấy quả táo?
+D: K | One, two, three! | Một, hai, ba!
+D: M | Three apples! | Ba quả táo!
+D: K | Count again! | Đếm lại nữa!
+A: M | Let's count your toy cars. | Mình đếm xe đồ chơi của con nào.
+A: K | One, two, three, four, five! | Một, hai, ba, bốn, năm!
+A: M | How many cars do you have? | Con có mấy chiếc xe?
+A: K | I have five cars. | Con có năm chiếc xe.
+A: M | If I give you one more, how many? | Mẹ cho thêm một chiếc thì có mấy chiếc?
+A: K | Six! I have six cars! | Sáu! Con có sáu chiếc xe!
+A: M | And how old are you? | Còn con mấy tuổi?
+A: K | I'm two years old! | Con hai tuổi!
+V: four | số bốn
+V: five | số năm
+V: six | số sáu
+V: seven | số bảy
+V: eight | số tám
+V: how many | bao nhiêu
+P: How many ___? | Có bao nhiêu ___?
+E: How many birds? | Có bao nhiêu con chim?
+E: How many balls? | Có bao nhiêu quả bóng?
+P: I have ___ ___. | Con có ___ ___.
+E: I have two hands. | Con có hai bàn tay.
+E: I have three balloons. | Con có ba quả bong bóng.

@@ -3,7 +3,7 @@
 'use strict';
 const $ = (s, r = document) => r.querySelector(s);
 const app = $('#app'), tabs = $('#tabs');
-const IMG = p => 'img/' + p + (/\.(jpe?g|png|webp)$/i.test(p) ? '' : '.webp');
+const IMG = p => /^https?:/.test(p) ? p : 'img/' + p + (/\.(jpe?g|png|webp)$/i.test(p) ? '' : '.webp');
 // never show a broken-image icon: try the mascot once, then hide
 document.addEventListener('error', e => { const t = e.target; if (!t || t.tagName !== 'IMG') return; if (!t.dataset.fb && !/ui\/xiumai/.test(t.src)) { t.dataset.fb = 1; t.src = 'img/ui/xiumai.webp'; } else t.style.visibility = 'hidden'; }, true);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -36,12 +36,12 @@ function findImg(en) { en = en.trim().toLowerCase(); const w = ALL.find(x => x.e
 function custom() { return LS.get('lop', []); }
 function topicList() {
   const c = custom(); const L = TOPICS.slice();
-  if (c.length) L.unshift({ k: 'lop', vi: 'Từ trên lớp', en: 'From class', c: '#FFE9A8', w: c.map(x => [x.en, x.vi, x.img || '', x.ph || '']) });
+  if (c.length) L.unshift({ k: 'lop', vi: 'Từ trên lớp', en: 'From class', c: '#FFE9A8', w: c.map(x => [x.en, x.vi, x.img || '', x.ph || '', x.ex || null]) });
   return L;
 }
 const topic = k => topicList().find(t => t.k === k);
 const CRED = {}; const pslug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-function wsrc(w) { if (w[3] && PH[w[3]]) return PH[w[3]]; if (w[0] && CRED[w[0]]) return 'img/p/' + pslug(w[0]) + '.jpg'; if (w[2]) return IMG(w[2]); return IMG('ui/xiumai'); }
+function wsrc(w) { if (w[3] && PH[w[3]]) return PH[w[3]]; if (w[2]) return IMG(w[2]); if (w[0] && CRED[w[0]]) return 'img/p/' + pslug(w[0]) + '.jpg'; return IMG('ui/xiumai'); }
 const PAL = [['#FCE4EC', '#FFCC00', '#F8C8D8'], ['#E6F5FF', '#4FB3FF', '#CDE9FF'], ['#FFF6D9', '#FF7AA2', '#FFE7A8'], ['#E9FBE2', '#62C94A', '#CBF0BD'], ['#F1EAFF', '#A77BFF', '#DED0FF'], ['#FFF0E3', '#FF9A3C', '#FFDDBF']];
 
 /* ---------- speech ---------- */
@@ -125,8 +125,9 @@ R.be = () => {
     <a class="tile t1" href="#/chu-de/flash"><div class="ic"><span class="card2"></span><span class="card1"><img src="${IMG('w/red-apple')}" alt=""></span></div><span class="lb">Flashcard</span></a>
     <a class="tile t3" href="#/game"><div class="ic"><img src="${IMG('w/video-game')}" alt=""><img class="bug" src="${IMG('w/puzzle-piece')}" alt=""></div><span class="lb">Trò chơi</span></a>
     <a class="tile t2" href="#/video"><div class="ic"><img src="${IMG('w/television')}" alt=""><img class="bug" src="${IMG('w/musical-notes')}" alt=""></div><span class="lb">Video & Bài hát</span></a>
-    <button class="tile t4 wtile" id="wotd"><div class="ic"><img src="${wsrc([w.en, w.vi, w.img])}" alt=""></div><span class="lb"><small>Từ hôm nay</small>${esc(w.en)}</span></button>
-   </div></div>`);
+    <a class="tile t4" href="#/nang-cao"><div class="ic"><img src="${IMG('w/books')}" alt=""><img class="bug" src="${IMG('w/speech-balloon')}" alt=""></div><span class="lb">Nâng cao</span></a>
+   </div>
+   <button class="wotd" id="wotd"><img src="${wsrc([w.en, w.vi, w.img])}" alt=""><span><small>🌟 Từ của hôm nay</small><b>${esc(w.en)}</b><em>${esc(w.vi)}</em></span><i>🔊</i></button></div>`);
   $('#wotd').onclick = () => { say(w.en); bump('words', w.en); toast(`${w.en} = ${w.vi}`); };
 };
 R.topics = mode => {
@@ -155,7 +156,7 @@ R.flash = (k, i) => {
   <div class="fwrap"><div class="fcard" id="fc" style="background:${pal[0]};border-color:${pal[1]}">
    <button class="fav" id="fav" aria-label="Yêu thích">${isFav ? '💗' : '🤍'}</button><button class="spk" id="spk" aria-label="Nghe">🔊</button>
    <img class="pic" src="${wsrc(w)}" alt="${esc(w[0])}"><div class="shadow"></div>
-   <div class="w">${esc(w[0])}</div><div class="v" id="vi">${hideVi ? '' : esc(w[1])}</div>${clouds(pal[2])}</div>
+   <div class="w">${esc(w[0])}</div><div class="v" id="vi">${hideVi ? '' : esc(w[1])}</div>${w[4] && w[4][0] ? `<div class="fex">💬 ${esc(w[4][0])}${hideVi || !w[4][1] ? '' : `<small>${esc(w[4][1])}</small>`}</div>` : ''}${clouds(pal[2])}</div>
   <div class="fnav"><button class="big" id="prev" aria-label="Trước">◀</button><button class="big pri" id="again">🔊 Nghe lại</button><button class="big" id="next" aria-label="Tiếp">▶</button></div>
   <div class="dots">${t.w.map((_, j) => `<i class="${j === i ? 'on' : ''}"></i>`).join('')}</div>
   <div style="text-align:center;margin-top:10px"><button class="pill" style="display:inline-flex" id="tvi">${hideVi ? '👀 Hiện nghĩa' : '🙈 Ẩn nghĩa'}</button></div></div>`);
@@ -509,7 +510,7 @@ R.bame = () => {
   view(`<div class="parent">${topbar('parent')}
   ${window.XMX ? XMX.dailyCard() : ''}
   <h3 class="psec">💬 Nói chuyện với con</h3>
-  ${row('#/bame/hoi-thoai', 'open-book', 'Hội thoại thường ngày', 'Truyện tranh và video hoạt hình mẹ con')}
+  ${row('#/bame/hoi-thoai', 'open-book', 'Hội thoại thường ngày', 'Video hoạt hình mẹ và bé, có phụ đề và luyện nói')}
   ${row('#/bame/cau-noi', 'speaking-head', 'Câu nói hằng ngày', 'Khen, hỏi, nhắc nhở, an toàn…')}
   <h3 class="psec">🌱 Dạy con</h3>
   ${row('#/bame/cach-day', 'light-bulb', 'Cách dạy con tiếng Anh', '12 mẹo dễ làm mỗi ngày')}
@@ -586,23 +587,87 @@ R.acts = () => {
   app.querySelectorAll('.row').forEach(b => b.onclick = () => say(b.dataset.en));
 };
 function resizePhoto(file) { return new Promise(res => { const img = new Image(); img.onload = () => { const m = 480, s = Math.min(1, m / Math.max(img.width, img.height)); const c = document.createElement('canvas'); c.width = img.width * s; c.height = img.height * s; c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); c.toBlob(b => res(b), 'image/jpeg', .85); URL.revokeObjectURL(img.src); }; img.onerror = () => res(null); img.src = URL.createObjectURL(file); }); }
+// ---- class words: type many words at once → auto meaning, picture, example sentence ----
+const singular = w => w.replace(/ies$/, 'y').replace(/(s|x|z|ch|sh)es$/, '$1').replace(/([^s])s$/, '$1');
+function dictFind(en) { const e = en.toLowerCase(); return ALL.find(x => x.en.toLowerCase() === e) || ALL.find(x => x.en.toLowerCase() === singular(e)); }
+const VOW = /^[aeiou]/i;
+const A = w => (VOW.test(w) ? 'an ' : 'a ') + w;
+function example(en, vi, t) {
+  const V = vi.replace(/\s*\(.*\)$/, '').split(' / ')[0];
+  const Vc = V.charAt(0).toUpperCase() + V.slice(1);
+  if (t === 'actions') return [`Let's ${en}!`, `Mình ${V} nào!`];
+  if (t === 'feelings') return [`Are you ${en}?`, `Con có ${V} không?`];
+  if (t === 'opposites') return [`It's so ${en}!`, `Nó ${V} quá!`];
+  if (t === 'colors') return [`It's ${en}.`, `Nó ${V}.`];
+  if (t === 'numbers') return [`Let's count: ${en}!`, `Mình đếm nào: ${V.replace(/^số /, '')}!`];
+  if (t === 'places') return [`Let's go to the ${en}.`, `Mình đi ${V} nào.`];
+  if (t === 'body') return [`Touch your ${en}.`, `Con chạm vào ${V} nào.`];
+  if (t === 'clothes') return [`Where is your ${en}?`, `${Vc} của con đâu rồi?`];
+  if (['fruits', 'vegetables', 'food', 'sweets'].includes(t)) {
+    const MASS = /^(rice|bread|soup|cheese|meat|fish|chicken|pork|beef|corn|broccoli|spinach|lettuce|cabbage|garlic|ginger|pasta|pizza|popcorn|jelly|cereal|porridge|salad|tofu|ham|cake|ice cream|candy|chocolate|yogurt|butter|honey|jam|sushi|noodles|fries|french fries|watermelon|pineapple|papaya|durian|jackfruit|celery|pumpkin|squash|sticky rice|toast|milk|cotton candy|pudding|custard|seaweed|sweet corn|bok choy|morning glory|kale)$/i;
+    const pl = MASS.test(en) || /s$/.test(en) ? en : /[^aeiou]y$/.test(en) ? en.slice(0, -1) + 'ies' : /(o|x|ch|sh)$/.test(en) ? en + 'es' : en + 's';
+    return [`Do you like ${pl}?`, `Con có thích ${V} không?`];
+  }
+  if (t === 'drinks') return [`Do you want some ${en}?`, `Con có muốn uống ${V} không?`];
+  if (['weather', 'time', 'holidays', 'shapes', 'sports', 'music'].includes(t)) return [`Can you say "${en}"?`, `Con nói “${en}” được không?`];
+  if (t === 'people' || t === 'jobs') return [`Where is the ${en}?`, `${Vc} đâu rồi?`];
+  return [`Where is the ${en}?`, `${Vc} đâu rồi?`];
+}
+async function gtx(text) {
+  try { const r = await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q=' + encodeURIComponent(text)); const d = await r.json(); return (d[0] || []).map(x => x[0]).join('').trim(); } catch (e) { return ''; }
+}
+async function wikiPic(en) {
+  try {
+    const r = await fetch('https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages|pageprops&piprop=thumbnail&pithumbsize=480&titles=' + encodeURIComponent(en.charAt(0).toUpperCase() + en.slice(1)));
+    const d = await r.json(); const pg = Object.values((d.query || {}).pages || {})[0];
+    if (!pg || pg.missing !== undefined || (pg.pageprops && 'disambiguation' in pg.pageprops)) return '';
+    return pg.thumbnail ? pg.thumbnail.source : '';
+  } catch (e) { return ''; }
+}
+function splitWords(txt) {
+  return txt.split(/[\n,;，、]+/).map(x => x.trim()).filter(Boolean).map(x => {
+    const m = x.match(/^(.+?)\s*[-–:=]\s*(.+)$/); // "dog - con chó"
+    return m ? { en: m[1].trim(), vi: m[2].trim() } : { en: x, vi: '' };
+  }).filter(x => /[a-z]/i.test(x.en));
+}
+async function makeWord(x) {
+  const en = x.en.replace(/\s+/g, ' ');
+  const d = dictFind(en);
+  const item = { en: d ? d.en : en, vi: x.vi || (d ? d.vi : ''), img: d ? d.img : '' };
+  if (!item.vi) item.vi = (await gtx(en)) || '';
+  if (!item.img) item.img = await wikiPic(singular(en.toLowerCase())) || await wikiPic(en);
+  if (d) item.ex = example(d.en, item.vi, d.t);
+  else { const s = item.img ? `Where is the ${en}?` : `Can you say "${en}"?`; item.ex = [s, (await gtx(s)) || '']; }
+  return item;
+}
 R.lop = () => {
   setTabs('parent', '#/bame/tu-lop');
-  const L = custom(); let blob = null;
-  view(bar('Từ vựng con học trên lớp', '#/bame') + `<div class="panel"><div class="form">
-   <input id="en" placeholder="Từ tiếng Anh, ví dụ: dog" autocomplete="off" autocapitalize="none" spellcheck="false">
-   <input id="vi" placeholder="Nghĩa tiếng Việt, ví dụ: con chó" autocomplete="off">
-   <div class="photo"><label class="pv" id="pv">📷<input id="file" type="file" accept="image/*" hidden></label><div class="muted" style="font-size:15px">Chụp ảnh đồ vật thật (không bắt buộc). Nếu không chụp, web tự tìm hình có sẵn.</div></div>
-   <div style="display:flex;gap:10px"><button class="btn alt" id="hear" style="flex:1">🔊 Nghe thử</button><button class="btn" id="add" style="flex:2">＋ Thêm từ</button></div></div></div>
-   <div class="panel sec mylist"><div class="ph">📚 Đã nhập (${L.length} từ)</div>${L.length ? L.map((w, i) => `<div class="it"><img src="${w.ph && PH[w.ph] ? PH[w.ph] : w.img ? IMG(w.img) : IMG('ui/xiumai')}" alt=""><div><b>${esc(w.en)}</b><br><span class="muted">${esc(w.vi)}</span></div><button class="x" data-i="${i}" aria-label="Xóa">🗑️</button></div>`).join('') + `<a class="btn" style="display:block;margin-top:12px;text-decoration:none" href="#/flash/lop">Cho bé học bằng Flashcard ▶</a>` : '<p class="muted" style="margin:0">Chưa có từ nào. Nhập từ bé học hôm nay ở lớp nha.</p>'}</div>`);
-  $('#file').onchange = async e => { const f = e.target.files[0]; if (!f) return; blob = await resizePhoto(f); if (blob) $('#pv').innerHTML = `<img src="${URL.createObjectURL(blob)}" alt="">`; };
-  $('#hear').onclick = () => { const en = $('#en').value.trim(); if (en) say(en); };
+  let L = custom();
+  // older entries typed as one long line ("cat, dog, bird") → split them now
+  if (L.some(w => /[,\n;]/.test(w.en) || !w.ex)) {
+    const fix = async () => { const out = []; for (const w of L) { if (/[,\n;]/.test(w.en)) { for (const x of splitWords(w.en)) out.push(await makeWord(x)); } else if (!w.ex) { const n = await makeWord({ en: w.en, vi: w.vi }); out.push(Object.assign(n, w.img ? { img: w.img } : {}, w.ph ? { ph: w.ph } : {})); } else out.push(w); } LS.set('lop', out); R.lop(); };
+    fix(); 
+  }
+  let blob = null;
+  const pic = w => w.ph && PH[w.ph] ? PH[w.ph] : w.img ? IMG(w.img) : IMG('ui/xiumai');
+  view(bar('Từ vựng con học trên lớp', '#/bame') + `<div class="panel lopin"><div class="ph">✍️ Nhập các từ bé học</div>
+   <textarea id="words" rows="4" placeholder="Gõ liền nhiều từ, cách nhau bằng dấu phẩy hoặc xuống dòng.&#10;Ví dụ: cat, dog, bird, monkey, banana" autocapitalize="none" autocomplete="off" spellcheck="false"></textarea>
+   <p class="muted lophint">Web tự tách từng từ, tự thêm nghĩa tiếng Việt, hình và câu mẫu. Muốn tự ghi nghĩa thì gõ: <b>dog - con chó</b></p>
+   <button class="btn" id="add">✨ Tạo flashcard</button><div id="prog" class="lopprog" hidden></div></div>
+   <div class="panel sec mylist"><div class="ph">📚 Đã nhập (${L.length} từ)</div>${L.length ? `<a class="btn" style="display:block;margin-bottom:12px;text-decoration:none" href="#/flash/lop">Cho bé học bằng Flashcard ▶</a>` + L.map((w, i) => `<div class="it lopit"><img src="${pic(w)}" alt=""><div class="lw"><b>${esc(w.en)}</b> <span class="muted">${esc(w.vi)}</span>${w.ex ? `<button class="lex" data-i="${i}">💬 ${esc(w.ex[0])}<small>${esc(w.ex[1] || '')}</small></button>` : ''}</div>
+     <div class="lact"><label class="lcam" title="Chụp ảnh thật">📷<input type="file" accept="image/*" data-i="${i}" hidden></label><button class="x" data-i="${i}" aria-label="Xóa">🗑️</button></div></div>`).join('') : '<p class="muted" style="margin:0">Chưa có từ nào. Gõ các từ bé học trên lớp vào ô phía trên nhé.</p>'}</div>`);
   $('#add').onclick = async () => {
-    const en = $('#en').value.trim(), vi = $('#vi').value.trim(); if (!en) { toast('Nhập từ tiếng Anh trước nha'); return; }
-    const item = { en, vi, img: findImg(en) || '' };
-    if (blob) { const id = 'p' + Date.now(); await phPut(id, blob); PH[id] = URL.createObjectURL(blob); item.ph = id; }
-    const L2 = custom(); L2.push(item); LS.set('lop', L2); toast('Đã thêm "' + en + '"'); R.lop();
+    const xs = splitWords($('#words').value); if (!xs.length) { toast('Gõ từ tiếng Anh vào ô trước nha'); return; }
+    const have = new Set(custom().map(w => w.en.toLowerCase()));
+    const todo = xs.filter(x => !have.has(x.en.toLowerCase()) && !(have.add(x.en.toLowerCase()) && false));
+    const btn = $('#add'), pr = $('#prog'); btn.disabled = true; pr.hidden = false;
+    const L2 = custom(); let k = 0;
+    for (const x of todo) { pr.textContent = `Xíu Mại đang làm thẻ ${++k}/${todo.length}: ${x.en}…`; L2.push(await makeWord(x)); LS.set('lop', L2); }
+    toast(todo.length ? `Đã thêm ${todo.length} từ 🎉` : 'Các từ này đã có rồi'); R.lop();
   };
+  app.querySelectorAll('.lex').forEach(b => b.onclick = () => { const w = custom()[+b.dataset.i]; if (w && w.ex) say(w.ex[0]); });
+  app.querySelectorAll('.lopit img').forEach((im, i) => im.onclick = () => { const w = custom()[i]; if (w) say(w.en); });
+  app.querySelectorAll('.lcam input').forEach(inp => inp.onchange = async e => { const f = e.target.files[0]; if (!f) return; const b2 = await resizePhoto(f); if (!b2) return; const id = 'p' + Date.now(); await phPut(id, b2); PH[id] = URL.createObjectURL(b2); const L2 = custom(); const w = L2[+inp.dataset.i]; if (w) { if (w.ph) phDel(w.ph); w.ph = id; } LS.set('lop', L2); R.lop(); });
   app.querySelectorAll('.x').forEach(b => b.onclick = () => { const L2 = custom(); const [w] = L2.splice(+b.dataset.i, 1); if (w && w.ph) phDel(w.ph); LS.set('lop', L2); R.lop(); });
 };
 R.journal = () => {

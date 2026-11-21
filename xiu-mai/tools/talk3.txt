@@ -1,0 +1,375 @@
+## 31
+D: K | Look, an elephant! | Nhìn kìa, con voi!
+D: M | It's so big! | Nó to quá!
+D: K | The lion says roar! | Sư tử gầm "gừ"!
+D: M | Ooh, I'm scared! | Ôi, mẹ sợ quá!
+A: M | We're at the zoo! Which animal do you want to see first? | Mình tới sở thú rồi! Con muốn xem con gì trước?
+A: K | The monkeys! | Mấy con khỉ!
+A: M | Look, they're swinging on the trees. | Nhìn kìa, chúng đang đu trên cây.
+A: K | That monkey is eating a banana! | Con khỉ kia đang ăn chuối!
+A: M | And over there is a giraffe. It has a long neck. | Còn đằng kia là hươu cao cổ. Nó có cái cổ dài.
+A: K | It's taller than Daddy! | Nó cao hơn cả ba!
+A: M | Ha ha, yes. Can you roar like a tiger? | Ha ha, đúng rồi. Con gầm như con hổ được không?
+A: K | Roar! I'm a tiger! | Gừ! Con là con hổ!
+V: zoo | sở thú
+V: tiger | con hổ
+V: zebra | ngựa vằn
+V: neck | cái cổ
+V: trunk | vòi voi
+V: tail | cái đuôi
+P: The ___ has a long ___. | Con ___ có ___ dài.
+E: The giraffe has a long neck. | Hươu cao cổ có cái cổ dài.
+E: The elephant has a long trunk. | Con voi có cái vòi dài.
+P: Can you ___ like a ___? | Con ___ như con ___ được không?
+E: Can you roar like a lion? | Con gầm như sư tử được không?
+E: Can you jump like a monkey? | Con nhảy như con khỉ được không?
+## 32
+D: K | I see a fish! | Con thấy con cá!
+D: M | What color is it? | Nó màu gì?
+D: K | Orange! It's swimming. | Màu cam! Nó đang bơi.
+D: M | Swim, swim, little fish! | Bơi đi, bơi đi, cá nhỏ!
+A: M | Welcome to the aquarium! | Chào mừng con tới thủy cung!
+A: K | Wow! So many fish! | Wow! Nhiều cá quá!
+A: M | Look up. What's that big one? | Nhìn lên đi. Con to kia là gì?
+A: K | It's a shark! Does it bite? | Là cá mập! Nó có cắn không mẹ?
+A: M | Don't worry. It's behind the glass. | Đừng lo. Nó ở sau tấm kính.
+A: K | Look, an octopus! It has eight arms. | Nhìn kìa, bạch tuộc! Nó có tám cái tay.
+A: M | Can you count them? | Con đếm thử được không?
+A: K | One, two, three… eight! | Một, hai, ba… tám!
+V: aquarium | thủy cung
+V: shark | cá mập
+V: octopus | bạch tuộc
+V: turtle | con rùa
+V: jellyfish | con sứa
+V: starfish | sao biển
+P: It has ___ ___. | Nó có ___ ___.
+E: It has eight arms. | Nó có tám cái tay.
+E: It has two fins. | Nó có hai cái vây.
+P: Does it ___? | Nó có ___ không?
+E: Does it bite? | Nó có cắn không?
+E: Does it swim fast? | Nó có bơi nhanh không?
+## 33
+D: K | Look, a butterfly! | Nhìn kìa, con bướm!
+D: M | It's flying! | Nó đang bay!
+D: K | A little ant! | Một con kiến nhỏ!
+D: M | Let's watch it walk. | Mình xem nó đi nhé.
+A: K | Mommy, a bee! I'm scared. | Mẹ ơi, con ong! Con sợ.
+A: M | Stay calm. Don't touch it and it won't hurt you. | Bình tĩnh nhé. Đừng chạm vào nó thì nó không đốt con đâu.
+A: K | Where is it going? | Nó đi đâu vậy mẹ?
+A: M | To the flowers. Bees make honey. | Tới những bông hoa. Ong làm ra mật.
+A: K | I like honey! | Con thích mật ong!
+A: M | Look at this leaf. What's on it? | Nhìn chiếc lá này. Trên đó có gì?
+A: K | A ladybug! It's red with black spots. | Con bọ rùa! Nó màu đỏ có chấm đen.
+A: M | Let's count the spots! | Mình đếm chấm nào!
+V: bee | con ong
+V: honey | mật ong
+V: spider | con nhện
+V: caterpillar | sâu bướm
+V: wings | đôi cánh
+V: spots | đốm, chấm
+P: Don't touch the ___. | Đừng chạm vào ___.
+E: Don't touch the bee. | Đừng chạm vào con ong.
+E: Don't touch the spider. | Đừng chạm vào con nhện.
+P: It's ___ with ___. | Nó màu ___ có ___.
+E: It's red with black spots. | Nó màu đỏ có chấm đen.
+E: It's yellow with black stripes. | Nó màu vàng có sọc đen.
+## 34
+D: K | The bird can fly! | Con chim biết bay!
+D: M | Flap, flap your wings! | Vỗ, vỗ cánh nào!
+D: K | Tweet, tweet! | Chíp, chíp!
+D: M | It's singing a song. | Nó đang hót đấy.
+A: K | Mommy, why can birds fly? | Mẹ ơi, sao chim biết bay?
+A: M | Because they have wings and feathers. | Vì chúng có cánh và lông vũ.
+A: K | Can I fly? | Con bay được không?
+A: M | No, but you can flap your arms like wings! | Không, nhưng con có thể vỗ tay như đôi cánh!
+A: K | Flap, flap! I'm a bird! | Vỗ, vỗ! Con là chim nè!
+A: M | Look, there's a nest in the tree. | Nhìn kìa, có cái tổ trên cây.
+A: K | Are there eggs in the nest? | Trong tổ có trứng không mẹ?
+A: M | Maybe! Baby birds will come out soon. | Có thể đó! Chim non sắp nở rồi.
+V: feathers | lông vũ
+V: beak | cái mỏ
+V: nest | tổ chim
+V: parrot | con vẹt
+V: penguin | chim cánh cụt
+V: fly | bay
+P: Why can ___? | Tại sao ___?
+E: Why can birds fly? | Tại sao chim biết bay?
+E: Why can fish swim? | Tại sao cá biết bơi?
+P: Because they have ___. | Vì chúng có ___.
+E: Because they have wings. | Vì chúng có cánh.
+E: Because they have fins. | Vì chúng có vây.
+## 35
+D: M | Eat your carrots. | Con ăn cà rốt đi.
+D: K | Crunch, crunch! | Rộp, rộp!
+D: M | Carrots are good for your eyes. | Cà rốt tốt cho mắt con đấy.
+D: K | More carrots, please! | Cho con thêm cà rốt!
+A: M | Let's plant some vegetables in our garden. | Mình trồng rau trong vườn nhé.
+A: K | What are we planting? | Mình trồng gì vậy mẹ?
+A: M | Tomatoes and cucumbers. | Cà chua và dưa leo.
+A: K | Can I dig the hole? | Con đào lỗ được không?
+A: M | Yes. Now put the seed in and cover it. | Được. Giờ bỏ hạt vào và lấp đất lại.
+A: K | Now give it some water! | Giờ tưới nước cho nó!
+A: M | Every day it will grow a little bigger. | Mỗi ngày nó sẽ lớn thêm một chút.
+A: K | I can't wait to eat my tomatoes! | Con muốn ăn cà chua của con quá!
+V: cucumber | dưa leo
+V: potato | khoai tây
+V: onion | củ hành
+V: seed | hạt giống
+V: garden | khu vườn
+V: grow | lớn lên, mọc
+P: ___ are good for you. | ___ tốt cho con.
+E: Vegetables are good for you. | Rau củ tốt cho con.
+E: Carrots are good for you. | Cà rốt tốt cho con.
+P: Let's plant ___. | Mình trồng ___ nhé.
+E: Let's plant a flower. | Mình trồng một bông hoa nhé.
+E: Let's plant some beans. | Mình trồng ít đậu nhé.
+## 36
+D: K | I want ice cream! | Con muốn ăn kem!
+D: M | Just a little. | Một chút thôi nhé.
+D: K | It's cold and sweet! | Lạnh và ngọt quá!
+D: M | Yummy! | Ngon quá!
+A: K | Mommy, can I have a snack? | Mẹ ơi, con ăn vặt được không?
+A: M | Sure. Do you want fruit or crackers? | Được. Con muốn trái cây hay bánh quy giòn?
+A: K | Can I have candy? | Con ăn kẹo được không?
+A: M | Too much candy is bad for your teeth. | Ăn nhiều kẹo không tốt cho răng đâu.
+A: K | Okay. Fruit and crackers, please. | Dạ. Cho con trái cây và bánh quy giòn.
+A: M | Good choice! And a glass of milk. | Chọn hay lắm! Thêm một ly sữa nữa.
+A: K | Can I share with my teddy? | Con chia cho gấu bông được không?
+A: M | Of course. You're so kind. | Tất nhiên rồi. Con tốt bụng quá.
+V: snack | đồ ăn vặt
+V: crackers | bánh quy giòn
+V: chocolate | sô cô la
+V: yogurt | sữa chua
+V: cold | lạnh
+V: too much | quá nhiều
+P: Too much ___ is bad for you. | Ăn nhiều ___ không tốt đâu.
+E: Too much candy is bad for you. | Ăn nhiều kẹo không tốt đâu.
+E: Too much ice cream is bad for you. | Ăn nhiều kem không tốt đâu.
+P: Can I share with ___? | Con chia cho ___ được không?
+E: Can I share with my sister? | Con chia cho chị được không?
+E: Can I share with my friend? | Con chia cho bạn được không?
+## 37
+D: M | Happy birthday! | Chúc mừng sinh nhật!
+D: K | Is it my birthday? | Sinh nhật con hả mẹ?
+D: M | Yes! Blow out the candles. | Đúng rồi! Thổi nến đi con.
+D: K | Whoosh! Yay! | Phù! Yeah!
+A: M | Today is your birthday! How old are you now? | Hôm nay là sinh nhật con! Giờ con mấy tuổi rồi?
+A: K | I'm three years old! | Con ba tuổi rồi!
+A: M | Let's sing "Happy Birthday". | Mình hát "Chúc mừng sinh nhật" nào.
+A: K | Can I make a wish? | Con ước một điều được không?
+A: M | Sure. Close your eyes and make a wish. | Được. Nhắm mắt lại và ước đi con.
+A: K | Now I blow out the candles! | Giờ con thổi nến!
+A: M | Here's a present for you. | Đây là quà cho con.
+A: K | Thank you! Can I open it now? | Con cảm ơn! Con mở bây giờ được không?
+V: candles | nến
+V: present | món quà
+V: wish | điều ước
+V: balloon | bóng bay
+V: party | bữa tiệc
+V: open | mở
+P: I'm ___ years old. | Con ___ tuổi.
+E: I'm three years old. | Con ba tuổi.
+E: I'm four years old. | Con bốn tuổi.
+P: Here's a ___ for you. | Đây là ___ cho con.
+E: Here's a balloon for you. | Đây là bóng bay cho con.
+E: Here's a card for you. | Đây là tấm thiệp cho con.
+## 38
+D: M | Let's go to school. | Mình đi học nào.
+D: K | Hello, teacher! | Con chào cô ạ!
+D: T | Good morning! | Chào con!
+D: K | Bye-bye, Mommy! | Con chào mẹ!
+A: M | Are you ready for school? | Con sẵn sàng đi học chưa?
+A: K | Yes! I have my backpack. | Rồi ạ! Con có cặp sách rồi.
+A: T | Good morning! What's your name? | Chào con! Con tên là gì?
+A: K | My name is Banh Mi. | Con tên là Bánh Mì.
+A: T | Nice to meet you! Do you want to play with blocks? | Rất vui được gặp con! Con muốn chơi xếp khối không?
+A: K | Yes, please! Can I sit here? | Dạ có ạ! Con ngồi đây được không?
+A: M | I'll pick you up after lunch. | Mẹ sẽ đón con sau bữa trưa nhé.
+A: K | Okay. Bye-bye, Mommy! | Dạ. Con chào mẹ!
+V: teacher | cô giáo
+V: classmate | bạn cùng lớp
+V: classroom | lớp học
+V: crayons | bút sáp màu
+V: name | tên
+V: pick up | đón
+P: My name is ___. | Con tên là ___.
+E: My name is Banh Mi. | Con tên là Bánh Mì.
+E: My name is Lan. | Con tên là Lan.
+P: Can I ___? | Con ___ được không?
+E: Can I sit here? | Con ngồi đây được không?
+E: Can I go to the toilet? | Con đi vệ sinh được không?
+## 39
+D: K | Let's draw! | Mình vẽ đi!
+D: M | What do you want to draw? | Con muốn vẽ gì?
+D: K | A big sun! | Một ông mặt trời to!
+D: M | Beautiful! | Đẹp quá!
+A: M | What are you drawing? | Con đang vẽ gì vậy?
+A: K | I'm drawing our house. | Con đang vẽ nhà mình.
+A: M | Wow! Who is in the house? | Wow! Ai ở trong nhà vậy?
+A: K | Mommy, Daddy and me! | Mẹ, ba và con!
+A: M | What color is the roof? | Mái nhà màu gì?
+A: K | Red! Can I have the red crayon? | Màu đỏ! Cho con bút sáp đỏ nhé?
+A: M | Here you are. Don't forget the sun! | Đây con. Đừng quên ông mặt trời nhé!
+A: K | Done! This picture is for you, Mommy. | Xong rồi! Bức tranh này tặng mẹ.
+V: crayon | bút sáp
+V: paper | tờ giấy
+V: paint | màu nước, sơn
+V: brush | cọ vẽ
+V: circle | hình tròn
+V: picture | bức tranh
+P: I'm drawing ___. | Con đang vẽ ___.
+E: I'm drawing a cat. | Con đang vẽ con mèo.
+E: I'm drawing a rainbow. | Con đang vẽ cầu vồng.
+P: Can I have the ___ crayon? | Cho con bút sáp ___ nhé?
+E: Can I have the blue crayon? | Cho con bút sáp xanh nhé?
+E: Can I have the yellow crayon? | Cho con bút sáp vàng nhé?
+## 40
+D: M | Can you jump? | Con nhảy được không?
+D: K | Yes! Jump, jump! | Được! Nhảy, nhảy!
+D: M | Now run! | Giờ chạy nào!
+D: K | I'm fast! | Con chạy nhanh lắm!
+A: M | Let's exercise together! Stand up. | Mình tập thể dục cùng nhau nào! Đứng lên.
+A: K | I'm ready! | Con sẵn sàng rồi!
+A: M | Jump five times. | Nhảy năm lần.
+A: K | One, two, three, four, five! | Một, hai, ba, bốn, năm!
+A: M | Now stand on one leg. Can you do it? | Giờ đứng một chân. Con làm được không?
+A: K | Whoa! It's hard! | Ối! Khó quá!
+A: M | Try again. Now touch your toes and stretch up high. | Thử lại nhé. Giờ chạm ngón chân rồi vươn người lên cao.
+A: K | I'm so tall! I'm strong! | Con cao quá! Con khỏe lắm!
+V: exercise | tập thể dục
+V: stretch | vươn, duỗi
+V: hop | nhảy lò cò
+V: kick | đá
+V: strong | khỏe
+V: fast | nhanh
+P: ___ five times. | ___ năm lần.
+E: Jump five times. | Nhảy năm lần.
+E: Clap five times. | Vỗ tay năm lần.
+P: Can you ___? | Con ___ được không?
+E: Can you hop on one foot? | Con nhảy lò cò được không?
+E: Can you kick the ball? | Con đá bóng được không?
+## 41
+D: M | It's morning. Wake up! | Trời sáng rồi. Dậy thôi!
+D: K | Is it lunch time? | Đến giờ ăn trưa chưa mẹ?
+D: M | Not yet. First, breakfast. | Chưa đâu. Ăn sáng trước đã.
+D: K | Then lunch, then nap! | Rồi ăn trưa, rồi ngủ trưa!
+A: K | Mommy, what time is it? | Mẹ ơi, mấy giờ rồi?
+A: M | It's seven o'clock. Time for breakfast. | Bảy giờ rồi. Đến giờ ăn sáng.
+A: K | What do we do in the morning? | Buổi sáng mình làm gì vậy mẹ?
+A: M | We eat breakfast and go to school. | Mình ăn sáng rồi đi học.
+A: K | And in the afternoon? | Còn buổi chiều?
+A: M | We play outside. | Mình chơi ngoài trời.
+A: K | And at night we sleep! | Còn buổi tối mình đi ngủ!
+A: M | That's right. You know your day! | Đúng rồi. Con biết hết một ngày rồi đó!
+V: o'clock | giờ (đúng)
+V: afternoon | buổi chiều
+V: evening | buổi tối
+V: today | hôm nay
+V: tomorrow | ngày mai
+V: yesterday | hôm qua
+P: It's ___ o'clock. | Bây giờ là ___ giờ.
+E: It's seven o'clock. | Bây giờ là bảy giờ.
+E: It's eight o'clock. | Bây giờ là tám giờ.
+P: In the ___, we ___. | Buổi ___, mình ___.
+E: In the morning, we eat breakfast. | Buổi sáng, mình ăn sáng.
+E: In the evening, we take a bath. | Buổi tối, mình đi tắm.
+## 42
+D: M | Clean up your toys, please. | Con dọn đồ chơi nhé.
+D: K | Okay! In the box. | Dạ! Bỏ vào hộp.
+D: M | Thank you for helping! | Cảm ơn con đã giúp mẹ!
+D: K | All clean! | Sạch rồi!
+A: M | Can you help me with the chores? | Con giúp mẹ làm việc nhà nhé?
+A: K | Yes! What can I do? | Dạ! Con làm gì ạ?
+A: M | Please put the socks in the basket. | Con bỏ vớ vào giỏ giúp mẹ nhé.
+A: K | Done! What's next? | Xong rồi! Tiếp theo là gì ạ?
+A: M | Can you water the plants? | Con tưới cây được không?
+A: K | Sure! Not too much water, right? | Dạ! Đừng tưới nhiều quá đúng không mẹ?
+A: M | Right. You're a great helper! | Đúng rồi. Con là người phụ giỏi lắm!
+A: K | I love helping you, Mommy! | Con thích giúp mẹ lắm!
+V: chores | việc nhà
+V: basket | cái giỏ
+V: laundry | quần áo cần giặt
+V: fold | gấp
+V: sweep | quét
+V: helper | người giúp đỡ
+P: Please put the ___ in the ___. | Con bỏ ___ vào ___ nhé.
+E: Please put the toys in the box. | Con bỏ đồ chơi vào hộp nhé.
+E: Please put the books on the shelf. | Con để sách lên kệ nhé.
+P: What's ___? | ___ là gì ạ?
+E: What's next? | Tiếp theo là gì ạ?
+E: What's this for? | Cái này để làm gì ạ?
+## 43
+D: M | Happy New Year! | Chúc mừng năm mới!
+D: K | Lucky money? | Lì xì hả mẹ?
+D: M | Say "thank you" to Grandma. | Con cảm ơn bà đi.
+D: K | Thank you, Grandma! | Con cảm ơn bà!
+A: M | It's Tet! We're visiting Grandma and Grandpa. | Tết rồi! Mình đi thăm ông bà.
+A: K | Happy New Year, Grandma! I wish you good health. | Con chúc bà năm mới, chúc bà mạnh khỏe!
+A: G | Thank you! Here's your lucky money. | Cảm ơn con! Lì xì của con đây.
+A: K | Thank you, Grandma! | Con cảm ơn bà!
+A: M | Look at the peach blossoms. They're pink. | Nhìn hoa đào kìa. Hoa màu hồng.
+A: K | Can we watch the fireworks tonight? | Tối nay mình xem pháo hoa được không mẹ?
+A: M | Yes, at midnight! | Được, vào lúc nửa đêm!
+A: K | Boom! Boom! I love Tet! | Bùm! Bùm! Con thích Tết lắm!
+V: New Year | năm mới
+V: lucky money | tiền lì xì
+V: lantern | lồng đèn
+V: fireworks | pháo hoa
+V: mooncake | bánh trung thu
+V: wish | lời chúc
+P: Happy ___! | Chúc mừng ___!
+E: Happy New Year! | Chúc mừng năm mới!
+E: Happy Mid-Autumn Festival! | Trung thu vui vẻ!
+P: I wish you ___. | Con chúc ___.
+E: I wish you good health. | Con chúc ông bà mạnh khỏe.
+E: I wish you a happy new year. | Con chúc mọi người năm mới vui vẻ.
+## 44
+D: M | We're at the beach! | Mình tới biển rồi!
+D: K | The water is cold! | Nước lạnh quá!
+D: M | Let's make a sandcastle. | Mình xây lâu đài cát nào.
+D: K | A big castle! | Lâu đài to quá!
+A: M | Put on your sunscreen first. | Bôi kem chống nắng trước nhé.
+A: K | Can I go in the water? | Con xuống nước được không?
+A: M | Yes, but stay close to me. | Được, nhưng ở gần mẹ nhé.
+A: K | A big wave is coming! | Có con sóng to tới kìa!
+A: M | Jump over it! One, two, three, jump! | Nhảy qua nào! Một, hai, ba, nhảy!
+A: K | Ha ha! Again! | Ha ha! Nữa đi!
+A: M | Look, I found a seashell. | Nhìn nè, mẹ tìm được vỏ sò.
+A: K | It's so pretty! Can I keep it? | Đẹp quá! Con giữ được không?
+V: sand | cát
+V: wave | con sóng
+V: seashell | vỏ sò
+V: sunscreen | kem chống nắng
+V: bucket | cái xô
+V: shovel | cái xẻng
+P: Stay close to ___. | Ở gần ___ nhé.
+E: Stay close to me. | Ở gần mẹ nhé.
+E: Stay close to Daddy. | Ở gần ba nhé.
+P: I found a ___. | Con tìm được một ___.
+E: I found a crab. | Con tìm được một con cua.
+E: I found a pretty rock. | Con tìm được một hòn đá đẹp.
+## 45
+D: K | Oink, oink! A pig! | Ụt ịt! Con heo!
+D: M | The pig is pink. | Con heo màu hồng.
+D: K | Baa! A sheep! | Be be! Con cừu!
+D: M | It's soft and white. | Nó mềm và trắng.
+A: M | Welcome to Grandpa's farm! | Chào mừng con tới nông trại của ông!
+A: K | Can I feed the chickens? | Con cho gà ăn được không?
+A: P | Sure. Here's some corn. | Được. Bắp đây con.
+A: K | Here, chickens! Cluck, cluck! | Gà ơi, ăn nè! Cục cục!
+A: P | Do you want to see the cow? | Con muốn xem con bò không?
+A: K | Yes! Can I milk the cow? | Có! Con vắt sữa bò được không?
+A: P | Gently, like this. | Nhẹ nhàng thôi, như thế này.
+A: K | Wow! Fresh milk! | Wow! Sữa tươi!
+V: chicken | con gà
+V: horse | con ngựa
+V: goat | con dê
+V: barn | chuồng trại
+V: tractor | máy cày
+V: feed | cho ăn
+P: Can I feed the ___? | Con cho ___ ăn được không?
+E: Can I feed the ducks? | Con cho vịt ăn được không?
+E: Can I feed the horse? | Con cho ngựa ăn được không?
+P: It's ___ and ___. | Nó ___ và ___.
+E: It's soft and white. | Nó mềm và trắng.
+E: It's big and brown. | Nó to và màu nâu.
