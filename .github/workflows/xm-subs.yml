@@ -1,0 +1,18 @@
+name: xm-subs
+on:
+  push:
+    branches: [xm-subs]
+jobs:
+  subs:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pip install -q yt-dlp
+      - run: |
+          mkdir out && cd out
+          for id in U983Zd1TlHM S4Z841ktMNQ; do
+            curl -s "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=$id&format=json" > $id.oembed.json || true
+            yt-dlp --skip-download --write-subs --write-auto-subs --sub-langs "en.*" --sub-format json3 --print "%(id)s|%(duration)s|%(channel)s|%(title)s|%(playable_in_embed)s" -o "%(id)s" "https://www.youtube.com/watch?v=$id" || true
+          done
+          ls -la
+      - uses: actions/upload-artifact@v4
+        with: { name: subs, path: out }
