@@ -1,0 +1,29 @@
+name: Xíu Mại videos
+on:
+  schedule:
+    - cron: '41 21 * * *'   # every day, 04:41 Vietnam time
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['xiu-mai/tools/fetch-videos.mjs']
+permissions:
+  contents: write
+concurrency:
+  group: xiu-mai-videos
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - name: Fetch channel videos
+        run: node xiu-mai/tools/fetch-videos.mjs
+      - name: Commit list
+        run: |
+          if [ -n "$(git status --porcelain xiu-mai/data/videos.json)" ]; then
+            git config user.name "video-bot"; git config user.email "video-bot@users.noreply.github.com"
+            git add xiu-mai/data/videos.json && git commit -m "Xíu Mại: update videos"
+            for i in 1 2 3; do git pull --rebase -q && git push && break; sleep 5; done
+          fi
