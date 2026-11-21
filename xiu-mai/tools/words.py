@@ -19,7 +19,7 @@ horse | con ngựa | Horse face |
 pony | ngựa con | Horse | Pony
 donkey | con lừa | Donkey |
 sheep | con cừu | Ewe |
-lamb | cừu con | Ram | Lamb and mutton
+lamb | cừu con | Ram | -
 goat | con dê | Goat |
 buffalo | con trâu | Water buffalo | Water buffalo
 chicken | con gà | Chicken |
@@ -89,7 +89,7 @@ seagull | hải âu | - | Gull
 kingfisher | bói cá | - | Common kingfisher
 stork | con cò | - | White stork
 nest | tổ chim | Nest with eggs | Bird nest
-feather | lông vũ | Feather |
+feather | lông vũ | Feather | -
 """),
 ('sea', 'Dưới biển', 'Sea animals', '#CDEBFF', True, """
 fish | con cá | Tropical fish | Clownfish
@@ -100,7 +100,7 @@ octopus | bạch tuộc | Octopus | Common octopus
 crab | con cua | Crab |
 jellyfish | con sứa | Jellyfish |
 seal | hải cẩu | Seal | Harbor seal
-sea lion | sư tử biển | Seal | Sea lion
+sea lion | sư tử biển | Seal | -
 walrus | hải mã | - | Walrus
 shrimp | con tôm | Shrimp | -
 squid | con mực | Squid |
@@ -110,9 +110,9 @@ seahorse | cá ngựa | - | Seahorse
 sea turtle | rùa biển | Turtle | Green sea turtle
 clam | con nghêu | Oyster | Clam
 oyster | con hàu | Oyster |
-shell | vỏ sò | Spiral shell | Seashell
+shell | vỏ sò | Spiral shell | -
 coral | san hô | Coral |
-pufferfish | cá nóc | Blowfish | Tetraodontidae
+pufferfish | cá nóc | Blowfish | -
 stingray | cá đuối | - | Stingray
 eel | con lươn | - | Eel
 """),
@@ -132,7 +132,7 @@ grasshopper | châu chấu | Cricket | Grasshopper
 cricket | con dế | Cricket | Cricket (insect)
 dragonfly | chuồn chuồn | - | Dragonfly
 firefly | đom đóm | - | Firefly
-cockroach | con gián | Cockroach |
+cockroach | con gián | Cockroach | -
 scorpion | bọ cạp | Scorpion |
 moth | bướm đêm | - | Moth
 spider web | mạng nhện | Spider web |
@@ -156,16 +156,16 @@ lemon | chanh vàng | Lemon |
 lime | chanh xanh | Lemon | Key lime
 coconut | quả dừa | Coconut | -
 blueberries | việt quất | Blueberries | Blueberry
-kiwi | quả kiwi | Kiwi fruit | Kiwifruit
-papaya | đu đủ | - | Papaya
+kiwi | quả kiwi | Kiwi fruit | -
+papaya | đu đủ | - | -
 guava | quả ổi | - | Guava
 dragon fruit | thanh long | - | Pitaya
 durian | sầu riêng | - | Durian
 jackfruit | quả mít | - | Jackfruit
-longan | nhãn | - | Longan
+longan | nhãn | - | -
 lychee | quả vải | - | Lychee
 rambutan | chôm chôm | - | Rambutan
-mangosteen | măng cụt | - | Purple mangosteen
+mangosteen | măng cụt | - | -
 avocado | quả bơ | Avocado |
 pomegranate | quả lựu | - | Pomegranate
 plum | quả mận | - | Plum
@@ -176,7 +176,7 @@ custard apple | mãng cầu | - | Annona squamosa
 grapefruit | bưởi | - | Pomelo
 passion fruit | chanh dây | - | Passion fruit
 persimmon | quả hồng | - | Persimmon
-fig | quả sung | - | Common fig
+fig | quả sung | - | -
 date | quả chà là | - | Date palm
 olive | quả ô liu | Olive |
 """),
@@ -194,7 +194,7 @@ lettuce | xà lách | Leafy green | -
 spinach | rau chân vịt | Leafy green | Spinach
 onion | củ hành | Onion | -
 garlic | củ tỏi | Garlic | -
-ginger | gừng | Ginger root | Ginger
+ginger | gừng | Ginger root | -
 mushroom | cây nấm | Mushroom | Agaricus bisporus
 eggplant | cà tím | Eggplant |
 bell pepper | ớt chuông | Bell pepper |
@@ -202,7 +202,7 @@ chili | trái ớt | Hot pepper | Chili pepper
 pumpkin | bí đỏ | Jack-o-lantern | Pumpkin
 peas | đậu Hà Lan | Pea pod | Pea
 green beans | đậu que | - | Green bean
-peanut | đậu phộng | Peanuts | Peanut
+peanut | đậu phộng | Peanuts | -
 beans | hạt đậu | Beans | Bean
 radish | củ cải | - | Radish
 beet | củ dền | - | Beetroot
@@ -210,11 +210,11 @@ celery | cần tây | - | Celery
 asparagus | măng tây | - | Asparagus
 zucchini | bí ngòi | - | Zucchini
 okra | đậu bắp | - | Okra
-bitter melon | khổ qua | - | Momordica charantia
+bitter melon | khổ qua | - | -
 lotus root | củ sen | - | Nelumbo nucifera
-taro | khoai môn | - | Taro
-cassava | khoai mì | - | Cassava
-bamboo shoot | măng | - | Bamboo shoot
+taro | khoai môn | - | -
+cassava | khoai mì | - | -
+bamboo shoot | măng | - | -
 bean sprouts | giá đỗ | - | Mung bean sprout
 herbs | rau thơm | Herb | -
 """),
@@ -229,14 +229,14 @@ pho | phở | Steaming bowl | Pho
 soup | canh (súp) | Pot of food | Soup
 porridge | cháo | Bowl with spoon | Congee
 meat | thịt | Cut of meat | Meat
-chicken meat | thịt gà | Poultry leg | Chicken as food
+chicken meat | thịt gà | Poultry leg | -
 fish meat | cá (món ăn) | Fried shrimp | -
-sausage | xúc xích | Hot dog | Sausage
+sausage | xúc xích | Hot dog | -
 hamburger | bánh hamburger | Hamburger |
 hot dog | bánh mì xúc xích | Hot dog |
 sandwich | bánh sandwich | Sandwich |
 pizza | bánh pizza | Pizza |
-spaghetti | mì Ý | Spaghetti |
+spaghetti | mì Ý | Spaghetti | -
 french fries | khoai tây chiên | French fries |
 salad | rau trộn | Green salad | Salad
 dumpling | há cảo | Dumpling |
@@ -250,7 +250,7 @@ cheese | phô mai | Cheese wedge | -
 butter | bơ | Butter |
 honey | mật ong | Honey pot | Honey
 jam | mứt | - | Fruit preserves
-salt | muối | Salt |
+salt | muối | Salt | -
 sugar | đường | - | Sugar
 tofu | đậu hũ | - | Tofu
 yogurt | sữa chua | - | Yogurt
@@ -279,7 +279,7 @@ candy | kẹo | Candy | -
 lollipop | kẹo mút | Lollipop |
 chocolate | sô-cô-la | Chocolate bar | Chocolate
 donut | bánh vòng | Doughnut |
-popcorn | bắp rang | Popcorn |
+popcorn | bắp rang | Popcorn | -
 pie | bánh nướng | Pie |
 pudding | bánh flan | Custard | Crème caramel
 croissant | bánh sừng bò | Croissant |
@@ -387,7 +387,7 @@ pants | quần dài | Jeans | Jeans
 jeans | quần jean | Jeans |
 shorts | quần đùi | Shorts |
 dress | cái đầm | Dress | -
-skirt | chân váy | - | Skirt
+skirt | chân váy | - | -
 socks | đôi vớ | Socks | Sock
 shoes | đôi giày | Running shoe | Sneakers
 sandals | dép quai hậu | Flat shoe | Sandal
@@ -403,8 +403,8 @@ scarf | khăn quàng | Scarf |
 gloves | găng tay | Gloves | Glove
 glasses | mắt kính | Glasses |
 sunglasses | kính râm | Sunglasses |
-pajamas | đồ ngủ | - | Pajamas
-swimsuit | đồ bơi | One-piece swimsuit | Swimsuit
+pajamas | đồ ngủ | - | -
+swimsuit | đồ bơi | One-piece swimsuit | -
 raincoat | áo mưa | - | Raincoat
 tie | cà vạt | Necktie |
 belt | thắt lưng | - | Belt (clothing)
@@ -419,17 +419,17 @@ umbrella | cây dù | Umbrella |
 diaper | tã | - | Diaper
 baby bottle | bình sữa | Baby bottle |
 pacifier | núm vú giả | - | Pacifier
-bib | yếm ăn | - | Bib (garment)
+bib | yếm ăn | - | -
 stroller | xe đẩy | - | Baby transport
-crib | nôi (cũi) | - | Infant bed
+crib | nôi (cũi) | - | -
 car seat | ghế ô tô | - | Child safety seat
 high chair | ghế ăn dặm | - | High chair
-rattle | lục lạc | - | Rattle (percussion instrument)
-blanket | cái chăn | - | Blanket
+rattle | lục lạc | - | -
+blanket | cái chăn | - | -
 pillow | cái gối | - | Pillow
 potty | bô | - | Potty chair
 wet wipes | khăn ướt | - | Wet wipe
-baby shampoo | dầu gội | - | Shampoo
+baby shampoo | dầu gội | - | -
 towel | khăn tắm | - | Towel
 toothbrush | bàn chải đánh răng | Toothbrush | Toothbrush
 toothpaste | kem đánh răng | - | Toothpaste
@@ -438,7 +438,7 @@ comb | cái lược | - | Comb
 ('toys', 'Đồ chơi', 'Toys', '#FFE0EC', True, """
 ball | quả bóng | Soccer ball | Ball
 teddy bear | gấu bông | Teddy bear |
-doll | búp bê | Nesting dolls | Doll
+doll | búp bê | Nesting dolls | -
 balloon | bong bóng | Balloon | Toy balloon
 kite | con diều | Kite |
 yo-yo | con yo-yo | Yo-yo |
@@ -447,19 +447,19 @@ blocks | khối gỗ | Brick | Toy block
 robot | người máy | Robot | -
 bubbles | bong bóng xà phòng | Bubbles | Soap bubble
 slide | cầu tuột | Playground slide | -
-swing | xích đu | - | Swing (seat)
-seesaw | bập bênh | - | Seesaw
+swing | xích đu | - | -
+seesaw | bập bênh | - | -
 sandbox | hố cát | - | Sandpit
 toy car | xe đồ chơi | Racing car | Toy car
 toy train | tàu đồ chơi | Locomotive | Toy train
 dice | xúc xắc | Game die | Dice
 crayons | bút sáp | Crayon | Crayon
-play dough | đất nặn | - | Play-Doh
+play dough | đất nặn | - | -
 rocking horse | ngựa gỗ | Carousel horse | Rocking horse
-kick scooter | xe trượt | Kick scooter | Kick scooter
-tricycle | xe ba bánh | - | Tricycle
+kick scooter | xe trượt | Kick scooter | -
+tricycle | xe ba bánh | - | -
 spinning top | con quay | - | Spinning top
-magic wand | đũa thần | Magic wand |
+magic wand | đũa thần | Magic wand | -
 """),
 ('vehicles', 'Xe cộ', 'Vehicles', '#FFE5D2', True, """
 car | xe hơi | Automobile |
@@ -485,20 +485,20 @@ tractor | máy cày | Tractor |
 excavator | máy xúc | - | Excavator
 crane | xe cẩu | Building construction | Mobile crane
 bulldozer | xe ủi | - | Bulldozer
-cement mixer | xe trộn bê tông | - | Concrete mixer
+cement mixer | xe trộn bê tông | - | -
 garbage truck | xe rác | - | Garbage truck
 race car | xe đua | Racing car | Formula One car
 cable car | cáp treo | Aerial tramway | Gondola lift
 hot air balloon | khinh khí cầu | - | Hot air balloon
 submarine | tàu ngầm | - | Submarine
-cyclo | xích lô | - | Cycle rickshaw
+cyclo | xích lô | - | -
 skateboard | ván trượt | Skateboard |
 """),
 ('home', 'Trong nhà', 'Home', '#F3E6D8', True, """
-house | ngôi nhà | House with garden | House
+house | ngôi nhà | House with garden | -
 bed | cái giường | Bed | -
 chair | cái ghế | Chair |
-table | cái bàn | - | Table (furniture)
+table | cái bàn | - | -
 door | cánh cửa | Door | -
 window | cửa sổ | Window | -
 sofa | ghế sofa | Couch and lamp | Couch
@@ -506,9 +506,9 @@ TV | ti vi | Television | -
 lamp | đèn | Light bulb | Lamp
 clock | đồng hồ | Alarm clock | Alarm clock
 mirror | cái gương | Mirror | -
-stairs | cầu thang | - | Stairs
+stairs | cầu thang | - | -
 fan | quạt máy | - | Electric fan
-air conditioner | máy lạnh | - | Air conditioning
+air conditioner | máy lạnh | - | -
 refrigerator | tủ lạnh | - | Refrigerator
 washing machine | máy giặt | - | Washing machine
 vacuum | máy hút bụi | - | Vacuum cleaner
@@ -520,7 +520,7 @@ key | chìa khóa | Key |
 picture | bức tranh | Framed picture | -
 curtain | rèm cửa | - | Curtain
 carpet | tấm thảm | - | Carpet
-shelf | kệ sách | - | Bookcase
+shelf | kệ sách | - | -
 toilet | bồn cầu | Toilet |
 bathtub | bồn tắm | Bathtub |
 shower | vòi sen | Shower | -
@@ -531,21 +531,21 @@ toilet paper | giấy vệ sinh | Roll of paper | Toilet paper
 ('kitchen', 'Nhà bếp', 'Kitchen', '#FFF2DE', True, """
 cup | cái ly | Cup with straw | Cup
 mug | cái ca | Hot beverage | Mug
-glass | ly thủy tinh | Tumbler glass | Glass
-plate | cái dĩa | - | Plate (dishware)
+glass | ly thủy tinh | Tumbler glass | -
+plate | cái dĩa | - | -
 bowl | cái chén | Bowl with spoon | -
 spoon | cái muỗng | Spoon |
 fork | cái nĩa | Fork and knife | Fork
-knife | con dao | Kitchen knife |
+knife | con dao | Kitchen knife | -
 chopsticks | đôi đũa | Chopsticks |
-pot | cái nồi | Pot of food | Cooking pot
+pot | cái nồi | Pot of food | -
 pan | cái chảo | Cooking | Frying pan
 kettle | ấm nước | - | Kettle
 rice cooker | nồi cơm điện | - | Rice cooker
 microwave | lò vi sóng | - | Microwave oven
-oven | lò nướng | - | Oven
-stove | bếp ga | - | Kitchen stove
-bottle | cái chai | Baby bottle | Plastic bottle
+oven | lò nướng | - | -
+stove | bếp ga | - | -
+bottle | cái chai | Baby bottle | -
 jar | hũ (lọ) | Honey pot | Jar
 lunch box | hộp cơm | Bento box | Bento
 apron | tạp dề | - | Apron
@@ -556,7 +556,7 @@ computer | máy tính | Laptop | Laptop
 tablet | máy tính bảng | Mobile phone | Tablet computer
 camera | máy ảnh | Camera |
 headphones | tai nghe | Headphone | Headphones
-radio | đài radio | Radio |
+radio | đài radio | Radio | -
 battery | cục pin | Battery |
 light bulb | bóng đèn | Light bulb | Incandescent light bulb
 flashlight | đèn pin | Flashlight |
@@ -564,12 +564,12 @@ candle | cây nến | Candle |
 remote control | điều khiển | - | Remote control
 keyboard | bàn phím | Keyboard | Computer keyboard
 mouse (computer) | chuột máy tính | Computer mouse | Computer mouse
-money | tiền | Dollar banknote | Banknote
+money | tiền | Dollar banknote | -
 coin | đồng xu | Coin |
 wallet | cái ví | Purse | Wallet
 letter | lá thư | Envelope | Envelope
 gift | món quà | Wrapped gift |
-paper | tờ giấy | Page facing up | Paper
+paper | tờ giấy | Page facing up | -
 newspaper | tờ báo | Newspaper |
 """),
 ('tools', 'Dụng cụ', 'Tools', '#EAE4DA', True, """
@@ -584,7 +584,7 @@ rake | cái cào | - | Rake (tool)
 axe | cái rìu | Axe |
 tape | băng keo | - | Adhesive tape
 rope | sợi dây | Knot | Rope
-magnet | nam châm | Magnet |
+magnet | nam châm | Magnet | -
 lock | ổ khóa | Locked | Padlock
 watering can | bình tưới | - | Watering can
 wheelbarrow | xe rùa | - | Wheelbarrow
@@ -608,9 +608,9 @@ paper clip | kẹp giấy | Paperclip | Paper clip
 calculator | máy tính tay | Abacus | Calculator
 globe | quả địa cầu | Globe showing americas | Globe
 map | bản đồ | World map | -
-chalk | phấn | - | Chalk
-blackboard | bảng đen | - | Blackboard
-desk | bàn học | - | Desk
+chalk | phấn | - | -
+blackboard | bảng đen | - | -
+desk | bàn học | - | -
 teacher | cô giáo | Woman teacher | -
 student | học sinh | Student | -
 """),
@@ -621,7 +621,7 @@ star | ngôi sao | Star | -
 sky | bầu trời | Sun behind cloud | -
 cloud | đám mây | Cloud | -
 tree | cái cây | Deciduous tree | Tree
-palm tree | cây dừa | Palm tree | Cocos nucifera
+palm tree | cây dừa | Palm tree | -
 leaf | chiếc lá | Leaf fluttering in wind | Leaf
 flower | bông hoa | Tulip | Tulip
 grass | bãi cỏ | Herb | Lawn
@@ -633,9 +633,9 @@ river | dòng sông | - | River
 lake | cái hồ | - | Lake
 sea | biển | Water wave | -
 beach | bãi biển | Beach with umbrella | Beach
-island | hòn đảo | Desert island | Island
+island | hòn đảo | Desert island | -
 waterfall | thác nước | - | Waterfall
-forest | khu rừng | Evergreen tree | Forest
+forest | khu rừng | Evergreen tree | -
 desert | sa mạc | Desert | -
 cave | hang động | - | Cave
 fire | lửa | Fire | -
@@ -670,14 +670,14 @@ daisy | hoa cúc | Blossom | Bellis perennis
 orchid | hoa lan | - | Orchidaceae
 lily | hoa ly | - | Lilium
 apricot blossom | hoa mai | - | Ochna integerrima
-peach blossom | hoa đào | Cherry blossom | Prunus persica
-cactus | cây xương rồng | Cactus |
+peach blossom | hoa đào | Cherry blossom | -
+cactus | cây xương rồng | Cactus | -
 bamboo | cây tre | Tanabata tree |
 seed | hạt giống | Seedling | Seed
 sprout | mầm cây | Seedling | Seedling
 potted plant | chậu cây | Potted plant | Houseplant
 bouquet | bó hoa | Bouquet |
-clover | cỏ ba lá | Four leaf clover | Clover
+clover | cỏ ba lá | Four leaf clover | -
 pine tree | cây thông | Evergreen tree | Pine
 """),
 ('places', 'Nơi chốn', 'Places', '#F4E9FF', True, """
@@ -685,18 +685,18 @@ home | nhà | House | -
 school | trường học | School | -
 kindergarten | trường mầm non | Children crossing | Kindergarten
 hospital | bệnh viện | Hospital | -
-park | công viên | Fountain | Urban park
+park | công viên | Fountain | -
 playground | sân chơi | Playground slide | Playground
-zoo | sở thú | Elephant | Zoo
+zoo | sở thú | Elephant | -
 farm | nông trại | Tractor | Farm
-market | chợ | Shopping cart | Marketplace
+market | chợ | Shopping cart | -
 supermarket | siêu thị | Shopping cart | Supermarket
 bakery | tiệm bánh | Croissant | Bakery
 restaurant | nhà hàng | Fork and knife with plate | Restaurant
 library | thư viện | Books | Library
 pool | hồ bơi | Person swimming | Swimming pool
 beach | bãi biển | Beach with umbrella | Beach
-airport | sân bay | Airplane departure | Airport
+airport | sân bay | Airplane departure | -
 train station | nhà ga | Station | Train station
 bus stop | trạm xe buýt | Bus stop |
 police station | đồn cảnh sát | Police car light | -
@@ -708,7 +708,7 @@ pagoda | chùa | Shinto shrine | Buddhist temple
 castle | lâu đài | Castle |
 tent | cái lều | Tent |
 bridge | cây cầu | Bridge at night | Bridge
-road | con đường | Motorway | Road
+road | con đường | Motorway | -
 street | đường phố | Cityscape | Street
 city | thành phố | Cityscape | -
 village | làng quê | Houses | Village
@@ -745,23 +745,23 @@ volleyball | bóng chuyền | Volleyball |
 tennis | quần vợt | Tennis |
 badminton | cầu lông | Badminton |
 baseball | bóng chày | Baseball |
-football | bóng bầu dục | American football |
+football | bóng bầu dục | American football | -
 table tennis | bóng bàn | Ping pong | Table tennis
 golf | đánh gôn | Flag in hole | Golf
 bowling | bowling | Bowling |
 swimming | bơi lội | Person swimming | -
 running | chạy bộ | Person running | -
 cycling | đạp xe | Person biking | -
-boxing | đấm bốc | Boxing glove |
+boxing | đấm bốc | Boxing glove | -
 karate | võ thuật | Martial arts uniform | -
 skiing | trượt tuyết | Skier | -
 skating | trượt băng | Ice skate |
 surfing | lướt sóng | Person surfing | -
 gymnastics | thể dục dụng cụ | Person cartwheeling | -
 yoga | yoga | Person in lotus position | -
-fishing | câu cá | Fishing pole |
+fishing | câu cá | Fishing pole | -
 medal | huy chương | 1st place medal | -
-trophy | cúp | Trophy |
+trophy | cúp | Trophy | -
 """),
 ('music', 'Âm nhạc', 'Music', '#FFF0F8', True, """
 music | âm nhạc | Musical notes | -
@@ -774,8 +774,8 @@ trumpet | kèn trumpet | Trumpet |
 saxophone | kèn saxophone | Saxophone |
 flute | ống sáo | Flute | Western concert flute
 harmonica | kèn harmonica | - | Harmonica
-xylophone | đàn mộc cầm | - | Xylophone
-bell | cái chuông | Bell | Bell
+xylophone | đàn mộc cầm | - | -
+bell | cái chuông | Bell | -
 microphone | micro | Microphone |
 maracas | trống lắc | Maracas |
 accordion | đàn accordion | Accordion |
