@@ -113,7 +113,7 @@ R.be = () => {
     <a class="tile t1" href="#/chu-de/flash"><div class="ic"><span class="card2"></span><span class="card1"><img src="${IMG('w/red-apple')}" alt=""></span></div><span class="lb">Flashcard</span></a>
     <a class="tile t2" href="#/video"><div class="ic"><img src="${IMG('w/television')}" alt=""></div><span class="lb">Video</span></a>
     <a class="tile t3" href="#/game"><div class="ic"><img src="${IMG('w/video-game')}" alt=""></div><span class="lb">Game</span></a>
-    <a class="tile t4" href="#/chu-de/explore"><div class="ic"><img src="${IMG('w/magnifying-glass-tilted-left')}" alt=""><img class="bug" src="${IMG('w/lady-beetle')}" alt=""></div><span class="lb">Khám phá</span></a>
+    <a class="tile t4" href="#/kham-pha"><div class="ic"><img src="${IMG('w/speech-balloon')}" alt=""><img class="bug" src="${IMG('w/puzzle-piece')}" alt=""></div><span class="lb">Ghép câu</span></a>
    </div>
    <div class="homegrid">
     <div class="panel"><div class="ph"><img src="${IMG('w/books')}" alt="">Từ vựng hôm nay</div>
@@ -129,10 +129,18 @@ R.be = () => {
 R.topics = mode => {
   setTabs('kid', '');
   const L = topicList(); const d = LS.get('seen', {});
-  view(bar(mode === 'flash' ? 'Flashcard · Chọn chủ đề' : 'Khám phá · Chủ đề') + `<div class="grid">${L.map(t => {
+  view(bar('Flashcard · Chọn chủ đề') + `<div class="fsearch"><input id="fq" type="search" placeholder="🔍 Tìm từ: dog, con chó…" autocomplete="off"></div><div class="wgrid" id="fres" hidden></div><div class="grid" id="tgrid">${L.map(t => {
     const n = t.w.filter(w => d[w[0]]).length, p = Math.round(n / t.w.length * 100);
     return `<a class="tcard" href="#/${mode === 'flash' ? 'flash' : 'kham-pha'}/${t.k}" style="background:${t.c}"><img class="ic" src="${t.w[0] ? wsrc(t.w[0]) : IMG('ui/xiumai')}" alt=""><b>${t.vi}</b><small>${t.en} · ${t.w.length} từ</small><div class="prog"><i style="width:${p}%"></i></div></a>`;
   }).join('')}</div>`);
+  const strip = x => x.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd');
+  $('#fq').oninput = () => {
+    const q = strip($('#fq').value.trim()), res = $('#fres'), g = $('#tgrid');
+    if (!q) { res.hidden = true; g.hidden = false; return; }
+    const hits = []; for (const t of L) t.w.forEach((w, i) => { if (hits.length < 60 && (strip(w[0]).includes(q) || strip(w[1]).includes(q))) hits.push([t, w, i]); });
+    res.hidden = false; g.hidden = true;
+    res.innerHTML = hits.length ? hits.map(([t, w, i]) => `<a class="wbox" href="#/flash/${t.k}/${i}"><img src="${wsrc(w)}" alt=""><b>${esc(w[0])}</b><small>${esc(w[1])}</small></a>`).join('') : '<p class="muted">Chưa có từ này. Ba mẹ thêm ở mục “Từ trên lớp” nha.</p>';
+  };
 };
 R.flash = (k, i) => {
   const t = topic(k); if (!t || !t.w.length) return go('#/chu-de/flash');
@@ -168,13 +176,62 @@ R.flash = (k, i) => {
   swipe($('#fc'), d => nav(d));
 };
 function swipe(el, cb) { let x0 = null, y0 = 0; el.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true }); el.addEventListener('touchend', e => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) cb(dx < 0 ? 1 : -1); }); }
+/* ---------- Ghép câu (sentence builder, replaces the old "Khám phá" word grid) ---------- */
+const SB_TOPICS = ['animals', 'fruits', 'toys', 'vehicles', 'food', 'wild', 'sea', 'bugs', 'birds', 'vegetables', 'sweets', 'drinks', 'clothes', 'baby', 'home', 'kitchen', 'things', 'school', 'flowers', 'tools'];
+const MASS = new Set(['rice', 'bread', 'milk', 'water', 'juice', 'orange juice', 'tea', 'coffee', 'hot chocolate', 'smoothie', 'coconut water', 'soda', 'milk tea', 'ice', 'cheese', 'butter', 'honey', 'jam', 'salt', 'sugar', 'tofu', 'yogurt', 'cereal', 'soup', 'porridge', 'meat', 'chicken meat', 'fish meat', 'spaghetti', 'salad', 'pho', 'ice cream', 'chocolate', 'candy', 'popcorn', 'pudding', 'shaved ice', 'chips', 'jelly', 'money', 'paper', 'toilet paper', 'play dough', 'bubbles', 'tape', 'rope', 'thread', 'glue', 'chalk', 'paint', 'herbs', 'bean sprouts', 'wet wipes', 'baby shampoo', 'toothpaste', 'grass', 'sand', 'wood', 'fish', 'sushi']);
+const SUBJ = [['I', 'Con', 'w/child', false], ['Mommy', 'Mẹ', 'w/woman', true], ['Daddy', 'Ba', 'w/man', true], ['Xíu Mại', 'Xíu Mại', 'ui/xiumai', true]];
+function sbVerbs(k) {
+  const V = [['see', 'thấy', 'w/eyes'], ['like', 'thích', 'w/red-heart'], ['want', 'muốn', 'w/sparkles'], ['have', 'có', 'w/hand-with-fingers-splayed']];
+  if (['fruits', 'food', 'sweets', 'vegetables'].includes(k)) V.push(['eat', 'ăn', 'w/fork-and-knife-with-plate']);
+  if (k === 'drinks') V.push(['drink', 'uống', 'w/cup-with-straw']);
+  if (['toys', 'vehicles', 'animals'].includes(k)) V.push(['play with', 'chơi với', 'w/soccer-ball']);
+  return V;
+}
+const art = en => { const l = en.toLowerCase(); if (MASS.has(l) || /(s|ies)$/.test(l) && !/(bus|glass|grass|dress|cactus|octopus|hippopotamus|asparagus|walrus|bass|lotus|hibiscus|watermelon)$/.test(l)) return ''; return /^(a|e|i|o|u|hour)/.test(l) && !/^(uni|use|ufo)/.test(l) ? 'an ' : 'a '; };
+const verbS = (v, third) => third ? (v === 'have' ? 'has' : v === 'play with' ? 'plays with' : v + 's') : v;
 R.explore = k => {
-  const t = topic(k); if (!t) return go('#/chu-de/explore');
+  const L = topicList().filter(t => SB_TOPICS.includes(t.k) || t.k === 'lop');
+  const t = topic(k) && L.includes(topic(k)) ? topic(k) : topic('animals');
   setTabs('kid', '');
-  view(bar(`${t.vi} <span class="muted" style="font-size:17px">${t.en}</span>`, '#/chu-de/explore') + `<p class="muted" style="margin:0 0 10px;font-size:16px">Bé chạm vào hình để nghe tiếng Anh 🔊</p><div class="wgrid">${t.w.map((w, j) => `<button class="wbox" data-j="${j}"><img src="${wsrc(w)}" alt=""><b>${esc(w[0])}</b><small>${esc(w[1])}</small></button>`).join('')}</div>`);
-  app.querySelectorAll('.wbox').forEach(b => b.onclick = () => { const w = t.w[b.dataset.j]; app.querySelectorAll('.wbox.say').forEach(x => x.classList.remove('say')); b.classList.add('say'); say(w[0]); bump('words', w[0]); const s = LS.get('seen', {}); s[w[0]] = 1; LS.set('seen', s); });
+  const st = { s: 0, v: 0, n: null, pool: [], made: 0 };
+  const verbs = sbVerbs(t.k);
+  const shuffle = () => { st.pool = t.w.filter(w => !['coffee', 'soda', 'tea', 'milk tea', 'knife', 'axe', 'saw', 'scissors'].includes(w[0])).slice().sort(() => Math.random() - .5).slice(0, 8); };
+  shuffle();
+  view(bar('Ghép câu', '#/be', starPill()) + `<div class="seg">${L.map(x => `<button data-k="${x.k}" class="${x.k === t.k ? 'on' : ''}">${x.vi}</button>`).join('')}</div>
+  <div class="sbox" id="sbox"></div>
+  <div class="srow"><span class="sq">Ai?</span><div class="sch" id="ss"></div></div>
+  <div class="srow"><span class="sq">Làm gì?</span><div class="sch" id="sv"></div></div>
+  <div class="srow"><span class="sq">Cái gì? <button class="pill" id="mix" style="display:inline-flex;padding:2px 10px;font-size:14px">🔀 Đổi hình</button></span><div class="sgrid" id="sn"></div></div>`);
+  app.querySelectorAll('.seg button').forEach(b => b.onclick = () => go('#/kham-pha/' + b.dataset.k));
+  const sentence = () => {
+    const S = SUBJ[st.s], V = verbs[st.v], N = st.n;
+    if (!N) return null;
+    const ar = art(N[0]) && V[0] === 'like' ? 'the ' : art(N[0]);
+    const en = `${S[0]} ${verbS(V[0], S[3])} ${ar}${N[0]}`;
+    return { en, vi: `${S[1]} ${V[1]} ${N[1]}.`, words: [[S[0], IMG(S[2])], ...verbS(V[0], S[3]).split(' ').map((w, i) => [w, i ? '' : IMG(V[2])]), ...(ar ? [[ar.trim(), '']] : []), [N[0], wsrc(N)]] };
+  };
+  const render = (speak) => {
+    $('#ss').innerHTML = SUBJ.map((x, i) => `<button class="chipw ${i === st.s ? 'on' : ''}" data-i="${i}"><img src="${IMG(x[2])}" alt=""><b>${esc(x[0])}</b><small>${x[1]}</small></button>`).join('');
+    $('#sv').innerHTML = verbs.map((x, i) => `<button class="chipw ${i === st.v ? 'on' : ''}" data-i="${i}"><img src="${IMG(x[2])}" alt=""><b>${x[0]}</b><small>${x[1]}</small></button>`).join('');
+    $('#sn').innerHTML = st.pool.map((w, i) => `<button class="sn ${st.n === w ? 'on' : ''}" data-i="${i}"><img src="${wsrc(w)}" alt=""><b>${esc(w[0])}</b></button>`).join('');
+    const sn = sentence();
+    $('#sbox').innerHTML = sn ? `<div class="stiles" id="stl">${sn.words.map(([w, img]) => `<span class="stile">${img ? `<img src="${img}" alt="">` : ''}<b>${esc(w)}</b></span>`).join('')}<span class="stile dot"><b>.</b></span></div><div class="svi">${esc(sn.vi)}</div><button class="big pri" id="sread">🔊 Đọc câu</button>`
+      : `<div class="shint"><img src="${IMG('ui/xiumai')}" alt=""><span>Chọn <b>Ai</b>, <b>Làm gì</b>, rồi chạm một <b>hình</b> để ghép câu nha!</span></div>`;
+    $('#ss').querySelectorAll('button').forEach(b => b.onclick = () => { st.s = +b.dataset.i; say(SUBJ[st.s][0]); render(!!st.n); });
+    $('#sv').querySelectorAll('button').forEach(b => b.onclick = () => { st.v = +b.dataset.i; say(verbs[st.v][0]); render(!!st.n); });
+    $('#sn').querySelectorAll('button').forEach(b => b.onclick = () => { st.n = st.pool[b.dataset.i]; bump('words', st.n[0]); render(true); });
+    if (sn) $('#sread').onclick = () => read(sn);
+    if (speak && sn) read(sn, true);
+  };
+  const read = async (sn, count) => {
+    const tl = $('#stl'); if (tl) tl.classList.add('speak');
+    await say(sn.en + '.', { rate: 0.75 });
+    if ($('#stl')) $('#stl').classList.remove('speak');
+    if (count) { st.made++; if (st.made % 5 === 0) { addStar(); cheer('Great sentences!', true); } }
+  };
+  $('#mix').onclick = () => { shuffle(); st.n = null; render(false); };
+  render(false);
 };
-
 /* ---------- games ---------- */
 const GAMES = [
   ['doan', 'Đoán từ', 'What is this?', 'w/red-apple', '#FFE3B8'],
@@ -537,7 +594,7 @@ function route() {
   const [a, b, c, d] = h;
   if (!a) return R.role();
   if (a === 'be') return R.be();
-  if (a === 'chu-de') return R.topics(b === 'explore' ? 'explore' : 'flash');
+  if (a === 'chu-de') return b === 'explore' ? R.explore() : R.topics('flash');
   if (a === 'flash') return R.flash(b, c);
   if (a === 'kham-pha') return R.explore(b);
   if (a === 'game') return b && R['g_' + b] ? R['g_' + b](c) : R.games();
