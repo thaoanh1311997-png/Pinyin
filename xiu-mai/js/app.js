@@ -104,7 +104,7 @@ function wotd() { const d = new Date(); const n = (d.getFullYear() * 400 + d.get
 R.be = () => {
   setTabs('kid', '#/be');
   const w = wotd();
-  const feat = ['animals', 'fruits', 'colors', 'family', 'numbers', 'vehicles', 'toys', 'sea', 'body', 'food'];
+  const feat = ['animals', 'fruits', 'colors', 'people', 'numbers', 'vehicles', 'toys', 'sea', 'body', 'food'];
   const s = stars() % 3;
   view(`<div class="bar"><div class="avatar"><img src="${IMG('ui/xiumai')}" alt=""></div><div class="logo">${brand()}</div>${starPill()}</div>
   <div class="khome">
@@ -183,8 +183,8 @@ const GAMES = [
   ['ghep', 'Ghép hình', 'Puzzle', 'w/puzzle-piece', '#DFF5C8'],
   ['lat', 'Lật thẻ tìm cặp', 'Memory', 'w/sparkles', '#E9D8FF'],
 ];
-const EASY = ['animals', 'fruits', 'vehicles', 'toys', 'zoo', 'sea', 'food', 'bugs', 'vegetables', 'clothes'];
-const PUZ = ['animals', 'zoo', 'fruits', 'vehicles', 'sea', 'toys', 'bugs', 'vegetables'];
+const EASY = ['animals', 'fruits', 'vehicles', 'toys', 'wild', 'sea', 'food', 'bugs', 'vegetables', 'clothes'];
+const PUZ = ['animals', 'wild', 'fruits', 'vehicles', 'sea', 'toys', 'bugs', 'vegetables'];
 function gameTopic(k, list = EASY) { const t = topic(k); if (t && t.w.length >= 4) return t; return topic(pick(list)); }
 function topicSel(g, k) { return `<div class="seg">${['all', ...topicList().filter(t => t.w.length >= 4 && t.k !== 'numbers').map(t => t.k)].map(x => { const t = topic(x); return `<button data-k="${x}" class="${(k || 'all') === x ? 'on' : ''}">${x === 'all' ? '🎲 Ngẫu nhiên' : t.vi}</button>`; }).join('')}</div>`; }
 function bindSel(g) { app.querySelectorAll('.seg button').forEach(b => b.onclick = () => go(`#/game/${g}${b.dataset.k === 'all' ? '' : '/' + b.dataset.k}`)); }
