@@ -8,14 +8,12 @@ permissions:
 jobs:
   cands:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
         with: { ref: xm-subs }
-      - uses: actions/setup-node@v4
-        with: {node-version: 20}
-      - run: node tools/cands.mjs
-      - run: pip install -q pillow && python3 tools/sheet.py && rm -rf out/c
+      - run: pip install -q pillow numpy
+      - run: python3 tools/cands2.py
       - run: |
           git config user.name bot; git config user.email bot@users.noreply.github.com
-          git add out && git commit -qm "cands out" && git push
-# r2
+          git add out && git commit -qm "cands2 out" && git push

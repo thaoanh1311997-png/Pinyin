@@ -1,0 +1,2802 @@
+[
+{
+"t": "animals",
+"w": "chicken",
+"q": "chicken white background",
+"q2": "chicken",
+"scene": false
+},
+{
+"t": "birds",
+"w": "hummingbird",
+"q": "hummingbird white background",
+"q2": "hummingbird",
+"scene": false
+},
+{
+"t": "birds",
+"w": "toucan",
+"q": "toucan white background",
+"q2": "toucan",
+"scene": false
+},
+{
+"t": "sea",
+"w": "sea lion",
+"q": "sea lion white background",
+"q2": "sea lion",
+"scene": false
+},
+{
+"t": "sea",
+"w": "shrimp",
+"q": "shrimp white background",
+"q2": "shrimp",
+"scene": false
+},
+{
+"t": "sea",
+"w": "seahorse",
+"q": "seahorse white background",
+"q2": "seahorse",
+"scene": false
+},
+{
+"t": "bugs",
+"w": "beetle",
+"q": "beetle white background",
+"q2": "beetle",
+"scene": false
+},
+{
+"t": "bugs",
+"w": "moth",
+"q": "moth white background",
+"q2": "moth",
+"scene": false
+},
+{
+"t": "bugs",
+"w": "spider web",
+"q": "spider web white background",
+"q2": "spider web",
+"scene": false
+},
+{
+"t": "fruits",
+"w": "banana",
+"q": "banana white background",
+"q2": "banana",
+"scene": false
+},
+{
+"t": "fruits",
+"w": "watermelon",
+"q": "watermelon white background",
+"q2": "watermelon",
+"scene": false
+},
+{
+"t": "fruits",
+"w": "melon",
+"q": "melon white background",
+"q2": "melon",
+"scene": false
+},
+{
+"t": "fruits",
+"w": "lemon",
+"q": "lemon white background",
+"q2": "lemon",
+"scene": false
+},
+{
+"t": "fruits",
+"w": "blueberries",
+"q": "blueberries white background",
+"q2": "blueberries",
+"scene": false
+},
+{
+"t": "fruits",
+"w": "lychee",
+"q": "lychee white background",
+"q2": "lychee",
+"scene": false
+},
+{
+"t": "fruits",
+"w": "avocado",
+"q": "avocado white background",
+"q2": "avocado",
+"scene": false
+},
+{
+"t": "fruits",
+"w": "star fruit",
+"q": "star fruit white background",
+"q2": "star fruit",
+"scene": false
+},
+{
+"t": "fruits",
+"w": "custard apple",
+"q": "custard apple white background",
+"q2": "custard apple",
+"scene": false
+},
+{
+"t": "fruits",
+"w": "passion fruit",
+"q": "passion fruit white background",
+"q2": "passion fruit",
+"scene": false
+},
+{
+"t": "fruits",
+"w": "date",
+"q": "date white background",
+"q2": "date",
+"scene": false
+},
+{
+"t": "fruits",
+"w": "olive",
+"q": "olive white background",
+"q2": "olive",
+"scene": false
+},
+{
+"t": "vegetables",
+"w": "cucumber",
+"q": "cucumber white background",
+"q2": "cucumber",
+"scene": false
+},
+{
+"t": "vegetables",
+"w": "lettuce",
+"q": "lettuce white background",
+"q2": "lettuce",
+"scene": false
+},
+{
+"t": "vegetables",
+"w": "spinach",
+"q": "spinach white background",
+"q2": "spinach",
+"scene": false
+},
+{
+"t": "vegetables",
+"w": "eggplant",
+"q": "eggplant white background",
+"q2": "eggplant",
+"scene": false
+},
+{
+"t": "vegetables",
+"w": "peas",
+"q": "peas white background",
+"q2": "peas",
+"scene": false
+},
+{
+"t": "vegetables",
+"w": "beans",
+"q": "beans white background",
+"q2": "beans",
+"scene": false
+},
+{
+"t": "vegetables",
+"w": "beet",
+"q": "beet white background",
+"q2": "beet",
+"scene": false
+},
+{
+"t": "vegetables",
+"w": "okra",
+"q": "okra white background",
+"q2": "okra",
+"scene": false
+},
+{
+"t": "vegetables",
+"w": "lotus root",
+"q": "lotus root white background",
+"q2": "lotus root",
+"scene": false
+},
+{
+"t": "vegetables",
+"w": "herbs",
+"q": "herbs white background",
+"q2": "herbs",
+"scene": false
+},
+{
+"t": "food",
+"w": "egg",
+"q": "egg white background",
+"q2": "egg",
+"scene": false
+},
+{
+"t": "food",
+"w": "noodles",
+"q": "noodles white background",
+"q2": "noodles",
+"scene": false
+},
+{
+"t": "food",
+"w": "meat",
+"q": "meat white background",
+"q2": "meat",
+"scene": false
+},
+{
+"t": "food",
+"w": "spring rolls",
+"q": "spring rolls white background",
+"q2": "spring rolls",
+"scene": false
+},
+{
+"t": "food",
+"w": "jam",
+"q": "jam white background",
+"q2": "jam",
+"scene": false
+},
+{
+"t": "food",
+"w": "cereal",
+"q": "cereal white background",
+"q2": "cereal",
+"scene": false
+},
+{
+"t": "drinks",
+"w": "water",
+"q": "water white background",
+"q2": "water",
+"scene": false
+},
+{
+"t": "sweets",
+"w": "cake",
+"q": "cake white background",
+"q2": "cake",
+"scene": false
+},
+{
+"t": "sweets",
+"w": "candy",
+"q": "candy white background",
+"q2": "candy",
+"scene": false
+},
+{
+"t": "sweets",
+"w": "marshmallow",
+"q": "marshmallow white background",
+"q2": "marshmallow",
+"scene": false
+},
+{
+"t": "colors",
+"w": "red",
+"q": "red balloon",
+"q2": null,
+"scene": false
+},
+{
+"t": "colors",
+"w": "orange",
+"q": "orange balloon",
+"q2": null,
+"scene": false
+},
+{
+"t": "colors",
+"w": "yellow",
+"q": "yellow balloon",
+"q2": null,
+"scene": false
+},
+{
+"t": "colors",
+"w": "green",
+"q": "green balloon",
+"q2": null,
+"scene": false
+},
+{
+"t": "colors",
+"w": "blue",
+"q": "blue balloon",
+"q2": null,
+"scene": false
+},
+{
+"t": "colors",
+"w": "purple",
+"q": "purple balloon",
+"q2": null,
+"scene": false
+},
+{
+"t": "colors",
+"w": "pink",
+"q": "pink balloon",
+"q2": null,
+"scene": false
+},
+{
+"t": "colors",
+"w": "brown",
+"q": "brown balloon",
+"q2": null,
+"scene": false
+},
+{
+"t": "colors",
+"w": "black",
+"q": "black balloon",
+"q2": null,
+"scene": false
+},
+{
+"t": "colors",
+"w": "white",
+"q": "white balloon",
+"q2": null,
+"scene": false
+},
+{
+"t": "colors",
+"w": "gray",
+"q": "gray balloon",
+"q2": null,
+"scene": false
+},
+{
+"t": "colors",
+"w": "light blue",
+"q": "light blue balloon",
+"q2": null,
+"scene": false
+},
+{
+"t": "colors",
+"w": "gold",
+"q": "gold foil balloon",
+"q2": null,
+"scene": false
+},
+{
+"t": "colors",
+"w": "silver",
+"q": "silver foil balloon",
+"q2": null,
+"scene": false
+},
+{
+"t": "colors",
+"w": "rainbow",
+"q": "rainbow sky",
+"q2": null,
+"scene": false
+},
+{
+"t": "shapes",
+"w": "circle",
+"q": "circle shape wooden toy",
+"q2": null,
+"scene": false
+},
+{
+"t": "shapes",
+"w": "square",
+"q": "square shape wooden toy",
+"q2": null,
+"scene": false
+},
+{
+"t": "shapes",
+"w": "triangle",
+"q": "triangle shape wooden toy",
+"q2": null,
+"scene": false
+},
+{
+"t": "shapes",
+"w": "heart",
+"q": "heart shape",
+"q2": null,
+"scene": false
+},
+{
+"t": "shapes",
+"w": "star",
+"q": "star shape cookie",
+"q2": null,
+"scene": false
+},
+{
+"t": "shapes",
+"w": "diamond",
+"q": "diamond shape kite",
+"q2": null,
+"scene": false
+},
+{
+"t": "shapes",
+"w": "oval",
+"q": "oval shape wooden toy",
+"q2": null,
+"scene": false
+},
+{
+"t": "shapes",
+"w": "moon",
+"q": "crescent moon night sky",
+"q2": null,
+"scene": false
+},
+{
+"t": "shapes",
+"w": "arrow",
+"q": "arrow sign",
+"q2": null,
+"scene": false
+},
+{
+"t": "shapes",
+"w": "cross",
+"q": "plus sign",
+"q2": null,
+"scene": false
+},
+{
+"t": "numbers",
+"w": "zero",
+"q": "number 0",
+"q2": null,
+"scene": false
+},
+{
+"t": "numbers",
+"w": "one",
+"q": "number 1 wooden",
+"q2": null,
+"scene": false
+},
+{
+"t": "numbers",
+"w": "two",
+"q": "number 2 wooden",
+"q2": null,
+"scene": false
+},
+{
+"t": "numbers",
+"w": "three",
+"q": "number 3 wooden",
+"q2": null,
+"scene": false
+},
+{
+"t": "numbers",
+"w": "four",
+"q": "number 4 wooden",
+"q2": null,
+"scene": false
+},
+{
+"t": "numbers",
+"w": "five",
+"q": "number 5 wooden",
+"q2": null,
+"scene": false
+},
+{
+"t": "numbers",
+"w": "six",
+"q": "number 6 wooden",
+"q2": null,
+"scene": false
+},
+{
+"t": "numbers",
+"w": "seven",
+"q": "number 7 wooden",
+"q2": null,
+"scene": false
+},
+{
+"t": "numbers",
+"w": "eight",
+"q": "number 8 wooden",
+"q2": null,
+"scene": false
+},
+{
+"t": "numbers",
+"w": "nine",
+"q": "number 9 wooden",
+"q2": null,
+"scene": false
+},
+{
+"t": "numbers",
+"w": "ten",
+"q": "number 10 wooden",
+"q2": null,
+"scene": false
+},
+{
+"t": "numbers",
+"w": "hundred",
+"q": "number 100",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "head",
+"q": "child head",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "face",
+"q": "child face",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "hair",
+"q": "child hair",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "eye",
+"q": "eye closeup",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "eyes",
+"q": "child eyes",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "ear",
+"q": "child ear",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "nose",
+"q": "child nose",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "mouth",
+"q": "child mouth",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "lips",
+"q": "lips smile",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "tooth",
+"q": "child tooth smile",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "tongue",
+"q": "child tongue out",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "hand",
+"q": "child hand",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "finger",
+"q": "child finger",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "thumb",
+"q": "child thumb",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "arm",
+"q": "child arm",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "leg",
+"q": "child leg",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "foot",
+"q": "child foot",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "footprints",
+"q": "footprints sand",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "brain",
+"q": "brain model",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "heart",
+"q": "heart anatomical model",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "bone",
+"q": "bone skeleton model",
+"q2": null,
+"scene": false
+},
+{
+"t": "body",
+"w": "nail",
+"q": "fingernails hand",
+"q2": null,
+"scene": false
+},
+{
+"t": "people",
+"w": "mommy",
+"q": "mother and child",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "daddy",
+"q": "father and child",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "baby",
+"q": "baby",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "brother",
+"q": "brothers boys",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "sister",
+"q": "sisters girls",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "grandma",
+"q": "grandmother",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "grandpa",
+"q": "grandfather",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "family",
+"q": "family portrait",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "parents",
+"q": "parents with baby",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "child",
+"q": "child",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "friend",
+"q": "children friends",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "boy",
+"q": "boy",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "girl",
+"q": "girl",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "man",
+"q": "man portrait smiling",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "woman",
+"q": "woman portrait smiling",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "pregnant",
+"q": "pregnant woman",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "breastfeeding",
+"q": "breastfeeding baby",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "bride",
+"q": "bride wedding dress",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "king",
+"q": "king costume crown",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "queen",
+"q": "queen costume crown",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "prince",
+"q": "prince costume boy",
+"q2": null,
+"scene": true
+},
+{
+"t": "people",
+"w": "princess",
+"q": "princess costume girl",
+"q2": null,
+"scene": true
+},
+{
+"t": "clothes",
+"w": "shorts",
+"q": "shorts white background",
+"q2": "shorts",
+"scene": false
+},
+{
+"t": "clothes",
+"w": "dress",
+"q": "dress white background",
+"q2": "dress",
+"scene": false
+},
+{
+"t": "clothes",
+"w": "hat",
+"q": "hat white background",
+"q2": "hat",
+"scene": false
+},
+{
+"t": "clothes",
+"w": "cap",
+"q": "cap white background",
+"q2": "cap",
+"scene": false
+},
+{
+"t": "clothes",
+"w": "jacket",
+"q": "jacket white background",
+"q2": "jacket",
+"scene": false
+},
+{
+"t": "clothes",
+"w": "gloves",
+"q": "gloves white background",
+"q2": "gloves",
+"scene": false
+},
+{
+"t": "clothes",
+"w": "sunglasses",
+"q": "sunglasses white background",
+"q2": "sunglasses",
+"scene": false
+},
+{
+"t": "baby",
+"w": "stroller",
+"q": "stroller white background",
+"q2": "stroller",
+"scene": false
+},
+{
+"t": "baby",
+"w": "wet wipes",
+"q": "wet wipes white background",
+"q2": "wet wipes",
+"scene": false
+},
+{
+"t": "toys",
+"w": "sandbox",
+"q": "sandbox white background",
+"q2": "sandbox",
+"scene": false
+},
+{
+"t": "toys",
+"w": "toy car",
+"q": "toy car white background",
+"q2": "toy car",
+"scene": false
+},
+{
+"t": "vehicles",
+"w": "taxi",
+"q": "taxi white background",
+"q2": "taxi",
+"scene": false
+},
+{
+"t": "vehicles",
+"w": "ship",
+"q": "ship white background",
+"q2": "ship",
+"scene": false
+},
+{
+"t": "vehicles",
+"w": "garbage truck",
+"q": "garbage truck white background",
+"q2": "garbage truck",
+"scene": false
+},
+{
+"t": "vehicles",
+"w": "cable car",
+"q": "cable car white background",
+"q2": "cable car",
+"scene": false
+},
+{
+"t": "vehicles",
+"w": "skateboard",
+"q": "skateboard white background",
+"q2": "skateboard",
+"scene": false
+},
+{
+"t": "home",
+"w": "sofa",
+"q": "sofa white background",
+"q2": "sofa",
+"scene": false
+},
+{
+"t": "home",
+"w": "TV",
+"q": "TV white background",
+"q2": "TV",
+"scene": false
+},
+{
+"t": "home",
+"w": "broom",
+"q": "broom white background",
+"q2": "broom",
+"scene": false
+},
+{
+"t": "home",
+"w": "bucket",
+"q": "bucket white background",
+"q2": "bucket",
+"scene": false
+},
+{
+"t": "home",
+"w": "basket",
+"q": "basket white background",
+"q2": "basket",
+"scene": false
+},
+{
+"t": "home",
+"w": "curtain",
+"q": "curtain white background",
+"q2": "curtain",
+"scene": false
+},
+{
+"t": "home",
+"w": "soap",
+"q": "soap white background",
+"q2": "soap",
+"scene": false
+},
+{
+"t": "home",
+"w": "sink",
+"q": "sink white background",
+"q2": "sink",
+"scene": false
+},
+{
+"t": "kitchen",
+"w": "chopsticks",
+"q": "chopsticks white background",
+"q2": "chopsticks",
+"scene": false
+},
+{
+"t": "kitchen",
+"w": "lunch box",
+"q": "lunch box white background",
+"q2": "lunch box",
+"scene": false
+},
+{
+"t": "kitchen",
+"w": "apron",
+"q": "apron white background",
+"q2": "apron",
+"scene": false
+},
+{
+"t": "things",
+"w": "phone",
+"q": "phone white background",
+"q2": "phone",
+"scene": false
+},
+{
+"t": "things",
+"w": "computer",
+"q": "computer white background",
+"q2": "computer",
+"scene": false
+},
+{
+"t": "things",
+"w": "tablet",
+"q": "tablet white background",
+"q2": "tablet",
+"scene": false
+},
+{
+"t": "things",
+"w": "flashlight",
+"q": "flashlight white background",
+"q2": "flashlight",
+"scene": false
+},
+{
+"t": "things",
+"w": "keyboard",
+"q": "keyboard white background",
+"q2": "keyboard",
+"scene": false
+},
+{
+"t": "things",
+"w": "coin",
+"q": "coin white background",
+"q2": "coin",
+"scene": false
+},
+{
+"t": "things",
+"w": "letter",
+"q": "letter white background",
+"q2": "letter",
+"scene": false
+},
+{
+"t": "things",
+"w": "paper",
+"q": "paper white background",
+"q2": "paper",
+"scene": false
+},
+{
+"t": "things",
+"w": "newspaper",
+"q": "newspaper white background",
+"q2": "newspaper",
+"scene": false
+},
+{
+"t": "tools",
+"w": "saw",
+"q": "saw white background",
+"q2": "saw",
+"scene": false
+},
+{
+"t": "tools",
+"w": "ladder",
+"q": "ladder white background",
+"q2": "ladder",
+"scene": false
+},
+{
+"t": "tools",
+"w": "rake",
+"q": "rake white background",
+"q2": "rake",
+"scene": false
+},
+{
+"t": "tools",
+"w": "axe",
+"q": "axe white background",
+"q2": "axe",
+"scene": false
+},
+{
+"t": "tools",
+"w": "watering can",
+"q": "watering can white background",
+"q2": "watering can",
+"scene": false
+},
+{
+"t": "tools",
+"w": "wheelbarrow",
+"q": "wheelbarrow white background",
+"q2": "wheelbarrow",
+"scene": false
+},
+{
+"t": "school",
+"w": "book",
+"q": "book white background",
+"q2": "book",
+"scene": false
+},
+{
+"t": "school",
+"w": "notebook",
+"q": "notebook white background",
+"q2": "notebook",
+"scene": false
+},
+{
+"t": "school",
+"w": "backpack",
+"q": "backpack white background",
+"q2": "backpack",
+"scene": false
+},
+{
+"t": "school",
+"w": "paintbrush",
+"q": "paintbrush white background",
+"q2": "paintbrush",
+"scene": false
+},
+{
+"t": "school",
+"w": "paint",
+"q": "paint white background",
+"q2": "paint",
+"scene": false
+},
+{
+"t": "school",
+"w": "map",
+"q": "map white background",
+"q2": "map",
+"scene": false
+},
+{
+"t": "school",
+"w": "teacher",
+"q": "teacher white background",
+"q2": "teacher",
+"scene": false
+},
+{
+"t": "school",
+"w": "student",
+"q": "student white background",
+"q2": "student",
+"scene": false
+},
+{
+"t": "nature",
+"w": "sun",
+"q": "sun",
+"q2": "sun",
+"scene": true
+},
+{
+"t": "nature",
+"w": "star",
+"q": "star",
+"q2": "star",
+"scene": true
+},
+{
+"t": "nature",
+"w": "sky",
+"q": "sky",
+"q2": "sky",
+"scene": true
+},
+{
+"t": "nature",
+"w": "grass",
+"q": "grass",
+"q2": "grass",
+"scene": true
+},
+{
+"t": "nature",
+"w": "rock",
+"q": "rock",
+"q2": "rock",
+"scene": true
+},
+{
+"t": "nature",
+"w": "cave",
+"q": "cave",
+"q2": "cave",
+"scene": true
+},
+{
+"t": "nature",
+"w": "wood",
+"q": "wood",
+"q2": "wood",
+"scene": true
+},
+{
+"t": "weather",
+"w": "sunny",
+"q": "sunny day blue sky",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "cloudy",
+"q": "cloudy sky",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "rain",
+"q": "rain drops",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "rainy",
+"q": "rainy day umbrella",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "storm",
+"q": "storm clouds",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "lightning",
+"q": "lightning bolt",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "thunder",
+"q": "thunderstorm",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "wind",
+"q": "windy trees",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "snow",
+"q": "snow falling",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "snowman",
+"q": "snowman",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "fog",
+"q": "fog",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "rainbow",
+"q": "rainbow",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "tornado",
+"q": "tornado",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "hot",
+"q": "hot summer sun",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "cold",
+"q": "cold winter frost",
+"q2": null,
+"scene": true
+},
+{
+"t": "weather",
+"w": "puddle",
+"q": "puddle rain boots",
+"q2": null,
+"scene": true
+},
+{
+"t": "flowers",
+"w": "daisy",
+"q": "daisy white background",
+"q2": "daisy",
+"scene": false
+},
+{
+"t": "flowers",
+"w": "apricot blossom",
+"q": "apricot blossom white background",
+"q2": "apricot blossom",
+"scene": false
+},
+{
+"t": "flowers",
+"w": "seed",
+"q": "seed white background",
+"q2": "seed",
+"scene": false
+},
+{
+"t": "flowers",
+"w": "potted plant",
+"q": "potted plant white background",
+"q2": "potted plant",
+"scene": false
+},
+{
+"t": "places",
+"w": "school",
+"q": "school",
+"q2": "school",
+"scene": true
+},
+{
+"t": "places",
+"w": "zoo",
+"q": "zoo",
+"q2": "zoo",
+"scene": true
+},
+{
+"t": "places",
+"w": "farm",
+"q": "farm",
+"q2": "farm",
+"scene": true
+},
+{
+"t": "places",
+"w": "market",
+"q": "market",
+"q2": "market",
+"scene": true
+},
+{
+"t": "places",
+"w": "bakery",
+"q": "bakery",
+"q2": "bakery",
+"scene": true
+},
+{
+"t": "places",
+"w": "restaurant",
+"q": "restaurant",
+"q2": "restaurant",
+"scene": true
+},
+{
+"t": "places",
+"w": "train station",
+"q": "train station",
+"q2": "train station",
+"scene": true
+},
+{
+"t": "places",
+"w": "bus stop",
+"q": "bus stop",
+"q2": "bus stop",
+"scene": true
+},
+{
+"t": "places",
+"w": "police station",
+"q": "police station",
+"q2": "police station",
+"scene": true
+},
+{
+"t": "places",
+"w": "street",
+"q": "street",
+"q2": "street",
+"scene": true
+},
+{
+"t": "jobs",
+"w": "doctor",
+"q": "doctor",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "nurse",
+"q": "nurse",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "dentist",
+"q": "dentist",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "teacher",
+"q": "teacher",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "police officer",
+"q": "police officer",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "firefighter",
+"q": "firefighter",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "cook",
+"q": "chef cooking",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "farmer",
+"q": "farmer",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "pilot",
+"q": "pilot",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "astronaut",
+"q": "astronaut",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "scientist",
+"q": "scientist",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "singer",
+"q": "singer",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "artist",
+"q": "painter artist painting",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "builder",
+"q": "construction worker",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "mechanic",
+"q": "mechanic",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "judge",
+"q": "judge court",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "guard",
+"q": "security guard",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "office worker",
+"q": "office worker desk",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "detective",
+"q": "detective",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "mail carrier",
+"q": "mail carrier",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "driver",
+"q": "driver",
+"q2": null,
+"scene": true
+},
+{
+"t": "jobs",
+"w": "clown",
+"q": "clown",
+"q2": null,
+"scene": true
+},
+{
+"t": "sports",
+"w": "soccer",
+"q": "soccer",
+"q2": "soccer",
+"scene": true
+},
+{
+"t": "sports",
+"w": "football",
+"q": "football",
+"q2": "football",
+"scene": true
+},
+{
+"t": "sports",
+"w": "golf",
+"q": "golf",
+"q2": "golf",
+"scene": true
+},
+{
+"t": "sports",
+"w": "skiing",
+"q": "skiing",
+"q2": "skiing",
+"scene": true
+},
+{
+"t": "sports",
+"w": "skating",
+"q": "skating",
+"q2": "skating",
+"scene": true
+},
+{
+"t": "sports",
+"w": "gymnastics",
+"q": "gymnastics",
+"q2": "gymnastics",
+"scene": true
+},
+{
+"t": "sports",
+"w": "fishing",
+"q": "fishing",
+"q2": "fishing",
+"scene": true
+},
+{
+"t": "sports",
+"w": "trophy",
+"q": "trophy",
+"q2": "trophy",
+"scene": true
+},
+{
+"t": "music",
+"w": "music",
+"q": "music white background",
+"q2": "music",
+"scene": false
+},
+{
+"t": "music",
+"w": "song",
+"q": "song white background",
+"q2": "song",
+"scene": false
+},
+{
+"t": "music",
+"w": "drum",
+"q": "drum white background",
+"q2": "drum",
+"scene": false
+},
+{
+"t": "music",
+"w": "saxophone",
+"q": "saxophone white background",
+"q2": "saxophone",
+"scene": false
+},
+{
+"t": "music",
+"w": "flute",
+"q": "flute white background",
+"q2": "flute",
+"scene": false
+},
+{
+"t": "music",
+"w": "bell",
+"q": "bell white background",
+"q2": "bell",
+"scene": false
+},
+{
+"t": "feelings",
+"w": "happy",
+"q": "happy child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "sad",
+"q": "sad child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "angry",
+"q": "angry child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "sleepy",
+"q": "sleepy child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "scared",
+"q": "scared child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "surprised",
+"q": "surprised child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "tired",
+"q": "tired child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "yummy",
+"q": "child eating happy",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "hot",
+"q": "child hot sweating",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "cold",
+"q": "child cold winter",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "silly",
+"q": "silly child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "shy",
+"q": "shy child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "love",
+"q": "mother hugging child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "sick",
+"q": "sick child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "hungry",
+"q": "hungry child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "thirsty",
+"q": "thirsty child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "bored",
+"q": "bored child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "proud",
+"q": "proud child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "cool",
+"q": "child sunglasses",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "worried",
+"q": "worried child",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "laughing",
+"q": "child laughing",
+"q2": null,
+"scene": true
+},
+{
+"t": "feelings",
+"w": "quiet",
+"q": "child finger on lips",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "run",
+"q": "child running",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "walk",
+"q": "child walking",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "jump",
+"q": "child jumping",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "swim",
+"q": "child swimming",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "dance",
+"q": "children dancing",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "sing",
+"q": "child singing",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "eat",
+"q": "child eating",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "drink",
+"q": "child drinking water",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "sleep",
+"q": "baby sleeping",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "wake up",
+"q": "child waking up bed",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "read",
+"q": "child reading book",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "write",
+"q": "child writing",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "draw",
+"q": "child drawing",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "play",
+"q": "children playing",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "clap",
+"q": "child clapping",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "wave",
+"q": "child waving",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "hug",
+"q": "children hugging",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "kiss",
+"q": "mother kissing baby",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "cry",
+"q": "baby crying",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "laugh",
+"q": "child laughing",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "smile",
+"q": "child smiling",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "climb",
+"q": "child climbing",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "ride a bike",
+"q": "child riding bike",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "cook",
+"q": "child cooking",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "wash hands",
+"q": "washing hands",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "brush teeth",
+"q": "child brushing teeth",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "take a bath",
+"q": "child bath",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "listen",
+"q": "child listening headphones",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "look",
+"q": "child looking binoculars",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "talk",
+"q": "children talking",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "think",
+"q": "child thinking",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "point",
+"q": "child pointing",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "push",
+"q": "child pushing",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "throw",
+"q": "child throwing ball",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "kick",
+"q": "child kicking ball",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "build",
+"q": "child building blocks",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "paint",
+"q": "child painting",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "shop",
+"q": "shopping market",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "fly",
+"q": "airplane flying",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "sit",
+"q": "child sitting chair",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "stand",
+"q": "child standing",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "call",
+"q": "child talking phone",
+"q2": null,
+"scene": true
+},
+{
+"t": "actions",
+"w": "pray",
+"q": "praying hands",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "big",
+"q": "big elephant",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "small",
+"q": "small mouse",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "fast",
+"q": "race car fast",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "slow",
+"q": "snail",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "hot",
+"q": "hot fire",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "cold",
+"q": "ice cubes",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "up",
+"q": "balloon up sky",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "down",
+"q": "slide down child",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "left",
+"q": "left arrow sign",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "right",
+"q": "right arrow sign",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "open",
+"q": "open door",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "closed",
+"q": "closed door",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "full",
+"q": "full glass water",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "empty",
+"q": "empty glass",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "happy",
+"q": "happy child",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "sad",
+"q": "sad child",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "day",
+"q": "daytime blue sky",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "night",
+"q": "night sky moon",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "wet",
+"q": "wet dog",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "dry",
+"q": "dry towel",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "tall",
+"q": "tall giraffe",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "short",
+"q": "short dachshund",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "loud",
+"q": "loud drum child",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "quiet",
+"q": "quiet library",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "yes",
+"q": "thumbs up",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "no",
+"q": "thumbs down",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "stop",
+"q": "stop sign",
+"q2": null,
+"scene": true
+},
+{
+"t": "opposites",
+"w": "go",
+"q": "green traffic light",
+"q2": null,
+"scene": true
+},
+{
+"t": "time",
+"w": "morning",
+"q": "morning sunrise",
+"q2": null,
+"scene": true
+},
+{
+"t": "time",
+"w": "afternoon",
+"q": "afternoon park sunlight",
+"q2": null,
+"scene": true
+},
+{
+"t": "time",
+"w": "evening",
+"q": "evening sunset",
+"q2": null,
+"scene": true
+},
+{
+"t": "time",
+"w": "night",
+"q": "night city moon",
+"q2": null,
+"scene": true
+},
+{
+"t": "time",
+"w": "today",
+"q": "calendar",
+"q2": null,
+"scene": true
+},
+{
+"t": "time",
+"w": "birthday",
+"q": "birthday party child",
+"q2": null,
+"scene": true
+},
+{
+"t": "time",
+"w": "clock",
+"q": "wall clock",
+"q2": null,
+"scene": true
+},
+{
+"t": "time",
+"w": "time",
+"q": "clock",
+"q2": null,
+"scene": true
+},
+{
+"t": "time",
+"w": "week",
+"q": "weekly calendar",
+"q2": null,
+"scene": true
+},
+{
+"t": "time",
+"w": "spring",
+"q": "spring flowers",
+"q2": null,
+"scene": true
+},
+{
+"t": "time",
+"w": "summer",
+"q": "summer beach",
+"q2": null,
+"scene": true
+},
+{
+"t": "time",
+"w": "autumn",
+"q": "autumn leaves",
+"q2": null,
+"scene": true
+},
+{
+"t": "time",
+"w": "winter",
+"q": "winter snow",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "Tet",
+"q": "Tet Vietnam new year",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "lucky money",
+"q": "red envelope lunar new year",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "lantern",
+"q": "mid-autumn lantern",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "mid-autumn",
+"q": "mid-autumn festival mooncake",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "fireworks",
+"q": "fireworks",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "party",
+"q": "kids party",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "balloon",
+"q": "balloons",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "present",
+"q": "gift box",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "birthday cake",
+"q": "birthday cake candles",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "candles",
+"q": "candles",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "Christmas",
+"q": "christmas tree",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "Santa Claus",
+"q": "Santa Claus",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "Halloween",
+"q": "halloween pumpkin",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "ghost",
+"q": "ghost costume",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "mask",
+"q": "carnival mask",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "confetti",
+"q": "confetti",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "ribbon",
+"q": "ribbon bow",
+"q2": null,
+"scene": true
+},
+{
+"t": "holidays",
+"w": "crown",
+"q": "crown",
+"q2": null,
+"scene": true
+},
+{
+"t": "space",
+"w": "satellite",
+"q": "satellite white background",
+"q2": "satellite",
+"scene": false
+},
+{
+"t": "space",
+"w": "telescope",
+"q": "telescope white background",
+"q2": "telescope",
+"scene": false
+},
+{
+"t": "space",
+"w": "shooting star",
+"q": "shooting star white background",
+"q2": "shooting star",
+"scene": false
+},
+{
+"t": "space",
+"w": "galaxy",
+"q": "galaxy white background",
+"q2": "galaxy",
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "dinosaur",
+"q": "dinosaur model",
+"q2": null,
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "T-rex",
+"q": "tyrannosaurus model",
+"q2": null,
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "dragon",
+"q": "dragon statue",
+"q2": null,
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "unicorn",
+"q": "unicorn toy",
+"q2": null,
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "fairy",
+"q": "fairy costume girl",
+"q2": null,
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "wizard",
+"q": "wizard costume",
+"q2": null,
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "genie",
+"q": "genie lamp",
+"q2": null,
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "vampire",
+"q": "vampire costume",
+"q2": null,
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "mermaid",
+"q": "mermaid costume",
+"q2": null,
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "superhero",
+"q": "superhero costume child",
+"q2": null,
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "troll",
+"q": "troll doll",
+"q2": null,
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "zombie",
+"q": "zombie costume",
+"q2": null,
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "magic wand",
+"q": "magic wand toy star",
+"q2": null,
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "alien",
+"q": "alien toy",
+"q2": null,
+"scene": false
+},
+{
+"t": "fantasy",
+"w": "UFO",
+"q": "ufo toy",
+"q2": null,
+"scene": false
+},
+{
+"t": "health",
+"w": "medicine",
+"q": "medicine pills",
+"q2": null,
+"scene": false
+},
+{
+"t": "health",
+"w": "syringe",
+"q": "syringe",
+"q2": null,
+"scene": false
+},
+{
+"t": "health",
+"w": "bandage",
+"q": "adhesive bandage",
+"q2": null,
+"scene": false
+},
+{
+"t": "health",
+"w": "thermometer",
+"q": "thermometer",
+"q2": null,
+"scene": false
+},
+{
+"t": "health",
+"w": "stethoscope",
+"q": "stethoscope",
+"q2": null,
+"scene": false
+},
+{
+"t": "health",
+"w": "mask",
+"q": "face mask",
+"q2": null,
+"scene": false
+},
+{
+"t": "health",
+"w": "cough",
+"q": "child coughing",
+"q2": null,
+"scene": false
+},
+{
+"t": "health",
+"w": "sneeze",
+"q": "sneezing tissue",
+"q2": null,
+"scene": false
+},
+{
+"t": "health",
+"w": "fever",
+"q": "child fever thermometer",
+"q2": null,
+"scene": false
+},
+{
+"t": "health",
+"w": "hurt",
+"q": "child knee bandage",
+"q2": null,
+"scene": false
+},
+{
+"t": "health",
+"w": "wheelchair",
+"q": "wheelchair",
+"q2": null,
+"scene": false
+},
+{
+"t": "health",
+"w": "crutch",
+"q": "crutches",
+"q2": null,
+"scene": false
+}
+]
