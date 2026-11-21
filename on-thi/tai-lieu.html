@@ -269,7 +269,7 @@ table.bi col.num{width:28px}
 
 <script>window.ONTHI_DOCS=window.ONTHI_DOCS||[];</script>
 <!--DATA-->
-<script src="data/docs.js"></script>
+<script src="data/docs.js?v=2"></script>
 <script>
 (function(){
 "use strict";
@@ -413,7 +413,7 @@ function vocabHTML(L,sub){
     h+='<div class="fc" data-flip><div class="z zh">'+esc(w.z)+'</div>'+(VS.show?'<div class="p">'+esc(w.p)+'</div><div class="m">'+esc(w.m)+'</div><div class="k">'+esc(vkind(w.k))+' · Bài '+w.n+'</div>':'<div class="tip">Chạm vào thẻ để xem pinyin và nghĩa</div>')+'</div>';
     h+='<div class="fcnav"><button data-fc="-1">◀</button><button class="say" style="width:46px;height:46px;font-size:20px" data-say="'+esc(w.z)+'">🔊</button><span class="c">'+(VS.i%V.length+1)+' / '+V.length+'</span><button data-fc="1">▶</button></div><div class="fcnav"><button data-fc="mix">🔀 Trộn lại</button></div>';
     return h; }
-  var pool=V.filter(function(w){return w.k!=="专名"}); if(pool.length<4) pool=V;
+  var pool=V.filter(function(w){return w.k!=="专名"&&!/tên riêng/.test(w.k)}); if(pool.length<4) pool=V;
   if(!VS.q){ var w2=pool[Math.floor(Math.random()*pool.length)], ms=[w2.m]; shuf(pool).forEach(function(x){ if(ms.length<4&&ms.indexOf(x.m)<0) ms.push(x.m); }); VS.q={w:w2,opts:shuf(ms),ans:null}; }
   var q=VS.q;
   h+='<div class="qz"><div class="ask">Từ này nghĩa là gì?</div><div class="z zh">'+esc(q.w.z)+'<button class="say" data-say="'+esc(q.w.z)+'">🔊</button></div>'+(q.ans!=null?'<div class="vp" style="color:#c4502f;font-size:18px">'+esc(q.w.p)+'</div>':'')+
