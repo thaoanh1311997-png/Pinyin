@@ -1,0 +1,1450 @@
+{
+"hummingbird|birds": {
+"slug": "hummingbird-birds",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/10789832@N00/4924945230",
+"author": "TexasEagle",
+"license": "BY-NC 2.0",
+"title": "Hovering Hummingbird"
+},
+"toucan|birds": {
+"slug": "toucan-birds",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/26782864@N00/7188563020",
+"author": "wwarby",
+"license": "BY 2.0",
+"title": "Toucan"
+},
+"sea lion|sea": {
+"slug": "sea-lion-sea",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:NIE_1905_Seal_(white_background).jpg",
+"author": "Dodd, Mead and Company; Julius Bien &amp; Co., Lithographers",
+"license": "Public domain",
+"title": "File:NIE 1905 Seal (white background).jpg"
+},
+"shrimp|sea": {
+"slug": "shrimp-sea",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Heterocarpus_ensifer_2.jpg",
+"author": "NOAA",
+"license": "Public domain",
+"title": "File:Heterocarpus ensifer 2.jpg"
+},
+"seahorse|sea": {
+"slug": "seahorse-sea",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Hippocampe_sec_Bretagne.jpg",
+"author": "",
+"license": "CC BY 2.5",
+"title": "File:Hippocampe sec Bretagne.jpg"
+},
+"watermelon|fruits": {
+"slug": "watermelon-fruits",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Food_Portions_(Team_Nutrition)_(20210902-FNS-UNC-0039).jpg",
+"author": "USDAgov",
+"license": "Public domain",
+"title": "File:Food Portions (Team Nutrition) (20210902-FNS-UNC-0039).jpg"
+},
+"melon|fruits": {
+"slug": "melon-fruits",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Cucumis_melo_on_white_background.jpg",
+"author": "Filo gèn'",
+"license": "CC BY-SA 4.0",
+"title": "File:Cucumis melo on white background.jpg"
+},
+"blueberries|fruits": {
+"slug": "blueberries-fruits",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Food_Portions_(Team_Nutrition)_(20210902-FNS-UNC-0038).jpg",
+"author": "USDAgov",
+"license": "Public domain",
+"title": "File:Food Portions (Team Nutrition) (20210902-FNS-UNC-0038).jpg"
+},
+"lychee|fruits": {
+"slug": "lychee-fruits",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Litchi_chinensis_on_White_background.jpg",
+"author": "Filo gèn'",
+"license": "CC BY-SA 4.0",
+"title": "File:Litchi chinensis on White background.jpg"
+},
+"custard apple|fruits": {
+"slug": "custard-apple-fruits",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/54942754@N02/14553894575",
+"author": "eltpics",
+"license": "BY-NC 2.0",
+"title": "Custard-apples from Gravatá"
+},
+"passion fruit|fruits": {
+"slug": "passion-fruit-fruits",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Passiflora_edulis_fruit_on_white_background.jpg",
+"author": "Filo gèn'",
+"license": "CC BY-SA 4.0",
+"title": "File:Passiflora edulis fruit on white background.jpg"
+},
+"eggplant|vegetables": {
+"slug": "eggplant-vegetables",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Aubergine.jpg",
+"author": "Horst Frank",
+"license": "CC BY-SA 3.0",
+"title": "File:Aubergine.jpg"
+},
+"okra|vegetables": {
+"slug": "okra-vegetables",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Abelmoschus_esculentus_in_Margarita_Island.jpg",
+"author": "Wilfredor",
+"license": "CC0",
+"title": "File:Abelmoschus esculentus in Margarita Island.jpg"
+},
+"egg|food": {
+"slug": "egg-food",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Egg_upright.jpg",
+"author": "Paolo Neo",
+"license": "Public domain",
+"title": "File:Egg upright.jpg"
+},
+"meat|food": {
+"slug": "meat-food",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/40726522@N02/5131467189",
+"author": "powerplantop",
+"license": "BY-NC-ND 2.0",
+"title": "Meat"
+},
+"cereal|food": {
+"slug": "cereal-food",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Froot-Loops-Cereal-Bowl.jpg",
+"author": "Evan-Amos",
+"license": "CC0",
+"title": "File:Froot-Loops-Cereal-Bowl.jpg"
+},
+"cake|sweets": {
+"slug": "cake-sweets",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Chocolate_mousse_cake_2.jpg",
+"author": "Lionel Allorge",
+"license": "CC BY-SA 3.0",
+"title": "File:Chocolate mousse cake 2.jpg"
+},
+"rainbow|colors": {
+"slug": "rainbow-colors",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Rainbow_sky_clouds.jpg",
+"author": "Microrao",
+"license": "CC BY-SA 4.0",
+"title": "File:Rainbow sky clouds.jpg"
+},
+"mouth|body": {
+"slug": "mouth-body",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Hand_foot_and_mouth_disease_on_a_child.jpg",
+"author": "1006will",
+"license": "CC BY-SA 4.0",
+"title": "File:Hand foot and mouth disease on a child.jpg"
+},
+"lips|body": {
+"slug": "lips-body",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/66606673@N00/532646290",
+"author": "cobalt123",
+"license": "BY-NC-SA 2.0",
+"title": "Self Portrait! ...................Not"
+},
+"tooth|body": {
+"slug": "tooth-body",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Lost_Tooth_Hike_(32630148726).jpg",
+"author": "vastateparksstaff",
+"license": "CC BY 2.0",
+"title": "File:Lost Tooth Hike (32630148726).jpg"
+},
+"finger|body": {
+"slug": "finger-body",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Child%27s_hand_showing_a_colorful_finger_while_crafting_at_home_during_afternoon_hours.jpg",
+"author": "Shixart1985",
+"license": "CC BY 2.0",
+"title": "File:Child's hand showing a colorful finger while crafting at home during afternoon hours.jpg"
+},
+"foot|body": {
+"slug": "foot-body",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/56294293@N00/101820542",
+"author": "RaGardner4",
+"license": "BY-NC-ND 2.0",
+"title": "Kickin up his feet"
+},
+"footprints|body": {
+"slug": "footprints-body",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Footprints_in_the_sand_-_geograph.org.uk_-_422602.jpg",
+"author": "Philip Halling",
+"license": "CC BY-SA 2.0",
+"title": "File:Footprints in the sand - geograph.org.uk - 422602.jpg"
+},
+"brain|body": {
+"slug": "brain-body",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/22508531@N08/2277411391",
+"author": "Like_the_Grand_Canyon",
+"license": "BY-NC 2.0",
+"title": "Brain model"
+},
+"heart|body": {
+"slug": "heart-body",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Dresden,_Deutsches_Hygiene-Museum,_anatomisches_Modell,_Herz.jpg",
+"author": "Dguendel",
+"license": "CC BY 4.0",
+"title": "File:Dresden, Deutsches Hygiene-Museum, anatomisches Modell, Herz.jpg"
+},
+"bone|body": {
+"slug": "bone-body",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Full_body_anatomical_skeleton_model_with_surgical_plates_at_exhibition.jpg",
+"author": "Mrshaxas",
+"license": "CC BY-SA 4.0",
+"title": "File:Full body anatomical skeleton model with surgical plates at exhibition.jpg"
+},
+"nail|body": {
+"slug": "nail-body",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Female_hands.jpg",
+"author": "JustCurious at E",
+"license": "Public domain",
+"title": "File:Female hands.jpg"
+},
+"daddy|people": {
+"slug": "daddy-people",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Father_and_child,_Dhaka.jpg",
+"author": "Steve Evans from India and USA",
+"license": "CC BY 2.0",
+"title": "File:Father and child, Dhaka.jpg"
+},
+"friend|people": {
+"slug": "friend-people",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Children_at_Chikkajala,_Bangalore,_Karnataka,_India_(2012).jpg",
+"author": "David Brossard",
+"license": "CC BY-SA 2.0",
+"title": "File:Children at Chikkajala, Bangalore, Karnataka, India (2012).jpg"
+},
+"boy|people": {
+"slug": "boy-people",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Laughing_boy_at_golden_hour.jpg",
+"author": "Basile Morin",
+"license": "CC BY-SA 4.0",
+"title": "File:Laughing boy at golden hour.jpg"
+},
+"girl|people": {
+"slug": "girl-people",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/44398680@N08/4400216715",
+"author": "AfghanistanMatters",
+"license": "BY 2.0",
+"title": "Kabul Girl"
+},
+"man|people": {
+"slug": "man-people",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/7487149@N03/517517380",
+"author": "Sukanto Debnath",
+"license": "BY 2.0",
+"title": "A happy man"
+},
+"pregnant|people": {
+"slug": "pregnant-people",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Pregnant_woman.jpg",
+"author": "Ken Hammond (USDA)",
+"license": "Public domain",
+"title": "File:Pregnant woman.jpg"
+},
+"breastfeeding|people": {
+"slug": "breastfeeding-people",
+"src": "Openverse",
+"page": "https://www.rawpixel.com/image/8708535/photo-image-public-domain-person-children",
+"author": "U.S. Department of Agriculture",
+"license": "CC0 1.0",
+"title": "mother breastfeeding baby"
+},
+"bride|people": {
+"slug": "bride-people",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Woman_in_wedding_dress_with_bouquet_of_red_flowers.jpg",
+"author": "LeeqDMB",
+"license": "CC BY-SA 3.0",
+"title": "File:Woman in wedding dress with bouquet of red flowers.jpg"
+},
+"jacket|clothes": {
+"slug": "jacket-clothes",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:(US)_JACKET,_FIELD,_OD_(SECOND_TYPE_-_STOCK_No_55-J-200-55-J-304),_2002.1766.jpg",
+"author": "Talon Zipper, fabricant",
+"license": "CC0",
+"title": "File:(US) JACKET, FIELD, OD (SECOND TYPE - STOCK No 55-J-200-55-J-304), 2002.1766.jpg"
+},
+"gloves|clothes": {
+"slug": "gloves-clothes",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Paar_korte_handschoenen_van_ivoorkleurig_leer,_objectnr_69983-1-2.JPG",
+"author": "Museum Rotterdam",
+"license": "CC BY-SA 3.0",
+"title": "File:Paar korte handschoenen van ivoorkleurig leer, objectnr 69983-1-2.JPG"
+},
+"sunglasses|clothes": {
+"slug": "sunglasses-clothes",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Sunglasses-1.jpg",
+"author": "Lotus Head from Johannesburg, Gauteng, South Africa",
+"license": "CC BY-SA 3.0",
+"title": "File:Sunglasses-1.jpg"
+},
+"stroller|baby": {
+"slug": "stroller-baby",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/74698556@N00/1354542404",
+"author": "Graham and Sheila",
+"license": "BY 2.0",
+"title": "Stroller"
+},
+"toy car|toys": {
+"slug": "toy-car-toys",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/25835458@N00/4139972129",
+"author": "Giulio e Rossana",
+"license": "BY-NC-SA 2.0",
+"title": "Red Toy Car"
+},
+"taxi|vehicles": {
+"slug": "taxi-vehicles",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Ambassador_taxi_(7169354693).jpg",
+"author": "shankar s. from Dubai, united arab emirates",
+"license": "CC BY 2.0",
+"title": "File:Ambassador taxi (7169354693).jpg"
+},
+"garbage truck|vehicles": {
+"slug": "garbage-truck-vehicles",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/68241640@N00/3602384021",
+"author": "Jeff Youngstrom",
+"license": "BY-NC 2.0",
+"title": "Natural gas-powered garbage truck"
+},
+"cable car|vehicles": {
+"slug": "cable-car-vehicles",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Cable_Car-1200764,_Beara_Peninsula,_Co._Cork,_Ireland.jpg",
+"author": "Mucklagh",
+"license": "CC BY-SA 4.0",
+"title": "File:Cable Car-1200764, Beara Peninsula, Co. Cork, Ireland.jpg"
+},
+"broom|home": {
+"slug": "broom-home",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Escoba.png",
+"author": "Letstown",
+"license": "CC0",
+"title": "File:Escoba.png"
+},
+"bucket|home": {
+"slug": "bucket-home",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/99255685@N00/2063575447",
+"author": "longhorndave",
+"license": "BY 2.0",
+"title": "Empty Bucket at Punta Del Este"
+},
+"curtain|home": {
+"slug": "curtain-home",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/57845051@N00/2884743046",
+"author": "sethoscope",
+"license": "BY-NC-SA 2.0",
+"title": "red stage curtains"
+},
+"sink|home": {
+"slug": "sink-home",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/29350288@N06/4894343602",
+"author": "Infrogmation",
+"license": "BY 2.0",
+"title": "Bad Sink Design"
+},
+"apron|kitchen": {
+"slug": "apron-kitchen",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/7239092@N03/3174194986",
+"author": "dutch blue",
+"license": "BY-NC-ND 2.0",
+"title": "girls apron"
+},
+"tablet|things": {
+"slug": "tablet-things",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/37031529@N00/9057264455",
+"author": "fsse8info",
+"license": "BY-SA 2.0",
+"title": "zoostorm android tablet"
+},
+"coin|things": {
+"slug": "coin-things",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/59937401@N07/5930121136",
+"author": "Images_of_Money",
+"license": "BY 2.0",
+"title": "Pound coin"
+},
+"wheelbarrow|tools": {
+"slug": "wheelbarrow-tools",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:City_of_London_Cemetery_Gardener_2.jpg",
+"author": "Acabashi",
+"license": "CC BY-SA 4.0",
+"title": "File:City of London Cemetery Gardener 2.jpg"
+},
+"notebook|school": {
+"slug": "notebook-school",
+"src": "Openverse",
+"page": "https://www.rawpixel.com/image/5907219/photo-image-paper-book-public-domain",
+"author": "",
+"license": "CC0 1.0",
+"title": "Free open notebook white background"
+},
+"backpack|school": {
+"slug": "backpack-school",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Rucksack_mit_Helmnetz.jpg",
+"author": "H. Knoflach",
+"license": "Copyrighted free use",
+"title": "File:Rucksack mit Helmnetz.jpg"
+},
+"teacher|school": {
+"slug": "teacher-school",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/115089924@N02/12212077185",
+"author": "www.ilmicrofono.it",
+"license": "BY 2.0",
+"title": "young-teacher-writing-numbers-on-the-chalkboard-isolated-on-white-background-"
+},
+"student|school": {
+"slug": "student-school",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/83633410@N07/7658039864",
+"author": "CollegeDegrees360",
+"license": "BY-SA 2.0",
+"title": "Female student holding library books"
+},
+"sun|nature": {
+"slug": "sun-nature",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Solar_Orbiter%E2%80%99s_widest_high-res_view_of_the_Sun_ESA508430.jpg",
+"author": "European Space Agency",
+"license": "CC BY-SA 3.0 igo",
+"title": "File:Solar Orbiter’s widest high-res view of the Sun ESA508430.jpg"
+},
+"star|nature": {
+"slug": "star-nature",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/45203414@N02/4430132863",
+"author": "Tim Shields BC",
+"license": "BY-NC 2.0",
+"title": "Circle of stars in Death Valley"
+},
+"sky|nature": {
+"slug": "sky-nature",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/94494883@N00/36353575",
+"author": "metamerist",
+"license": "BY-NC-SA 2.0",
+"title": "Sky"
+},
+"rock|nature": {
+"slug": "rock-nature",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Balanced_Rock.jpg",
+"author": "EvanS",
+"license": "CC BY-SA 4.0",
+"title": "File:Balanced Rock.jpg"
+},
+"cave|nature": {
+"slug": "cave-nature",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/39908901@N06/7531261890",
+"author": "m01229",
+"license": "BY 2.0",
+"title": "Cave"
+},
+"wood|nature": {
+"slug": "wood-nature",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/14878709@N00/1104812317",
+"author": "ukdamian",
+"license": "BY-NC 2.0",
+"title": "wood"
+},
+"rain|weather": {
+"slug": "rain-weather",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/30393289@N05/8785297099",
+"author": "ognjen.odobasic",
+"license": "BY 2.0",
+"title": "#rain #drops #glass #water #clouds #macro"
+},
+"rainy|weather": {
+"slug": "rainy-weather",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Rainy_Day_on_Freret_Street.jpg",
+"author": "Alli",
+"license": "CC BY 2.0",
+"title": "File:Rainy Day on Freret Street.jpg"
+},
+"storm|weather": {
+"slug": "storm-weather",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Lightning_in_Dallas_2015.jpg",
+"author": "NOAA Photo Library",
+"license": "Public domain",
+"title": "File:Lightning in Dallas 2015.jpg"
+},
+"thunder|weather": {
+"slug": "thunder-weather",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/72613942@N00/30432807",
+"author": "802",
+"license": "BY 2.0",
+"title": "Thunderstorm over Chesapeake Bay"
+},
+"snowman|weather": {
+"slug": "snowman-weather",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/48706019@N08/5790389190",
+"author": "RukaKuusamo.com",
+"license": "BY 2.0",
+"title": "snowman"
+},
+"rainbow|weather": {
+"slug": "rainbow-weather",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:WhereRainbowRises.jpg",
+"author": "Wing-Chi Poon",
+"license": "CC BY-SA 2.5",
+"title": "File:WhereRainbowRises.jpg"
+},
+"tornado|weather": {
+"slug": "tornado-weather",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:F5_tornado_Elie_Manitoba_2007.jpg",
+"author": "Justin Hobson (Justin1569 at <a href=\"https://en.wikipedia.org/wiki/\" class=\"extiw\" title=\"w",
+"license": "CC BY-SA 3.0",
+"title": "File:F5 tornado Elie Manitoba 2007.jpg"
+},
+"puddle|weather": {
+"slug": "puddle-weather",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/61556972@N05/5685626295",
+"author": "little miss ladybug",
+"license": "BY 2.0",
+"title": "Pink boots"
+},
+"daisy|flowers": {
+"slug": "daisy-flowers",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Daisy_G%C3%A4nsebl%C3%BCmchen_Bellis_perennis_01.jpg",
+"author": "Norbert Nagel, Mörfelden-Walldorf, Germany",
+"license": "CC BY-SA 3.0",
+"title": "File:Daisy Gänseblümchen Bellis perennis 01.jpg"
+},
+"apricot blossom|flowers": {
+"slug": "apricot-blossom-flowers",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/62799548@N00/5700030497",
+"author": "jiazi",
+"license": "BY-SA 2.0",
+"title": "Apricot Blossom of Beijing Beigong National Forest Park"
+},
+"school|places": {
+"slug": "school-places",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:A_Hayesville_High_School_classroom_in_Clay_County,_N.C.,_in_2004.jpg",
+"author": "Harrison Keely",
+"license": "CC BY 4.0",
+"title": "File:A Hayesville High School classroom in Clay County, N.C., in 2004.jpg"
+},
+"zoo|places": {
+"slug": "zoo-places",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/66757486@N00/11155116196",
+"author": "Chris Bertram",
+"license": "BY-NC-ND 2.0",
+"title": "Bristol Zoo - meerkats"
+},
+"farm|places": {
+"slug": "farm-places",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Saskatchewan_Farm_Elevator.jpg",
+"author": "Saffron Blaze",
+"license": "CC BY-SA 3.0",
+"title": "File:Saskatchewan Farm Elevator.jpg"
+},
+"market|places": {
+"slug": "market-places",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/93178668@N00/2539111053",
+"author": "NatalieMaynor",
+"license": "BY 2.0",
+"title": "Farmers' Market"
+},
+"train station|places": {
+"slug": "train-station-places",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/95572727@N00/1221214740",
+"author": "Trey Ratcliff",
+"license": "BY-NC-SA 2.0",
+"title": "Leipzig Train Station"
+},
+"doctor|jobs": {
+"slug": "doctor-jobs",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Auscultation_of_a_women.jpg",
+"author": "Wesley Carter, U.S. Air Force",
+"license": "Public domain",
+"title": "File:Auscultation of a women.jpg"
+},
+"dentist|jobs": {
+"slug": "dentist-jobs",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/22777102@N00/469827539",
+"author": "HKGRist",
+"license": "BY-NC-ND 2.0",
+"title": "A dentist giving a numb shot"
+},
+"police officer|jobs": {
+"slug": "police-officer-jobs",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:HH_Polizeihauptmeister_MZ.jpg",
+"author": "Daniel Schwen",
+"license": "CC BY-SA 2.5",
+"title": "File:HH Polizeihauptmeister MZ.jpg"
+},
+"cook|jobs": {
+"slug": "cook-jobs",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Cooks_050918_154402.jpg",
+"author": "David Monniaux",
+"license": "CC BY-SA 3.0",
+"title": "File:Cooks 050918 154402.jpg"
+},
+"farmer|jobs": {
+"slug": "farmer-jobs",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/10816734@N03/4724273585",
+"author": "World Bank Photo Collection",
+"license": "BY-NC-ND 2.0",
+"title": "Farmer in field Colombia"
+},
+"pilot|jobs": {
+"slug": "pilot-jobs",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Airline_Pilot.jpg",
+"author": "GrandAviator",
+"license": "CC0",
+"title": "File:Airline Pilot.jpg"
+},
+"scientist|jobs": {
+"slug": "scientist-jobs",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/34402227@N03/7312650498",
+"author": "U.S. Army Combat Capabilities Development Command",
+"license": "BY-SA 2.0",
+"title": "Army scientists energize battery research"
+},
+"artist|jobs": {
+"slug": "artist-jobs",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/77654185@N07/10315673394",
+"author": "Kerri Lee Smith",
+"license": "BY-NC-SA 2.0",
+"title": "Portrait of an Artist"
+},
+"guard|jobs": {
+"slug": "guard-jobs",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:TSA_Officer_Checking_ID.png",
+"author": "Transportation Security Administration",
+"license": "Public domain",
+"title": "File:TSA Officer Checking ID.png"
+},
+"clown|jobs": {
+"slug": "clown-jobs",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Clown_costume.jpg",
+"author": "WMC2207",
+"license": "CC0",
+"title": "File:Clown costume.jpg"
+},
+"soccer|sports": {
+"slug": "soccer-sports",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:1alessandromartinelli2015.jpg",
+"author": "Matteo Brama",
+"license": "CC BY-SA 4.0",
+"title": "File:1alessandromartinelli2015.jpg"
+},
+"golf|sports": {
+"slug": "golf-sports",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/25342671@N07/2932650574",
+"author": "Tord Sollie",
+"license": "BY-NC-ND 2.0",
+"title": "Golfing"
+},
+"skiing|sports": {
+"slug": "skiing-sports",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/55080179@N08/5114012385",
+"author": "Grand River Conservation Authority",
+"license": "BY-NC-ND 2.0",
+"title": "Cross-country skiing at Shade's Mills"
+},
+"skating|sports": {
+"slug": "skating-sports",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/48383507@N06/16720593820",
+"author": "Nasir Khan Saikat",
+"license": "BY-SA 2.0",
+"title": "Ice Skating"
+},
+"trophy|sports": {
+"slug": "trophy-sports",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/50811886@N00/4593408144",
+"author": "warrenski",
+"license": "BY-SA 2.0",
+"title": "FIFA World Cup Trophy"
+},
+"saxophone|music": {
+"slug": "saxophone-music",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Yamaha_Saxophone_YTS-62.tif",
+"author": "Yamaha Corporation",
+"license": "CC BY-SA 4.0",
+"title": "File:Yamaha Saxophone YTS-62.tif"
+},
+"flute|music": {
+"slug": "flute-music",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Western_Concert_Flute.jpg",
+"author": "Thea Paraskevaides",
+"license": "CC BY-SA 4.0",
+"title": "File:Western Concert Flute.jpg"
+},
+"happy|feelings": {
+"slug": "happy-feelings",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/19518517@N00/24212086380",
+"author": "mrcharly",
+"license": "BY-NC-ND 2.0",
+"title": "happy child"
+},
+"sad|feelings": {
+"slug": "sad-feelings",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:A_child_sad_that_his_hot_dog_fell_on_the_ground.jpg",
+"author": "David Shankbone",
+"license": "CC BY 3.0",
+"title": "File:A child sad that his hot dog fell on the ground.jpg"
+},
+"scared|feelings": {
+"slug": "scared-feelings",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/62337512@N00/4335060317",
+"author": "apdk",
+"license": "BY-NC-SA 2.0",
+"title": "shocked"
+},
+"yummy|feelings": {
+"slug": "yummy-feelings",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/33784010@N07/4694352916",
+"author": "nvainio",
+"license": "BY 2.0",
+"title": "Eating ice cream"
+},
+"cold|feelings": {
+"slug": "cold-feelings",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Child_plays_with_snow_while_an_adult_throws_snow_in_the_air_in_a_winter_setting.jpg",
+"author": "Shixart1985",
+"license": "CC BY 2.0",
+"title": "File:Child plays with snow while an adult throws snow in the air in a winter setting.jpg"
+},
+"shy|feelings": {
+"slug": "shy-feelings",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Tanzania_child_shying_face_by_Rasheedhrasheed.jpg",
+"author": "Rasheedhrasheed",
+"license": "CC BY-SA 4.0",
+"title": "File:Tanzania child shying face by Rasheedhrasheed.jpg"
+},
+"love|feelings": {
+"slug": "love-feelings",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Lots_of_love_(4886481334).jpg",
+"author": "jencu",
+"license": "CC BY 2.0",
+"title": "File:Lots of love (4886481334).jpg"
+},
+"hungry|feelings": {
+"slug": "hungry-feelings",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/61925052@N02/8333059286",
+"author": "© Marco Trezza Photography",
+"license": "BY 2.0",
+"title": "MmmmMm! #pizza #hungry #child #delicious"
+},
+"worried|feelings": {
+"slug": "worried-feelings",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/131028674@N06/16854581745",
+"author": "doranyiro",
+"license": "BY-NC-SA 2.0",
+"title": "Emotion"
+},
+"laughing|feelings": {
+"slug": "laughing-feelings",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/76812925@N00/2924393107",
+"author": "DurhamDundee",
+"license": "BY-NC-ND 2.0",
+"title": "# 18 a child laughing"
+},
+"run|actions": {
+"slug": "run-actions",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:A_child_joyfully_running_to_fetch_water.jpg",
+"author": "Asunta sura",
+"license": "CC BY-SA 4.0",
+"title": "File:A child joyfully running to fetch water.jpg"
+},
+"swim|actions": {
+"slug": "swim-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/127971456@N05/15339323372",
+"author": "Club Med - Discover a New World",
+"license": "BY-NC 2.0",
+"title": "Child Swimming"
+},
+"dance|actions": {
+"slug": "dance-actions",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Children_dancing.jpg",
+"author": "Yann (talk)",
+"license": "CC BY-SA 4.0",
+"title": "File:Children dancing.jpg"
+},
+"sing|actions": {
+"slug": "sing-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/79781814@N00/9383913263",
+"author": "davitydave",
+"license": "BY 2.0",
+"title": "PantsHair Rockin The Uke"
+},
+"eat|actions": {
+"slug": "eat-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/72959997@N00/14800636637",
+"author": "Lynn Friedman",
+"license": "BY-NC-ND 2.0",
+"title": "#girl #child #eating #beets #mouth #california #lynnfriedman #fashion #bib"
+},
+"drink|actions": {
+"slug": "drink-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/137169575@N04/24776544840",
+"author": "aqua.mech",
+"license": "BY 2.0",
+"title": "Child drinking water from glass"
+},
+"sleep|actions": {
+"slug": "sleep-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/22882495@N00/6978928844",
+"author": "Tiago Cabral",
+"license": "BY-NC 2.0",
+"title": "Baby sleeping"
+},
+"read|actions": {
+"slug": "read-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/36281822@N08/4401737412",
+"author": "US Army Africa",
+"license": "BY 2.0",
+"title": "Read Across America , Vicenza, Italy - US Army - March 2010"
+},
+"play|actions": {
+"slug": "play-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/10816734@N03/14327415332",
+"author": "World Bank Photo Collection",
+"license": "BY-NC-ND 2.0",
+"title": "Syrian refugee children play with one another in the Ketermaya refugee camp"
+},
+"cry|actions": {
+"slug": "cry-actions",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Baby_yelling.jpg",
+"author": "Dave Buchwald",
+"license": "CC BY-SA 3.0",
+"title": "File:Baby yelling.jpg"
+},
+"laugh|actions": {
+"slug": "laugh-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/12842205@N08/6019067180",
+"author": "cheriejoyful",
+"license": "BY 2.0",
+"title": "Child laughing"
+},
+"smile|actions": {
+"slug": "smile-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/38991571@N00/29672891063",
+"author": "Jay Hsu - Chen Chieh",
+"license": "BY-NC-ND 2.0",
+"title": "Child | Smile Girl"
+},
+"ride a bike|actions": {
+"slug": "ride-a-bike-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/22901150@N00/3784927443",
+"author": "Lorena Cupcake",
+"license": "BY 2.0",
+"title": "I FINALLY GOT A BIKE!"
+},
+"cook|actions": {
+"slug": "cook-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/38796384@N07/15609794678",
+"author": "Alan Wat",
+"license": "BY 2.0",
+"title": "Parent-child cooking"
+},
+"wash hands|actions": {
+"slug": "wash-hands-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/38991571@N00/14239608949",
+"author": "Jay Hsu - Chen Chieh",
+"license": "BY-NC-ND 2.0",
+"title": "Wash hands."
+},
+"push|actions": {
+"slug": "push-actions",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Child_pushing_Corn_Popper.jpg",
+"author": "andrechinn",
+"license": "CC BY 2.0",
+"title": "File:Child pushing Corn Popper.jpg"
+},
+"throw|actions": {
+"slug": "throw-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/12150723@N06/2121364107",
+"author": "PhotopediaPhotos",
+"license": "BY 2.0",
+"title": "24photo05"
+},
+"build|actions": {
+"slug": "build-actions",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Child_playing_with_colorful_building_blocks_on_the_floor_with_adult_in_a_cozy_living_room.jpg",
+"author": "Shixart1985",
+"license": "CC BY 2.0",
+"title": "File:Child playing with colorful building blocks on the floor with adult in a cozy living room.jpg"
+},
+"paint|actions": {
+"slug": "paint-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/98925031@N08/9328964413",
+"author": "emmacraig1",
+"license": "BY-NC 2.0",
+"title": "Child's painting in progress"
+},
+"shop|actions": {
+"slug": "shop-actions",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Comercio_en_la_plaza_del_9_de_abril_de_1947,_T%C3%A1nger,_Marruecos,_2015-12-11,_DD_78.JPG",
+"author": "Diego Delso",
+"license": "CC BY-SA 4.0",
+"title": "File:Comercio en la plaza del 9 de abril de 1947, Tánger, Marruecos, 2015-12-11, DD 78.JPG"
+},
+"call|actions": {
+"slug": "call-actions",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/8566600@N07/2255467740",
+"author": "Jason Lander",
+"license": "BY 2.0",
+"title": "IMG_0722"
+},
+"big|opposites": {
+"slug": "big-opposites",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/22231626@N00/1843300844",
+"author": "rob glow",
+"license": "BY-NC 2.0",
+"title": "Big elephant!"
+},
+"slow|opposites": {
+"slug": "slow-opposites",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/7147684@N03/1037533775",
+"author": "pellaea",
+"license": "BY 2.0",
+"title": "Snail"
+},
+"hot|opposites": {
+"slug": "hot-opposites",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/27897838@N05/4296308432",
+"author": "CoenV",
+"license": "BY-NC 2.0",
+"title": "A nice hot fire!"
+},
+"up|opposites": {
+"slug": "up-opposites",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Looking_Up_in_the_Deep_South-_Natchez_Balloon_Festival_-_52463340832.jpg",
+"author": "LimpingFrog Productions",
+"license": "CC BY 2.0",
+"title": "File:Looking Up in the Deep South- Natchez Balloon Festival - 52463340832.jpg"
+},
+"down|opposites": {
+"slug": "down-opposites",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Girl_About_to_Go_Down_a_Slide.JPG",
+"author": "Barelyhere",
+"license": "CC BY-SA 4.0",
+"title": "File:Girl About to Go Down a Slide.JPG"
+},
+"left|opposites": {
+"slug": "left-opposites",
+"src": "Openverse",
+"page": "https://www.rawpixel.com/image/9069752/image-logo-road-illustrations",
+"author": "",
+"license": "CC0 1.0",
+"title": "Left arrow sign illustration"
+},
+"right|opposites": {
+"slug": "right-opposites",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Road-sign-arrow-right-in-Oak-tree-1of4.jpg",
+"author": "FlippyFlink",
+"license": "CC BY-SA 4.0",
+"title": "File:Road-sign-arrow-right-in-Oak-tree-1of4.jpg"
+},
+"open|opposites": {
+"slug": "open-opposites",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Open_refrigerator_with_food_at_night.jpg",
+"author": "W.carter",
+"license": "CC BY-SA 4.0",
+"title": "File:Open refrigerator with food at night.jpg"
+},
+"full|opposites": {
+"slug": "full-opposites",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Glass-of-water.jpg",
+"author": "Derek Jensen (Tysto)",
+"license": "Public domain",
+"title": "File:Glass-of-water.jpg"
+},
+"happy|opposites": {
+"slug": "happy-opposites",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/19518517@N00/24212086380",
+"author": "mrcharly",
+"license": "BY-NC-ND 2.0",
+"title": "happy child"
+},
+"sad|opposites": {
+"slug": "sad-opposites",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:A_child_sad_that_his_hot_dog_fell_on_the_ground.jpg",
+"author": "David Shankbone",
+"license": "CC BY 3.0",
+"title": "File:A child sad that his hot dog fell on the ground.jpg"
+},
+"day|opposites": {
+"slug": "day-opposites",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/44028103@N07/4544564533",
+"author": "WanderingtheWorld (www.ChrisFord.com)",
+"license": "BY-NC 2.0",
+"title": "'Easy Breezy' Sheep's Meadow, Central Park, New York City"
+},
+"wet|opposites": {
+"slug": "wet-opposites",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Wet_dog_-_Tygrys.jpg",
+"author": "Wiktor Batorski",
+"license": "CC BY-SA 3.0",
+"title": "File:Wet dog - Tygrys.jpg"
+},
+"dry|opposites": {
+"slug": "dry-opposites",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Towel_rails_radiator_with_hanger.jpg",
+"author": "MB SRL",
+"license": "CC BY 4.0",
+"title": "File:Towel rails radiator with hanger.jpg"
+},
+"short|opposites": {
+"slug": "short-opposites",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:%EB%8B%A5%EC%8A%A4%ED%9B%88%ED%8A%B8(%EB%8B%A8%EB%AA%A8%EC%A2%85)_(Dachshund_(Short)).jpg",
+"author": "Katemil94",
+"license": "CC BY-SA 4.0",
+"title": "File:닥스훈트(단모종) (Dachshund (Short)).jpg"
+},
+"loud|opposites": {
+"slug": "loud-opposites",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/92973599@N04/16228046589",
+"author": "RalphArvesen",
+"license": "BY-NC 2.0",
+"title": "Wild Child (Utopia, Texas 2014-09-13)"
+},
+"yes|opposites": {
+"slug": "yes-opposites",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Thumbs_up_for_bokeh.JPG",
+"author": "Daniel Flather",
+"license": "CC BY-SA 3.0",
+"title": "File:Thumbs up for bokeh.JPG"
+},
+"stop|opposites": {
+"slug": "stop-opposites",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/47422005@N04/6503264653",
+"author": "DonkeyHotey",
+"license": "BY 2.0",
+"title": "Stop Sign"
+},
+"go|opposites": {
+"slug": "go-opposites",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:UK_Green_Traffic_Light_Signal_-_geograph.org.uk_-_5264299.jpg",
+"author": "Gary <a href=\"//commons.wikimedia.org/",
+"license": "CC BY-SA 2.0",
+"title": "File:UK Green Traffic Light Signal - geograph.org.uk - 5264299.jpg"
+},
+"afternoon|time": {
+"slug": "afternoon-time",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:December_afternoon_sunlight_in_East_Park,_Wolverhampton_(2)_-_geograph.org.uk_-_5639150.jpg",
+"author": "Richard Vince <a href=\"//commons.wikime",
+"license": "CC BY-SA 2.0",
+"title": "File:December afternoon sunlight in East Park, Wolverhampton (2) - geograph.org.uk - 5639150.jpg"
+},
+"evening|time": {
+"slug": "evening-time",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/7156765@N05/40083917125",
+"author": "Onasill ~ Bill",
+"license": "BY-NC-SA 2.0",
+"title": "Lake Placid New York ~ Evening Sunset ~ Golden Reflection - Adirondack Mountains"
+},
+"night|time": {
+"slug": "night-time",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Night_Moon_(15579416844).jpg",
+"author": "Dorian Wallender from Lake Havasu City, Arizona, USA",
+"license": "CC BY-SA 2.0",
+"title": "File:Night Moon (15579416844).jpg"
+},
+"clock|time": {
+"slug": "clock-time",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/33227787@N05/10200608863",
+"author": "r.nial.bradshaw",
+"license": "BY 2.0",
+"title": "wall-clock-vintage.jpg"
+},
+"time|time": {
+"slug": "time-time",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:London_Big_Ben_Inner_Clock_Face_1070925-PSD.jpg",
+"author": "Ermell",
+"license": "CC BY-SA 4.0",
+"title": "File:London Big Ben Inner Clock Face 1070925-PSD.jpg"
+},
+"spring|time": {
+"slug": "spring-time",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Pink_spring_flowers.jpg",
+"author": "Omina006",
+"license": "CC0",
+"title": "File:Pink spring flowers.jpg"
+},
+"summer|time": {
+"slug": "summer-time",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Torregrotta_beach_summer_2024.jpg",
+"author": "Alphacentauri2007",
+"license": "CC BY-SA 4.0",
+"title": "File:Torregrotta beach summer 2024.jpg"
+},
+"autumn|time": {
+"slug": "autumn-time",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Autumn_leaves_in_shrine.jpg",
+"author": "大久保藍",
+"license": "CC BY-SA 4.0",
+"title": "File:Autumn leaves in shrine.jpg"
+},
+"winter|time": {
+"slug": "winter-time",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/10922353@N03/5403240172",
+"author": "ForestWander.com",
+"license": "BY-SA 2.0",
+"title": "wv mountain trail winter snow trees"
+},
+"lucky money|holidays": {
+"slug": "lucky-money-holidays",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:The_Lucky_Red_Envelopes_or_Packets_in_Lunar_New_Year.jpg",
+"author": "AH-LOD",
+"license": "CC BY-SA 4.0",
+"title": "File:The Lucky Red Envelopes or Packets in Lunar New Year.jpg"
+},
+"mid-autumn|holidays": {
+"slug": "mid-autumn-holidays",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Festival_de_la_Lluna_MMXXIV_56.jpg",
+"author": "Francesc Fort",
+"license": "CC BY-SA 4.0",
+"title": "File:Festival de la Lluna MMXXIV 56.jpg"
+},
+"fireworks|holidays": {
+"slug": "fireworks-holidays",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/66977593@N07/6551035009",
+"author": "morafi",
+"license": "BY-NC 2.0",
+"title": "Fireworks"
+},
+"balloon|holidays": {
+"slug": "balloon-holidays",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Congrats_bqt.jpg",
+"author": "Photographer: Warren Denning. Creative Director: Stan Weir. Marketing Director: Tim Vlamis",
+"license": "Public domain",
+"title": "File:Congrats bqt.jpg"
+},
+"present|holidays": {
+"slug": "present-holidays",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Brown_gift_box_with_red_ribbon_and_bow.jpg",
+"author": "Shixart1985",
+"license": "CC BY 2.0",
+"title": "File:Brown gift box with red ribbon and bow.jpg"
+},
+"birthday cake|holidays": {
+"slug": "birthday-cake-holidays",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Creative_Commons_Birthday_Cake_and_Candles_(4825652728).jpg",
+"author": "Pink Sherbet Photography from USA",
+"license": "CC BY 2.0",
+"title": "File:Creative Commons Birthday Cake and Candles (4825652728).jpg"
+},
+"Christmas|holidays": {
+"slug": "christmas-holidays",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/41496273@N00/328345794",
+"author": "takfoto",
+"license": "BY-NC 2.0",
+"title": "1-08-06 christmas tree 011"
+},
+"Halloween|holidays": {
+"slug": "halloween-holidays",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Jack-o%27-lantern_20091031.jpg",
+"author": "ami harikoshi",
+"license": "CC BY 2.0",
+"title": "File:Jack-o'-lantern 20091031.jpg"
+},
+"confetti|holidays": {
+"slug": "confetti-holidays",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/10906438@N00/11141471906",
+"author": "eileenmcmahon",
+"license": "BY 2.0",
+"title": "BLUE SKY WITH CONFETTI"
+},
+"crown|holidays": {
+"slug": "crown-holidays",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Crown_of_the_Virgin_of_the_Immaculate_Conception,_known_as_the_Crown_of_the_Andes_MET_DP365520.jpg",
+"author": "Unknown authorUnknown author",
+"license": "CC0",
+"title": "File:Crown of the Virgin of the Immaculate Conception, known as the Crown of the Andes MET DP365520.jpg"
+},
+"galaxy|space": {
+"slug": "galaxy-space",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/54209675@N00/15825486792",
+"author": "geckzilla",
+"license": "BY 2.0",
+"title": "NGC 6814"
+},
+"dinosaur|fantasy": {
+"slug": "dinosaur-fantasy",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Dinosaur_model_at_Munilla.jpg",
+"author": "peru, lili eta marije from Donostia, Basque Country",
+"license": "CC BY-SA 2.0",
+"title": "File:Dinosaur model at Munilla.jpg"
+},
+"dragon|fantasy": {
+"slug": "dragon-fantasy",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/14455307@N07/15967786915",
+"author": "Volpin",
+"license": "BY-NC-ND 2.0",
+"title": "Final Curse Dragon Statue"
+},
+"unicorn|fantasy": {
+"slug": "unicorn-fantasy",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Amigurumi_Unicorn.jpg",
+"author": "Lskbrown",
+"license": "CC BY 3.0",
+"title": "File:Amigurumi Unicorn.jpg"
+},
+"fairy|fantasy": {
+"slug": "fairy-fantasy",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:The_Forlorn_Fairy_(68943671).jpeg",
+"author": "Vanessa Kay",
+"license": "CC BY 3.0",
+"title": "File:The Forlorn Fairy (68943671).jpeg"
+},
+"genie|fantasy": {
+"slug": "genie-fantasy",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Genie_Lamps_007.JPG",
+"author": "Vicki Nunn",
+"license": "Public domain",
+"title": "File:Genie Lamps 007.JPG"
+},
+"troll|fantasy": {
+"slug": "troll-fantasy",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Two-headed_Troll_Doll_-_DPLA_-_967185c683bd28b6cd6a618802cadcef_(page_1).jpg",
+"author": "Uneeda Doll Co., Inc",
+"license": "Public domain",
+"title": "File:Two-headed Troll Doll - DPLA - 967185c683bd28b6cd6a618802cadcef (page 1).jpg"
+},
+"zombie|fantasy": {
+"slug": "zombie-fantasy",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/29892483@N03/3551916422",
+"author": "mediamolecule",
+"license": "BY-NC-ND 2.0",
+"title": "Monsters DLC - Zombie Costume"
+},
+"magic wand|fantasy": {
+"slug": "magic-wand-fantasy",
+"src": "Openverse",
+"page": "https://www.flickr.com/photos/78814955@N00/51550326881",
+"author": "Jo Zimny Photos",
+"license": "BY-NC-ND 2.0",
+"title": "Make A Wish-HMM"
+},
+"alien|fantasy": {
+"slug": "alien-fantasy",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:22868-Shanghai_(32928247281).jpg",
+"author": "xiquinhosilva",
+"license": "CC BY 2.0",
+"title": "File:22868-Shanghai (32928247281).jpg"
+},
+"UFO|fantasy": {
+"slug": "ufo-fantasy",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Masudaya_%E2%80%93_Battery_Operated_%E2%80%93_Tin_UFO_%E2%80%93_Galaxy_Flying_Saucer_X-7_(%E9%8A%80%E6%B2%B3%E5%86%86%E7%9B%A4_X-7)_%E2%80%93_Top.jpg",
+"author": "D J Shin",
+"license": "CC BY-SA 3.0",
+"title": "File:Masudaya – Battery Operated – Tin UFO – Galaxy Flying Saucer X-7 (銀河円盤 X-7) – Top.jpg"
+},
+"medicine|health": {
+"slug": "medicine-health",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Pills_and_medicines_02.jpg",
+"author": "BuhaM",
+"license": "CC BY-SA 4.0",
+"title": "File:Pills and medicines 02.jpg"
+},
+"thermometer|health": {
+"slug": "thermometer-health",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Infrared_forehead_thermometer,_made_in_China_2.jpg",
+"author": "Syced",
+"license": "CC0",
+"title": "File:Infrared forehead thermometer, made in China 2.jpg"
+},
+"stethoscope|health": {
+"slug": "stethoscope-health",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Stethoscope_1.jpg",
+"author": "ernstl",
+"license": "CC BY-SA 2.0",
+"title": "File:Stethoscope 1.jpg"
+},
+"cough|health": {
+"slug": "cough-health",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:Pertussis.jpg",
+"author": "UnknownUnknown  / CDC",
+"license": "Public domain",
+"title": "File:Pertussis.jpg"
+},
+"sneeze|health": {
+"slug": "sneeze-health",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:BrunetteSneeze.jpg",
+"author": "Vera Kratochvil",
+"license": "Public domain",
+"title": "File:BrunetteSneeze.jpg"
+},
+"wheelchair|health": {
+"slug": "wheelchair-health",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:UNAwheel_Mini_Basic_wheelchair_power_add-on_02.jpg",
+"author": "Nick Yudin",
+"license": "CC BY-SA 4.0",
+"title": "File:UNAwheel Mini Basic wheelchair power add-on 02.jpg"
+},
+"crutch|health": {
+"slug": "crutch-health",
+"src": "Wikimedia Commons",
+"page": "https://commons.wikimedia.org/wiki/File:M0354_1951-45-061_2.jpg",
+"author": "MONNIN Jacques",
+"license": "CC BY-SA 3.0",
+"title": "File:M0354 1951-45-061 2.jpg"
+}
+}
