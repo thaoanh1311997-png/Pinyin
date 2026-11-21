@@ -38,7 +38,8 @@ function topicList() {
   return L;
 }
 const topic = k => topicList().find(t => t.k === k);
-function wsrc(w) { if (w[3] && PH[w[3]]) return PH[w[3]]; if (w[2]) return IMG(w[2]); return IMG('ui/mascot'); }
+const CRED = {}; const pslug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+function wsrc(w) { if (w[3] && PH[w[3]]) return PH[w[3]]; if (w[0] && CRED[w[0]]) return 'img/p/' + pslug(w[0]) + '.jpg'; if (w[2]) return IMG(w[2]); return IMG('ui/xiumai'); }
 const PAL = [['#FCE4EC', '#FFCC00', '#F8C8D8'], ['#E6F5FF', '#4FB3FF', '#CDE9FF'], ['#FFF6D9', '#FF7AA2', '#FFE7A8'], ['#E9FBE2', '#62C94A', '#CBF0BD'], ['#F1EAFF', '#A77BFF', '#DED0FF'], ['#FFF0E3', '#FF9A3C', '#FFDDBF']];
 
 /* ---------- speech ---------- */
@@ -68,7 +69,7 @@ function say(text, opt = {}) {
 function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), 2200); }
 function cheer(msg = 'Yay! Good job!', star = false) {
   const el = document.createElement('div'); el.className = 'cheer';
-  el.innerHTML = `<div class="box"><img src="${IMG('ui/mascot')}" alt=""><b>${msg}</b>${star ? '<div style="font-size:26px;font-weight:800">⭐ +1</div>' : ''}</div>`;
+  el.innerHTML = `<div class="box"><img src="${IMG('ui/xiumai')}" alt=""><b>${msg}</b>${star ? '<div style="font-size:26px;font-weight:800">⭐ +1</div>' : ''}</div>`;
   document.body.appendChild(el);
   for (let i = 0; i < 22; i++) { const c = document.createElement('div'); c.className = 'confetti'; c.textContent = pick(['⭐', '🎉', '💛', '🌟', '🎈', '✨']); c.style.left = Math.random() * 100 + 'vw'; c.style.animationDelay = Math.random() * .6 + 's'; document.body.appendChild(c); setTimeout(() => c.remove(), 2400); }
   say(msg.replace(/[^\w !?'.,]/g, ''));
@@ -85,6 +86,7 @@ function setTabs(kind, on) {
     : [['#/bame', '🏠', 'Trang chủ'], ['#/bame/tu-lop', '✏️', 'Từ trên lớp'], ['#/bame/cau-noi', '💬', 'Câu nói'], ['#/be', '🧒', 'Khu của Bé']];
   tabs.innerHTML = T.map(([h, i, l]) => `<a href="${h}" class="${h === on ? 'on' : ''}"><span class="i">${i}</span>${l}</a>`).join('');
 }
+const brand = (big) => `<div class="brand ${big ? 'big' : ''}">${big ? '' : `<img src="${IMG('ui/xiumai')}" alt="">`}<div><span class="b1">Xíu Mại</span><span class="b2">English</span></div></div>`;
 const bar = (title, back = '#/be', right = '') => `<div class="bar"><a class="back" href="${back}" aria-label="Quay lại">‹</a><h1>${title}</h1>${right}</div>`;
 const starPill = () => `<div class="pill"><img src="${IMG('w/star')}" alt="">  <span id="starn">${stars()}</span></div>`;
 function view(html) { app.innerHTML = `<div class="view">${html}</div>`; window.scrollTo(0, 0); }
@@ -93,10 +95,10 @@ function view(html) { app.innerHTML = `<div class="view">${html}</div>`; window.
 const R = {};
 R.role = () => {
   setTabs(null);
-  view(`<div class="role"><img class="top" src="${IMG('ui/role_top')}" alt="Xíu Mại English">
+  view(`<div class="role"><img class="rmasc" src="${IMG('ui/xiumai')}" alt="Xíu Mại">${brand(true)}
   <h2>Bạn muốn vào khu vực nào?</h2>
-  <a class="rbtn" href="#/be"><img src="${IMG('ui/role_kid')}" alt="Dành cho Bé"></a>
-  <a class="rbtn" href="#/bame"><img src="${IMG('ui/role_parent')}" alt="Dành cho Ba Mẹ"></a></div>`);
+  <a class="rbtn rk" href="#/be"><img src="${IMG('w/teddy-bear')}" alt=""><span>Dành cho<b>Bé</b></span><i>›</i></a>
+  <a class="rbtn rp" href="#/bame"><img src="${IMG('w/laptop')}" alt=""><span>Dành cho<b>Ba Mẹ</b></span><i>›</i></a></div>`);
 };
 function wotd() { const d = new Date(); const n = (d.getFullYear() * 400 + d.getMonth() * 31 + d.getDate()) % ALL.length; return ALL[(n * 37) % ALL.length]; }
 R.be = () => {
@@ -104,21 +106,21 @@ R.be = () => {
   const w = wotd();
   const feat = ['animals', 'fruits', 'colors', 'family', 'numbers', 'vehicles', 'toys', 'sea', 'body', 'food'];
   const s = stars() % 3;
-  view(`<div class="bar"><div class="avatar"><img src="${IMG('ui/mascot')}" alt=""></div><div class="logo"><img src="${IMG('ui/logo')}" alt="Xíu Mại English"></div>${starPill()}</div>
+  view(`<div class="bar"><div class="avatar"><img src="${IMG('ui/xiumai')}" alt=""></div><div class="logo">${brand()}</div>${starPill()}</div>
   <div class="khome">
-   <div class="hero"><div class="bubble">Hi, Bánh Mì! 👋</div><img class="masc" id="masc" src="${IMG('ui/mascot')}" alt="Xíu Mại"></div>
+   <div class="hero"><div class="bubble">Hi, Bánh Mì! 👋</div><img class="masc" id="masc" src="${IMG('ui/xiumai')}" alt="Xíu Mại"></div>
    <div class="tiles">
-    <a class="tile" href="#/chu-de/flash"><img src="${IMG('ui/tile_flash')}" alt="Flashcard"></a>
-    <a class="tile" href="#/video"><img src="${IMG('ui/tile_video')}" alt="Video"></a>
-    <a class="tile" href="#/game"><img src="${IMG('ui/tile_game')}" alt="Game"></a>
-    <a class="tile" href="#/chu-de/explore"><img src="${IMG('ui/tile_explore')}" alt="Khám phá"></a>
+    <a class="tile t1" href="#/chu-de/flash"><div class="ic"><span class="card2"></span><span class="card1"><img src="${IMG('w/red-apple')}" alt=""></span></div><span class="lb">Flashcard</span></a>
+    <a class="tile t2" href="#/video"><div class="ic"><img src="${IMG('w/television')}" alt=""></div><span class="lb">Video</span></a>
+    <a class="tile t3" href="#/game"><div class="ic"><img src="${IMG('w/video-game')}" alt=""></div><span class="lb">Game</span></a>
+    <a class="tile t4" href="#/chu-de/explore"><div class="ic"><img src="${IMG('w/magnifying-glass-tilted-left')}" alt=""><img class="bug" src="${IMG('w/lady-beetle')}" alt=""></div><span class="lb">Khám phá</span></a>
    </div>
    <div class="homegrid">
     <div class="panel"><div class="ph"><img src="${IMG('w/books')}" alt="">Từ vựng hôm nay</div>
      <div class="today"><button class="wcard" id="wotd"><img src="${IMG(w.img)}" alt=""><b>${esc(w.en)}</b></button><div class="muted" style="font-size:17px">${esc(w.vi)}<br><span style="font-size:14px">Bấm vào thẻ để nghe 🔊</span></div></div></div>
     <div class="panel"><div class="ph"><img src="${IMG('w/star')}" alt="">Chủ đề nổi bật</div>
-     <div class="chips">${feat.map(k => { const t = topic(k); return t.cover ? `<a class="chip" href="#/flash/${k}"><img src="${IMG(t.cover)}" alt="${t.vi}"></a>` : `<a class="chip tchip" href="#/flash/${k}" style="background:${t.c}"><img src="${IMG(t.w[0][2])}" alt="">${t.vi}<br><span class="muted" style="font-size:13px">(${t.en})</span></a>`; }).join('')}</div></div>
-    <a class="panel reward" href="#/thanh-tich" style="text-decoration:none;color:inherit;display:block"><div class="ph" style="justify-content:center"><img src="${IMG('w/1st-place-medal')}" alt="" onerror="this.style.display='none'">Phần thưởng</div>
+     <div class="chips">${feat.map(k => { const t = topic(k); return `<a class="chip tchip" href="#/flash/${k}" style="background:${t.c}"><img src="${IMG(t.w[0][2])}" alt="">${t.vi}<br><span class="muted" style="font-size:13px">(${t.en})</span></a>`; }).join('')}</div></div>
+    <a class="panel reward" href="#/thanh-tich" style="text-decoration:none;color:inherit;display:block"><div class="ph" style="justify-content:center"><img src="${IMG('w/trophy')}" alt="" onerror="this.style.display='none'">Phần thưởng</div>
      <div class="stars">${[0, 1, 2].map(i => i < s ? '⭐' : '<span style="opacity:.25">⭐</span>').join('')}</div><div class="cnt">Tổng cộng: ${stars()} ⭐</div></a>
    </div></div>`);
   $('#wotd').onclick = () => { say(w.en); bump('words', w.en); };
@@ -129,7 +131,7 @@ R.topics = mode => {
   const L = topicList(); const d = LS.get('seen', {});
   view(bar(mode === 'flash' ? 'Flashcard · Chọn chủ đề' : 'Khám phá · Chủ đề') + `<div class="grid">${L.map(t => {
     const n = t.w.filter(w => d[w[0]]).length, p = Math.round(n / t.w.length * 100);
-    return `<a class="tcard" href="#/${mode === 'flash' ? 'flash' : 'kham-pha'}/${t.k}" style="background:${t.c}"><img class="ic" src="${t.w[0] ? wsrc(t.w[0]) : IMG('ui/mascot')}" alt=""><b>${t.vi}</b><small>${t.en} · ${t.w.length} từ</small><div class="prog"><i style="width:${p}%"></i></div></a>`;
+    return `<a class="tcard" href="#/${mode === 'flash' ? 'flash' : 'kham-pha'}/${t.k}" style="background:${t.c}"><img class="ic" src="${t.w[0] ? wsrc(t.w[0]) : IMG('ui/xiumai')}" alt=""><b>${t.vi}</b><small>${t.en} · ${t.w.length} từ</small><div class="prog"><i style="width:${p}%"></i></div></a>`;
   }).join('')}</div>`);
 };
 R.flash = (k, i) => {
@@ -258,7 +260,7 @@ R.g_ghep = (k) => {
   setTabs(null);
   const size = LS.get('puz', 2);
   const t = gameTopic(k, PUZ);
-  const pool = [...t.w.map(w => ({ src: wsrc(w), en: w[0] })), ...(t.k === 'animals' || t.k === 'zoo' ? [{ src: IMG('ui/cow'), en: 'cow' }, { src: IMG('ui/lion'), en: 'lion' }] : [])];
+  const pool = t.w.map(w => ({ src: wsrc(w), en: w[0] }));
   const it = pick(pool);
   const N = size * size; let order = shuffle([...Array(N).keys()]); while (order.every((v, i) => v === i)) order = shuffle(order);
   let sel = null;
@@ -331,7 +333,7 @@ R.play = async id => {
 R.favs = () => {
   setTabs('kid', '#/yeu-thich');
   const F = favs().map(id => { const [en, k] = id.split('|'); const t = topic(k); const w = t && t.w.find(x => x[0] === en); return w ? { w, k } : null; }).filter(Boolean);
-  view(bar('Yêu thích', '#/be') + (F.length ? `<div class="wgrid">${F.map((f, j) => `<button class="wbox" data-j="${j}"><img src="${wsrc(f.w)}" alt=""><b>${esc(f.w[0])}</b><small>${esc(f.w[1])}</small></button>`).join('')}</div>` : `<div class="panel" style="text-align:center"><img src="${IMG('ui/mascot')}" style="width:140px;margin:0 auto" alt=""><p style="font-size:18px">Chưa có thẻ yêu thích.<br>Trong Flashcard, bấm 🤍 để lưu thẻ bé thích nha!</p></div>`));
+  view(bar('Yêu thích', '#/be') + (F.length ? `<div class="wgrid">${F.map((f, j) => `<button class="wbox" data-j="${j}"><img src="${wsrc(f.w)}" alt=""><b>${esc(f.w[0])}</b><small>${esc(f.w[1])}</small></button>`).join('')}</div>` : `<div class="panel" style="text-align:center"><img src="${IMG('ui/xiumai')}" style="width:140px;margin:0 auto" alt=""><p style="font-size:18px">Chưa có thẻ yêu thích.<br>Trong Flashcard, bấm 🤍 để lưu thẻ bé thích nha!</p></div>`));
   app.querySelectorAll('.wbox').forEach(b => b.onclick = () => say(F[b.dataset.j].w[0]));
 };
 R.journey = () => {
@@ -339,7 +341,7 @@ R.journey = () => {
   const s = stars(), lv = Math.floor(s / 10) + 1, p = s % 10, d = day();
   const seen = Object.keys(LS.get('seen', {})).length;
   const todo = [[d.words.length >= 5, `Học 5 từ mới (${Math.min(5, d.words.length)}/5)`], [d.games >= 1, `Hoàn thành 1 game (${Math.min(1, d.games)}/1)`], [d.videos >= 2, `Xem 2 video (${Math.min(2, d.videos)}/2)`]];
-  view(bar('Hành trình học tập', '#/be') + `<div class="panel"><div class="lvl"><img src="${IMG('ui/trophy')}" alt=""><div style="flex:1"><b>Cấp độ ${lv}</b><div class="bar2"><i style="width:${p * 10}%"></i></div><div class="muted" style="text-align:right;font-weight:700">${p}/10 ⭐</div></div></div></div>
+  view(bar('Hành trình học tập', '#/be') + `<div class="panel"><div class="lvl"><img src="${IMG('w/trophy')}" alt=""><div style="flex:1"><b>Cấp độ ${lv}</b><div class="bar2"><i style="width:${p * 10}%"></i></div><div class="muted" style="text-align:right;font-weight:700">${p}/10 ⭐</div></div></div></div>
   <div class="panel sec"><div class="ph">📅 Hôm nay</div><ul class="todo">${todo.map(([ok, t]) => `<li class="${ok ? 'done' : ''}"><span class="ck">✓</span>${t}</li>`).join('')}</ul></div>
   <div class="panel sec"><div class="ph">🌟 Bé đã học</div><p style="font-size:18px;margin:0">Đã gặp <b>${seen}</b> / ${ALL.length} từ · Tổng <b>${s}</b> ⭐</p>
   <div class="stars" style="margin-top:8px;flex-wrap:wrap;font-size:30px">${'⭐'.repeat(Math.min(s, 30))}</div></div>`);
@@ -348,14 +350,21 @@ R.journey = () => {
 /* ---------- parent ---------- */
 R.bame = () => {
   setTabs('parent', '#/bame');
-  view(`<div class="parent"><div class="bar"><a class="back" href="#/" aria-label="Về trang chọn">‹</a><div class="logo"><img src="${IMG('ui/logo')}" alt="Xíu Mại English"></div><div style="width:48px"></div></div>
-  <img class="hero2" src="${IMG('ui/parent_hero')}" alt="Đồng hành cùng con học tiếng Anh cùng Xíu Mại">
-  <a class="prow" href="#/bame/hoi-thoai"><img src="${IMG('ui/p_dialog')}" alt="Hội thoại thường ngày"></a>
-  <a class="prow mk" href="#/bame/cau-noi"><img src="${IMG('w/speaking-head')}" alt=""><div><b>Câu nói hằng ngày với con</b><small>Khen, hỏi, nhắc nhở, an toàn… có đọc mẫu</small></div><span class="go">›</span></a>
-  <a class="prow" href="#/bame/cach-day"><img src="${IMG('ui/p_teach')}" alt="Cách dạy con tiếng Anh"></a>
-  <a class="prow" href="#/bame/hoat-dong"><img src="${IMG('ui/p_activity')}" alt="Hoạt động theo chủ đề"></a>
-  <a class="prow mk" href="#/bame/tu-lop"><img src="${IMG('w/pencil')}" alt=""><div><b>Từ vựng con học trên lớp</b><small>Nhập từ + chụp ảnh thật, bé học ngay trong Flashcard</small></div><span class="go">›</span></a>
-  <a class="prow" href="#/bame/nhat-ky"><img src="${IMG('ui/p_share')}" alt="Góc chia sẻ cho Ba Mẹ"></a></div>`);
+  const row = (h, ic, t, d, pics) => `<a class="prow mk" href="${h}"><img src="${IMG('w/' + ic)}" alt=""><div><b>${t}</b><small>${d}</small></div><span class="pics">${pics.map(p => `<img src="${IMG('w/' + p)}" alt="">`).join('')}</span><span class="go">›</span></a>`;
+  view(`<div class="parent"><div class="bar"><a class="back" href="#/" aria-label="Về trang chọn">‹</a><div class="logo">${brand()}</div><div style="width:48px"></div></div>
+  <div class="hero2"><div class="say">Đồng hành cùng con học tiếng Anh cùng <b>Xíu Mại!</b></div><img class="hm" src="${IMG('ui/xiumai')}" alt=""><img class="hw" src="${IMG('w/woman')}" alt=""><img class="hc" src="${IMG('w/child')}" alt=""></div>
+  ${row('#/bame/hoi-thoai', 'open-book', 'Hội thoại thường ngày', '14 tập truyện tranh, có đọc mẫu', ['speech-balloon'])}
+  ${row('#/bame/cau-noi', 'speaking-head', 'Câu nói hằng ngày với con', 'Khen, hỏi, nhắc nhở, an toàn…', ['red-heart'])}
+  ${row('#/bame/cach-day', 'light-bulb', 'Cách dạy con tiếng Anh', '12 mẹo dễ làm mỗi ngày', ['books'])}
+  ${row('#/bame/hoat-dong', 'spiral-notepad', 'Hoạt động theo chủ đề', 'Chơi mà học với đồ vật thật', ['red-apple', 'automobile'])}
+  ${row('#/bame/tu-lop', 'pencil', 'Từ vựng con học trên lớp', 'Nhập từ, chụp ảnh thật cho bé học', ['camera'])}
+  ${row('#/bame/nhat-ky', 'red-heart', 'Góc chia sẻ cho Ba Mẹ', 'Nhật ký tiến bộ của bé', ['hot-beverage', 'potted-plant'])}
+  <a class="credit-link" href="#/bame/nguon-anh">📷 Nguồn ảnh flashcard (Wikimedia Commons)</a></div>`);
+};
+R.credits = () => {
+  setTabs('parent', '');
+  const E = Object.entries(CRED).sort((a, b) => a[0].localeCompare(b[0]));
+  view(bar('Nguồn ảnh', '#/bame') + `<p class="muted" style="margin:0 0 10px;font-size:15.5px">Ảnh chụp thật trong flashcard lấy từ Wikimedia Commons, giấy phép tự do. Cảm ơn các tác giả!</p><div class="panel credits">${E.map(([w, c]) => `<a href="${esc(c.page)}" target="_blank" rel="noopener"><img src="img/p/${pslug(w)}.jpg" alt="" loading="lazy"><span><b>${esc(w)}</b><small>${esc((c.author || 'Không rõ tác giả').replace(/\[\[[^\]|]*\|?([^\]]*)\]\]/g, '$1').replace(/(Unknown author)+/i, 'Unknown author'))} · ${esc(c.license || '')}</small></span></a>`).join('') || 'Chưa có ảnh.'}</div>`);
 };
 R.eps = () => {
   setTabs('parent', '');
@@ -408,7 +417,7 @@ R.lop = () => {
    <input id="vi" placeholder="Nghĩa tiếng Việt, ví dụ: con chó" autocomplete="off">
    <div class="photo"><label class="pv" id="pv">📷<input id="file" type="file" accept="image/*" hidden></label><div class="muted" style="font-size:15px">Chụp ảnh đồ vật thật (không bắt buộc). Nếu không chụp, web tự tìm hình có sẵn.</div></div>
    <div style="display:flex;gap:10px"><button class="btn alt" id="hear" style="flex:1">🔊 Nghe thử</button><button class="btn" id="add" style="flex:2">＋ Thêm từ</button></div></div></div>
-   <div class="panel sec mylist"><div class="ph">📚 Đã nhập (${L.length} từ)</div>${L.length ? L.map((w, i) => `<div class="it"><img src="${w.ph && PH[w.ph] ? PH[w.ph] : w.img ? IMG(w.img) : IMG('ui/mascot')}" alt=""><div><b>${esc(w.en)}</b><br><span class="muted">${esc(w.vi)}</span></div><button class="x" data-i="${i}" aria-label="Xóa">🗑️</button></div>`).join('') + `<a class="btn" style="display:block;margin-top:12px;text-decoration:none" href="#/flash/lop">Cho bé học bằng Flashcard ▶</a>` : '<p class="muted" style="margin:0">Chưa có từ nào. Nhập từ bé học hôm nay ở lớp nha.</p>'}</div>`);
+   <div class="panel sec mylist"><div class="ph">📚 Đã nhập (${L.length} từ)</div>${L.length ? L.map((w, i) => `<div class="it"><img src="${w.ph && PH[w.ph] ? PH[w.ph] : w.img ? IMG(w.img) : IMG('ui/xiumai')}" alt=""><div><b>${esc(w.en)}</b><br><span class="muted">${esc(w.vi)}</span></div><button class="x" data-i="${i}" aria-label="Xóa">🗑️</button></div>`).join('') + `<a class="btn" style="display:block;margin-top:12px;text-decoration:none" href="#/flash/lop">Cho bé học bằng Flashcard ▶</a>` : '<p class="muted" style="margin:0">Chưa có từ nào. Nhập từ bé học hôm nay ở lớp nha.</p>'}</div>`);
   $('#file').onchange = async e => { const f = e.target.files[0]; if (!f) return; blob = await resizePhoto(f); if (blob) $('#pv').innerHTML = `<img src="${URL.createObjectURL(blob)}" alt="">`; };
   $('#hear').onclick = () => { const en = $('#en').value.trim(); if (en) say(en); };
   $('#add').onclick = async () => {
@@ -448,10 +457,11 @@ function route() {
   if (a === 'bame') {
     if (!b) return R.bame();
     if (b === 'hoi-thoai') return c ? R.ep(c) : R.eps();
-    return ({ 'cau-noi': R.phrases, 'cach-day': R.tips, 'hoat-dong': R.acts, 'tu-lop': R.lop, 'nhat-ky': R.journal }[b] || R.bame)();
+    return ({ 'cau-noi': R.phrases, 'cach-day': R.tips, 'hoat-dong': R.acts, 'tu-lop': R.lop, 'nhat-ky': R.journal, 'nguon-anh': R.credits }[b] || R.bame)();
   }
   R.role();
 }
 window.addEventListener('hashchange', route);
-idb().then(phLoadAll).then(route, route);
+const credP = fetch('data/photo-credits.json', { cache: 'no-cache' }).then(r => r.json()).then(d => Object.assign(CRED, d)).catch(() => {});
+Promise.all([idb().then(phLoadAll).catch(() => {}), credP]).then(route, route);
 })();

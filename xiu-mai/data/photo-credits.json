@@ -34,13 +34,6 @@
   "author": "Kim Hansen",
   "license": "CC BY-SA 3.0"
  },
- "dress": {
-  "src": "Dress",
-  "file": "Afternoon_ensemble_MET_63.212a-b_CP4.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Afternoon_ensemble_MET_63.212a-b_CP4.jpg",
-  "author": "",
-  "license": "CC0"
- },
  "pig": {
   "src": "Domestic pig",
   "file": "Pig_farm_Vampula_1.jpg",
@@ -54,13 +47,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:Male_and_female_chicken_sitting_together.jpg",
   "author": "Andrei Niemimäki from Turku, Finland",
   "license": "CC BY-SA 2.0"
- },
- "chick": {
-  "src": "Chick (young bird)",
-  "file": "Kleiber_Flug.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Kleiber_Flug.jpg",
-  "author": "C. Robiller / naturlichter.de (Hyla meridionalis)",
-  "license": "CC BY-SA 3.0"
  },
  "duck": {
   "src": "Mallard",
@@ -286,13 +272,6 @@
   "author": "Charles J. Sharp",
   "license": "CC BY-SA 4.0"
  },
- "shrimp": {
-  "src": "Shrimp",
-  "file": "Palaemon_serratus_Croazia.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Palaemon_serratus_Croazia.jpg",
-  "author": "Etrusko25",
-  "license": "Public domain"
- },
  "squid": {
   "src": "Squid",
   "file": "Sepioteuthis_sepioidea_(Caribbean_Reef_Squid).jpg",
@@ -426,13 +405,6 @@
   "author": "Ivar Leidus",
   "license": "CC BY-SA 4.0"
  },
- "peach": {
-  "src": "Peach",
-  "file": "Illustration_Prunus_persica_clean_no_descr.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Illustration_Prunus_persica_clean_no_descr.jpg",
-  "author": "File:Illustration Prunus persica0.jpg: PLEASE COMPLETE AUTHOR INFORMATION derivative work: Kenraiz",
-  "license": "Public domain"
- },
  "pear": {
   "src": "Pear",
   "file": "Pears.jpg",
@@ -454,13 +426,6 @@
   "author": "Elena Chochkova",
   "license": "CC BY-SA 4.0"
  },
- "coconut": {
-  "src": "Coconut",
-  "file": "Cocos_nucifera_-_Köhler–s_Medizinal-Pflanzen-187.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Cocos_nucifera_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-187.jpg",
-  "author": "Franz Eugen Köhler, Köhler's Medizinal-Pflanzen",
-  "license": "Public domain"
- },
  "blueberries": {
   "src": "Blueberry",
   "file": "Blueberries.jpg",
@@ -481,13 +446,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:Tomato_je.jpg",
   "author": "Softeis",
   "license": "CC BY-SA 3.0"
- },
- "corn": {
-  "src": "Maize",
-  "file": "Zea_mays_-_Köhler–s_Medizinal-Pflanzen-283.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Zea_mays_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-283.jpg",
-  "author": "Franz Eugen Köhler, Köhler's Medizinal-Pflanzen",
-  "license": "Public domain"
  },
  "potato": {
   "src": "Potato",
@@ -517,13 +475,6 @@
   "author": "Colin",
   "license": "CC BY-SA 3.0"
  },
- "garlic": {
-  "src": "Garlic",
-  "file": "Allium_sativum_Woodwill_1793.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Allium_sativum_Woodwill_1793.jpg",
-  "author": "",
-  "license": "Public domain"
- },
  "mushroom": {
   "src": "Agaricus bisporus",
   "file": "ChampignonMushroom.jpg",
@@ -544,13 +495,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:Green-Yellow-Red-Pepper-2009.jpg",
   "author": "Kham Tran - www.khamtran.com",
   "license": "CC BY-SA 3.0"
- },
- "lettuce": {
-  "src": "Lettuce",
-  "file": "Iceberg_lettuce_in_SB.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Iceberg_lettuce_in_SB.jpg",
-  "author": "en:User:Geographer",
-  "license": "CC BY 1.0"
  },
  "milk": {
   "src": "Milk",
@@ -587,13 +531,6 @@
   "author": "Horacio Cambeiro",
   "license": "CC BY-SA 4.0"
  },
- "noodles": {
-  "src": "Noodle",
-  "file": "Dalian_Liaoning_China_Noodlemaker-01.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Dalian_Liaoning_China_Noodlemaker-01.jpg",
-  "author": "CEphoto, Uwe Aranas",
-  "license": "CC BY-SA 4.0"
- },
  "cake": {
   "src": "Birthday cake",
   "file": "Delicious_Birthday_Cake_(14346969741).jpg",
@@ -607,13 +544,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:Choco_chip_cookie.png",
   "author": "brainloc on sxc.hu (Bob Smith)",
   "license": "CC BY 2.5"
- },
- "cheese": {
-  "src": "Cheese",
-  "file": "Cheese_platter.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Cheese_platter.jpg",
-  "author": "",
-  "license": "CC BY-SA 3.0"
  },
  "ice cream": {
   "src": "Ice cream",
@@ -635,13 +565,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:Pizza-3007395.jpg",
   "author": "igorovsyannykov",
   "license": "CC0"
- },
- "candy": {
-  "src": "Candy",
-  "file": "Candy_in_Damascus.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Candy_in_Damascus.jpg",
-  "author": "Elisa Azzali",
-  "license": "CC BY 2.0"
  },
  "chocolate": {
   "src": "Chocolate",
@@ -684,13 +607,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:Basecap_New_York_Yankees.jpg",
   "author": "Ulrich Waack",
   "license": "CC BY-SA 2.0 de"
- },
- "coat": {
-  "src": "Coat",
-  "file": "FalatJulian.PortretAntoniegoWodzickiego.1900.ws.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:FalatJulian.PortretAntoniegoWodzickiego.1900.ws.jpg",
-  "author": "Julian Fałat",
-  "license": "Public domain"
  },
  "scarf": {
   "src": "Scarf",
@@ -755,13 +671,6 @@
   "author": "Scouten",
   "license": "CC BY-SA 3.0"
  },
- "drum": {
-  "src": "Drum",
-  "file": "DrumMozartRegiment.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:DrumMozartRegiment.jpg",
-  "author": "NPS",
-  "license": "Public domain"
- },
  "robot": {
   "src": "Toy robot",
   "file": "Sony_Qrio_Robot.jpg",
@@ -776,13 +685,6 @@
   "author": "Brocken Inaglory. The image was edited by user:Alvesgaspar",
   "license": "CC BY-SA 3.0"
  },
- "slide": {
-  "src": "Playground slide",
-  "file": "A_girl_sliding_in_Valparaiso,_Chile.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:A_girl_sliding_in_Valparaiso,_Chile.jpg",
-  "author": "Havardtl",
-  "license": "CC BY-SA 4.0"
- },
  "car": {
   "src": "Car",
   "file": "White_Toyota_Corolla_sedan_in_San_Jose_California_dllu.jpg",
@@ -795,13 +697,6 @@
   "file": "LTZ1328-19-20241030-160332.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:LTZ1328-19-20241030-160332.jpg",
   "author": "SIA321",
-  "license": "CC BY-SA 4.0"
- },
- "taxi": {
-  "src": "Taxicab",
-  "file": "TAXI.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:TAXI.jpg",
-  "author": "Petar Milošević",
   "license": "CC BY-SA 4.0"
  },
  "truck": {
@@ -867,13 +762,6 @@
   "author": "Fly45yt",
   "license": "CC BY 4.0"
  },
- "boat": {
-  "src": "Sailboat",
-  "file": "Sloop_Example.svg",
-  "page": "https://commons.wikimedia.org/wiki/File:Sloop_Example.svg",
-  "author": "Sloop_Example.jpg: Original uploader was Kevin Murray at en.wikipedia derivative work: Malyszkz (talk)",
-  "license": "CC BY-SA 3.0"
- },
  "ship": {
   "src": "Cruise ship",
   "file": "Icon_of_the_Seas_Puerto_Rico_2025_(cropped).jpg",
@@ -895,33 +783,12 @@
   "author": "Mulad",
   "license": "CC BY 2.0"
  },
- "bed": {
-  "src": "Bed",
-  "file": "2008-04-12_Freilichtmuseum_Detmold_(11).jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:2008-04-12_Freilichtmuseum_Detmold_(11).jpg",
-  "author": "R-E-AL (talk | contribs | Gallery) (German Wikipedia)",
-  "license": "CC BY-SA 3.0"
- },
  "chair": {
   "src": "Chair",
   "file": "Set_of_fourteen_side_chairs_MET_DP110780.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:Set_of_fourteen_side_chairs_MET_DP110780.jpg",
   "author": "Thomas Chippendale",
   "license": "CC0"
- },
- "door": {
-  "src": "Door",
-  "file": "L-door.png",
-  "page": "https://commons.wikimedia.org/wiki/File:L-door.png",
-  "author": "",
-  "license": "Public domain"
- },
- "window": {
-  "src": "Window",
-  "file": "Atua_Kosua_shrine4.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Atua_Kosua_shrine4.jpg",
-  "author": "Shahadusadik",
-  "license": "CC BY-SA 4.0"
  },
  "sofa": {
   "src": "Couch",
@@ -930,25 +797,11 @@
   "author": "Ildar Sagdejev (Specious)",
   "license": "CC BY-SA 4.0"
  },
- "TV": {
-  "src": "Television set",
-  "file": "Museum_für_Kommunikation_-_Depot_Heusenstamm_-_Technik_12_-_Flickr_-_KlausNahr.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Museum_f%C3%BCr_Kommunikation_-_Depot_Heusenstamm_-_Technik_12_-_Flickr_-_KlausNahr.jpg",
-  "author": "Klaus Nahr from Germany",
-  "license": "CC BY-SA 2.0"
- },
  "clock": {
   "src": "Alarm clock",
   "file": "2010-07-20_Black_windup_alarm_clock_face.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:2010-07-20_Black_windup_alarm_clock_face.jpg",
   "author": "Sun Ladder",
-  "license": "CC BY-SA 3.0"
- },
- "mirror": {
-  "src": "Mirror",
-  "file": "Mirror.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Mirror.jpg",
-  "author": "Cgs",
   "license": "CC BY-SA 3.0"
  },
  "toilet": {
@@ -964,13 +817,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:Clawfoot_bathtub.jpg",
   "author": "Yannick Trottier (ytrottier)",
   "license": "CC BY-SA 3.0"
- },
- "shower": {
-  "src": "Shower",
-  "file": "IMG_Duschender.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:IMG_Duschender.jpg",
-  "author": "Mitumial",
-  "license": "CC0"
  },
  "toothbrush": {
   "src": "Toothbrush",
@@ -1014,13 +860,6 @@
   "author": "Museum Rotterdam",
   "license": "CC BY-SA 3.0"
  },
- "sun": {
-  "src": "Sun",
-  "file": "The_Sun_in_white_light.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:The_Sun_in_white_light.jpg",
-  "author": "Matúš Motlo",
-  "license": "CC BY-SA 4.0"
- },
  "moon": {
   "src": "Moon",
   "file": "FullMoon2010.jpg",
@@ -1028,33 +867,12 @@
   "author": "Gregory H. Revera",
   "license": "CC BY-SA 3.0"
  },
- "cloud": {
-  "src": "Cloud",
-  "file": "ISS-40_Thunderheads_near_Borneo.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:ISS-40_Thunderheads_near_Borneo.jpg",
-  "author": "NASA/Expedition 40 crew member",
-  "license": "Public domain"
- },
- "rain": {
-  "src": "Rain",
-  "file": "Hard_rain_on_a_roof.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Hard_rain_on_a_roof.jpg",
-  "author": "W.carter",
-  "license": "CC0"
- },
  "rainbow": {
   "src": "Rainbow",
   "file": "Double-alaskan-rainbow.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:Double-alaskan-rainbow.jpg",
   "author": "Eric Rolph at English Wikipedia",
   "license": "CC BY-SA 2.5"
- },
- "snow": {
-  "src": "Snow",
-  "file": "CargoNet_Di_12_Euro_4000_Lønsdal_-_Bolna.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:CargoNet_Di_12_Euro_4000_L%C3%B8nsdal_-_Bolna.jpg",
-  "author": "Kabelleger / David Gubler (http://www.bahnbilder.ch).",
-  "license": "CC BY-SA 3.0"
  },
  "tree": {
   "src": "Tree",
@@ -1084,26 +902,12 @@
   "author": "Luca Galuzzi (Lucag)",
   "license": "CC BY-SA 2.5"
  },
- "sea": {
-  "src": "Sea",
-  "file": "Mediterranean_Sea_16.61811E_38.99124N.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Mediterranean_Sea_16.61811E_38.99124N.jpg",
-  "author": "of the modification : Eric Gaba (Sting)",
-  "license": "Public domain"
- },
  "fire": {
   "src": "Fire",
   "file": "Large_bonfire.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:Large_bonfire.jpg",
   "author": "Fir0002",
   "license": "CC BY-SA 3.0"
- },
- "book": {
-  "src": "Book",
-  "file": "Gutenberg_Bible,_Lenox_Copy,_New_York_Public_Library,_2009._Pic_01.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Gutenberg_Bible,_Lenox_Copy,_New_York_Public_Library,_2009._Pic_01.jpg",
-  "author": "NYC Wanderer (Kevin Eng)",
-  "license": "CC BY-SA 2.0"
  },
  "backpack": {
   "src": "Backpack",
@@ -1132,13 +936,6 @@
   "page": "https://commons.wikimedia.org/wiki/File:Standard_household_scissors.jpg",
   "author": "Doggerelblogger",
   "license": "CC BY-SA 4.0"
- },
- "ruler": {
-  "src": "Ruler",
-  "file": "Diverse·Maßstäbe,15.365.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Diverse%C2%B7Ma%C3%9Fst%C3%A4be,15.365.jpg",
-  "author": "Geof",
-  "license": "CC BY-SA 3.0"
  },
  "paintbrush": {
   "src": "Paintbrush",
