@@ -410,7 +410,7 @@ function vocabHTML(L,sub){
   }
   if(!VS.order||VS.order.length!==V.length) VS.order=shuf(V.map(function(_,i){return i}));
   if(VM==="card"){ var w=V[VS.order[VS.i%V.length]];
-    h+='<div class="fc" data-flip><div class="z zh">'+esc(w.z)+'</div>'+(VS.show?'<div class="p">'+esc(w.p)+'</div><div class="m">'+esc(w.m)+'</div><div class="k">'+esc(vkind(w.k))+' · Bài '+w.n+'</div>':'<div class="tip">Chạm vào thẻ để xem pinyin và nghĩa</div>')+'</div>';
+    h+='<div class="fc" data-flip><div class="z zh">'+esc(w.z)+'</div>'+(VS.show?'<div class="p">'+esc(w.p)+'</div><div class="m">'+esc(w.m)+'</div><div class="k">'+esc((w.k?vkind(w.k)+' · ':'')+'Bài '+w.n)+'</div>':'<div class="tip">Chạm vào thẻ để xem pinyin và nghĩa</div>')+'</div>';
     h+='<div class="fcnav"><button data-fc="-1">◀</button><button class="say" style="width:46px;height:46px;font-size:20px" data-say="'+esc(w.z)+'">🔊</button><span class="c">'+(VS.i%V.length+1)+' / '+V.length+'</span><button data-fc="1">▶</button></div><div class="fcnav"><button data-fc="mix">🔀 Trộn lại</button></div>';
     return h; }
   var pool=V.filter(function(w){return w.k!=="专名"&&!/tên riêng/.test(w.k)}); if(pool.length<4) pool=V;
