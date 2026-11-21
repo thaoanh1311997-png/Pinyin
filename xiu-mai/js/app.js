@@ -312,21 +312,111 @@ const CATS = [['all', '⭐ Tất cả'], ['song', '🎵 Bài hát'], ['learn', '
 R.video = async (cat) => {
   setTabs('kid', '');
   cat = cat || 'all';
-  view(bar('Video', '#/be') + `<div class="seg">${CATS.map(c => `<button data-c="${c[0]}" class="${c[0] === cat ? 'on' : ''}">${c[1]}</button>`).join('')}</div><div id="vl"><p class="muted">Đang tải video…</p></div>`);
+  view(bar('Video', '#/be') + `<div class="seg">${CATS.map(c => `<button data-c="${c[0]}" class="${c[0] === cat ? 'on' : ''}">${c[1]}</button>`).join('')}</div><div class="own"><div class="ownh">🔗 Xem video của ba mẹ, có phụ đề chạy</div><div class="kin"><input id="ylink" inputmode="url" placeholder="Dán link YouTube vào đây" autocomplete="off"><button class="btn" id="yopen">Mở</button></div><label class="btn2 fbtn">📁 Chọn file video / nhạc trong máy<input type="file" id="vfile" accept="video/*,audio/*" hidden></label></div><div id="vl"><p class="muted">Đang tải video…</p></div>`);
+  const openLink = () => { const id = ytId($('#ylink').value); if (id) go('#/video/v/' + id); else if ($('#ylink').value.trim()) toast('Link này chưa đúng link YouTube nha'); };
+  $('#yopen').onclick = openLink; $('#ylink').addEventListener('paste', () => setTimeout(openLink, 50)); $('#ylink').onkeydown = e => { if (e.key === 'Enter') openLink(); };
+  $('#vfile').onchange = e => { const f = e.target.files[0]; if (!f) return; FILE = f; go('#/video/file'); };
   app.querySelectorAll('.seg button').forEach(b => b.onclick = () => go('#/video' + (b.dataset.c === 'all' ? '' : '/c/' + b.dataset.c)));
   const V = await loadVideos(); const el = $('#vl'); if (!el) return;
   const chs = V.channels.filter(c => cat === 'all' || c.cat === cat);
   if (!chs.length) { el.innerHTML = '<div class="note">Chưa tải được danh sách video. Kiểm tra mạng rồi thử lại nha.</div>'; return; }
   el.innerHTML = `<div class="note">👀 Ba mẹ ngồi xem cùng bé và nói chuyện về video nhé. Bé 2–4 tuổi chỉ nên xem màn hình tổng cộng tối đa 1 giờ mỗi ngày.</div>` + chs.map(c => `<div class="chrow"><h3>${esc(c.name)} <small>${esc(c.vi)} · ${esc(c.age)} tuổi</small></h3><div class="vids">${c.videos.map(v => `<a class="vc" href="#/video/v/${v.id}"><div class="th"><img loading="lazy" src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="">${v.d ? `<span>${v.d}</span>` : ''}</div><p>${esc(dec(v.t))}</p></a>`).join('')}</div></div>`).join('');
 };
+/* ---------- player with running subtitles ---------- */
+let FILE = null;
+const ytId = u => { u = String(u || '').trim(); const m = u.match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/|\/live\/)([\w-]{11})/) || u.match(/^([\w-]{11})$/); return m ? m[1] : null; };
+function ytApi() {
+  if (window.YT && YT.Player) return Promise.resolve();
+  return new Promise((res, rej) => {
+    const prev = window.onYouTubeIframeAPIReady; window.onYouTubeIframeAPIReady = () => { prev && prev(); res(); };
+    if (!document.querySelector('script[src*="iframe_api"]')) { const sc = document.createElement('script'); sc.src = 'https://www.youtube.com/iframe_api'; sc.onerror = rej; document.head.appendChild(sc); }
+    setTimeout(() => rej(new Error('yt api timeout')), 9000);
+  });
+}
+const subsHTML = `<div class="karaoke" id="kar"><div class="kst" id="kst"><img src="${IMG('ui/xiumai')}" alt=""><span>Xíu Mại đang lấy phụ đề…</span></div></div><div class="slist" id="slist"></div>`;
+function keyBox(kind) {
+  const g = kind === 'groq';
+  return `<div class="keybox"><b>${g ? 'Cần mã Groq để làm phụ đề cho file' : 'Cần mã Supadata để lấy phụ đề YouTube'}</b><small>Làm 1 lần trên máy này. ${g ? 'Vào <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a> (đăng nhập Google), bấm Create API Key, chép mã bắt đầu bằng <b>gsk_</b>.' : 'Vào <a href="https://dash.supadata.ai/" target="_blank" rel="noopener">supadata.ai</a> (đăng nhập Google, miễn phí), chép API key bắt đầu bằng <b>sd_</b>.'}</small><div class="kin"><input id="kkey" placeholder="Dán mã vào đây" autocomplete="off"><button class="btn" id="ksave">Lưu</button></div></div>`;
+}
+function subsStatus(html) { const k = $('#kst'); if (k) k.innerHTML = html; }
+function mountSubs(lines, P) {
+  const kar = $('#kar'), list = $('#slist'); if (!kar || !list) return;
+  kar.innerHTML = `<div class="kl" id="kl"></div><div class="kv" id="kv"></div>`;
+  list.innerHTML = lines.map((l, i) => `<button class="sl" data-i="${i}"><span class="tm">${Math.floor(l.s / 60)}:${String(Math.floor(l.s % 60)).padStart(2, '0')}</span><span><b>${esc(l.t)}</b><small data-vi="${i}">${esc(l.vi || '')}</small></span></button>`).join('');
+  list.querySelectorAll('.sl').forEach(b => b.onclick = () => { const l = lines[b.dataset.i]; P.seek(l.s); P.play(); });
+  let cur = -2, lastLit = -1;
+  const show = i => {
+    const kl = $('#kl'), kv = $('#kv'); if (!kl) return;
+    if (i < 0) { kl.innerHTML = '<span class="idle">🎵</span>'; kv.textContent = ''; return; }
+    kl.innerHTML = lines[i].t.split(' ').map((w, k) => `<span class="kw" data-k="${k}">${esc(w)}</span>`).join(' ');
+    kl.querySelectorAll('.kw').forEach(x => x.onclick = e => { e.stopPropagation(); say(x.textContent.replace(/[^\w'-]/g, '')); });
+    kv.textContent = lines[i].vi || '';
+    list.querySelectorAll('.sl.on').forEach(x => x.classList.remove('on'));
+    const row = list.querySelector(`.sl[data-i="${i}"]`); if (row) { row.classList.add('on'); list.scrollTo({ top: row.offsetTop - list.offsetTop - list.clientHeight / 3, behavior: 'smooth' }); }
+  };
+  const tick = () => {
+    if (!document.body.contains(list)) return clearInterval(timer);
+    let t = 0; try { t = P.time() || 0; } catch (e) {}
+    let i = -1; for (let k = 0; k < lines.length; k++) { if (lines[k].s <= t + 0.05) i = k; else break; }
+    if (i >= 0 && t > lines[i].e + 1.5) i = -1;
+    if (i !== cur) { cur = i; lastLit = -1; show(i); }
+    if (i >= 0) {
+      const l = lines[i], ws = $('#kl') ? $('#kl').querySelectorAll('.kw') : [];
+      const n = Math.max(0, Math.min(ws.length, Math.ceil((t - l.s) / Math.max(0.3, l.e - l.s) * ws.length + 0.2)));
+      if (n !== lastLit) { ws.forEach((w, k) => w.classList.toggle('lit', k < n)); lastLit = n; }
+    }
+  };
+  const timer = setInterval(tick, 120); tick();
+  XMSubs.translate(lines, l => { const i = lines.indexOf(l); const el = list.querySelector(`[data-vi="${i}"]`); if (el) el.textContent = l.vi; if (i === cur && $('#kv')) $('#kv').textContent = l.vi; });
+}
+function subsError(e, retry) {
+  const c = e && e.code;
+  if (c === 'nokey' || c === 'badkey' || c === 'nogroq') {
+    subsStatus((c === 'badkey' ? '<p class="kerr">Mã cũ bị sai hoặc hết lượt, dán mã mới nha.</p>' : '') + keyBox(c === 'nogroq' ? 'groq' : 'sd'));
+    $('#ksave').onclick = () => { if (XMSubs.takeKeys($('#kkey').value)) { toast('Đã lưu mã ✓'); retry(); } else toast('Mã chưa đúng, kiểm tra lại nha'); };
+    return;
+  }
+  const msg = c === 'toobig' ? 'File này lớn quá mà không cắt nhỏ được. Đổi sang MP3 hoặc MP4 rồi chọn lại nha.'
+    : c === '429' ? 'Máy chủ phụ đề đang hết lượt miễn phí, khoảng 1 tiếng nữa thử lại nha.'
+    : 'Video này chưa có phụ đề tiếng Anh. Bé vẫn xem bình thường nha.';
+  subsStatus(`<img src="${IMG('ui/xiumai')}" alt=""><span>${msg}</span>`);
+}
 R.play = async id => {
-  setTabs('kid', '');
+  setTabs(null);
   const V = await loadVideos(); const c = V.channels.find(c => c.videos.some(v => v.id === id));
   const v = c ? c.videos.find(v => v.id === id) : { t: '' };
   bump('videos');
-  view(bar(c ? esc(c.name) : 'Video', '#/video') + `<div class="player"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1&autoplay=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen title="video"></iframe></div>
-  <h3 style="max-width:900px;margin:10px auto">${esc(dec(v.t))}</h3>
-  ${c ? `<div class="chrow" style="max-width:900px;margin:0 auto"><h3>Video khác của ${esc(c.name)}</h3><div class="vids">${c.videos.filter(x => x.id !== id).map(v => `<a class="vc" href="#/video/v/${v.id}"><div class="th"><img loading="lazy" src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="">${v.d ? `<span>${v.d}</span>` : ''}</div><p>${esc(dec(v.t))}</p></a>`).join('')}</div></div>` : ''}`);
+  view(bar(c ? esc(c.name) : 'Video của ba mẹ', '#/video') + `<div class="watch"><div class="wl"><div class="player"><div id="yt"></div></div>
+  ${v.t ? `<h3 class="vt">${esc(dec(v.t))}</h3>` : ''}${subsHTML}</div></div>
+  ${c ? `<div class="chrow" style="max-width:1100px;margin:14px auto 0"><h3>Video khác của ${esc(c.name)}</h3><div class="vids">${c.videos.filter(x => x.id !== id).map(v => `<a class="vc" href="#/video/v/${v.id}"><div class="th"><img loading="lazy" src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="">${v.d ? `<span>${v.d}</span>` : ''}</div><p>${esc(dec(v.t))}</p></a>`).join('')}</div></div>` : ''}`);
+  let yp = null;
+  const P = { time: () => yp && yp.getCurrentTime ? yp.getCurrentTime() : 0, seek: t => yp && yp.seekTo && yp.seekTo(t, true), play: () => yp && yp.playVideo && yp.playVideo() };
+  try { await ytApi(); if (!$('#yt')) return; yp = new YT.Player('yt', { host: 'https://www.youtube-nocookie.com', videoId: id, playerVars: { rel: 0, playsinline: 1, autoplay: 1, modestbranding: 1, cc_load_policy: 0 } }); }
+  catch (e) { const el = $('#yt'); if (el) el.outerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1&autoplay=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen title="video"></iframe>`; }
+  const load = () => { subsStatus(`<img src="${IMG('ui/xiumai')}" alt=""><span>Xíu Mại đang lấy phụ đề…</span>`); XMSubs.ytSubs(id, k => subsStatus(`<img src="${IMG('ui/xiumai')}" alt=""><span>Xíu Mại đang nghe video để làm phụ đề… ${k * 3} giây</span>`)).then(lines => { if ($('#kar')) mountSubs(lines, P); }, e => { if ($('#kar')) subsError(e, load); }); };
+  load();
+};
+R.vfile = () => {
+  if (!FILE) return go('#/video');
+  setTabs(null);
+  const f = FILE, url = URL.createObjectURL(f), aud = XMSubs.isAudio(f);
+  view(bar('Video của ba mẹ', '#/video') + `<div class="watch"><div class="wl"><div class="player ${aud ? 'aud' : ''}">${aud ? `<img class="apic" src="${IMG('ui/xiumai')}" alt=""><audio id="med" controls playsinline src="${url}"></audio>` : `<video id="med" controls playsinline src="${url}"></video>`}</div>
+  <h3 class="vt">${esc(f.name)}</h3>${subsHTML}</div></div>`);
+  const m = $('#med'); const P = { time: () => m.currentTime, seek: t => { m.currentTime = t; }, play: () => m.play().catch(() => {}) };
+  const ck = 'xm.fsub.' + f.name + '|' + f.size;
+  const load = () => {
+    let cached = null; try { cached = JSON.parse(localStorage.getItem(ck) || 'null'); } catch (e) {}
+    if (cached && cached.length) return mountSubs(cached, P);
+    subsStatus(`<img src="${IMG('ui/xiumai')}" alt=""><span>Xíu Mại đang nghe file để làm phụ đề…</span><div class="kbar"><i id="kpr"></i></div>`);
+    XMSubs.fileSubs(f, p => { const b = $('#kpr'); if (b) b.style.width = Math.round(p * 100) + '%'; }).then(lines => {
+      if (!$('#kar')) return;
+      if (!lines.length) return subsError({}, load);
+      mountSubs(lines, P);
+      const save = () => { try { localStorage.setItem(ck, JSON.stringify(lines)); } catch (e) {} };
+      save(); setTimeout(save, 8000);
+    }, e => { if ($('#kar')) subsError(e, load); });
+  };
+  load();
 };
 
 /* ---------- favourites & journey ---------- */
@@ -451,7 +541,7 @@ function route() {
   if (a === 'flash') return R.flash(b, c);
   if (a === 'kham-pha') return R.explore(b);
   if (a === 'game') return b && R['g_' + b] ? R['g_' + b](c) : R.games();
-  if (a === 'video') return b === 'v' ? R.play(c) : R.video(b === 'c' ? c : 'all');
+  if (a === 'video') return b === 'v' ? R.play(c) : b === 'file' ? R.vfile() : R.video(b === 'c' ? c : 'all');
   if (a === 'yeu-thich') return R.favs();
   if (a === 'thanh-tich') return R.journey();
   if (a === 'bame') {
