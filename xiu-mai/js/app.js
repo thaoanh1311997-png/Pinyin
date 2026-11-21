@@ -508,6 +508,23 @@ R.bame = () => {
   ${row('#/bame/nhat-ky', 'red-heart', 'Góc chia sẻ cho Ba Mẹ', 'Nhật ký tiến bộ của bé', ['hot-beverage', 'potted-plant'])}
   <a class="credit-link" href="#/bame/nguon-anh">📷 Nguồn ảnh flashcard (Wikimedia Commons)</a></div>`);
 };
+R.design = () => {
+  setTabs('parent', '');
+  const show = () => {
+    const P = window.DESIGN_PROMPT || '';
+    view(bar('Nhờ ChatGPT vẽ hình', '#/bame') + `<div class="panel"><div class="ph">🎨 Chỉ 1 lần dán</div>
+    <ol class="dsteps"><li>Bấm nút <b>Chép lệnh</b> bên dưới.</li><li>Mở ChatGPT, dán vào, gửi. Nó vẽ hình đầu tiên.</li><li>Mỗi lần xong 1 hình, gõ <b>tiếp</b>. Hình nào chưa ưng thì gõ <b>vẽ lại</b>.</li><li>Lấy hình bằng nút <b>Tải về ⬇</b> (đừng chụp màn hình), gửi vào chat kèm mã hình (A2-1, B3…).</li></ol>
+    <button class="big pri dcopy" id="dcopy">📋 Chép lệnh</button><textarea id="dtxt" class="dtxt" readonly>${esc(P)}</textarea></div>`);
+    $('#dcopy').onclick = async () => {
+      let ok = false; try { await navigator.clipboard.writeText(P); ok = true; } catch (e) {}
+      if (!ok) { const t = $('#dtxt'); t.focus(); t.select(); t.setSelectionRange(0, P.length); try { ok = document.execCommand('copy'); } catch (e) {} }
+      toast(ok ? 'Đã chép! Mở ChatGPT và dán vào nha' : 'Bấm giữ ô chữ → Chọn tất cả → Sao chép');
+      $('#dcopy').textContent = ok ? '✅ Đã chép' : '📋 Chép lệnh';
+    };
+  };
+  if (window.DESIGN_PROMPT) return show();
+  const sc = document.createElement('script'); sc.src = 'js/design.js?v=1'; sc.onload = show; document.head.appendChild(sc);
+};
 R.credits = () => {
   setTabs('parent', '');
   const E = Object.entries(CRED).sort((a, b) => a[0].localeCompare(b[0]));
@@ -605,7 +622,7 @@ function route() {
   if (a === 'bame') {
     if (!b) return R.bame();
     if (b === 'hoi-thoai') return c ? R.ep(c) : R.eps();
-    return ({ 'cau-noi': R.phrases, 'cach-day': R.tips, 'hoat-dong': R.acts, 'tu-lop': R.lop, 'nhat-ky': R.journal, 'nguon-anh': R.credits }[b] || R.bame)();
+    return ({ 'cau-noi': R.phrases, 'cach-day': R.tips, 'hoat-dong': R.acts, 'tu-lop': R.lop, 'nhat-ky': R.journal, 'nguon-anh': R.credits, 'thiet-ke': R.design }[b] || R.bame)();
   }
   R.role();
 }
