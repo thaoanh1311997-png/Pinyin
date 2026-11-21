@@ -6,15 +6,15 @@ window.EPISODES = [
   { scene: 'bedroom', kid: 'bed', mom: 'stand', props: [['window', 6, 12, 22]], lines: [['k', 'Good morning, Mommy!', 'Con chào mẹ buổi sáng!']] },
   { scene: 'bedroom', kid: 'stand', mom: 'stand', props: [['bed', 62, 52, 34]], lines: [['m', 'Did you sleep well?', 'Con ngủ ngon không?'], ['k', 'Yes!', 'Dạ có!']] },
   { scene: 'bedroom', kid: 'stand', mom: 'stand', props: [['window', 34, 8, 30], ['sun-with-face', 44, 12, 12]], lines: [['m', "Let's open the curtains. Look, it's sunny!", 'Mình mở rèm nào. Nhìn kìa, trời nắng!']] } ] },
- { id: 'rang', art: [1, 2, 3], vi: 'Đánh răng', en: 'Brushing teeth', icon: 'toothbrush', panels: [
+ { id: 'rang', art: [1, 2, 3, 4], vi: 'Đánh răng', en: 'Brushing teeth', icon: 'toothbrush', panels: [
   { scene: 'bathroom', kid: 'stand', mom: 'stand', props: [['toothbrush', 44, 30, 14]], lines: [['m', 'Time to brush your teeth.', 'Tới giờ đánh răng rồi con.']] },
   { scene: 'bathroom', kid: 'stand', mom: 'stand', props: [['toothbrush', 44, 30, 14]], lines: [['m', 'Open your mouth. Say "ahh"!', 'Con há miệng ra. Nói "a" nào!'], ['k', 'Ahh!', 'A!']] },
   { scene: 'bathroom', kid: 'stand', mom: 'stand', props: [['bubbles', 42, 22, 16]], lines: [['m', 'Brush, brush, brush. Up and down.', 'Chải, chải, chải. Lên rồi xuống.']] },
   { scene: 'bathroom', kid: 'stand', mom: 'stand', props: [['sparkles', 40, 14, 16]], lines: [['m', 'All clean! Show me a big smile.', 'Sạch rồi! Cười thật tươi cho mẹ xem nào.'], ['k', 'Cheese!', 'Cười nè!']] } ] },
- { id: 'an', vi: 'Ăn sáng', en: 'Breakfast', icon: 'bread', panels: [
+ { id: 'an', art: [2, 3], vi: 'Ăn sáng', en: 'Breakfast', icon: 'bread', panels: [
   { scene: 'kitchen', kid: 'sit', mom: 'cook', props: [], lines: [['m', 'Are you hungry?', 'Con đói bụng chưa?'], ['k', "Yes, I'm hungry!", 'Dạ, con đói!']] },
-  { scene: 'kitchen', kid: 'sit', mom: 'stand', props: [['glass-of-milk', 40, 44, 11], ['bread', 52, 50, 12]], lines: [['m', "Here's your milk and bread.", 'Sữa với bánh mì của con đây.']] },
-  { scene: 'kitchen', kid: 'sit', mom: 'stand', props: [['bread', 50, 50, 12]], lines: [['m', 'Is it yummy?', 'Có ngon không con?'], ['k', 'Yummy!', 'Ngon quá!']] },
+  { scene: 'kitchen', kid: 'sit', mom: 'stand', props: [['droplet', 40, 44, 11], ['red-apple', 52, 50, 12]], lines: [['m', "Here's some water and fruit.", 'Nước với trái cây của con đây.']] },
+  { scene: 'kitchen', kid: 'sit', mom: 'stand', props: [['tomato', 50, 50, 12]], lines: [['m', 'Do you like tomatoes?', 'Con thích cà chua không?'], ['k', 'Yes! Yummy!', 'Dạ thích! Ngon quá!']] },
   { scene: 'kitchen', kid: 'sit', mom: 'stand', props: [['bowl-with-spoon', 46, 50, 13]], lines: [['m', 'All done? Good job!', 'Ăn hết rồi hả? Giỏi quá!']] } ] },
  { id: 'mac', vi: 'Mặc quần áo', en: 'Getting dressed', icon: 't-shirt', panels: [
   { scene: 'bedroom', kid: 'stand', mom: 'stand', props: [['t-shirt', 42, 30, 14]], lines: [['m', "Let's get dressed.", 'Mình mặc đồ nào.']] },
