@@ -5,7 +5,7 @@
   const X = window.XM, G = window.XMX, TALK = window.XM_TALK || {};
   if (!X || !G) return;
   const { $, esc, say, toast, cheer, IMG, ALL, LS, addStar, setTabs, bar, view, starPill, go, wsrc } = X;
-  const STOPS = G.STOPS;
+  const STOPS = G.STOPS.slice(0, G.BASE);
   const app = document.getElementById('app');
   const W = n => IMG('w/' + n);
   const shuffle = a => a.map(x => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map(x => x[1]);

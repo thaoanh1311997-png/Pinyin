@@ -115,12 +115,12 @@ function wotd() { const d = new Date(); const n = (d.getFullYear() * 400 + d.get
 R.be = () => {
   setTabs('kid', '#/be');
   const w = wotd();
-  const G = window.XMX; const S = G ? G.STOPS : [];
+  const G = window.XMX; if (G && G.ensureStops) G.ensureStops(); const S = G ? G.STOPS : [];
   let ci = S.findIndex((x, i) => G.unlocked(i) && G.starsOf(i) < 3); if (ci < 0) ci = S.length - 1;
   const st = S[ci];
   view(`${topbar('kid')}
   <div class="khome">
-   ${st ? `<a class="jcard" href="#/giao-tiep"><img class="jm" src="${IMG('ui/xiumai')}" alt=""><div class="jt"><span class="tag">🗺️ Học giao tiếp</span><b>Chặng ${ci + 1}: ${st.vi}</b><span class="js">${[0, 1, 2].map(k => `<i class="${k < G.starsOf(ci) ? 'y' : ''}">★</i>`).join('')}</span></div><span class="jgo">Đi tiếp ▶</span><img class="ji" src="${IMG('w/' + st.ic)}" alt=""></a>` : ''}
+   ${st ? `<a class="jcard" href="#/giao-tiep"><img class="jm" src="${IMG('ui/xiumai')}" alt=""><div class="jt"><span class="tag">🗺️ Học giao tiếp</span><b>Chặng ${ci + 1}: ${st.vi}</b><span class="js">${[0, 1, 2].map(k => `<i class="${k < G.starsOf(ci) ? 'y' : ''}">★</i>`).join('')}</span></div><span class="jgo">Đi tiếp ▶</span><img class="ji" src="${IMG(st.ic.includes('/') ? st.ic : 'w/' + st.ic)}" alt=""></a>` : ''}
    <div class="tiles">
     <a class="tile t1" href="#/chu-de/flash"><div class="ic"><span class="card2"></span><span class="card1"><img src="${IMG('w/red-apple')}" alt=""></span></div><span class="lb">Flashcard</span></a>
     <a class="tile t3" href="#/game"><div class="ic"><img src="${IMG('w/video-game')}" alt=""><img class="bug" src="${IMG('w/puzzle-piece')}" alt=""></div><span class="lb">Trò chơi</span></a>
@@ -518,7 +518,7 @@ R.bame = () => {
   ${row('#/bame/tu-lop', 'pencil', 'Từ vựng con học trên lớp', 'Nhập từ, chụp ảnh thật cho bé học')}
   <h3 class="psec">📊 Theo dõi & cài đặt</h3>
   <div class="pminis">${mini('#/bame/so-tien-bo', 'trophy', 'Sổ tiến bộ')}${mini('#/bame/gio-xem', 'alarm-clock', 'Giờ xem')}${mini('#/bame/giong-doc', 'speaking-head', 'Giọng đọc')}</div>
-  <a class="credit-link" href="#/bame/nguon-anh">📷 Nguồn ảnh flashcard (Wikimedia Commons)</a></div>`);
+  <a class="credit-link" href="#/bame/nguon-anh">📷 Nguồn ảnh flashcard</a></div>`);
   const d = $('#dsay'); if (d) d.onclick = () => say(XMX.todayPhrase()[0]);
 };
 R.design = () => {
@@ -540,8 +540,8 @@ R.design = () => {
 };
 R.credits = () => {
   setTabs('parent', '');
-  const E = Object.entries(CRED).sort((a, b) => a[0].localeCompare(b[0]));
-  view(bar('Nguồn ảnh', '#/bame') + `<p class="muted" style="margin:0 0 10px;font-size:15.5px">Ảnh chụp thật trong flashcard lấy từ Wikimedia Commons, giấy phép tự do. Cảm ơn các tác giả!</p><div class="panel credits">${E.map(([w, c]) => `<a href="${esc(c.page)}" target="_blank" rel="noopener"><img src="img/p/${pslug(w)}.jpg" alt="" loading="lazy"><span><b>${esc(w)}</b><small>${esc((c.author || 'Không rõ tác giả').replace(/\[\[[^\]|]*\|?([^\]]*)\]\]/g, '$1').replace(/(Unknown author)+/i, 'Unknown author'))} · ${esc(c.license || '')}</small></span></a>`).join('') || 'Chưa có ảnh.'}</div>`);
+  const used = new Set(TOPICS.flatMap(t => t.w.map(w => w[2]))); const E = Object.entries(CRED).filter(([k, c]) => used.has('p/' + (c.slug || pslug(k.split('|')[0])) + '.jpg')).sort((a, b) => a[0].localeCompare(b[0]));
+  view(bar('Nguồn ảnh', '#/bame') + `<p class="muted" style="margin:0 0 10px;font-size:15.5px">Ảnh chụp thật trong flashcard lấy từ Wikimedia Commons và Openverse (Flickr…), giấy phép tự do. Cảm ơn các tác giả!</p><div class="panel credits">${E.map(([k, c]) => { const w = k.split('|')[0]; return `<a href="${esc(c.page)}" target="_blank" rel="noopener"><img src="img/p/${c.slug || pslug(w)}.jpg" alt="" loading="lazy"><span><b>${esc(w)}</b><small>${esc((c.author || 'Không rõ tác giả').replace(/\[\[[^\]|]*\|?([^\]]*)\]\]/g, '$1').replace(/(Unknown author)+/i, 'Unknown author'))} · ${esc(c.license || '')}</small></span></a>`; }).join('') || 'Chưa có ảnh.'}</div>`);
 };
 R.eps = () => {
   setTabs('parent', '');
@@ -616,6 +616,14 @@ function example(en, vi, t) {
 async function gtx(text) {
   try { const r = await fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q=' + encodeURIComponent(text)); const d = await r.json(); return (d[0] || []).map(x => x[0]).join('').trim(); } catch (e) { return ''; }
 }
+// free CC photos (Openverse): prefer large, near-square, photo results; returns list of thumbnail urls
+async function ovPics(en) {
+  try {
+    const r = await fetch('https://api.openverse.org/v1/images/?page_size=20&mature=false&category=photograph&q=' + encodeURIComponent(en));
+    const d = await r.json();
+    return (d.results || []).filter(x => x.width >= 500 && x.height >= 400 && x.width / x.height < 1.9 && x.height / x.width < 1.6).map(x => 'https://api.openverse.org/v1/images/' + x.id + '/thumb/');
+  } catch (e) { return []; }
+}
 async function wikiPic(en) {
   try {
     const r = await fetch('https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages|pageprops&piprop=thumbnail&pithumbsize=480&titles=' + encodeURIComponent(en.charAt(0).toUpperCase() + en.slice(1)));
@@ -635,7 +643,7 @@ async function makeWord(x) {
   const d = dictFind(en);
   const item = { en: d ? d.en : en, vi: x.vi || (d ? d.vi : ''), img: d ? d.img : '' };
   if (!item.vi) item.vi = (await gtx(en)) || '';
-  if (!item.img) item.img = await wikiPic(singular(en.toLowerCase())) || await wikiPic(en);
+  if (!item.img) { const L = await ovPics(en); if (L.length) { item.img = L[0]; item.alts = L.slice(0, 8); } else item.img = await wikiPic(singular(en.toLowerCase())) || await wikiPic(en); }
   if (d) item.ex = example(d.en, item.vi, d.t);
   else { const s = item.img ? `Where is the ${en}?` : `Can you say "${en}"?`; item.ex = [s, (await gtx(s)) || '']; }
   return item;
@@ -655,7 +663,7 @@ R.lop = () => {
    <p class="muted lophint">Web tự tách từng từ, tự thêm nghĩa tiếng Việt, hình và câu mẫu. Muốn tự ghi nghĩa thì gõ: <b>dog - con chó</b></p>
    <button class="btn" id="add">✨ Tạo flashcard</button><div id="prog" class="lopprog" hidden></div></div>
    <div class="panel sec mylist"><div class="ph">📚 Đã nhập (${L.length} từ)</div>${L.length ? `<a class="btn" style="display:block;margin-bottom:12px;text-decoration:none" href="#/flash/lop">Cho bé học bằng Flashcard ▶</a>` + L.map((w, i) => `<div class="it lopit"><img src="${pic(w)}" alt=""><div class="lw"><b>${esc(w.en)}</b> <span class="muted">${esc(w.vi)}</span>${w.ex ? `<button class="lex" data-i="${i}">💬 ${esc(w.ex[0])}<small>${esc(w.ex[1] || '')}</small></button>` : ''}</div>
-     <div class="lact"><label class="lcam" title="Chụp ảnh thật">📷<input type="file" accept="image/*" data-i="${i}" hidden></label><button class="x" data-i="${i}" aria-label="Xóa">🗑️</button></div></div>`).join('') : '<p class="muted" style="margin:0">Chưa có từ nào. Gõ các từ bé học trên lớp vào ô phía trên nhé.</p>'}</div>`);
+     <div class="lact">${!w.ph && !/^[pw]\//.test(w.img || '') ? `<button class="lsw" data-i="${i}" title="Đổi hình khác">🔄</button>` : ''}<label class="lcam" title="Chụp ảnh thật">📷<input type="file" accept="image/*" data-i="${i}" hidden></label><button class="x" data-i="${i}" aria-label="Xóa">🗑️</button></div></div>`).join('') : '<p class="muted" style="margin:0">Chưa có từ nào. Gõ các từ bé học trên lớp vào ô phía trên nhé.</p>'}</div>`);
   $('#add').onclick = async () => {
     const xs = splitWords($('#words').value); if (!xs.length) { toast('Gõ từ tiếng Anh vào ô trước nha'); return; }
     const have = new Set(custom().map(w => w.en.toLowerCase()));
@@ -665,6 +673,12 @@ R.lop = () => {
     for (const x of todo) { pr.textContent = `Xíu Mại đang làm thẻ ${++k}/${todo.length}: ${x.en}…`; L2.push(await makeWord(x)); LS.set('lop', L2); }
     toast(todo.length ? `Đã thêm ${todo.length} từ 🎉` : 'Các từ này đã có rồi'); R.lop();
   };
+  app.querySelectorAll('.lsw').forEach(b => b.onclick = async () => {
+    const L2 = custom(); const w = L2[+b.dataset.i]; if (!w) return;
+    if (!w.alts || w.alts.length < 2) { b.textContent = '⏳'; w.alts = await ovPics(w.en); }
+    if (!w.alts.length) { toast('Chưa tìm được hình khác, ba mẹ bấm 📷 chụp ảnh nhé'); R.lop(); return; }
+    const k = (w.alts.indexOf(w.img) + 1) % w.alts.length; w.img = w.alts[k]; LS.set('lop', L2); R.lop();
+  });
   app.querySelectorAll('.lex').forEach(b => b.onclick = () => { const w = custom()[+b.dataset.i]; if (w && w.ex) say(w.ex[0]); });
   app.querySelectorAll('.lopit img').forEach((im, i) => im.onclick = () => { const w = custom()[i]; if (w) say(w.en); });
   app.querySelectorAll('.lcam input').forEach(inp => inp.onchange = async e => { const f = e.target.files[0]; if (!f) return; const b2 = await resizePhoto(f); if (!b2) return; const id = 'p' + Date.now(); await phPut(id, b2); PH[id] = URL.createObjectURL(b2); const L2 = custom(); const w = L2[+inp.dataset.i]; if (w) { if (w.ph) phDel(w.ph); w.ph = id; } LS.set('lop', L2); R.lop(); });
@@ -706,6 +720,6 @@ function route() {
 }
 window.addEventListener('hashchange', route);
 const credP = fetch('data/photo-credits.json', { cache: 'no-cache' }).then(r => r.json()).then(d => Object.assign(CRED, d)).catch(() => {});
-window.XM = { $, esc, say, toast, cheer, bump, wsrc, IMG, ALL, LS, stars, addStar, topic, setTabs, bar, view, starPill, R, go, pick, pickVoice, day, today };
+window.XM = { example, $, esc, say, toast, cheer, bump, wsrc, IMG, ALL, LS, stars, addStar, topic, setTabs, bar, view, starPill, R, go, pick, pickVoice, day, today };
 Promise.all([idb().then(phLoadAll).catch(() => {}), credP]).then(route, route);
 })();

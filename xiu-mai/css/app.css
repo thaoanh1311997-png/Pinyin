@@ -532,7 +532,7 @@ button.tile{font-family:inherit;cursor:pointer;width:100%}
 .lex{display:block;width:100%;text-align:left;margin-top:5px;border:0;background:#FFF3D1;border-radius:12px;padding:6px 10px;font-family:inherit;font-weight:700;font-size:15px;color:var(--ink)}
 .lex small{display:block;font-weight:600;color:var(--ink2);font-size:13.5px}
 .lact{display:flex;flex-direction:column;gap:6px;align-items:center}
-.lcam{font-size:22px;cursor:pointer}
+.lcam{font-size:22px;cursor:pointer}.lsw{font-size:22px;background:none;border:0;cursor:pointer;padding:0 4px}
 .fex{margin-top:6px;font-size:17px;font-weight:700;background:rgba(255,255,255,.75);border-radius:14px;padding:4px 12px;display:inline-block}
 .fex small{display:block;font-size:14px;font-weight:600;color:var(--ink2)}
 .gtch{position:absolute;left:50%;transform:translateX(-50%);background:#fff;color:var(--pink);font-weight:800;border-radius:999px;padding:3px 14px;box-shadow:0 3px 0 rgba(0,0,0,.08);z-index:2;font-size:15px;white-space:nowrap}

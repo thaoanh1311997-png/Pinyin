@@ -13,7 +13,7 @@ def parse():
     for l in lines.strip().split('\n'):
       p = [x.strip() for x in l.split('|')] + ['', '']
       e, v, f, w = p[0], p[1], p[2] or p[0], p[3]
-      wiki = None if (not photo or w == '-') else (w or e[0].upper() + e[1:])
+      wiki = w if w.startswith('@') else None if (not photo or w == '-') else (w or e[0].upper() + e[1:])
       ws.append((e, v, None if f == '-' else f, wiki))
     out.append((key, vi, en, col, ws))
   return out
@@ -35,7 +35,7 @@ if miss: print('fluent missing', miss)
 pj = {}
 for *_, ws in D:
   for e, v, f, wiki in ws:
-    if wiki:
+    if wiki and not wiki.startswith('@'):
       if e in pj and pj[e] != wiki: print('photo title conflict', e, pj[e], wiki)
       pj.setdefault(e, wiki)
 json.dump(pj, open('photos.json', 'w'), indent=1, ensure_ascii=False)
@@ -46,7 +46,8 @@ for key, vi, en, col, ws in D:
   w2 = []
   for e, v, f, wiki in ws:
     ph = slug(e)
-    if wiki and e in cred and os.path.exists(P + ph + '.jpg'): img = 'p/' + ph + '.jpg'
+    if wiki and wiki.startswith('@') and os.path.exists(P + wiki[1:] + '.jpg'): img = 'p/' + wiki[1:] + '.jpg'
+    elif wiki and not wiki.startswith('@') and e in cred and os.path.exists(P + ph + '.jpg'): img = 'p/' + ph + '.jpg'
     elif f: img = 'w/' + slug(f)
     else: dropped.append(e); continue
     w2.append([e, v, img])

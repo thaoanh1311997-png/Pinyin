@@ -6,11 +6,24 @@
   const { $, esc, say, toast, cheer, bump, IMG, ALL, LS, stars, addStar, topic, setTabs, bar, view, starPill, R, go, pick, today } = X;
   const app = document.getElementById('app');
   const shuffle = a => a.map(x => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map(x => x[1]);
-  const W = n => IMG('w/' + n);
+  const W = n => IMG(n.includes('/') ? n : 'w/' + n);
 
   /* ================= Học giao tiếp: data ================= */
   // [en, vi, icon, word to read]
   const STOPS = window.XM_STOPS || [];
+  const BASE = STOPS.length;
+  // after the hand-written stops, new stops are generated from the flashcard topics (4 words each), 10 at a time
+  function genStop(i) {
+    const TP = (window.TOPICS || []).filter(t => t.w.length >= 4);
+    const j = i - BASE, t = TP[(j * 7) % TP.length], round = Math.floor(j / TP.length);
+    const step = Math.max(1, Math.floor(t.w.length / 4)); const ws = [0, 1, 2, 3].map(k => t.w[(round + k * step) % t.w.length]);
+    const p = ws.map(w => { const e = X.example(w[0], w[1], t.k); return [e[0], e[1], w[2], w[0]]; });
+    return { k: 'g' + i, vi: `${t.vi}${round ? ' ' + (round + 1) : ''}`, en: t.en, ic: ws[0][2], c: t.c, p, gen: 1 };
+  }
+  function ensureStops() {
+    const done = () => STOPS.filter((s, i) => starsOf(i) >= 3).length;
+    while (done() >= STOPS.length - 2) for (let k = 0; k < 10; k++) STOPS.push(genStop(STOPS.length));
+  }
   const TASKS = [['l', '👂', 'Nghe', 'Nghe và chọn hình'], ['s', '🗣️', 'Nói', 'Nói theo Xíu Mại'], ['r', '📖', 'Đọc', 'Đọc chữ, chọn hình']];
   const gt = () => LS.get('gt', {});
   const starsOf = i => { const g = gt()[i] || {}; return ['l', 's', 'r'].filter(t => g[t]).length; };
@@ -18,7 +31,7 @@
 
   /* ---------- journey map ---------- */
   function mapPage() {
-    setTabs('kid', '');
+    ensureStops(); setTabs('kid', '');
     const cur = STOPS.findIndex((s, i) => unlocked(i) && starsOf(i) < 3);
     const H = 150, top = 92;
     const xs = STOPS.map((s, i) => 50 + Math.sin(i * 1.15) * 28); // percent
@@ -47,6 +60,7 @@
 
   /* ---------- a stop ---------- */
   function stopPage(n, task) {
+    ensureStops();
     const i = n - 1, s = STOPS[i]; if (!s) return go('#/giao-tiep');
     if (!unlocked(i)) return go('#/giao-tiep');
     setTabs('kid', '');
@@ -317,6 +331,6 @@
       if (a === 'video' && b === 'bai-hat') { R.video('songs'); return true; }
       return false;
     },
-    dailyCard, todayPhrase, STOPS, starsOf, unlocked, lockNow: lock,
+    dailyCard, todayPhrase, STOPS, BASE, ensureStops, starsOf, unlocked, lockNow: lock,
   };
 })();
