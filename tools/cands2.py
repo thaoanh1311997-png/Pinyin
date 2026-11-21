@@ -1,4 +1,6 @@
-import json,os,io,time,urllib.request,urllib.parse,math,sys
+import json,os,io,time,urllib.request,urllib.parse,math,sys,re
+from concurrent.futures import ThreadPoolExecutor
+SH=int(os.environ.get('SHARD','0'));NS=int(os.environ.get('NSHARD','1'))
 import numpy as np
 from PIL import Image,ImageDraw
 UA={'User-Agent':'XiuMaiKidsFlashcards/2.0 (educational, non-commercial; github.com/thaoanh1311997-png/Pinyin)'}
@@ -17,12 +19,14 @@ def openverse(q):
   global ov_ok
   if not ov_ok: return []
   j=get('https://api.openverse.org/v1/images/?'+urllib.parse.urlencode({'q':q,'page_size':12,'license_type':'all-cc','mature':'false'}))
-  time.sleep(3.2)
+  time.sleep(1.5)
   if j is None: print('ov fail',q,flush=True); return []
   out=[]
   for r in j.get('results',[]):
     if (r.get('width') or 0) and min(r['width'],r['height'])<400: continue
-    out.append({'src':'ov','id':r['id'],'thumb':r.get('thumbnail'),'url':r['url'],'w':r.get('width'),'h':r.get('height'),'lic':(r.get('license') or '').upper()+' '+(r.get('license_version') or ''),'by':r.get('creator') or '','page':r.get('foreign_landing_url') or '','title':r.get('title') or ''})
+    th=r.get('thumbnail');u=r['url'] or ''
+    if re.search(r'staticflickr\.com/.+_[0-9a-f]+(_[a-z])?\.jpg$',u): th=re.sub(r'(_[a-z])?\.jpg$','_n.jpg',u)
+    out.append({'src':'ov','id':r['id'],'thumb':th,'url':r['url'],'w':r.get('width'),'h':r.get('height'),'lic':(r.get('license') or '').upper()+' '+(r.get('license_version') or ''),'by':r.get('creator') or '','page':r.get('foreign_landing_url') or '','title':r.get('title') or ''})
   return out
 def commons(q):
   j=get('https://commons.wikimedia.org/w/api.php?'+urllib.parse.urlencode({'action':'query','generator':'search','gsrsearch':q+' filetype:bitmap','gsrnamespace':6,'gsrlimit':10,'prop':'imageinfo','iiprop':'url|extmetadata|size','iiurlwidth':320,'format':'json','formatversion':2}))
@@ -47,26 +51,35 @@ def score(img,scene):
   if col<8: s-=3
   if not scene: s+=(2.5 if bstd<18 else 1 if bstd<35 else 0)+(1.5 if bmean>200 else 0)
   return round(s,2),dict(bstd=round(bstd),col=round(col),sh=round(sharp,1),br=round(bright))
-Q=json.load(open('tools/queries.json'));os.makedirs('out/t',exist_ok=True);res={}
+Q=json.load(open('tools/queries.json'));os.makedirs('out/t',exist_ok=True)
+res={}
+def fetch(c):
+  d=get(c['thumb'],2,False)
+  if not d: return None
+  try: im=Image.open(io.BytesIO(d));im.load();return im
+  except Exception: return None
 for n,q in enumerate(Q):
+  if n%NS!=SH: continue
   key=q['t']+'|'+q['w'];C=[]
   for qq in [q['q']]+([q['q2']] if q.get('q2') else []):
     C+=openverse(qq)
   C+=commons(q['q'])
-  seen=set();L=[]
+  seen=set();C2=[]
   for c in C:
     if c['id'] in seen or not c['thumb']: continue
-    seen.add(c['id'])
-    d=get(c['thumb'],3,False)
-    if not d: continue
-    try: im=Image.open(io.BytesIO(d));im.load()
-    except Exception: continue
+    seen.add(c['id']);C2.append(c)
+  with ThreadPoolExecutor(8) as ex: ims=list(ex.map(fetch,C2))
+  L=[]
+  for c,im in zip(C2,ims):
+    if im is None: continue
     c['s'],c['m']=score(im,q['scene']);c['_im']=im;L.append(c)
   L.sort(key=lambda c:-c['s']);L=L[:10]
   for i,c in enumerate(L):
     im=c.pop('_im').convert('RGB');im.thumbnail((180,180));im.save(f"out/t/{n}-{i}.jpg",quality=80)
   res[key]=L;print(n,key,len(L),flush=True)
-json.dump(res,open('out/cands.json','w'),ensure_ascii=False)
+  if n%20==SH: json.dump(res,open(f'out/cands{SH}.json','w'),ensure_ascii=False)
+json.dump(res,open(f'out/cands{SH}.json','w'),ensure_ascii=False)
+sys.exit(0)
 # sheets: picks (first of each) 100 per sheet; candidate rows 8 words per sheet
 keys=list(res);W=150
 def tile(path,txt,d,im,x,y):
