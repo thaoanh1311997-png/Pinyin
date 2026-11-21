@@ -6,41 +6,15 @@ on:
 permissions:
   contents: write
 jobs:
-  subs:
+  cands:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with: { ref: xm-subs }
-      - uses: denoland/setup-deno@v2
-        with: { deno-version: v2.x }
-      - run: pip install -q -U "yt-dlp[default]"
-      - run: |
-          mkdir -p out && cd out
-          while read -r q; do
-            yt-dlp --flat-playlist --print "%(id)s|%(duration)s|%(channel)s|%(title)s" "ytsearch4:$q super simple songs" >> songs.txt 2>>err.txt || true
-          done <<'Q'
-          abc song
-          head shoulders knees and toes
-          twinkle twinkle little star
-          the wheels on the bus
-          old macdonald had a farm
-          if you're happy and you know it
-          baa baa black sheep
-          itsy bitsy spider
-          five little ducks
-          row row row your boat
-          hello song for kids
-          skidamarink
-          the more we get together
-          rain rain go away
-          bye bye goodbye
-          walking walking
-          seven steps
-          the finger family
-          this is the way
-          put on your shoes
-          Q
-          sort -u songs.txt -o songs.txt; cat songs.txt
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - run: node tools/cands.mjs
+      - run: pip install -q pillow && python3 tools/sheet.py && rm -rf out/c
       - run: |
           git config user.name bot; git config user.email bot@users.noreply.github.com
-          git add out && git commit -qm "subs out" && git push
+          git add out && git commit -qm "cands out" && git push
