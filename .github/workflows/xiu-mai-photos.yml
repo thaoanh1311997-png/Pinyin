@@ -1,0 +1,30 @@
+name: Xíu Mại photos
+on:
+  workflow_dispatch:
+    inputs:
+      force: {description: 'words to re-fetch, comma separated', required: false, default: ''}
+  push:
+    branches: [main]
+    paths: ['xiu-mai/tools/photos.json', 'xiu-mai/tools/fetch-photos.mjs']
+permissions:
+  contents: write
+concurrency:
+  group: xiu-mai-photos
+  cancel-in-progress: false
+jobs:
+  photos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - name: Download photos
+        env: {FORCE: '${{ github.event.inputs.force }}'}
+        run: node xiu-mai/tools/fetch-photos.mjs
+      - name: Commit
+        run: |
+          if [ -n "$(git status --porcelain xiu-mai/img/p xiu-mai/data/photo-credits.json)" ]; then
+            git config user.name "photo-bot"; git config user.email "photo-bot@users.noreply.github.com"
+            git add xiu-mai/img/p xiu-mai/data/photo-credits.json && git commit -m "Xíu Mại: flashcard photos"
+            for i in 1 2 3; do git pull --rebase -q && git push && break; sleep 5; done
+          fi
