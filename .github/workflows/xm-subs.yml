@@ -2,23 +2,28 @@ name: xm-subs
 on:
   push:
     branches: [xm-subs]
+    paths: ['.github/workflows/xm-subs.yml']
+permissions:
+  contents: write
 jobs:
   subs:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with: { ref: xm-subs }
       - uses: denoland/setup-deno@v2
         with: { deno-version: v2.x }
       - run: pip install -q -U "yt-dlp[default]"
       - run: |
-          mkdir out && cd out
-          X='--extractor-args youtube:player_client=tv_simply,web_embedded,mweb,default'
-          for q in "brushing teeth english conversation for kids" "peppa pig brushing teeth" "brush your teeth toddler english mom" "bedtime routine english conversation kids"; do
-            yt-dlp $X --flat-playlist --print "%(id)s|%(duration)s|%(channel)s|%(title)s" "ytsearch12:$q" >> search.txt 2>>err.txt || true
+          mkdir -p out && cd out
+          for id in rmm4GCfaJhY ARhIce1VEpg e76dHEjkC_g BFZtkuKJB1s; do
+            curl -s -o $id.jpg https://i.ytimg.com/vi/$id/hqdefault.jpg
+            curl -s "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=$id&format=json" > $id.oembed.json
+            for cl in android_vr ios tv_simply web_embedded mweb; do
+              yt-dlp --extractor-args "youtube:player_client=$cl" --skip-download --write-subs --write-auto-subs --sub-langs "en,en-US,en-GB,en-orig" --sub-format json3 --print "%(id)s|%(duration)s|%(channel)s|%(playable_in_embed)s|$cl" -o "%(id)s" "https://www.youtube.com/watch?v=$id" >> info.txt 2>>err.txt && ls $id*.json3 >/dev/null 2>&1 && break
+            done
           done
-          cat search.txt
-          for id in S4Z841ktMNQ tYDuAfY77Do; do
-            yt-dlp $X --skip-download --write-subs --write-auto-subs --sub-langs "en.*" --sub-format json3 --print "%(id)s|%(duration)s|%(channel)s|%(title)s|%(playable_in_embed)s" -o "%(id)s" "https://www.youtube.com/watch?v=$id" 2>>err.txt || true
-          done
-          tail -20 err.txt; ls -la
-      - uses: actions/upload-artifact@v4
-        with: { name: subs, path: out }
+          ls -la; tail -n 12 err.txt
+      - run: |
+          git config user.name bot; git config user.email bot@users.noreply.github.com
+          git add out && git commit -qm "subs out" && git push
