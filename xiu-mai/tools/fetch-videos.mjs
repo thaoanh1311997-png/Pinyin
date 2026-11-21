@@ -2,21 +2,17 @@
 // Writes xiu-mai/data/videos.json. Run by .github/workflows/xiu-mai-videos.yml
 import fs from 'node:fs';
 const OUT = new URL('../data/videos.json', import.meta.url);
+// Vetted for age 2: calm pacing, kind behaviour, real teaching. Removed on purpose: Peppa Pig (rude/bossy behaviour
+// often copied by toddlers), CoComelon, Little Baby Bum, Pinkfong, Bounce Patrol, Blippi (fast cuts, overstimulating).
 const CH = [
   // cat: song = Bài hát, learn = Học từ vựng, play = Vui chơi & truyện
   { key: 'supersimple', name: 'Super Simple Songs', cat: 'song', age: '2+', handles: ['SuperSimpleSongs'], vi: 'Bài hát thiếu nhi chậm, dễ hát theo' },
   { key: 'msrachel', name: 'Ms Rachel', cat: 'learn', age: '1-4', handles: ['msrachel', 'MsRachel'], vi: 'Cô Rachel dạy nói chữ đầu tiên, cực hợp bé 2 tuổi' },
-  { key: 'cocomelon', name: 'CoComelon', cat: 'song', age: '2+', handles: ['CoComelon', 'cocomelon'], vi: 'Bài hát sinh hoạt hằng ngày' },
-  { key: 'pinkfong', name: 'Pinkfong', cat: 'song', age: '2+', handles: ['Pinkfong', 'pinkfong', 'PinkfongBabyShark'], vi: 'Baby Shark và bài hát con vật' },
-  { key: 'littlebabybum', name: 'Little Baby Bum', cat: 'song', age: '1-3', handles: ['LittleBabyBum'], vi: 'Bài hát ru, đồng dao' },
-  { key: 'bouncepatrol', name: 'Bounce Patrol', cat: 'song', age: '2+', handles: ['BouncePatrol', 'bouncepatrolkids'], vi: 'Hát và nhảy vận động' },
   { key: 'daveandava', name: 'Dave and Ava', cat: 'song', age: '2+', handles: ['DaveandAva', 'DaveAndAva'], vi: 'Đồng dao hoạt hình dễ thương' },
   { key: 'dreamenglish', name: 'Dream English Kids', cat: 'learn', age: '3+', handles: ['DreamEnglishKids', 'dreamenglishkids'], vi: 'Bài hát dạy từ vựng tiếng Anh' },
   { key: 'mapleleaf', name: 'Maple Leaf Learning', cat: 'learn', age: '2+', handles: ['MapleLeafLearning', 'mapleleaflearning'], vi: 'Từ vựng theo chủ đề, câu ngắn' },
-  { key: 'blippi', name: 'Blippi', cat: 'learn', age: '2+', handles: ['Blippi', 'blippi'], vi: 'Đi khám phá: xe cộ, màu sắc, con vật' },
   { key: 'sesame', name: 'Sesame Street', cat: 'learn', age: '2+', handles: ['SesameStreet', 'sesamestreet'], vi: 'Elmo dạy chữ, số, cảm xúc' },
   { key: 'numberblocks', name: 'Numberblocks', cat: 'learn', age: '3+', handles: ['Numberblocks', 'numberblocks'], vi: 'Học đếm số' },
-  { key: 'peppa', name: 'Peppa Pig', cat: 'play', age: '2+', handles: ['PeppaPigOfficial', 'peppapig', 'PeppaPig'], vi: 'Truyện ngắn đời thường, giọng Anh' },
   { key: 'heyduggee', name: 'Hey Duggee', cat: 'play', age: '2+', handles: ['HeyDuggeeOfficial', 'heyduggee'], vi: 'Hoạt hình vui, câu đơn giản' },
   { key: 'pocoyo', name: 'Pocoyo', cat: 'play', age: '2+', handles: ['PocoyoEnglish', 'Pocoyo'], vi: 'Hoạt hình chậm, ít chữ, hợp bé nhỏ' },
   { key: 'supersimpleplay', name: 'Super Simple Play', cat: 'play', age: '2+', handles: ['SuperSimplePlay', 'supersimpleplay'], vi: 'Trò chơi, đồ chơi bằng tiếng Anh' },
