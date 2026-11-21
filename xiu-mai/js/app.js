@@ -92,6 +92,12 @@ function setTabs(kind, on) {
 }
 const brand = (big) => `<div class="brand ${big ? 'big' : ''}">${big ? '' : `<img src="${IMG('ui/xiumai')}" alt="">`}<div><span class="b1">Xíu Mại</span><span class="b2">English</span></div></div>`;
 const bar = (title, back = '#/be', right = '') => `<div class="bar"><a class="back" href="${back}" aria-label="Quay lại">‹</a><h1>${title}</h1>${right}</div>`;
+// shared home header: logo lockup + star counter + always-visible Bé | Ba Mẹ switch
+const topbar = (mode) => `<div class="topbar tb-${mode}"><span class="spark s1">✦</span><span class="spark s2">✦</span><span class="spark s3">✦</span>
+  <div class="tb-av"><img src="${IMG('ui/xiumai')}" alt="Xíu Mại"></div>
+  <div class="tb-t"><b>Xíu Mại <i>English</i></b><small>${mode === 'kid' ? 'Hôm nay học gì nào? ✨' : 'Góc Ba Mẹ đồng hành cùng con'}</small></div>
+  ${mode === 'kid' ? `<div class="tb-star"><img src="${IMG('w/star')}" alt=""><span id="starn">${stars()}</span></div>` : ''}</div>
+  <div class="seg"><a href="#/be" class="${mode === 'kid' ? 'on' : ''}"><img src="${IMG('w/teddy-bear')}" alt="">Bé</a><a href="#/bame" class="${mode === 'kid' ? '' : 'on'}"><img src="${IMG('w/laptop')}" alt="">Ba Mẹ</a></div>`;
 const starPill = () => `<div class="pill"><img src="${IMG('w/star')}" alt="">  <span id="starn">${stars()}</span></div>`;
 function view(html) { app.innerHTML = `<div class="view">${html}</div>`; window.scrollTo(0, 0); }
 
@@ -110,7 +116,7 @@ R.be = () => {
   const w = wotd();
   const feat = ['animals', 'fruits', 'colors', 'people', 'numbers', 'vehicles', 'toys', 'sea', 'body', 'food'];
   const s = stars() % 3;
-  view(`<div class="bar"><div class="avatar"><img src="${IMG('ui/xiumai')}" alt=""></div><div class="logo">${brand()}</div>${starPill()}</div>
+  view(`${topbar('kid')}
   <div class="khome">
    <div class="hero"><div class="bubble">Hi, Bánh Mì! 👋</div><img class="masc" id="masc" src="${IMG('ui/xiumai')}" alt="Xíu Mại"></div>
    <div class="tiles">
@@ -502,7 +508,7 @@ R.journey = () => {
 R.bame = () => {
   setTabs('parent', '#/bame');
   const row = (h, ic, t, d, pics) => `<a class="prow mk" href="${h}"><img src="${IMG('w/' + ic)}" alt=""><div><b>${t}</b><small>${d}</small></div><span class="pics">${pics.map(p => `<img src="${IMG('w/' + p)}" alt="">`).join('')}</span><span class="go">›</span></a>`;
-  view(`<div class="parent"><div class="bar"><a class="back" href="#/" aria-label="Về trang chọn">‹</a><div class="logo">${brand()}</div><div style="width:48px"></div></div>
+  view(`<div class="parent">${topbar('parent')}
   <div class="hero2"><div class="say">Đồng hành cùng con học tiếng Anh cùng <b>Xíu Mại!</b></div><img class="hm" src="${IMG('ui/xiumai')}" alt=""><img class="hw" src="${IMG('w/woman')}" alt=""><img class="hc" src="${IMG('w/child')}" alt=""></div>
   ${row('#/bame/hoi-thoai', 'open-book', 'Hội thoại thường ngày', '14 tập truyện tranh, có đọc mẫu', ['speech-balloon'])}
   ${row('#/bame/cau-noi', 'speaking-head', 'Câu nói hằng ngày với con', 'Khen, hỏi, nhắc nhở, an toàn…', ['red-heart'])}
