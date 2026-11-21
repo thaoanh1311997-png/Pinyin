@@ -350,3 +350,4 @@ a.wbox{text-decoration:none;color:inherit}
 .sn b{font-size:14px;line-height:1.1;margin-top:2px;text-align:center}.sn.on{border-color:#FF96B8;background:#FFF0F5}
 @media (min-width:700px){.sgrid{grid-template-columns:repeat(8,minmax(0,1fr))}}
 [hidden]{display:none!important}
+.panelc.art{aspect-ratio:1;overflow:hidden}.panelc.art .cart{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.panelc.art .sp{z-index:2}
