@@ -1,0 +1,1567 @@
+[
+{
+"n": 19,
+"t": "fruits",
+"w": "date",
+"qs": [
+"dates fruit bowl",
+"medjool dates"
+],
+"scene": false
+},
+{
+"n": 23,
+"t": "vegetables",
+"w": "spinach",
+"qs": [
+"spinach leaves",
+"fresh spinach bunch"
+],
+"scene": false
+},
+{
+"n": 29,
+"t": "vegetables",
+"w": "lotus root",
+"qs": [
+"lotus root sliced",
+"renkon"
+],
+"scene": false
+},
+{
+"n": 30,
+"t": "vegetables",
+"w": "herbs",
+"qs": [
+"fresh basil",
+"fresh herbs bunch"
+],
+"scene": false
+},
+{
+"n": 32,
+"t": "food",
+"w": "noodles",
+"qs": [
+"bowl of noodles",
+"pho bowl",
+"ramen bowl"
+],
+"scene": false
+},
+{
+"n": 34,
+"t": "food",
+"w": "spring rolls",
+"qs": [
+"fried spring rolls plate",
+"cha gio"
+],
+"scene": false
+},
+{
+"n": 35,
+"t": "food",
+"w": "jam",
+"qs": [
+"jar of strawberry jam",
+"jam jar"
+],
+"scene": false
+},
+{
+"n": 37,
+"t": "drinks",
+"w": "water",
+"qs": [
+"glass of water",
+"water bottle"
+],
+"scene": false
+},
+{
+"n": 41,
+"t": "colors",
+"w": "red",
+"qs": [
+"red apple",
+"red toy car",
+"red ball"
+],
+"scene": false
+},
+{
+"n": 42,
+"t": "colors",
+"w": "orange",
+"qs": [
+"orange ball toy",
+"orange pumpkin",
+"orange bucket toy"
+],
+"scene": false
+},
+{
+"n": 43,
+"t": "colors",
+"w": "yellow",
+"qs": [
+"yellow rubber duck",
+"yellow ball",
+"yellow toy"
+],
+"scene": false
+},
+{
+"n": 44,
+"t": "colors",
+"w": "green",
+"qs": [
+"green apple",
+"green leaf",
+"green ball"
+],
+"scene": false
+},
+{
+"n": 45,
+"t": "colors",
+"w": "blue",
+"qs": [
+"blue ball",
+"blue toy",
+"blue bucket"
+],
+"scene": false
+},
+{
+"n": 46,
+"t": "colors",
+"w": "purple",
+"qs": [
+"purple flower",
+"purple toy",
+"purple ball"
+],
+"scene": false
+},
+{
+"n": 47,
+"t": "colors",
+"w": "pink",
+"qs": [
+"pink toy",
+"pink flower",
+"pink ball"
+],
+"scene": false
+},
+{
+"n": 48,
+"t": "colors",
+"w": "brown",
+"qs": [
+"brown teddy bear",
+"brown leather",
+"brown bear toy"
+],
+"scene": false
+},
+{
+"n": 49,
+"t": "colors",
+"w": "black",
+"qs": [
+"black cat",
+"black toy",
+"black hat"
+],
+"scene": false
+},
+{
+"n": 50,
+"t": "colors",
+"w": "white",
+"qs": [
+"white egg",
+"white flower",
+"white toy"
+],
+"scene": false
+},
+{
+"n": 51,
+"t": "colors",
+"w": "gray",
+"qs": [
+"gray elephant toy",
+"gray stone",
+"grey kitten"
+],
+"scene": false
+},
+{
+"n": 52,
+"t": "colors",
+"w": "light blue",
+"qs": [
+"light blue sky",
+"light blue toy",
+"baby blue"
+],
+"scene": false
+},
+{
+"n": 53,
+"t": "colors",
+"w": "gold",
+"qs": [
+"gold coin",
+"gold trophy",
+"gold medal"
+],
+"scene": false
+},
+{
+"n": 54,
+"t": "colors",
+"w": "silver",
+"qs": [
+"silver spoon",
+"silver coin",
+"silver medal"
+],
+"scene": false
+},
+{
+"n": 56,
+"t": "shapes",
+"w": "circle",
+"qs": [
+"round wooden block",
+"circle wooden puzzle",
+"round coaster"
+],
+"scene": false
+},
+{
+"n": 57,
+"t": "shapes",
+"w": "square",
+"qs": [
+"square wooden block",
+"square tile",
+"wooden cube"
+],
+"scene": false
+},
+{
+"n": 58,
+"t": "shapes",
+"w": "triangle",
+"qs": [
+"triangle wooden block",
+"triangular shape",
+"triangle ruler"
+],
+"scene": false
+},
+{
+"n": 59,
+"t": "shapes",
+"w": "heart",
+"qs": [
+"red heart",
+"heart shaped",
+"heart cookie"
+],
+"scene": false
+},
+{
+"n": 60,
+"t": "shapes",
+"w": "star",
+"qs": [
+"star shaped",
+"star decoration",
+"star cookie"
+],
+"scene": false
+},
+{
+"n": 61,
+"t": "shapes",
+"w": "diamond",
+"qs": [
+"diamond shape",
+"rhombus",
+"kite flying"
+],
+"scene": false
+},
+{
+"n": 62,
+"t": "shapes",
+"w": "oval",
+"qs": [
+"oval mirror",
+"oval shape",
+"egg shape"
+],
+"scene": false
+},
+{
+"n": 64,
+"t": "shapes",
+"w": "arrow",
+"qs": [
+"arrow sign",
+"direction arrow",
+"arrow road"
+],
+"scene": false
+},
+{
+"n": 65,
+"t": "shapes",
+"w": "cross",
+"qs": [
+"plus sign",
+"first aid cross",
+"cross shape"
+],
+"scene": false
+},
+{
+"n": 66,
+"t": "numbers",
+"w": "zero",
+"qs": [
+"number 0 sign",
+"house number 0",
+"digit zero"
+],
+"scene": false
+},
+{
+"n": 67,
+"t": "numbers",
+"w": "one",
+"qs": [
+"house number 1",
+"number one sign",
+"digit 1"
+],
+"scene": false
+},
+{
+"n": 68,
+"t": "numbers",
+"w": "two",
+"qs": [
+"house number 2",
+"number two sign",
+"digit 2"
+],
+"scene": false
+},
+{
+"n": 69,
+"t": "numbers",
+"w": "three",
+"qs": [
+"house number 3",
+"number three sign",
+"digit 3"
+],
+"scene": false
+},
+{
+"n": 70,
+"t": "numbers",
+"w": "four",
+"qs": [
+"house number 4",
+"number four sign",
+"digit 4"
+],
+"scene": false
+},
+{
+"n": 71,
+"t": "numbers",
+"w": "five",
+"qs": [
+"house number 5",
+"number five sign",
+"digit 5"
+],
+"scene": false
+},
+{
+"n": 72,
+"t": "numbers",
+"w": "six",
+"qs": [
+"house number 6",
+"number six sign",
+"digit 6"
+],
+"scene": false
+},
+{
+"n": 73,
+"t": "numbers",
+"w": "seven",
+"qs": [
+"house number 7",
+"number seven sign",
+"digit 7"
+],
+"scene": false
+},
+{
+"n": 74,
+"t": "numbers",
+"w": "eight",
+"qs": [
+"house number 8",
+"number eight sign",
+"digit 8"
+],
+"scene": false
+},
+{
+"n": 75,
+"t": "numbers",
+"w": "nine",
+"qs": [
+"house number 9",
+"number nine sign",
+"digit 9"
+],
+"scene": false
+},
+{
+"n": 76,
+"t": "numbers",
+"w": "ten",
+"qs": [
+"house number 10",
+"number ten sign",
+"digit 10"
+],
+"scene": false
+},
+{
+"n": 77,
+"t": "numbers",
+"w": "hundred",
+"qs": [
+"house number 100",
+"number 100 sign",
+"100"
+],
+"scene": false
+},
+{
+"n": 78,
+"t": "body",
+"w": "head",
+"qs": [
+"child portrait",
+"toddler portrait",
+"baby head"
+],
+"scene": false
+},
+{
+"n": 79,
+"t": "body",
+"w": "face",
+"qs": [
+"child face smile",
+"toddler face",
+"kid portrait"
+],
+"scene": false
+},
+{
+"n": 80,
+"t": "body",
+"w": "hair",
+"qs": [
+"child hair",
+"girl hair braid",
+"curly hair child"
+],
+"scene": false
+},
+{
+"n": 82,
+"t": "body",
+"w": "eyes",
+"qs": [
+"child eyes close up",
+"eye close up",
+"blue eyes"
+],
+"scene": false
+},
+{
+"n": 83,
+"t": "body",
+"w": "ear",
+"qs": [
+"ear close up",
+"human ear",
+"child ear"
+],
+"scene": false
+},
+{
+"n": 91,
+"t": "body",
+"w": "thumb",
+"qs": [
+"thumb up hand",
+"thumb",
+"thumbs up"
+],
+"scene": false
+},
+{
+"n": 92,
+"t": "body",
+"w": "arm",
+"qs": [
+"arm",
+"human arm",
+"child arm"
+],
+"scene": false
+},
+{
+"n": 93,
+"t": "body",
+"w": "leg",
+"qs": [
+"legs",
+"child legs",
+"human leg"
+],
+"scene": false
+},
+{
+"n": 100,
+"t": "people",
+"w": "mommy",
+"qs": [
+"mother and baby",
+"mom and toddler",
+"mother hugging child"
+],
+"scene": true
+},
+{
+"n": 103,
+"t": "people",
+"w": "brother",
+"qs": [
+"two brothers",
+"brothers hugging",
+"little brothers"
+],
+"scene": true
+},
+{
+"n": 104,
+"t": "people",
+"w": "sister",
+"qs": [
+"two sisters",
+"sisters hugging",
+"little sisters"
+],
+"scene": true
+},
+{
+"n": 105,
+"t": "people",
+"w": "grandma",
+"qs": [
+"grandmother smiling",
+"grandma and grandchild",
+"old woman smiling"
+],
+"scene": true
+},
+{
+"n": 106,
+"t": "people",
+"w": "grandpa",
+"qs": [
+"grandfather smiling",
+"grandpa and grandchild",
+"old man smiling"
+],
+"scene": true
+},
+{
+"n": 107,
+"t": "people",
+"w": "family",
+"qs": [
+"happy family",
+"family with children",
+"family outdoor"
+],
+"scene": true
+},
+{
+"n": 118,
+"t": "people",
+"w": "king",
+"qs": [
+"king crown costume",
+"king chess piece",
+"king statue"
+],
+"scene": true
+},
+{
+"n": 119,
+"t": "people",
+"w": "queen",
+"qs": [
+"queen chess piece",
+"queen costume",
+"queen crown"
+],
+"scene": true
+},
+{
+"n": 120,
+"t": "people",
+"w": "prince",
+"qs": [
+"prince costume",
+"little prince costume",
+"boy prince"
+],
+"scene": true
+},
+{
+"n": 122,
+"t": "clothes",
+"w": "shorts",
+"qs": [
+"shorts",
+"denim shorts",
+"kids shorts"
+],
+"scene": false
+},
+{
+"n": 123,
+"t": "clothes",
+"w": "dress",
+"qs": [
+"dress",
+"girl dress",
+"summer dress"
+],
+"scene": false
+},
+{
+"n": 125,
+"t": "clothes",
+"w": "cap",
+"qs": [
+"baseball cap",
+"cap hat",
+"kids cap"
+],
+"scene": false
+},
+{
+"n": 130,
+"t": "baby",
+"w": "wet wipes",
+"qs": [
+"wet wipes",
+"baby wipes",
+"wet tissue"
+],
+"scene": false
+},
+{
+"n": 131,
+"t": "toys",
+"w": "sandbox",
+"qs": [
+"sandbox playground",
+"sandpit children",
+"sand box"
+],
+"scene": false
+},
+{
+"n": 138,
+"t": "home",
+"w": "sofa",
+"qs": [
+"sofa",
+"couch",
+"sofa living room"
+],
+"scene": false
+},
+{
+"n": 139,
+"t": "home",
+"w": "TV",
+"qs": [
+"television",
+"tv set",
+"flat screen tv"
+],
+"scene": false
+},
+{
+"n": 142,
+"t": "home",
+"w": "basket",
+"qs": [
+"wicker basket",
+"basket",
+"picnic basket"
+],
+"scene": false
+},
+{
+"n": 146,
+"t": "kitchen",
+"w": "chopsticks",
+"qs": [
+"chopsticks",
+"wooden chopsticks",
+"chopsticks bowl"
+],
+"scene": false
+},
+{
+"n": 147,
+"t": "kitchen",
+"w": "lunch box",
+"qs": [
+"lunch box",
+"bento box",
+"lunchbox"
+],
+"scene": false
+},
+{
+"n": 149,
+"t": "things",
+"w": "phone",
+"qs": [
+"smartphone",
+"mobile phone",
+"iphone"
+],
+"scene": false
+},
+{
+"n": 150,
+"t": "things",
+"w": "computer",
+"qs": [
+"laptop",
+"desktop computer",
+"computer"
+],
+"scene": false
+},
+{
+"n": 153,
+"t": "things",
+"w": "keyboard",
+"qs": [
+"computer keyboard",
+"keyboard keys",
+"keyboard"
+],
+"scene": false
+},
+{
+"n": 155,
+"t": "things",
+"w": "letter",
+"qs": [
+"envelope",
+"letter envelope",
+"mail envelope"
+],
+"scene": false
+},
+{
+"n": 157,
+"t": "things",
+"w": "newspaper",
+"qs": [
+"newspaper",
+"folded newspaper",
+"reading newspaper"
+],
+"scene": false
+},
+{
+"n": 159,
+"t": "tools",
+"w": "ladder",
+"qs": [
+"ladder",
+"wooden ladder",
+"step ladder"
+],
+"scene": false
+},
+{
+"n": 160,
+"t": "tools",
+"w": "rake",
+"qs": [
+"garden rake",
+"rake leaves",
+"rake tool"
+],
+"scene": false
+},
+{
+"n": 161,
+"t": "tools",
+"w": "axe",
+"qs": [
+"axe",
+"axe wood",
+"hatchet"
+],
+"scene": false
+},
+{
+"n": 162,
+"t": "tools",
+"w": "watering can",
+"qs": [
+"watering can",
+"watering can garden",
+"metal watering can"
+],
+"scene": false
+},
+{
+"n": 164,
+"t": "school",
+"w": "book",
+"qs": [
+"children book",
+"open book",
+"book"
+],
+"scene": false
+},
+{
+"n": 167,
+"t": "school",
+"w": "paintbrush",
+"qs": [
+"paint brush",
+"paintbrushes",
+"artist brush"
+],
+"scene": false
+},
+{
+"n": 168,
+"t": "school",
+"w": "paint",
+"qs": [
+"paint palette",
+"paint pots",
+"watercolor paint set"
+],
+"scene": false
+},
+{
+"n": 169,
+"t": "school",
+"w": "map",
+"qs": [
+"world map",
+"map",
+"globe map"
+],
+"scene": false
+},
+{
+"n": 186,
+"t": "weather",
+"w": "wind",
+"qs": [
+"windsock",
+"wind turbine",
+"windy flag"
+],
+"scene": true
+},
+{
+"n": 192,
+"t": "weather",
+"w": "hot",
+"qs": [
+"sweating child summer",
+"child fan heat"
+],
+"scene": true
+},
+{
+"n": 207,
+"t": "places",
+"w": "police station",
+"qs": [
+"police station building",
+"police station",
+"police station sign"
+],
+"scene": true
+},
+{
+"n": 222,
+"t": "jobs",
+"w": "builder",
+"qs": [
+"construction worker helmet",
+"builder",
+"construction worker"
+],
+"scene": true
+},
+{
+"n": 224,
+"t": "jobs",
+"w": "judge",
+"qs": [
+"judge gavel",
+"gavel",
+"judge robe"
+],
+"scene": true
+},
+{
+"n": 226,
+"t": "jobs",
+"w": "office worker",
+"qs": [
+"office worker computer",
+"businesswoman office",
+"man working laptop"
+],
+"scene": true
+},
+{
+"n": 227,
+"t": "jobs",
+"w": "detective",
+"qs": [
+"magnifying glass",
+"detective costume",
+"sherlock costume"
+],
+"scene": true
+},
+{
+"n": 228,
+"t": "jobs",
+"w": "mail carrier",
+"qs": [
+"postman",
+"mail carrier",
+"postwoman"
+],
+"scene": true
+},
+{
+"n": 232,
+"t": "sports",
+"w": "football",
+"qs": [
+"soccer ball",
+"football ball",
+"soccer ball grass"
+],
+"scene": true
+},
+{
+"n": 237,
+"t": "sports",
+"w": "fishing",
+"qs": [
+"fishing rod",
+"man fishing",
+"child fishing"
+],
+"scene": true
+},
+{
+"n": 239,
+"t": "music",
+"w": "music",
+"qs": [
+"musical notes",
+"music notes sheet",
+"music instruments"
+],
+"scene": false
+},
+{
+"n": 240,
+"t": "music",
+"w": "song",
+"qs": [
+"child singing",
+"singing microphone",
+"choir children"
+],
+"scene": false
+},
+{
+"n": 244,
+"t": "music",
+"w": "bell",
+"qs": [
+"bell",
+"church bell",
+"hand bell"
+],
+"scene": false
+},
+{
+"n": 248,
+"t": "feelings",
+"w": "sleepy",
+"qs": [
+"sleepy baby",
+"yawning child",
+"sleepy toddler"
+],
+"scene": true
+},
+{
+"n": 250,
+"t": "feelings",
+"w": "surprised",
+"qs": [
+"surprised child",
+"surprised face",
+"surprised baby"
+],
+"scene": true
+},
+{
+"n": 251,
+"t": "feelings",
+"w": "tired",
+"qs": [
+"tired child",
+"exhausted kid",
+"yawning kid"
+],
+"scene": true
+},
+{
+"n": 253,
+"t": "feelings",
+"w": "hot",
+"qs": [
+"sweating child summer",
+"child fan heat",
+"hot child water"
+],
+"scene": true
+},
+{
+"n": 255,
+"t": "feelings",
+"w": "silly",
+"qs": [
+"child funny face",
+"kid tongue out",
+"silly face"
+],
+"scene": true
+},
+{
+"n": 258,
+"t": "feelings",
+"w": "sick",
+"qs": [
+"sick child bed",
+"child cold blanket",
+"sick kid"
+],
+"scene": true
+},
+{
+"n": 260,
+"t": "feelings",
+"w": "thirsty",
+"qs": [
+"child drinking water",
+"kid drinking water bottle",
+"girl drinking water"
+],
+"scene": true
+},
+{
+"n": 261,
+"t": "feelings",
+"w": "bored",
+"qs": [
+"bored child",
+"bored kid",
+"bored girl"
+],
+"scene": true
+},
+{
+"n": 262,
+"t": "feelings",
+"w": "proud",
+"qs": [
+"proud child medal",
+"child trophy",
+"kid medal"
+],
+"scene": true
+},
+{
+"n": 263,
+"t": "feelings",
+"w": "cool",
+"qs": [
+"kid sunglasses",
+"child sunglasses",
+"boy sunglasses"
+],
+"scene": true
+},
+{
+"n": 266,
+"t": "feelings",
+"w": "quiet",
+"qs": [
+"library quiet",
+"silence sign",
+"shh"
+],
+"scene": true
+},
+{
+"n": 268,
+"t": "actions",
+"w": "walk",
+"qs": [
+"toddler walking",
+"child walking",
+"kids walking"
+],
+"scene": true
+},
+{
+"n": 269,
+"t": "actions",
+"w": "jump",
+"qs": [
+"child jumping",
+"kids jumping",
+"boy jumping"
+],
+"scene": true
+},
+{
+"n": 276,
+"t": "actions",
+"w": "wake up",
+"qs": [
+"child waking up",
+"alarm clock bed",
+"girl wakes up"
+],
+"scene": true
+},
+{
+"n": 278,
+"t": "actions",
+"w": "write",
+"qs": [
+"child writing",
+"kid writing pencil",
+"girl writing"
+],
+"scene": true
+},
+{
+"n": 279,
+"t": "actions",
+"w": "draw",
+"qs": [
+"child drawing",
+"kid drawing crayons",
+"children drawing"
+],
+"scene": true
+},
+{
+"n": 281,
+"t": "actions",
+"w": "clap",
+"qs": [
+"clapping hands",
+"child clapping",
+"applause hands"
+],
+"scene": true
+},
+{
+"n": 282,
+"t": "actions",
+"w": "wave",
+"qs": [
+"child waving hand",
+"waving hand",
+"girl waving"
+],
+"scene": true
+},
+{
+"n": 288,
+"t": "actions",
+"w": "climb",
+"qs": [
+"child climbing",
+"kid climbing wall",
+"climbing frame child"
+],
+"scene": true
+},
+{
+"n": 292,
+"t": "actions",
+"w": "brush teeth",
+"qs": [
+"child brushing teeth",
+"toothbrush kid",
+"brushing teeth"
+],
+"scene": true
+},
+{
+"n": 293,
+"t": "actions",
+"w": "take a bath",
+"qs": [
+"baby bath",
+"child bathtub",
+"bubble bath child"
+],
+"scene": true
+},
+{
+"n": 294,
+"t": "actions",
+"w": "listen",
+"qs": [
+"child headphones",
+"kid listening music",
+"listening"
+],
+"scene": true
+},
+{
+"n": 296,
+"t": "actions",
+"w": "talk",
+"qs": [
+"two children talking",
+"kids talking",
+"people talking"
+],
+"scene": true
+},
+{
+"n": 297,
+"t": "actions",
+"w": "think",
+"qs": [
+"child thinking",
+"thinking kid",
+"boy thinking"
+],
+"scene": true
+},
+{
+"n": 298,
+"t": "actions",
+"w": "point",
+"qs": [
+"child pointing",
+"pointing finger",
+"kid pointing"
+],
+"scene": true
+},
+{
+"n": 306,
+"t": "actions",
+"w": "sit",
+"qs": [
+"child sitting",
+"kid sitting chair",
+"toddler sitting"
+],
+"scene": true
+},
+{
+"n": 307,
+"t": "actions",
+"w": "stand",
+"qs": [
+"child standing",
+"toddler standing",
+"kid standing"
+],
+"scene": true
+},
+{
+"n": 309,
+"t": "actions",
+"w": "pray",
+"qs": [
+"praying hands",
+"child praying",
+"prayer"
+],
+"scene": true
+},
+{
+"n": 321,
+"t": "opposites",
+"w": "closed",
+"qs": [
+"closed door",
+"closed sign",
+"locked door"
+],
+"scene": true
+},
+{
+"n": 323,
+"t": "opposites",
+"w": "empty",
+"qs": [
+"empty glass",
+"empty box",
+"empty bowl"
+],
+"scene": true
+},
+{
+"n": 333,
+"t": "opposites",
+"w": "quiet",
+"qs": [
+"library quiet",
+"silence sign",
+"quiet sign"
+],
+"scene": true
+},
+{
+"n": 335,
+"t": "opposites",
+"w": "no",
+"qs": [
+"thumbs down",
+"no sign",
+"stop hand"
+],
+"scene": true
+},
+{
+"n": 342,
+"t": "time",
+"w": "today",
+"qs": [
+"calendar page",
+"desk calendar",
+"calendar"
+],
+"scene": true
+},
+{
+"n": 343,
+"t": "time",
+"w": "birthday",
+"qs": [
+"birthday child cake",
+"birthday party kids",
+"birthday cake candles child"
+],
+"scene": true
+},
+{
+"n": 346,
+"t": "time",
+"w": "week",
+"qs": [
+"weekly planner",
+"calendar week",
+"week calendar"
+],
+"scene": true
+},
+{
+"n": 351,
+"t": "holidays",
+"w": "Tet",
+"qs": [
+"banh chung",
+"hoa mai",
+"Tet decoration"
+],
+"scene": true
+},
+{
+"n": 353,
+"t": "holidays",
+"w": "lantern",
+"qs": [
+"paper lantern",
+"star lantern",
+"red lantern"
+],
+"scene": true
+},
+{
+"n": 356,
+"t": "holidays",
+"w": "party",
+"qs": [
+"party hats",
+"kids party balloons",
+"party decorations"
+],
+"scene": true
+},
+{
+"n": 364,
+"t": "holidays",
+"w": "ghost",
+"qs": [
+"ghost costume",
+"halloween ghost decoration",
+"sheet ghost"
+],
+"scene": true
+},
+{
+"n": 369,
+"t": "space",
+"w": "satellite",
+"qs": [
+"satellite",
+"satellite in orbit",
+"satellite model"
+],
+"scene": false
+},
+{
+"n": 370,
+"t": "space",
+"w": "telescope",
+"qs": [
+"telescope",
+"amateur telescope",
+"telescope stars"
+],
+"scene": false
+},
+{
+"n": 371,
+"t": "space",
+"w": "shooting star",
+"qs": [
+"meteor",
+"meteor shower",
+"shooting star night"
+],
+"scene": false
+},
+{
+"n": 378,
+"t": "fantasy",
+"w": "wizard",
+"qs": [
+"wizard costume child",
+"wizard hat",
+"wizard"
+],
+"scene": false
+},
+{
+"n": 380,
+"t": "fantasy",
+"w": "vampire",
+"qs": [
+"vampire costume kid",
+"dracula costume",
+"vampire halloween costume"
+],
+"scene": false
+},
+{
+"n": 381,
+"t": "fantasy",
+"w": "mermaid",
+"qs": [
+"mermaid costume",
+"mermaid statue",
+"mermaid tail"
+],
+"scene": false
+},
+{
+"n": 382,
+"t": "fantasy",
+"w": "superhero",
+"qs": [
+"superhero costume kid",
+"child cape superhero",
+"superman costume"
+],
+"scene": false
+},
+{
+"n": 396,
+"t": "health",
+"w": "fever",
+"qs": [
+"child thermometer",
+"fever child",
+"sick child thermometer"
+],
+"scene": false
+}
+]
