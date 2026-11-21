@@ -548,7 +548,7 @@ R.ep = id => {
   <div class="comic ${vi ? '' : 'vihide'}">${e.panels.map((p, j) => {
     let used = {};
     const bub = p.lines.map(([who, en, v], li) => { let pos = who === 'k' ? 'k' : 'm'; if (used[pos]) pos += '2'; used[pos] = 1; return `<button class="sp ${pos}" style="${li && !pos.endsWith('2') ? 'top:30%' : ''}" data-en="${esc(en)}" data-who="${who}">${esc(en)}<small>${esc(v)}</small></button>`; }).join('');
-    if (e.art) return `<div class="panelc art"><img class="cart" src="img/comic/${e.id}-${j + 1}.webp" alt="" loading="${j ? 'lazy' : 'eager'}">${bub}<span class="num">${j + 1}</span></div>`;
+    if (e.art && e.art.includes(j + 1)) return `<div class="panelc art"><img class="cart" src="img/comic/${e.id}-${j + 1}.webp" alt="" loading="${j ? 'lazy' : 'eager'}">${bub}<span class="num">${j + 1}</span></div>`;
     return `<div class="panelc"><div class="sc sc-${p.scene} ${e.night ? 'night' : ''}"><div class="wall"></div><div class="floor"></div>${p.scene === 'kitchen' ? '<div class="table"></div>' : ''}
     ${p.props.map(([n, x, y, w]) => `<img class="prop" src="${IMG('w/' + n)}" style="left:${x}%;top:${y}%;width:${w}%" alt="">`).join('')}
     ${momHtml(p.mom)}${kidHtml(p.kid)}</div>${bub}<span class="num">${j + 1}</span></div>`;

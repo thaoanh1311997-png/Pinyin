@@ -6,7 +6,7 @@ window.EPISODES = [
   { scene: 'bedroom', kid: 'bed', mom: 'stand', props: [['window', 6, 12, 22]], lines: [['k', 'Good morning, Mommy!', 'Con chào mẹ buổi sáng!']] },
   { scene: 'bedroom', kid: 'stand', mom: 'stand', props: [['bed', 62, 52, 34]], lines: [['m', 'Did you sleep well?', 'Con ngủ ngon không?'], ['k', 'Yes!', 'Dạ có!']] },
   { scene: 'bedroom', kid: 'stand', mom: 'stand', props: [['window', 34, 8, 30], ['sun-with-face', 44, 12, 12]], lines: [['m', "Let's open the curtains. Look, it's sunny!", 'Mình mở rèm nào. Nhìn kìa, trời nắng!']] } ] },
- { id: 'rang', vi: 'Đánh răng', en: 'Brushing teeth', icon: 'toothbrush', panels: [
+ { id: 'rang', art: [1, 2, 3], vi: 'Đánh răng', en: 'Brushing teeth', icon: 'toothbrush', panels: [
   { scene: 'bathroom', kid: 'stand', mom: 'stand', props: [['toothbrush', 44, 30, 14]], lines: [['m', 'Time to brush your teeth.', 'Tới giờ đánh răng rồi con.']] },
   { scene: 'bathroom', kid: 'stand', mom: 'stand', props: [['toothbrush', 44, 30, 14]], lines: [['m', 'Open your mouth. Say "ahh"!', 'Con há miệng ra. Nói "a" nào!'], ['k', 'Ahh!', 'A!']] },
   { scene: 'bathroom', kid: 'stand', mom: 'stand', props: [['bubbles', 42, 22, 16]], lines: [['m', 'Brush, brush, brush. Up and down.', 'Chải, chải, chải. Lên rồi xuống.']] },
