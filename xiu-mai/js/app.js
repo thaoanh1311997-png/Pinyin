@@ -1,0 +1,457 @@
+/* Xíu Mại English — web học tiếng Anh cho bé (từ 2 tuổi) */
+(function () {
+'use strict';
+const $ = (s, r = document) => r.querySelector(s);
+const app = $('#app'), tabs = $('#tabs');
+const IMG = p => 'img/' + p + '.webp';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const pick = a => a[Math.random() * a.length | 0];
+const today = () => { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); };
+
+/* ---------- storage ---------- */
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem('xm.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('xm.' + k, JSON.stringify(v)); } catch (e) {} }
+};
+function day() { let d = LS.get('day', null); if (!d || d.date !== today()) { d = { date: today(), words: [], games: 0, videos: 0, flash: [] }; LS.set('day', d); } return d; }
+function bump(k, v) { const d = day(); if (k === 'words') { if (!d.words.includes(v)) d.words.push(v); } else if (k === 'flash') { if (!d.flash.includes(v)) d.flash.push(v); } else d[k]++; LS.set('day', d); }
+const stars = () => LS.get('stars', 0);
+function addStar(n = 1) { LS.set('stars', stars() + n); const p = $('#starn'); if (p) p.textContent = stars(); }
+const favs = () => LS.get('favs', []);
+
+/* ---------- photos for "Từ trên lớp" (IndexedDB) ---------- */
+const PH = {}; let db = null;
+function idb() { return new Promise(res => { try { const r = indexedDB.open('xiumai', 1); r.onupgradeneeded = () => r.result.createObjectStore('ph'); r.onsuccess = () => { db = r.result; res(db); }; r.onerror = () => res(null); } catch (e) { res(null); } }); }
+function phPut(id, blob) { return new Promise(res => { if (!db) return res(); const t = db.transaction('ph', 'readwrite'); t.objectStore('ph').put(blob, id); t.oncomplete = res; t.onerror = res; }); }
+function phDel(id) { if (!db) return; try { db.transaction('ph', 'readwrite').objectStore('ph').delete(id); } catch (e) {} }
+function phLoadAll() { return new Promise(res => { if (!db) return res(); const t = db.transaction('ph'); const s = t.objectStore('ph'); const rq = s.openCursor(); rq.onsuccess = () => { const c = rq.result; if (c) { PH[c.key] = URL.createObjectURL(c.value); c.continue(); } else res(); }; rq.onerror = () => res(); }); }
+
+/* ---------- words / topics ---------- */
+const ALL = [];
+TOPICS.forEach(t => t.w.forEach(w => ALL.push({ en: w[0], vi: w[1], img: w[2], t: t.k })));
+function findImg(en) { en = en.trim().toLowerCase(); const w = ALL.find(x => x.en.toLowerCase() === en) || ALL.find(x => x.en.toLowerCase() === en.replace(/s$/, '')); return w ? w.img : null; }
+function custom() { return LS.get('lop', []); }
+function topicList() {
+  const c = custom(); const L = TOPICS.slice();
+  if (c.length) L.unshift({ k: 'lop', vi: 'Từ trên lớp', en: 'From class', c: '#FFE9A8', w: c.map(x => [x.en, x.vi, x.img || '', x.ph || '']) });
+  return L;
+}
+const topic = k => topicList().find(t => t.k === k);
+function wsrc(w) { if (w[3] && PH[w[3]]) return PH[w[3]]; if (w[2]) return IMG(w[2]); return IMG('ui/mascot'); }
+const PAL = [['#FCE4EC', '#FFCC00', '#F8C8D8'], ['#E6F5FF', '#4FB3FF', '#CDE9FF'], ['#FFF6D9', '#FF7AA2', '#FFE7A8'], ['#E9FBE2', '#62C94A', '#CBF0BD'], ['#F1EAFF', '#A77BFF', '#DED0FF'], ['#FFF0E3', '#FF9A3C', '#FFDDBF']];
+
+/* ---------- speech ---------- */
+let VOICE = null;
+function pickVoice() {
+  try {
+    const vs = speechSynthesis.getVoices().filter(v => /^en[-_]/i.test(v.lang));
+    const pref = ['Samantha', 'Google US English', 'Microsoft Aria', 'Microsoft Jenny', 'Ava', 'Allison', 'Karen', 'Google UK English Female', 'Serena'];
+    VOICE = pref.map(n => vs.find(v => v.name.includes(n))).find(Boolean) || vs.find(v => /en[-_]US/i.test(v.lang)) || vs[0] || null;
+  } catch (e) {}
+}
+if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text, opt = {}) {
+  return new Promise(res => {
+    if (!('speechSynthesis' in window)) return res();
+    try {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      if (VOICE) u.voice = VOICE; u.lang = VOICE ? VOICE.lang : 'en-US';
+      u.rate = opt.rate || 0.82; u.pitch = opt.pitch || 1.1;
+      let done = false; const fin = () => { if (!done) { done = true; res(); } };
+      u.onend = fin; u.onerror = fin; setTimeout(fin, 900 + text.length * 120);
+      speechSynthesis.speak(u);
+    } catch (e) { res(); }
+  });
+}
+function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), 2200); }
+function cheer(msg = 'Yay! Good job!', star = false) {
+  const el = document.createElement('div'); el.className = 'cheer';
+  el.innerHTML = `<div class="box"><img src="${IMG('ui/mascot')}" alt=""><b>${msg}</b>${star ? '<div style="font-size:26px;font-weight:800">⭐ +1</div>' : ''}</div>`;
+  document.body.appendChild(el);
+  for (let i = 0; i < 22; i++) { const c = document.createElement('div'); c.className = 'confetti'; c.textContent = pick(['⭐', '🎉', '💛', '🌟', '🎈', '✨']); c.style.left = Math.random() * 100 + 'vw'; c.style.animationDelay = Math.random() * .6 + 's'; document.body.appendChild(c); setTimeout(() => c.remove(), 2400); }
+  say(msg.replace(/[^\w !?'.,]/g, ''));
+  return new Promise(r => { const end = () => { el.remove(); r(); }; el.onclick = end; setTimeout(end, 1800); });
+}
+const clouds = c => `<svg class="clouds" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 60V32Q30 2 62 28Q92 6 132 30Q170 2 210 28Q250 4 290 28Q330 2 362 26Q386 10 400 22V60Z" fill="${c}"/></svg>`;
+
+/* ---------- layout pieces ---------- */
+function setTabs(kind, on) {
+  document.body.classList.toggle('notabs', !kind);
+  if (!kind) { tabs.innerHTML = ''; return; }
+  const T = kind === 'kid'
+    ? [['#/be', '🏠', 'Trang chủ'], ['#/yeu-thich', '💗', 'Yêu thích'], ['#/thanh-tich', '🏆', 'Thành tích']]
+    : [['#/bame', '🏠', 'Trang chủ'], ['#/bame/tu-lop', '✏️', 'Từ trên lớp'], ['#/bame/cau-noi', '💬', 'Câu nói'], ['#/be', '🧒', 'Khu của Bé']];
+  tabs.innerHTML = T.map(([h, i, l]) => `<a href="${h}" class="${h === on ? 'on' : ''}"><span class="i">${i}</span>${l}</a>`).join('');
+}
+const bar = (title, back = '#/be', right = '') => `<div class="bar"><a class="back" href="${back}" aria-label="Quay lại">‹</a><h1>${title}</h1>${right}</div>`;
+const starPill = () => `<div class="pill"><img src="${IMG('w/star')}" alt="">  <span id="starn">${stars()}</span></div>`;
+function view(html) { app.innerHTML = `<div class="view">${html}</div>`; window.scrollTo(0, 0); }
+
+/* ---------- screens ---------- */
+const R = {};
+R.role = () => {
+  setTabs(null);
+  view(`<div class="role"><img class="top" src="${IMG('ui/role_top')}" alt="Xíu Mại English">
+  <h2>Bạn muốn vào khu vực nào?</h2>
+  <a class="rbtn" href="#/be"><img src="${IMG('ui/role_kid')}" alt="Dành cho Bé"></a>
+  <a class="rbtn" href="#/bame"><img src="${IMG('ui/role_parent')}" alt="Dành cho Ba Mẹ"></a></div>`);
+};
+function wotd() { const d = new Date(); const n = (d.getFullYear() * 400 + d.getMonth() * 31 + d.getDate()) % ALL.length; return ALL[(n * 37) % ALL.length]; }
+R.be = () => {
+  setTabs('kid', '#/be');
+  const w = wotd();
+  const feat = ['animals', 'fruits', 'colors', 'family', 'numbers', 'vehicles', 'toys', 'sea', 'body', 'food'];
+  const s = stars() % 3;
+  view(`<div class="bar"><div class="avatar"><img src="${IMG('ui/mascot')}" alt=""></div><div class="logo"><img src="${IMG('ui/logo')}" alt="Xíu Mại English"></div>${starPill()}</div>
+  <div class="khome">
+   <div class="hero"><div class="bubble">Hi, Bánh Mì! 👋</div><img class="masc" id="masc" src="${IMG('ui/mascot')}" alt="Xíu Mại"></div>
+   <div class="tiles">
+    <a class="tile" href="#/chu-de/flash"><img src="${IMG('ui/tile_flash')}" alt="Flashcard"></a>
+    <a class="tile" href="#/video"><img src="${IMG('ui/tile_video')}" alt="Video"></a>
+    <a class="tile" href="#/game"><img src="${IMG('ui/tile_game')}" alt="Game"></a>
+    <a class="tile" href="#/chu-de/explore"><img src="${IMG('ui/tile_explore')}" alt="Khám phá"></a>
+   </div>
+   <div class="homegrid">
+    <div class="panel"><div class="ph"><img src="${IMG('w/books')}" alt="">Từ vựng hôm nay</div>
+     <div class="today"><button class="wcard" id="wotd"><img src="${IMG(w.img)}" alt=""><b>${esc(w.en)}</b></button><div class="muted" style="font-size:17px">${esc(w.vi)}<br><span style="font-size:14px">Bấm vào thẻ để nghe 🔊</span></div></div></div>
+    <div class="panel"><div class="ph"><img src="${IMG('w/star')}" alt="">Chủ đề nổi bật</div>
+     <div class="chips">${feat.map(k => { const t = topic(k); return t.cover ? `<a class="chip" href="#/flash/${k}"><img src="${IMG(t.cover)}" alt="${t.vi}"></a>` : `<a class="chip tchip" href="#/flash/${k}" style="background:${t.c}"><img src="${IMG(t.w[0][2])}" alt="">${t.vi}<br><span class="muted" style="font-size:13px">(${t.en})</span></a>`; }).join('')}</div></div>
+    <a class="panel reward" href="#/thanh-tich" style="text-decoration:none;color:inherit;display:block"><div class="ph" style="justify-content:center"><img src="${IMG('w/1st-place-medal')}" alt="" onerror="this.style.display='none'">Phần thưởng</div>
+     <div class="stars">${[0, 1, 2].map(i => i < s ? '⭐' : '<span style="opacity:.25">⭐</span>').join('')}</div><div class="cnt">Tổng cộng: ${stars()} ⭐</div></a>
+   </div></div>`);
+  $('#wotd').onclick = () => { say(w.en); bump('words', w.en); };
+  $('#masc').onclick = () => say(pick(["Hello! Let's learn English!", "Hi! I'm Xiu Mai!", "Let's play!", "You are awesome!"]));
+};
+R.topics = mode => {
+  setTabs('kid', '');
+  const L = topicList(); const d = LS.get('seen', {});
+  view(bar(mode === 'flash' ? 'Flashcard · Chọn chủ đề' : 'Khám phá · Chủ đề') + `<div class="grid">${L.map(t => {
+    const n = t.w.filter(w => d[w[0]]).length, p = Math.round(n / t.w.length * 100);
+    return `<a class="tcard" href="#/${mode === 'flash' ? 'flash' : 'kham-pha'}/${t.k}" style="background:${t.c}"><img class="ic" src="${t.w[0] ? wsrc(t.w[0]) : IMG('ui/mascot')}" alt=""><b>${t.vi}</b><small>${t.en} · ${t.w.length} từ</small><div class="prog"><i style="width:${p}%"></i></div></a>`;
+  }).join('')}</div>`);
+};
+R.flash = (k, i) => {
+  const t = topic(k); if (!t || !t.w.length) return go('#/chu-de/flash');
+  setTabs(null);
+  i = Math.max(0, Math.min(t.w.length - 1, +i || 0));
+  const w = t.w[i], pal = PAL[i % PAL.length], isFav = favs().includes(w[0] + '|' + k);
+  const hideVi = LS.get('hidevi', false);
+  view(bar(`${t.vi} <span class="muted" style="font-size:17px">${i + 1}/${t.w.length}</span>`, '#/chu-de/flash', starPill()) + `
+  <div class="fwrap"><div class="fcard" id="fc" style="background:${pal[0]};border-color:${pal[1]}">
+   <button class="fav" id="fav" aria-label="Yêu thích">${isFav ? '💗' : '🤍'}</button><button class="spk" id="spk" aria-label="Nghe">🔊</button>
+   <img class="pic" src="${wsrc(w)}" alt="${esc(w[0])}"><div class="shadow"></div>
+   <div class="w">${esc(w[0])}</div><div class="v" id="vi">${hideVi ? '' : esc(w[1])}</div>${clouds(pal[2])}</div>
+  <div class="fnav"><button class="big" id="prev" aria-label="Trước">◀</button><button class="big pri" id="again">🔊 Nghe lại</button><button class="big" id="next" aria-label="Tiếp">▶</button></div>
+  <div class="dots">${t.w.map((_, j) => `<i class="${j === i ? 'on' : ''}"></i>`).join('')}</div>
+  <div style="text-align:center;margin-top:10px"><button class="pill" style="display:inline-flex" id="tvi">${hideVi ? '👀 Hiện nghĩa' : '🙈 Ẩn nghĩa'}</button></div></div>`);
+  const seen = LS.get('seen', {}); seen[w[0]] = 1; LS.set('seen', seen); bump('words', w[0]);
+  const sp = () => say(w[0]);
+  setTimeout(sp, 250);
+  $('#spk').onclick = e => { e.stopPropagation(); sp(); };
+  $('#again').onclick = sp; $('#fc').onclick = sp;
+  $('#fav').onclick = e => { e.stopPropagation(); let f = favs(); const id = w[0] + '|' + k; f = f.includes(id) ? f.filter(x => x !== id) : [...f, id]; LS.set('favs', f); e.currentTarget.textContent = f.includes(id) ? '💗' : '🤍'; };
+  $('#tvi').onclick = () => { LS.set('hidevi', !hideVi); R.flash(k, i); };
+  const nav = d => {
+    const n = i + d;
+    if (n >= t.w.length) {
+      const dd = day(); const first = !dd.flash.includes(k); bump('flash', k);
+      if (first) addStar(); cheer('Yay! All done!', first).then(() => go('#/chu-de/flash'));
+      return;
+    }
+    if (n >= 0) go(`#/flash/${k}/${n}`);
+  };
+  $('#prev').onclick = () => nav(-1); $('#next').onclick = () => nav(1);
+  swipe($('#fc'), d => nav(d));
+};
+function swipe(el, cb) { let x0 = null, y0 = 0; el.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true }); el.addEventListener('touchend', e => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) cb(dx < 0 ? 1 : -1); }); }
+R.explore = k => {
+  const t = topic(k); if (!t) return go('#/chu-de/explore');
+  setTabs('kid', '');
+  view(bar(`${t.vi} <span class="muted" style="font-size:17px">${t.en}</span>`, '#/chu-de/explore') + `<p class="muted" style="margin:0 0 10px;font-size:16px">Bé chạm vào hình để nghe tiếng Anh 🔊</p><div class="wgrid">${t.w.map((w, j) => `<button class="wbox" data-j="${j}"><img src="${wsrc(w)}" alt=""><b>${esc(w[0])}</b><small>${esc(w[1])}</small></button>`).join('')}</div>`);
+  app.querySelectorAll('.wbox').forEach(b => b.onclick = () => { const w = t.w[b.dataset.j]; app.querySelectorAll('.wbox.say').forEach(x => x.classList.remove('say')); b.classList.add('say'); say(w[0]); bump('words', w[0]); const s = LS.get('seen', {}); s[w[0]] = 1; LS.set('seen', s); });
+};
+
+/* ---------- games ---------- */
+const GAMES = [
+  ['doan', 'Đoán từ', 'What is this?', 'w/red-apple', '#FFE3B8'],
+  ['nghe', 'Nghe và chọn hình', 'Where is the cat?', 'w/speaker-high-volume', '#D4F1FF'],
+  ['bong', 'Bắn bong bóng', 'Pop the balloon!', 'w/balloon', '#FFD6DE'],
+  ['ghep', 'Ghép hình', 'Puzzle', 'w/puzzle-piece', '#DFF5C8'],
+  ['lat', 'Lật thẻ tìm cặp', 'Memory', 'w/sparkles', '#E9D8FF'],
+];
+const EASY = ['animals', 'fruits', 'vehicles', 'toys', 'zoo', 'sea', 'food', 'bugs', 'vegetables', 'clothes'];
+const PUZ = ['animals', 'zoo', 'fruits', 'vehicles', 'sea', 'toys', 'bugs', 'vegetables'];
+function gameTopic(k, list = EASY) { const t = topic(k); if (t && t.w.length >= 4) return t; return topic(pick(list)); }
+function topicSel(g, k) { return `<div class="seg">${['all', ...topicList().filter(t => t.w.length >= 4 && t.k !== 'numbers').map(t => t.k)].map(x => { const t = topic(x); return `<button data-k="${x}" class="${(k || 'all') === x ? 'on' : ''}">${x === 'all' ? '🎲 Ngẫu nhiên' : t.vi}</button>`; }).join('')}</div>`; }
+function bindSel(g) { app.querySelectorAll('.seg button').forEach(b => b.onclick = () => go(`#/game/${g}${b.dataset.k === 'all' ? '' : '/' + b.dataset.k}`)); }
+R.games = () => {
+  setTabs('kid', '');
+  view(bar('Trò chơi', '#/be', starPill()) + `<div class="grid">${GAMES.map(g => `<a class="tcard" href="#/game/${g[0]}" style="background:${g[4]}"><img class="ic" src="${IMG(g[3])}" alt=""><b>${g[1]}</b><small>${g[2]}</small></a>`).join('')}</div>`);
+};
+function roundDone(score) { bump('games'); addStar(); return cheer('Yay! Good job!', true); }
+R.g_doan = (k) => {
+  setTabs(null);
+  let t = gameTopic(k), n = 0, hearts = 3;
+  const play = () => {
+    if (!k) t = gameTopic();
+    const w = pick(t.w), opts = shuffle([w, ...shuffle(t.w.filter(x => x[0] !== w[0])).slice(0, 2)]);
+    view(bar('Đoán từ', '#/game', starPill()) + topicSel('doan', k) + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}</div>
+     <div class="gq"><button id="rep">🔊</button><span>What is this?</span></div><img class="gpic" src="${wsrc(w)}" alt="">
+     <div class="gopts">${opts.map(o => `<button class="gopt" data-w="${esc(o[0])}">${esc(o[0])}</button>`).join('')}</div>`);
+    bindSel('doan');
+    say('What is this?');
+    $('#rep').onclick = () => say('What is this?');
+    app.querySelectorAll('.gopt').forEach(b => b.onclick = async () => {
+      if (b.dataset.w === w[0]) { b.classList.add('ok'); n++; await say(w[0] + '! Good job!'); if (n >= 5) { await roundDone(); n = 0; } play(); }
+      else { b.classList.add('no'); say(b.dataset.w + '? Try again!'); }
+    });
+  };
+  play();
+};
+R.g_nghe = (k) => {
+  setTabs(null);
+  let n = 0;
+  const play = () => {
+    const t = gameTopic(k); const w = pick(t.w), opts = shuffle([w, ...shuffle(t.w.filter(x => x[0] !== w[0])).slice(0, 3)]);
+    const q = `Where is the ${w[0]}?`;
+    view(bar('Nghe và chọn hình', '#/game', starPill()) + topicSel('nghe', k) + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}</div>
+     <div class="gq"><button id="rep">🔊</button><span>Where is the <b>${esc(w[0])}</b>?</span></div>
+     <div class="gimgs">${opts.map(o => `<button class="gimg" data-w="${esc(o[0])}"><img src="${wsrc(o)}" alt=""></button>`).join('')}</div>`);
+    bindSel('nghe');
+    say(q); $('#rep').onclick = () => say(q);
+    app.querySelectorAll('.gimg').forEach(b => b.onclick = async () => {
+      if (b.dataset.w === w[0]) { b.classList.add('ok'); n++; await say('Yes! ' + w[0] + '!'); if (n >= 5) { await roundDone(); n = 0; } play(); }
+      else { b.classList.add('no'); say('This is ' + (/^[aeiou]/i.test(b.dataset.w) ? 'an ' : 'a ') + b.dataset.w + '. Try again!'); }
+    });
+  };
+  play();
+};
+R.g_bong = (k) => {
+  setTabs(null);
+  let n = 0, timer = null, target = null;
+  const t = gameTopic(k === 'colors' ? null : k);
+  view(bar('Bắn bong bóng', '#/game', starPill()) + topicSel('bong', k) + `<div class="hearts" id="hs"></div><div class="gq"><button id="rep">🔊</button><span id="q"></span></div><div class="balloons" id="sky2"></div>`);
+  bindSel('bong');
+  const sky = $('#sky2'); const COLS = ['#FF6B8B', '#FFC93C', '#5BC0FF', '#7BD35A', '#B48CFF', '#FF9F43'];
+  const hs = () => $('#hs').innerHTML = '⭐'.repeat(n) + '<span style="opacity:.25">⭐</span>'.repeat(5 - n);
+  const newTarget = () => { target = pick(t.w); $('#q').innerHTML = `Pop the <b>${esc(target[0])}</b>!`; say('Pop the ' + target[0] + '!'); hs(); };
+  const spawn = () => {
+    if (!document.body.contains(sky)) { clearInterval(timer); return; }
+    const w = Math.random() < .4 ? target : pick(t.w);
+    const b = document.createElement('button'); b.className = 'bl';
+    const W = sky.clientWidth; b.style.left = (8 + Math.random() * Math.max(10, W - 120)) + 'px';
+    b.style.background = pick(COLS); b.style.animationDuration = (6 + Math.random() * 3) + 's';
+    b.innerHTML = `<img src="${wsrc(w)}" alt="">`;
+    b.onclick = async () => {
+      if (w[0] === target[0]) { b.style.transition = 'transform .2s,opacity .2s'; b.style.transform += ' scale(1.6)'; b.style.opacity = 0; setTimeout(() => b.remove(), 200); n++; hs(); await say('Pop! ' + w[0] + '!'); if (n >= 5) { clearInterval(timer); await roundDone(); n = 0; timer = setInterval(spawn, 1100); } newTarget(); }
+      else { b.classList.add('no'); say(w[0] + '!'); }
+    };
+    b.addEventListener('animationend', () => b.remove());
+    sky.appendChild(b);
+  };
+  $('#rep').onclick = () => say('Pop the ' + target[0] + '!');
+  newTarget(); spawn(); timer = setInterval(spawn, 1100);
+};
+R.g_ghep = (k) => {
+  setTabs(null);
+  const size = LS.get('puz', 2);
+  const t = gameTopic(k, PUZ);
+  const pool = [...t.w.map(w => ({ src: wsrc(w), en: w[0] })), ...(t.k === 'animals' || t.k === 'zoo' ? [{ src: IMG('ui/cow'), en: 'cow' }, { src: IMG('ui/lion'), en: 'lion' }] : [])];
+  const it = pick(pool);
+  const N = size * size; let order = shuffle([...Array(N).keys()]); while (order.every((v, i) => v === i)) order = shuffle(order);
+  let sel = null;
+  const draw = () => {
+    view(bar('Ghép hình', '#/game', starPill()) + topicSel('ghep', k) + `<div class="tool"><button id="s2" style="${size === 2 ? 'background:#FF5C8A;color:#fff' : ''}">Dễ (4 mảnh)</button><button id="s3" style="${size === 3 ? 'background:#FF5C8A;color:#fff' : ''}">Khó (9 mảnh)</button></div>
+    <div class="puz" id="pz" style="grid-template-columns:repeat(${size},1fr)">${order.map((p, i) => { const x = p % size, y = p / size | 0; return `<button class="pz ${sel === i ? 'sel' : ''}" data-i="${i}" style="background-image:url('${it.src}');background-size:${size * 100}% ${size * 100}%;background-position:${size > 1 ? x / (size - 1) * 100 : 0}% ${size > 1 ? y / (size - 1) * 100 : 0}%;background-color:#FFF8EA"></button>`; }).join('')}</div>
+    <p class="muted" style="text-align:center;margin:4px">Chạm 2 mảnh để đổi chỗ cho nhau</p>`);
+    bindSel('ghep');
+    $('#s2').onclick = () => { LS.set('puz', 2); R.g_ghep(k); }; $('#s3').onclick = () => { LS.set('puz', 3); R.g_ghep(k); };
+    app.querySelectorAll('.pz').forEach(b => b.onclick = async () => {
+      const i = +b.dataset.i;
+      if (sel == null) { sel = i; draw(); return; }
+      [order[sel], order[i]] = [order[i], order[sel]]; sel = null; draw();
+      if (order.every((v, j) => v === j)) { $('#pz').style.gap = '0'; await say(it.en + '!'); await roundDone(); R.g_ghep(k); }
+    });
+  };
+  draw();
+};
+R.g_lat = (k) => {
+  setTabs(null);
+  const t = gameTopic(k);
+  const ws = shuffle(t.w).slice(0, 3); const cards = shuffle([...ws, ...ws].map((w, i) => ({ w, i })));
+  let open = [], done = 0, lock = false;
+  view(bar('Lật thẻ tìm cặp', '#/game', starPill()) + topicSel('lat', k) + `<p class="muted" style="text-align:center;margin:0 0 10px">Lật 2 thẻ giống nhau nha!</p><div class="mem">${cards.map((c, j) => `<button class="mc" data-j="${j}">⭐</button>`).join('')}</div>`);
+  bindSel('lat');
+  app.querySelectorAll('.mc').forEach(b => b.onclick = async () => {
+    if (lock || b.classList.contains('open') || b.classList.contains('done')) return;
+    const c = cards[b.dataset.j]; b.classList.add('open'); b.innerHTML = `<img src="${wsrc(c.w)}" alt="">`; say(c.w[0]);
+    open.push(b);
+    if (open.length === 2) {
+      lock = true; const [a, d] = open; open = [];
+      if (cards[a.dataset.j].w[0] === cards[d.dataset.j].w[0]) { setTimeout(() => { a.classList.add('done'); d.classList.add('done'); lock = false; }, 500); done++; if (done === 3) { setTimeout(async () => { await roundDone(); R.g_lat(k); }, 700); } }
+      else setTimeout(() => { [a, d].forEach(x => { x.classList.remove('open'); x.textContent = '⭐'; }); lock = false; }, 1000);
+    }
+  });
+};
+
+/* ---------- video ---------- */
+let VID = null;
+async function loadVideos() {
+  if (VID) return VID;
+  const tryj = async u => { const r = await fetch(u, { cache: 'no-store' }); if (!r.ok) throw 0; return r.json(); };
+  try { VID = await tryj('https://raw.githubusercontent.com/thaoanh1311997-png/Pinyin/main/xiu-mai/data/videos.json'); } catch (e) { try { VID = await tryj('data/videos.json'); } catch (e2) { VID = { channels: [] }; } }
+  if (!VID.channels || !VID.channels.length) { try { VID = await tryj('data/videos.json'); } catch (e) {} }
+  return VID;
+}
+const dec = s => { const d = document.createElement('textarea'); d.innerHTML = s; return d.value; };
+const CATS = [['all', '⭐ Tất cả'], ['song', '🎵 Bài hát'], ['learn', '📚 Học từ vựng'], ['play', '🎈 Vui chơi & truyện']];
+R.video = async (cat) => {
+  setTabs('kid', '');
+  cat = cat || 'all';
+  view(bar('Video', '#/be') + `<div class="seg">${CATS.map(c => `<button data-c="${c[0]}" class="${c[0] === cat ? 'on' : ''}">${c[1]}</button>`).join('')}</div><div id="vl"><p class="muted">Đang tải video…</p></div>`);
+  app.querySelectorAll('.seg button').forEach(b => b.onclick = () => go('#/video' + (b.dataset.c === 'all' ? '' : '/c/' + b.dataset.c)));
+  const V = await loadVideos(); const el = $('#vl'); if (!el) return;
+  const chs = V.channels.filter(c => cat === 'all' || c.cat === cat);
+  if (!chs.length) { el.innerHTML = '<div class="note">Chưa tải được danh sách video. Kiểm tra mạng rồi thử lại nha.</div>'; return; }
+  el.innerHTML = `<div class="note">👀 Ba mẹ ngồi xem cùng bé và nói chuyện về video nhé. Bé 2–4 tuổi chỉ nên xem màn hình tổng cộng tối đa 1 giờ mỗi ngày.</div>` + chs.map(c => `<div class="chrow"><h3>${esc(c.name)} <small>${esc(c.vi)} · ${esc(c.age)} tuổi</small></h3><div class="vids">${c.videos.map(v => `<a class="vc" href="#/video/v/${v.id}"><div class="th"><img loading="lazy" src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="">${v.d ? `<span>${v.d}</span>` : ''}</div><p>${esc(dec(v.t))}</p></a>`).join('')}</div></div>`).join('');
+};
+R.play = async id => {
+  setTabs('kid', '');
+  const V = await loadVideos(); const c = V.channels.find(c => c.videos.some(v => v.id === id));
+  const v = c ? c.videos.find(v => v.id === id) : { t: '' };
+  bump('videos');
+  view(bar(c ? esc(c.name) : 'Video', '#/video') + `<div class="player"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1&autoplay=1" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen title="video"></iframe></div>
+  <h3 style="max-width:900px;margin:10px auto">${esc(dec(v.t))}</h3>
+  ${c ? `<div class="chrow" style="max-width:900px;margin:0 auto"><h3>Video khác của ${esc(c.name)}</h3><div class="vids">${c.videos.filter(x => x.id !== id).map(v => `<a class="vc" href="#/video/v/${v.id}"><div class="th"><img loading="lazy" src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="">${v.d ? `<span>${v.d}</span>` : ''}</div><p>${esc(dec(v.t))}</p></a>`).join('')}</div></div>` : ''}`);
+};
+
+/* ---------- favourites & journey ---------- */
+R.favs = () => {
+  setTabs('kid', '#/yeu-thich');
+  const F = favs().map(id => { const [en, k] = id.split('|'); const t = topic(k); const w = t && t.w.find(x => x[0] === en); return w ? { w, k } : null; }).filter(Boolean);
+  view(bar('Yêu thích', '#/be') + (F.length ? `<div class="wgrid">${F.map((f, j) => `<button class="wbox" data-j="${j}"><img src="${wsrc(f.w)}" alt=""><b>${esc(f.w[0])}</b><small>${esc(f.w[1])}</small></button>`).join('')}</div>` : `<div class="panel" style="text-align:center"><img src="${IMG('ui/mascot')}" style="width:140px;margin:0 auto" alt=""><p style="font-size:18px">Chưa có thẻ yêu thích.<br>Trong Flashcard, bấm 🤍 để lưu thẻ bé thích nha!</p></div>`));
+  app.querySelectorAll('.wbox').forEach(b => b.onclick = () => say(F[b.dataset.j].w[0]));
+};
+R.journey = () => {
+  setTabs('kid', '#/thanh-tich');
+  const s = stars(), lv = Math.floor(s / 10) + 1, p = s % 10, d = day();
+  const seen = Object.keys(LS.get('seen', {})).length;
+  const todo = [[d.words.length >= 5, `Học 5 từ mới (${Math.min(5, d.words.length)}/5)`], [d.games >= 1, `Hoàn thành 1 game (${Math.min(1, d.games)}/1)`], [d.videos >= 2, `Xem 2 video (${Math.min(2, d.videos)}/2)`]];
+  view(bar('Hành trình học tập', '#/be') + `<div class="panel"><div class="lvl"><img src="${IMG('ui/trophy')}" alt=""><div style="flex:1"><b>Cấp độ ${lv}</b><div class="bar2"><i style="width:${p * 10}%"></i></div><div class="muted" style="text-align:right;font-weight:700">${p}/10 ⭐</div></div></div></div>
+  <div class="panel sec"><div class="ph">📅 Hôm nay</div><ul class="todo">${todo.map(([ok, t]) => `<li class="${ok ? 'done' : ''}"><span class="ck">✓</span>${t}</li>`).join('')}</ul></div>
+  <div class="panel sec"><div class="ph">🌟 Bé đã học</div><p style="font-size:18px;margin:0">Đã gặp <b>${seen}</b> / ${ALL.length} từ · Tổng <b>${s}</b> ⭐</p>
+  <div class="stars" style="margin-top:8px;flex-wrap:wrap;font-size:30px">${'⭐'.repeat(Math.min(s, 30))}</div></div>`);
+};
+
+/* ---------- parent ---------- */
+R.bame = () => {
+  setTabs('parent', '#/bame');
+  view(`<div class="parent"><div class="bar"><a class="back" href="#/" aria-label="Về trang chọn">‹</a><div class="logo"><img src="${IMG('ui/logo')}" alt="Xíu Mại English"></div><div style="width:48px"></div></div>
+  <img class="hero2" src="${IMG('ui/parent_hero')}" alt="Đồng hành cùng con học tiếng Anh cùng Xíu Mại">
+  <a class="prow" href="#/bame/hoi-thoai"><img src="${IMG('ui/p_dialog')}" alt="Hội thoại thường ngày"></a>
+  <a class="prow mk" href="#/bame/cau-noi"><img src="${IMG('w/speaking-head')}" alt=""><div><b>Câu nói hằng ngày với con</b><small>Khen, hỏi, nhắc nhở, an toàn… có đọc mẫu</small></div><span class="go">›</span></a>
+  <a class="prow" href="#/bame/cach-day"><img src="${IMG('ui/p_teach')}" alt="Cách dạy con tiếng Anh"></a>
+  <a class="prow" href="#/bame/hoat-dong"><img src="${IMG('ui/p_activity')}" alt="Hoạt động theo chủ đề"></a>
+  <a class="prow mk" href="#/bame/tu-lop"><img src="${IMG('w/pencil')}" alt=""><div><b>Từ vựng con học trên lớp</b><small>Nhập từ + chụp ảnh thật, bé học ngay trong Flashcard</small></div><span class="go">›</span></a>
+  <a class="prow" href="#/bame/nhat-ky"><img src="${IMG('ui/p_share')}" alt="Góc chia sẻ cho Ba Mẹ"></a></div>`);
+};
+R.eps = () => {
+  setTabs('parent', '');
+  view(bar('Hội thoại thường ngày', '#/bame') + `<p class="muted" style="margin:0 0 10px;font-size:16px">Truyện tranh ngắn theo từng lúc trong ngày. Bấm vào lời thoại để nghe đọc mẫu.</p><div class="eplist">${EPISODES.map((e, i) => `<a class="ep" href="#/bame/hoi-thoai/${e.id}"><img src="${IMG('w/' + e.icon)}" alt=""><b>Tập ${i + 1}. ${e.vi}</b><small>${e.en}</small></a>`).join('')}</div>`);
+};
+function kidHtml(pose) {
+  if (pose === 'bed') return `<img class="bedk" src="${IMG('w/person-in-bed')}" alt="">`;
+  if (pose === 'bath') return `<img class="bathk" src="${IMG('w/person-taking-bath')}" alt="">`;
+  return `<div class="kid ${pose}"><img class="hd" src="${IMG('w/child')}" alt=""><div class="bd"></div>${pose === 'sit' ? '' : '<div class="lg"><i></i><i></i></div>'}</div>`;
+}
+function momHtml(pose) { const m = { stand: 'woman-standing', walk: 'woman-walking', cook: 'woman-cook', dad: 'man-standing' }[pose] || 'woman-standing'; return `<div class="mom" style="${pose === 'cook' ? 'height:52%' : ''}"><img src="${IMG('w/' + m)}" alt=""></div>`; }
+R.ep = id => {
+  setTabs('parent', '');
+  const i = EPISODES.findIndex(e => e.id === id); const e = EPISODES[i]; if (!e) return go('#/bame/hoi-thoai');
+  const vi = LS.get('epvi', true);
+  view(bar(`Tập ${i + 1}. ${e.vi}`, '#/bame/hoi-thoai') + `<div class="tool"><button id="all">▶️ Đọc cả tập</button><button id="tv">${vi ? '🙈 Ẩn tiếng Việt' : '👀 Hiện tiếng Việt'}</button></div>
+  <div class="comic ${vi ? '' : 'vihide'}">${e.panels.map((p, j) => {
+    let used = {};
+    const bub = p.lines.map(([who, en, v], li) => { let pos = who === 'k' ? 'k' : 'm'; if (used[pos]) pos += '2'; used[pos] = 1; return `<button class="sp ${pos}" style="${li && !pos.endsWith('2') ? 'top:30%' : ''}" data-en="${esc(en)}" data-who="${who}">${esc(en)}<small>${esc(v)}</small></button>`; }).join('');
+    return `<div class="panelc"><div class="sc sc-${p.scene} ${e.night ? 'night' : ''}"><div class="wall"></div><div class="floor"></div>${p.scene === 'kitchen' ? '<div class="table"></div>' : ''}
+    ${p.props.map(([n, x, y, w]) => `<img class="prop" src="${IMG('w/' + n)}" style="left:${x}%;top:${y}%;width:${w}%" alt="">`).join('')}
+    ${momHtml(p.mom)}${kidHtml(p.kid)}</div>${bub}<span class="num">${j + 1}</span></div>`;
+  }).join('')}</div>
+  <div class="fnav">${i > 0 ? `<a class="big" href="#/bame/hoi-thoai/${EPISODES[i - 1].id}">◀</a>` : ''}${i < EPISODES.length - 1 ? `<a class="big pri" href="#/bame/hoi-thoai/${EPISODES[i + 1].id}" style="text-decoration:none">Tập tiếp ▶</a>` : ''}</div>`);
+  const voice = who => who === 'k' ? { pitch: 1.5, rate: .85 } : who === 'd' ? { pitch: .8, rate: .85 } : { pitch: 1.1, rate: .82 };
+  app.querySelectorAll('.sp').forEach(b => b.onclick = () => { app.querySelectorAll('.sp.say').forEach(x => x.classList.remove('say')); b.classList.add('say'); say(b.dataset.en, voice(b.dataset.who)); });
+  $('#tv').onclick = () => { LS.set('epvi', !vi); R.ep(id); };
+  $('#all').onclick = async () => { for (const b of app.querySelectorAll('.sp')) { if (!document.body.contains(b)) return; app.querySelectorAll('.sp.say').forEach(x => x.classList.remove('say')); b.classList.add('say'); b.scrollIntoView({ block: 'center', behavior: 'smooth' }); await say(b.dataset.en, voice(b.dataset.who)); await new Promise(r => setTimeout(r, 350)); } };
+};
+R.phrases = () => {
+  setTabs('parent', '#/bame/cau-noi');
+  view(bar('Câu nói hằng ngày với con', '#/bame') + `<p class="muted" style="margin:0 0 6px;font-size:16px">Bấm vào câu để nghe đọc mẫu, rồi nói lại với con.</p>` + PHRASES.map((g, gi) => `<div class="panel sec plist"><div class="ph"><img src="${IMG('w/' + g.icon)}" alt="">${g.vi}</div>${g.list.map(([en, vi]) => `<button class="row" data-en="${esc(en)}"><div><b>${esc(en)}</b><small>${esc(vi)}</small></div><span class="s">🔊</span></button>`).join('')}</div>`).join(''));
+  app.querySelectorAll('.row').forEach(b => b.onclick = () => say(b.dataset.en));
+};
+R.tips = () => {
+  setTabs('parent', '');
+  view(bar('Cách dạy con tiếng Anh', '#/bame') + TIPS.map(([e, t, p]) => `<div class="tip"><div class="e">${e}</div><div><b>${t}</b><p>${p}</p></div></div>`).join(''));
+};
+R.acts = () => {
+  setTabs('parent', '');
+  view(bar('Hoạt động theo chủ đề', '#/bame') + ACTIVITIES.map(([k, how, ls]) => { const t = topic(k); return `<div class="panel sec plist"><div class="ph"><img src="${IMG(t.w[0][2])}" alt="">${t.vi} <span class="muted" style="font-size:15px">(${t.en})</span></div><p style="margin:0 0 4px;font-size:16px;line-height:1.45">${how}</p>${ls.map(([en, vi]) => `<button class="row" data-en="${esc(en)}"><div><b>${esc(en)}</b><small>${esc(vi)}</small></div><span class="s">🔊</span></button>`).join('')}<a class="btn alt" style="display:block;margin-top:10px;text-decoration:none" href="#/flash/${k}">Mở flashcard ${t.vi} cho bé</a></div>`; }).join(''));
+  app.querySelectorAll('.row').forEach(b => b.onclick = () => say(b.dataset.en));
+};
+function resizePhoto(file) { return new Promise(res => { const img = new Image(); img.onload = () => { const m = 480, s = Math.min(1, m / Math.max(img.width, img.height)); const c = document.createElement('canvas'); c.width = img.width * s; c.height = img.height * s; c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); c.toBlob(b => res(b), 'image/jpeg', .85); URL.revokeObjectURL(img.src); }; img.onerror = () => res(null); img.src = URL.createObjectURL(file); }); }
+R.lop = () => {
+  setTabs('parent', '#/bame/tu-lop');
+  const L = custom(); let blob = null;
+  view(bar('Từ vựng con học trên lớp', '#/bame') + `<div class="panel"><div class="form">
+   <input id="en" placeholder="Từ tiếng Anh, ví dụ: dog" autocomplete="off" autocapitalize="none" spellcheck="false">
+   <input id="vi" placeholder="Nghĩa tiếng Việt, ví dụ: con chó" autocomplete="off">
+   <div class="photo"><label class="pv" id="pv">📷<input id="file" type="file" accept="image/*" hidden></label><div class="muted" style="font-size:15px">Chụp ảnh đồ vật thật (không bắt buộc). Nếu không chụp, web tự tìm hình có sẵn.</div></div>
+   <div style="display:flex;gap:10px"><button class="btn alt" id="hear" style="flex:1">🔊 Nghe thử</button><button class="btn" id="add" style="flex:2">＋ Thêm từ</button></div></div></div>
+   <div class="panel sec mylist"><div class="ph">📚 Đã nhập (${L.length} từ)</div>${L.length ? L.map((w, i) => `<div class="it"><img src="${w.ph && PH[w.ph] ? PH[w.ph] : w.img ? IMG(w.img) : IMG('ui/mascot')}" alt=""><div><b>${esc(w.en)}</b><br><span class="muted">${esc(w.vi)}</span></div><button class="x" data-i="${i}" aria-label="Xóa">🗑️</button></div>`).join('') + `<a class="btn" style="display:block;margin-top:12px;text-decoration:none" href="#/flash/lop">Cho bé học bằng Flashcard ▶</a>` : '<p class="muted" style="margin:0">Chưa có từ nào. Nhập từ bé học hôm nay ở lớp nha.</p>'}</div>`);
+  $('#file').onchange = async e => { const f = e.target.files[0]; if (!f) return; blob = await resizePhoto(f); if (blob) $('#pv').innerHTML = `<img src="${URL.createObjectURL(blob)}" alt="">`; };
+  $('#hear').onclick = () => { const en = $('#en').value.trim(); if (en) say(en); };
+  $('#add').onclick = async () => {
+    const en = $('#en').value.trim(), vi = $('#vi').value.trim(); if (!en) { toast('Nhập từ tiếng Anh trước nha'); return; }
+    const item = { en, vi, img: findImg(en) || '' };
+    if (blob) { const id = 'p' + Date.now(); await phPut(id, blob); PH[id] = URL.createObjectURL(blob); item.ph = id; }
+    const L2 = custom(); L2.push(item); LS.set('lop', L2); toast('Đã thêm "' + en + '"'); R.lop();
+  };
+  app.querySelectorAll('.x').forEach(b => b.onclick = () => { const L2 = custom(); const [w] = L2.splice(+b.dataset.i, 1); if (w && w.ph) phDel(w.ph); LS.set('lop', L2); R.lop(); });
+};
+R.journal = () => {
+  setTabs('parent', '');
+  const N = LS.get('notes', []);
+  view(bar('Góc chia sẻ của Ba Mẹ', '#/bame') + `<div class="panel"><div class="ph">📝 Nhật ký học của bé</div><p class="muted" style="margin:0 0 8px;font-size:15.5px">Ghi lại từ đầu tiên bé nói, bài hát bé thích, điều ba mẹ muốn nhớ. Chỉ lưu trên máy này.</p>
+  <div class="form"><textarea id="nt" placeholder="Hôm nay Bánh Mì nói được chữ &quot;apple&quot;…"></textarea><button class="btn" id="sv">Lưu ghi chú</button></div></div>
+  ${N.slice().reverse().map((n, i) => `<div class="tip"><div class="e">💛</div><div style="flex:1"><b>${esc(n.d)}</b><p>${esc(n.t).replace(/\n/g, '<br>')}</p></div><button class="x" data-i="${N.length - 1 - i}" style="font-size:20px">🗑️</button></div>`).join('')}
+  <div class="panel sec"><div class="ph">💡 Gợi ý cho ba mẹ</div><p style="margin:0;font-size:16px;line-height:1.5">Mỗi tuần chọn 1 chủ đề (ví dụ Trái cây), sáng xem Flashcard 5 phút, chiều chơi 1 game, tối đọc 1 tập Hội thoại trước khi ngủ. Ghi lại tiến bộ của bé ở đây để thấy con lớn từng ngày.</p></div>`);
+  $('#sv').onclick = () => { const t = $('#nt').value.trim(); if (!t) return; const d = new Date(); const N2 = LS.get('notes', []); N2.push({ d: d.toLocaleDateString('vi-VN'), t }); LS.set('notes', N2); R.journal(); };
+  app.querySelectorAll('.x').forEach(b => b.onclick = () => { const N2 = LS.get('notes', []); N2.splice(+b.dataset.i, 1); LS.set('notes', N2); R.journal(); });
+};
+
+/* ---------- router ---------- */
+function go(h) { if (location.hash === h) route(); else location.hash = h; }
+function route() {
+  try { speechSynthesis.cancel(); } catch (e) {}
+  const h = location.hash.replace(/^#\/?/, '').split('/').map(decodeURIComponent);
+  const [a, b, c, d] = h;
+  if (!a) return R.role();
+  if (a === 'be') return R.be();
+  if (a === 'chu-de') return R.topics(b === 'explore' ? 'explore' : 'flash');
+  if (a === 'flash') return R.flash(b, c);
+  if (a === 'kham-pha') return R.explore(b);
+  if (a === 'game') return b && R['g_' + b] ? R['g_' + b](c) : R.games();
+  if (a === 'video') return b === 'v' ? R.play(c) : R.video(b === 'c' ? c : 'all');
+  if (a === 'yeu-thich') return R.favs();
+  if (a === 'thanh-tich') return R.journey();
+  if (a === 'bame') {
+    if (!b) return R.bame();
+    if (b === 'hoi-thoai') return c ? R.ep(c) : R.eps();
+    return ({ 'cau-noi': R.phrases, 'cach-day': R.tips, 'hoat-dong': R.acts, 'tu-lop': R.lop, 'nhat-ky': R.journal }[b] || R.bame)();
+  }
+  R.role();
+}
+window.addEventListener('hashchange', route);
+idb().then(phLoadAll).then(route, route);
+})();
