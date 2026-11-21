@@ -1,0 +1,44 @@
+{
+ "dog": {
+  "src": "Golden Retriever",
+  "file": "Golden_Retriever_Dukedestiny01_drvd.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Golden_Retriever_Dukedestiny01_drvd.jpg",
+  "author": "Dukedestiny01.jpg: \"Janneke Vreugdenhil\" derivative work: Anka Friedrich ([[User talk:Ankaaswe Trix Friedrich|talk]])",
+  "license": "Public domain"
+ },
+ "cat": {
+  "src": "Cat",
+  "file": "Siam_lilacpoint.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Siam_lilacpoint.jpg",
+  "author": "Karin Langner-Bahmann, upload von Martin Bahmann",
+  "license": "CC BY-SA 3.0"
+ },
+ "rabbit": {
+  "src": "Domestic rabbit",
+  "file": "Heimtier_004_2023_08_26.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Heimtier_004_2023_08_26.jpg",
+  "author": "Friedrich Haag",
+  "license": "CC BY-SA 4.0"
+ },
+ "mouse": {
+  "src": "House mouse",
+  "file": "Mouse_white_background.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Mouse_white_background.jpg",
+  "author": "Unknown authorUnknown author (original) / Ilmari Karonen (editing)",
+  "license": "Public domain"
+ },
+ "cow": {
+  "src": "Cattle",
+  "file": "Cow_(Fleckvieh_breed)_Oeschinensee_Slaunger_2009-07-07.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Cow_(Fleckvieh_breed)_Oeschinensee_Slaunger_2009-07-07.jpg",
+  "author": "Kim Hansen",
+  "license": "CC BY-SA 3.0"
+ },
+ "dress": {
+  "src": "Dress",
+  "file": "Afternoon_ensemble_MET_63.212a-b_CP4.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Afternoon_ensemble_MET_63.212a-b_CP4.jpg",
+  "author": "",
+  "license": "CC0"
+ }
+}
