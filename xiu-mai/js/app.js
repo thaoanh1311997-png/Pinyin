@@ -3,7 +3,9 @@
 'use strict';
 const $ = (s, r = document) => r.querySelector(s);
 const app = $('#app'), tabs = $('#tabs');
-const IMG = p => 'img/' + p + '.webp';
+const IMG = p => 'img/' + p + (/\.(jpe?g|png|webp)$/i.test(p) ? '' : '.webp');
+// never show a broken-image icon: try the mascot once, then hide
+document.addEventListener('error', e => { const t = e.target; if (!t || t.tagName !== 'IMG') return; if (!t.dataset.fb && !/ui\/xiumai/.test(t.src)) { t.dataset.fb = 1; t.src = 'img/ui/xiumai.webp'; } else t.style.visibility = 'hidden'; }, true);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const pick = a => a[Math.random() * a.length | 0];
@@ -79,12 +81,14 @@ const clouds = c => `<svg class="clouds" viewBox="0 0 400 60" preserveAspectRati
 
 /* ---------- layout pieces ---------- */
 function setTabs(kind, on) {
+  // the Bé ↔ Ba Mẹ switch must be reachable from every screen except the role picker
+  if (!kind) { const h = location.hash; if (h && h !== '#/' && h !== '#') kind = h.startsWith('#/bame') ? 'parent' : 'kid'; }
   document.body.classList.toggle('notabs', !kind);
   if (!kind) { tabs.innerHTML = ''; return; }
   const T = kind === 'kid'
-    ? [['#/be', '🏠', 'Trang chủ'], ['#/yeu-thich', '💗', 'Yêu thích'], ['#/thanh-tich', '🏆', 'Thành tích']]
+    ? [['#/be', '🏠', 'Trang chủ'], ['#/yeu-thich', '💗', 'Yêu thích'], ['#/thanh-tich', '🏆', 'Thành tích'], ['#/bame', '👩', 'Ba Mẹ']]
     : [['#/bame', '🏠', 'Trang chủ'], ['#/bame/tu-lop', '✏️', 'Từ trên lớp'], ['#/bame/cau-noi', '💬', 'Câu nói'], ['#/be', '🧒', 'Khu của Bé']];
-  tabs.innerHTML = T.map(([h, i, l]) => `<a href="${h}" class="${h === on ? 'on' : ''}"><span class="i">${i}</span>${l}</a>`).join('');
+  tabs.innerHTML = T.map(([h, i, l]) => `<a href="${h}" class="${h === on ? 'on' : ''}${(kind === 'kid' ? h === '#/bame' : h === '#/be') ? ' sw' : ''}"><span class="i">${i}</span>${l}</a>`).join('');
 }
 const brand = (big) => `<div class="brand ${big ? 'big' : ''}">${big ? '' : `<img src="${IMG('ui/xiumai')}" alt="">`}<div><span class="b1">Xíu Mại</span><span class="b2">English</span></div></div>`;
 const bar = (title, back = '#/be', right = '') => `<div class="bar"><a class="back" href="${back}" aria-label="Quay lại">‹</a><h1>${title}</h1>${right}</div>`;
