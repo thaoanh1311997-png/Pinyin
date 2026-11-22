@@ -654,7 +654,7 @@ R.color = () => {
   if (window.XMP) return run();
   view(bar('In tô màu', '#/bame/tu-lop') + '<p class="muted">Đang mở…</p>');
   let n = 0; const done = () => { if (++n === 2) run(); };
-  for (const f of ['js/cmap.js?v=1', 'js/print.js?v=1']) { const sc = document.createElement('script'); sc.src = f; sc.onload = done; document.head.appendChild(sc); }
+  for (const f of ['js/cmap.js?v=1', 'js/print.js?v=2']) { const sc = document.createElement('script'); sc.src = f; sc.onload = done; document.head.appendChild(sc); }
 };
 R.lop = () => {
   setTabs('parent', '#/bame/tu-lop');

@@ -39,17 +39,21 @@
     return h;
   }
   window.XMP = async () => {
-    const L = X.custom();
-    if (!L.length) { view(bar('In tô màu', '#/bame/tu-lop') + `<div class="panel"><p class="muted" style="margin:0 0 12px">Chưa có từ nào. Ba mẹ nhập từ bé học trên lớp trước nhé.</p><a class="btn" style="display:block;text-decoration:none" href="#/bame/tu-lop">✍️ Nhập từ</a></div>`); return; }
-    let sel = LS.get('prtSel', null); if (!Array.isArray(sel)) sel = L.map(w => w.en);
+    const src = LS.get('prtSrc', 'lop'), T = (window.TOPICS || []).find(t => t.k === src);
+    const L = T ? T.w.map(w => ({ en: w[0], vi: w[1], img: w[2] })) : X.custom();
+    const pickSrc = `<select id="psrc" class="psrc"><option value="lop">✍️ Từ ba mẹ thêm (${X.custom().length})</option>${(window.TOPICS || []).map(t => `<option value="${t.k}"${t.k === src ? ' selected' : ''}>${esc(t.vi)} (${t.w.length})</option>`).join('')}</select>`;
+    const bindSrc = () => { const el = $('#psrc'); if (el) el.onchange = () => { LS.set('prtSrc', el.value); LS.set('prtSel', null); window.XMP(); }; };
+    if (!L.length) { view(bar('In tô màu', '#/bame/tu-lop') + `<div class="panel">${pickSrc}<p class="muted" style="margin:0 0 12px">Chưa có từ nào. Ba mẹ nhập từ bé học trên lớp trước nhé.</p><a class="btn" style="display:block;text-decoration:none" href="#/bame/tu-lop">✍️ Nhập từ</a></div>`); bindSrc(); return; }
+    let sel = LS.get('prtSel', null); if (!Array.isArray(sel) || !sel.some(e => L.find(w => w.en === e))) sel = L.map(w => w.en);
     const draw = async () => {
       const S = new Set(sel), P = L.filter(w => S.has(w.en)), np = Math.ceil(P.length / 4);
-      view(bar('In tô màu', '#/bame/tu-lop') + `<div class="panel prtop"><p class="muted" style="margin:0 0 8px">Mỗi trang 4 hình nét để bé tô màu, kèm chữ rỗng để tô và chữ mờ để tập viết. Chọn từ muốn in:</p>
+      view(bar('In tô màu', '#/bame/tu-lop') + `<div class="panel prtop">${pickSrc}<p class="muted" style="margin:0 0 8px">Mỗi trang 4 hình nét để bé tô màu, kèm chữ rỗng để tô và chữ mờ để tập viết. Chọn từ muốn in:</p>
         <div class="pchips">${L.map((w, i) => `<button class="pchip${S.has(w.en) ? ' on' : ''}" data-i="${i}">${esc(w.en)}</button>`).join('')}</div>
         <div class="pbar"><button class="btn sm" id="pall">Chọn hết</button><button class="btn sm" id="pnone">Bỏ chọn</button></div>
         <button class="btn prt" id="pgo" ${P.length ? '' : 'disabled'} style="width:100%">🖨️ In ${np} trang (${P.length} từ)</button></div><div id="pprev" class="pprev"><p class="muted">Đang vẽ hình…</p></div>`);
       document.getElementById('app').querySelectorAll('.pchip').forEach(b => b.onclick = () => { const e = L[+b.dataset.i].en; sel = S.has(e) ? sel.filter(x => x !== e) : sel.concat(e); LS.set('prtSel', sel); draw(); });
       $('#pall').onclick = () => { sel = L.map(w => w.en); LS.set('prtSel', sel); draw(); };
+      bindSrc();
       $('#pnone').onclick = () => { sel = []; LS.set('prtSel', sel); draw(); };
       const h = await sheets(P);
       const pv = $('#pprev'); if (!pv) return; pv.innerHTML = h || '<p class="muted">Chọn ít nhất 1 từ nhé.</p>';
