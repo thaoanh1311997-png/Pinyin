@@ -304,14 +304,24 @@ R.g_noi = (k) => {
   };
   play();
 };
+// feeding game: only things you can eat or drink (never animals/objects)
+const FOODT = ['fruits', 'vegetables', 'food', 'sweets', 'drinks'], FOODK = ['lop', ...FOODT];
+const NOFEED = new Set(['tea', 'coffee', 'soda', 'milk tea', 'ice', 'hot chocolate', 'chili', 'salt', 'sugar', 'pepper']);
+const isFood = en => !NOFEED.has(en.toLowerCase()) && ALL.some(x => FOODT.includes(x.t) && x.en.toLowerCase() === en.toLowerCase());
+const foodLop = () => (topic('lop') || { w: [] }).w.filter(w => isFood(w[0]) || isFood(singular(w[0].toLowerCase())));
+function foodTopic(k) {
+  if (FOODT.includes(k)) { const T = topic(k); return { k, vi: T.vi, w: T.w.filter(w => !NOFEED.has(w[0].toLowerCase())) }; }
+  const L = foodLop(); if ((k === 'lop' || !k) && L.length >= 3) return { k: 'lop', vi: 'Từ trên lớp', w: L };
+  return foodTopic(pick(FOODT));
+}
 const FEEDERS = [['bunny', 'w/rabbit-face'], ['puppy', 'w/dog-face'], ['kitty', 'w/cat-face'], ['monkey', 'w/monkey-face'], ['panda', 'w/panda'], ['piggy', 'w/pig-face']];
 R.g_an = (k) => {
   setTabs(null);
   let n = 0;
   const play = () => {
-    const t = gameTopic(k, ['fruits', 'vegetables', 'food', 'sweets', 'drinks']); const w = pick(t.w), opts = shuffle([w, ...shuffle(t.w.filter(x => x[0] !== w[0])).slice(0, 2)]);
+    const t = foodTopic(k); const w = pick(t.w), opts = shuffle([w, ...shuffle(t.w.filter(x => x[0] !== w[0])).slice(0, 2)]);
     const [an, ai] = pick(FEEDERS); const q = `Give the ${an} the ${w[0]}!`;
-    view(bar('Cho thú ăn', '#/game', starPill()) + topicSel('an', k) + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}</div>
+    view(bar('Cho thú ăn', '#/game', starPill()) + `<div class="seg">${FOODK.filter(x => x !== 'lop' || foodLop().length >= 3).map(x => `<button data-k="${x}" class="${t.k === x ? 'on' : ''}">${x === 'lop' ? 'Từ trên lớp' : topic(x).vi}</button>`).join('')}</div>` + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}</div>
      <div class="gq"><button id="rep">🔊</button><span>Give the ${an} the <b>${esc(w[0])}</b>!</span></div>
      <div class="feed"><div class="fan" id="fan"><img src="${IMG(ai)}" alt=""><div class="fmouth"></div></div>
      <div class="fitems">${opts.map(o => `<div class="fit" data-w="${esc(o[0])}"><img src="${wsrc(o)}" alt="" draggable="false"></div>`).join('')}</div>
