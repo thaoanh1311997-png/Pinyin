@@ -483,7 +483,7 @@ var LIB={
 };
 /* nhiều "thợ đọc chữ" chạy song song */
 var MOBILE=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform));
-function poolSize(){ var c=navigator.hardwareConcurrency||2; return Math.max(1,Math.min(MOBILE?2:4,c-1)); }
+function poolSize(){ var c=navigator.hardwareConcurrency||2; return Math.max(1,Math.min(MOBILE?2:6,c-1)); }
 var POOL=null;
 function getPool(){
   if(POOL) return POOL;
@@ -843,7 +843,10 @@ var MODELS=[
   {id:"meta-llama/llama-4-maverick-17b-128e-instruct",tpm:6000}
 ];
 var MST={}; /* từng model: until = nghỉ tới lúc nào, dead = không dùng được, log = token đã dùng trong 60 giây */
-function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+/* hẹn giờ chạy trong worker: tab bị ẩn (đang xem tab khác) trình duyệt không làm chậm lượt chờ AI */
+var TW=null, TWN=0, TWC={};
+try{ TW=new Worker(URL.createObjectURL(new Blob(["onmessage=function(e){setTimeout(function(){postMessage(e.data[0])},e.data[1])}"],{type:"text/javascript"}))); TW.onmessage=function(e){ var f=TWC[e.data]; delete TWC[e.data]; if(f) f(); }; TW.onerror=function(){ TW=null; }; }catch(e){ TW=null; }
+function sleep(ms){return new Promise(function(r){ if(TW){ var id=++TWN; TWC[id]=r; TW.postMessage([id,ms]); setTimeout(function(){ if(TWC[id]){ delete TWC[id]; r(); } },ms+1500); } else setTimeout(r,ms); })}
 function estTok(messages,maxTok){ var s=messages.map(function(m){return m.content}).join(""), h=hanCount(s); return Math.ceil(h*1.4+(s.length-h)/2.6)+maxTok+40; }
 function mst(m){ return MST[m.id]=MST[m.id]||{log:[]}; }
 function usedTok(st,now){ st.log=st.log.filter(function(x){return x.t>now-61000}); return st.log.reduce(function(a,x){return a+x.n},0); }
@@ -959,6 +962,30 @@ function aiGrammar(seg,onWait){
     'Trả về JSON: {"points":[{"title":"…","formula":["…"],"explain":"…","examples":[{"zh":"…","vi":"…"}],"warn":["…"]}]}\n\nBÀI HỌC:\n'+gramText(seg.text)}],onWait,3000)
   .then(function(j){ return (j.points||[]).filter(function(p){return p&&p.title}).map(function(p){ return {title:String(p.title),f:(p.formula||[]).map(String),note:String(p.explain||""),ex:(p.examples||[]).filter(function(e){return e&&e.zh}).map(function(e){return [String(e.zh),String(e.vi||"")]}),warn:(p.warn||[]).map(String)}; }); });
 }
+/* TỪ VỰNG: lấy đúng bảng 生词 trong sách (không tự thêm từ), AI ghi từ loại + nghĩa tiếng Việt, pinyin tra bằng từ điển pinyin-pro */
+function vocabText(t){ var L=String(t).split("\n").map(function(l){return l.trim()}).filter(Boolean), seen={}, out=[];
+  /* dòng từ mới: "12. 古老 gǔlǎo (形) ancient" (số thứ tự + chữ Hán + phiên âm/nghĩa tiếng Anh) */
+  L.forEach(function(l){ var m=l.match(/^[(（]?\s*\d{1,2}\s*[.．、)）]?\s*([一-鿿][一-鿿…·]{0,9})\s*[(（]?\s*[A-Za-zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü]/);
+    if(!m||hanCount(l)>12||/[。？！]/.test(l)||seen[m[1]]||/Rearrange|Correct|Fill|Language|Communicat|Read\b|Choose|Answer|Complete|Listen|Translat|Phrases|sentences|Exercises|Supplementary|following/i.test(l)) return; seen[m[1]]=1; out.push(l); });
+  if(out.length>=3) return out.join("\n").slice(0,3500);
+  /* sách không đánh số: lấy phần dưới tiêu đề 生词 */
+  var a=-1; out=[];
+  for(var i=0;i<L.length;i++){ if(a<0){ if(isHeadLine(L[i])&&/生\s*词|New\s*words/i.test(L[i])) a=i; continue; }
+    if(lineKind(L[i])&&!/生\s*词|New\s*words/i.test(L[i])) break; if(hanCount(L[i])>=10&&/[，。！？]/.test(L[i])) break; out.push(L[i]); if(out.length>90) break; }
+  var r=out.join("\n").slice(0,3000); return hanCount(r)>=6?r:""; }
+var PYP=null;
+function pyLib(){ if(window.pinyinPro) return Promise.resolve(window.pinyinPro); if(!PYP){ PYP=loadScript("https://cdn.jsdelivr.net/npm/pinyin-pro@3.26.0/dist/index.js").then(function(){ return window.pinyinPro; }); PYP.catch(function(){ PYP=null; }); } return PYP; }
+function aiVocab(seg,onWait){
+  var vt=vocabText(seg.text); if(!vt) return Promise.resolve([]);
+  return groqC([{role:"system",content:SYS},{role:"user",content:
+    "Dưới đây là bảng TỪ MỚI (生词) của một bài trong giáo trình tiếng Trung (chữ đọc từ ảnh nên có thể lỗi; phiên âm và tiếng Anh có thể sai, bỏ qua). Hãy lấy ĐÚNG và ĐỦ từng từ trong bảng theo thứ tự, không thêm từ ngoài bảng, không bỏ từ.\n"+
+    "Với mỗi từ: zh = chữ Hán giản thể đúng như trong bảng (chỉ sửa chữ bị đọc lỗi khi chắc chắn); kind = từ loại theo ký hiệu trong bảng (名, 动, 形, 副, 量, 介, 连, 助, 代, 数, 专名…, nhiều loại thì nối bằng 、); vi = nghĩa tiếng Việt chính xác, ngắn gọn, đúng nghĩa dùng trong bài.\n"+
+    'Trả về JSON: {"words":[{"zh":"…","kind":"…","vi":"…"}]}\n\nBẢNG TỪ MỚI:\n'+vt}],onWait,outTok(vt,2.2))
+  .then(function(j){ var W=(j.words||[]).filter(function(w){ return w&&w.zh&&hanCount(w.zh)>0&&w.vi; });
+    return pyLib().then(function(P){ return W.map(function(w){ var z=String(w.zh).trim(); return [z,P.pinyin(z,{toneType:"symbol",type:"array"}).join(""),String(w.kind||"").trim(),String(w.vi).trim()]; }); },
+      function(){ return W.map(function(w){ return [String(w.zh).trim(),"",String(w.kind||"").trim(),String(w.vi).trim()]; }); }); })
+  .catch(function(e){ if(/Key|Hết lượt/.test(e.message)) throw e; return []; });
+}
 /* ---------- làm tài liệu: đọc chữ (nếu là sách scan) → AI dịch + soạn ngữ pháp, lưu sau MỖI bài ---------- */
 function segLabel(s){ return s.n>0?'Bài '+s.n:(s.head||'Tài liệu'); }
 function runJob(doc,segs,box,onFinish){
@@ -1012,27 +1039,30 @@ function runJob(doc,segs,box,onFinish){
   // mỗi bài dịch + soạn ngữ pháp song song; bộ điều phối tự chia lượt cho các model AI). Xong bài nào lưu bài đó.
   var ocrQ=Promise.resolve();
   function ensureText(s,i){
+    if(s._tp) return s._tp; return s._tp=ensureText0(s,i); }
+  function ensureText0(s,i){
     if(s.text||!s.pages) return Promise.resolve(true);
     if(!PDF||(s.fkey&&s.fkey!==FKEY)){ mark(i,"⚠","cần chọn lại file sách (＋ Thêm tài liệu) để đọc tiếp — trang đã đọc được lưu nên rất nhanh"); return Promise.resolve(false); }
     var p=ocrQ.then(function(){ return ocrOne(s,i); }).then(function(){ return savePending(); }).then(function(){ return true; });
     ocrQ=p.catch(function(){}); return p;
   }
-  return p1.then(function(){ return runAll(segs,function(s){ var i=segs.indexOf(s);
+  /* đọc chữ TẤT CẢ các bài ngay từ đầu (không đợi AI làm xong bài trước) → AI tới bài nào là chữ đã sẵn */
+  return p1.then(function(){ segs.forEach(function(s,i){ ensureText(s,i).catch(function(){}); }); return runAll(segs,function(s){ var i=segs.indexOf(s);
     return ensureText(s,i).then(function(ok){ if(!ok) return;
     var wait=function(sec,why){ mark(i,"⏳",(why==="net"?"mạng chập chờn, thử lại sau "+Math.round(sec)+" giây…":"đang xếp lượt AI miễn phí (~"+Math.round(sec)+" giây)…"),"doing"); };
-    var keep=function(){ mark(i,"✱","AI đang dịch bài khóa + soạn ngữ pháp…","doing"); };
+    var keep=function(){ mark(i,"✱","AI đang dịch bài khóa + soạn ngữ pháp + từ vựng…","doing"); };
     keep();
-    var les={n:s.n>0?s.n:0,zh:"",vi:"",texts:[],grammar:[]};
-    return Promise.all([aiTranslate(s,wait).then(function(t){ keep(); tick(1); return t; }),aiGrammar(s,wait).then(function(g){ keep(); tick(1); return g; })])
+    var les={n:s.n>0?s.n:0,zh:"",vi:"",texts:[],grammar:[],vocab:[]};
+    return Promise.all([aiTranslate(s,wait).then(function(t){ keep(); tick(1); return t; }),aiGrammar(s,wait).then(function(g){ keep(); tick(1); return g; }),aiVocab(s,wait)])
       .then(function(r){ var t=r[0], g=r[1]; les.zh=t.title_zh||String(s.head||"").replace(/^第\s*\S+?[课課]\s*/,""); les.vi=t.title_vi; les.texts=t.sections;
         fixLes(les); /* số bài theo đúng tiêu đề 第N课 trong sách */
         if(les.n!==s.n){ s.n=les.n; }
-        les.grammar=g; s.fin=true;
+        les.grammar=g; les.vocab=r[2]||[]; s.fin=true;
         doc.lessons=doc.lessons.filter(function(l){return !(l.n===les.n&&les.n>0)}).concat([les]).sort(function(a,b){return a.n-b.n});
-        return savePending().then(function(){ mark(i,"✓",les.texts.reduce(function(a,t){return a+t.pairs.length},0)+" câu · "+g.length+" điểm ngữ pháp"); try{ live(); }catch(e){} });
+        return savePending().then(function(){ mark(i,"✓",les.texts.reduce(function(a,t){return a+t.pairs.length},0)+" câu · "+g.length+" điểm ngữ pháp"+(les.vocab.length?" · "+les.vocab.length+" từ mới":"")); try{ live(); }catch(e){} });
       });
     });
-  },3); })
+  },4); })
   .then(function(){ busy(false); unrun(); if(DEAD[doc.id]) return; if(!(doc.pending&&doc.pending.length)) delete doc.pending; return dbPut(doc).then(function(){ btns.forEach(function(b){b.disabled=false}); if(doc.pending){ toast("Còn "+doc.pending.length+" bài cần chọn lại file sách"); onFinish(false,new Error("cần chọn lại file sách để đọc tiếp")); } else { toast("Xong rồi! Đã lưu tài liệu"); onFinish(true); } }); })
   .catch(function(e){
     busy(false); unrun(); btns.forEach(function(b){b.disabled=false});
