@@ -1,6 +1,6 @@
 :root{--ink:#5A3418;--ink2:#8A6446;--cream:#FFF8EA;--cream2:#FFEFD3;--pink:#FF5C8A;--yellow:#FFD23F;--blue:#4FB3FF;--green:#7BD35A;--sh:0 6px 0 rgba(120,70,20,.12),0 10px 24px rgba(80,60,20,.10);--r:26px;--tabh:72px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;touch-action:manipulation;-webkit-text-size-adjust:100%}
+html,body{margin:0;min-height:100%;overflow-x:hidden;overscroll-behavior-x:none;max-width:100vw;touch-action:manipulation;-webkit-text-size-adjust:100%}
 *{-webkit-tap-highlight-color:transparent}
 body{font-family:'Baloo 2','Segoe UI',system-ui,-apple-system,sans-serif;color:var(--ink);background:#BFE7FF;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0}
@@ -663,7 +663,7 @@ button.tile{font-family:inherit;cursor:pointer;width:100%}
 @keyframes mic{50%{box-shadow:0 0 0 18px rgba(255,61,115,.25)}}
 .noir{text-align:center;font-weight:700;color:#5A3A1A;min-height:28px;font-size:17px;padding:0 10px}
 /* Cho thú ăn */
-.feed{position:relative;border-radius:30px;box-shadow:var(--sh);background:linear-gradient(#FFF7E3,#FFE6B8);padding:16px 10px 44px;min-height:54vh;display:flex;flex-direction:column;justify-content:space-between;touch-action:none;user-select:none;-webkit-user-select:none;max-width:720px;margin:0 auto}
+.feed{position:relative;overflow:hidden;border-radius:30px;box-shadow:var(--sh);background:linear-gradient(#FFF7E3,#FFE6B8);padding:16px 10px 44px;min-height:54vh;display:flex;flex-direction:column;justify-content:space-between;touch-action:none;user-select:none;-webkit-user-select:none;max-width:720px;margin:0 auto}
 .fan{position:relative;width:min(52vw,240px);margin:6px auto 0}
 .fan img{width:100%;display:block;filter:drop-shadow(0 10px 8px rgba(0,0,0,.15))}
 .fan.yum img{animation:yum .5s 2}

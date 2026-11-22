@@ -314,13 +314,18 @@ function foodTopic(k) {
   const L = foodLop(); if ((k === 'lop' || !k) && L.length >= 3) return { k: 'lop', vi: 'Từ trên lớp', w: L };
   return foodTopic(pick(FOODT));
 }
-const FEEDERS = [['bunny', 'w/rabbit-face'], ['puppy', 'w/dog-face'], ['kitty', 'w/cat-face'], ['monkey', 'w/monkey-face'], ['panda', 'w/panda'], ['piggy', 'w/pig-face']];
+// people can eat anything; animals only get fruit (bunny/monkey/piggy really eat fruit)
+const KIDS = [['baby', 'w/baby'], ['boy', 'w/boy'], ['girl', 'w/girl']], FRUITERS = [['bunny', 'w/rabbit-face'], ['monkey', 'w/monkey-face'], ['piggy', 'w/pig-face']];
+const isFruit = en => { en = en.toLowerCase(); return ALL.some(x => x.t === 'fruits' && [en, singular(en)].includes(x.en.toLowerCase())); };
+const feeder = w => isFruit(w[0]) && Math.random() < .6 ? pick(FRUITERS) : pick(/honey|candy|coffee/i.test(w[0]) ? KIDS.slice(1) : KIDS);
+// keep the page from sliding sideways on phones
+addEventListener('scroll', () => { if (scrollX) scrollTo(0, scrollY); }, { passive: true });
 R.g_an = (k) => {
   setTabs(null);
   let n = 0;
   const play = () => {
     const t = foodTopic(k); const w = pick(t.w), opts = shuffle([w, ...shuffle(t.w.filter(x => x[0] !== w[0])).slice(0, 2)]);
-    const [an, ai] = pick(FEEDERS); const q = `Give the ${an} the ${w[0]}!`;
+    const [an, ai] = feeder(w); const q = `Give the ${an} the ${w[0]}!`;
     view(bar('Cho thú ăn', '#/game', starPill()) + `<div class="seg">${FOODK.filter(x => x !== 'lop' || foodLop().length >= 3).map(x => `<button data-k="${x}" class="${t.k === x ? 'on' : ''}">${x === 'lop' ? 'Từ trên lớp' : topic(x).vi}</button>`).join('')}</div>` + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}</div>
      <div class="gq"><button id="rep">🔊</button><span>Give the ${an} the <b>${esc(w[0])}</b>!</span></div>
      <div class="feed"><div class="fan" id="fan"><img src="${IMG(ai)}" alt=""><div class="fmouth"></div></div>
@@ -339,8 +344,10 @@ R.g_an = (k) => {
     };
     app.querySelectorAll('.fit').forEach(el => {
       let sx, sy, moved = false;
-      el.addEventListener('pointerdown', e => { if (busy) return; sx = e.clientX; sy = e.clientY; moved = false; el.setPointerCapture(e.pointerId); el.style.transition = 'none'; el.classList.add('drag'); });
-      el.addEventListener('pointermove', e => { if (sx == null) return; const dx = e.clientX - sx, dy = e.clientY - sy; if (Math.hypot(dx, dy) > 8) moved = true; el.style.transform = `translate(${dx}px,${dy}px) scale(1.1)`; });
+      const reset = () => { if (sx == null) return; sx = null; el.classList.remove('drag'); if (!busy) { el.style.transition = 'transform .3s'; el.style.transform = ''; } };
+      el.addEventListener('pointerdown', e => { if (busy) return; e.preventDefault(); sx = e.clientX; sy = e.clientY; moved = false; try { el.setPointerCapture(e.pointerId); } catch (_) {} el.style.transition = 'none'; el.classList.add('drag'); });
+      el.addEventListener('pointermove', e => { if (sx == null) return; const W = innerWidth, H = innerHeight, cx = Math.max(10, Math.min(W - 10, e.clientX)), cy = Math.max(10, Math.min(H - 10, e.clientY)); const dx = cx - sx, dy = cy - sy; if (Math.hypot(dx, dy) > 8) moved = true; el.style.transform = `translate(${dx}px,${dy}px) scale(1.05)`; });
+      el.addEventListener('pointercancel', reset); el.addEventListener('lostpointercapture', () => setTimeout(reset, 0));
       el.addEventListener('pointerup', e => { if (sx == null) return; sx = null; el.classList.remove('drag');
         const fr = fan.getBoundingClientRect(); const near = e.clientX > fr.left - 30 && e.clientX < fr.right + 30 && e.clientY > fr.top - 30 && e.clientY < fr.bottom + 40;
         if (!moved || near) give(el); else { el.style.transition = 'transform .3s'; el.style.transform = ''; } });
