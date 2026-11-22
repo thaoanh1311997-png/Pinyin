@@ -241,9 +241,10 @@ const GAMES = [
   ['doan', 'Đoán từ', 'What is this?', 'w/red-apple', '#FFE3B8'],
   ['nghe', 'Nghe và chọn hình', 'Where is the cat?', 'w/speaker-high-volume', '#D4F1FF'],
   ['bong', 'Bắn bong bóng', 'Pop the balloon!', 'w/balloon', '#FFD6DE'],
-  ['ghep', 'Ghép hình', 'Puzzle', 'w/puzzle-piece', '#DFF5C8'],
   ['lat', 'Lật thẻ tìm cặp', 'Memory', 'w/sparkles', '#E9D8FF'],
   ['banh', 'Đá banh', 'Kick the ball!', 'w/soccer-ball', '#D8F5D0'],
+  ['noi', 'Nói theo', 'Say it!', 'w/microphone', '#FFE0EC'],
+  ['an', 'Cho thú ăn', 'Feed the bunny!', 'w/rabbit-face', '#FFF0C2'],
 ];
 const EASY = ['animals', 'fruits', 'vehicles', 'toys', 'wild', 'sea', 'food', 'bugs', 'vegetables', 'clothes'];
 const PUZ = ['animals', 'wild', 'fruits', 'vehicles', 'sea', 'toys', 'bugs', 'vegetables'];
@@ -263,13 +264,76 @@ R.g_doan = (k) => {
     const w = pick(t.w), opts = shuffle([w, ...shuffle(t.w.filter(x => x[0] !== w[0])).slice(0, 2)]);
     view(bar('Đoán từ', '#/game', starPill()) + topicSel('doan', k) + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}</div>
      <div class="gq"><button id="rep">🔊</button><span>What is this?</span></div><img class="gpic" src="${wsrc(w)}" alt="">
-     <div class="gopts">${opts.map(o => `<button class="gopt" data-w="${esc(o[0])}">${esc(o[0])}</button>`).join('')}</div>`);
+     <div class="gopts">${opts.map(o => `<button class="gopt" data-w="${esc(o[0])}"><span class="gsp">🔊</span>${esc(o[0])}</button>`).join('')}</div>`);
     bindSel('doan');
     say('What is this?');
     $('#rep').onclick = () => say('What is this?');
     app.querySelectorAll('.gopt').forEach(b => b.onclick = async () => {
       if (b.dataset.w === w[0]) { b.classList.add('ok'); n++; await say(w[0] + '! Good job!'); if (n >= 5) { await roundDone(); n = 0; } play(); }
       else { b.classList.add('no'); say(b.dataset.w + '? Try again!'); }
+    });
+  };
+  play();
+};
+const lev = (a, b) => { const m = a.length, n = b.length, d = [...Array(n + 1).keys()]; for (let i = 1; i <= m; i++) { let p = d[0]; d[0] = i; for (let j = 1; j <= n; j++) { const t = d[j]; d[j] = Math.min(d[j] + 1, d[j - 1] + 1, p + (a[i - 1] === b[j - 1] ? 0 : 1)); p = t; } } return d[n]; };
+R.g_noi = (k) => {
+  setTabs(null);
+  let n = 0;
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const play = () => {
+    const t = gameTopic(k); const w = pick(t.w);
+    view(bar('Nói theo', '#/game', starPill()) + topicSel('noi', k) + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}</div>
+     <img class="gpic noip" src="${wsrc(w)}" alt=""><div class="noiw">${esc(w[0])}</div><div class="noiv">${esc(w[1] || '')}</div>
+     <div class="noib"><button class="noil" id="rep">🔊<small>Nghe</small></button>${SR ? `<button class="noim" id="mic"><img src="${IMG('w/microphone')}" alt=""><small>Bé nói</small></button>` : ''}<button class="noil" id="ok">👍<small>Ba mẹ khen</small></button></div>
+     <div class="noir" id="res">${SR ? 'Nghe mẫu rồi bấm micro, bé nói theo nhé!' : 'Nghe mẫu, bé nói theo. Ba mẹ bấm 👍 khi bé nói được.'}</div>`);
+    bindSel('noi');
+    const ex = 'Say: ' + w[0] + '!';
+    setTimeout(() => say(ex), 300); $('#rep').onclick = () => say(w[0], { rate: 0.8 });
+    const win = async () => { n++; $('#res').innerHTML = '🌟 Giỏi quá!'; await say('Yes! ' + w[0] + '! Great job!'); if (n >= 5) { await roundDone(); n = 0; } if (location.hash.startsWith('#/game/noi')) play(); };
+    $('#ok').onclick = win;
+    if (SR) $('#mic').onclick = () => {
+      const r = new SR(), b = $('#mic'); r.lang = 'en-US'; r.maxAlternatives = 5; b.classList.add('on'); $('#res').textContent = '👂 Đang nghe bé nói…';
+      let got = false;
+      r.onresult = e => { got = true; const target = w[0].toLowerCase(); const alts = [...e.results[0]].map(a => a.transcript.toLowerCase().replace(/[^a-z ]/g, '').trim());
+        const good = alts.some(a => a.includes(target) || a.split(' ').some(x => x && (lev(x, target) <= Math.max(1, Math.floor(target.length * .4)) || (x.length > 1 && target.startsWith(x.slice(0, 2))))));
+        if (good) win(); else { $('#res').innerHTML = `Bé nói “${esc(alts[0] || '…')}”. Thử lại nha! 💪`; say(w[0], { rate: 0.8 }); } };
+      r.onerror = () => { $('#res').textContent = 'Chưa nghe rõ, bấm micro nói lại nha. (Ba mẹ có thể bấm 👍)'; };
+      r.onend = () => { b.classList.remove('on'); if (!got && $('#res').textContent.startsWith('👂')) $('#res').textContent = 'Chưa nghe rõ, bấm micro nói lại nha.'; };
+      try { r.start(); } catch (e) { r.onend(); }
+    };
+  };
+  play();
+};
+const FEEDERS = [['bunny', 'w/rabbit-face'], ['puppy', 'w/dog-face'], ['kitty', 'w/cat-face'], ['monkey', 'w/monkey-face'], ['panda', 'w/panda'], ['piggy', 'w/pig-face']];
+R.g_an = (k) => {
+  setTabs(null);
+  let n = 0;
+  const play = () => {
+    const t = gameTopic(k, ['fruits', 'vegetables', 'food', 'sweets', 'drinks']); const w = pick(t.w), opts = shuffle([w, ...shuffle(t.w.filter(x => x[0] !== w[0])).slice(0, 2)]);
+    const [an, ai] = pick(FEEDERS); const q = `Give the ${an} the ${w[0]}!`;
+    view(bar('Cho thú ăn', '#/game', starPill()) + topicSel('an', k) + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}</div>
+     <div class="gq"><button id="rep">🔊</button><span>Give the ${an} the <b>${esc(w[0])}</b>!</span></div>
+     <div class="feed"><div class="fan" id="fan"><img src="${IMG(ai)}" alt=""><div class="fmouth"></div></div>
+     <div class="fitems">${opts.map(o => `<div class="fit" data-w="${esc(o[0])}"><img src="${wsrc(o)}" alt="" draggable="false"></div>`).join('')}</div>
+     <div class="kickhint">👆 Kéo hoặc chạm vào đồ ăn đúng</div></div>`);
+    bindSel('an');
+    say(q); $('#rep').onclick = () => say(q);
+    const fan = $('#fan'); let busy = false;
+    const give = async (el) => {
+      if (busy) return; busy = true;
+      const fr = fan.getBoundingClientRect(), er = el.getBoundingClientRect();
+      el.style.transition = 'transform .45s cubic-bezier(.3,.8,.4,1)'; el.style.transform = `translate(${fr.left + fr.width / 2 - er.left - er.width / 2}px,${fr.top + fr.height * .62 - er.top - er.height / 2}px) scale(.35)`;
+      await new Promise(r => setTimeout(r, 460));
+      if (el.dataset.w === w[0]) { el.style.opacity = 0; fan.classList.add('yum'); n++; await say('Yum yum! ' + w[0] + '!'); if (n >= 5) { await roundDone(); n = 0; } if (location.hash.startsWith('#/game/an')) play(); }
+      else { fan.classList.add('nope'); el.style.transform = ''; await say('No, thank you! That is ' + (/^[aeiou]/i.test(el.dataset.w) ? 'an ' : 'a ') + el.dataset.w + '.'); fan.classList.remove('nope'); el.classList.add('no'); busy = false; }
+    };
+    app.querySelectorAll('.fit').forEach(el => {
+      let sx, sy, moved = false;
+      el.addEventListener('pointerdown', e => { if (busy) return; sx = e.clientX; sy = e.clientY; moved = false; el.setPointerCapture(e.pointerId); el.style.transition = 'none'; el.classList.add('drag'); });
+      el.addEventListener('pointermove', e => { if (sx == null) return; const dx = e.clientX - sx, dy = e.clientY - sy; if (Math.hypot(dx, dy) > 8) moved = true; el.style.transform = `translate(${dx}px,${dy}px) scale(1.1)`; });
+      el.addEventListener('pointerup', e => { if (sx == null) return; sx = null; el.classList.remove('drag');
+        const fr = fan.getBoundingClientRect(); const near = e.clientX > fr.left - 30 && e.clientX < fr.right + 30 && e.clientY > fr.top - 30 && e.clientY < fr.bottom + 40;
+        if (!moved || near) give(el); else { el.style.transition = 'transform .3s'; el.style.transform = ''; } });
     });
   };
   play();
@@ -751,7 +815,7 @@ function route() {
   if (a === 'chu-de') return b === 'explore' ? R.explore() : R.topics('flash');
   if (a === 'flash') return R.flash(b, c);
   if (a === 'kham-pha') return R.explore(b);
-  if (a === 'game') return b && R['g_' + b] ? R['g_' + b](c) : R.games();
+  if (a === 'game') return b && b !== 'ghep' && R['g_' + b] ? R['g_' + b](c) : R.games();
   if (a === 'video') return b === 'v' ? R.play(c) : b === 'file' ? R.vfile() : R.video(b === 'c' ? c : 'all');
   if (a === 'yeu-thich') return R.favs();
   if (a === 'thanh-tich') return R.journey();
