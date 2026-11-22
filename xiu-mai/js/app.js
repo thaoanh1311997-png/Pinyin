@@ -243,12 +243,13 @@ const GAMES = [
   ['bong', 'Bắn bong bóng', 'Pop the balloon!', 'w/balloon', '#FFD6DE'],
   ['ghep', 'Ghép hình', 'Puzzle', 'w/puzzle-piece', '#DFF5C8'],
   ['lat', 'Lật thẻ tìm cặp', 'Memory', 'w/sparkles', '#E9D8FF'],
+  ['banh', 'Đá banh', 'Kick the ball!', 'w/soccer-ball', '#D8F5D0'],
 ];
 const EASY = ['animals', 'fruits', 'vehicles', 'toys', 'wild', 'sea', 'food', 'bugs', 'vegetables', 'clothes'];
 const PUZ = ['animals', 'wild', 'fruits', 'vehicles', 'sea', 'toys', 'bugs', 'vegetables'];
-function gameTopic(k, list = EASY) { const t = topic(k); if (t && t.w.length >= 4) return t; return topic(pick(list)); }
-function topicSel(g, k) { return `<div class="seg">${['all', ...topicList().filter(t => t.w.length >= 4 && t.k !== 'numbers').map(t => t.k)].map(x => { const t = topic(x); return `<button data-k="${x}" class="${(k || 'all') === x ? 'on' : ''}">${x === 'all' ? '🎲 Ngẫu nhiên' : t.vi}</button>`; }).join('')}</div>`; }
-function bindSel(g) { app.querySelectorAll('.seg button').forEach(b => b.onclick = () => go(`#/game/${g}${b.dataset.k === 'all' ? '' : '/' + b.dataset.k}`)); }
+function gameTopic(k, list = EASY) { if (!k && custom().length >= 4) k = 'lop'; if (k === 'all') k = null; const t = topic(k); if (t && t.w.length >= 4) return t; return topic(pick(list)); }
+function topicSel(g, k) { return `<div class="seg">${['all', ...topicList().filter(t => t.w.length >= 4 && t.k !== 'numbers').map(t => t.k)].map(x => { const t = topic(x); return `<button data-k="${x}" class="${(k || (custom().length >= 4 ? 'lop' : 'all')) === x ? 'on' : ''}">${x === 'all' ? '🎲 Ngẫu nhiên' : t.vi}</button>`; }).join('')}</div>`; }
+function bindSel(g) { app.querySelectorAll('.seg button').forEach(b => b.onclick = () => go(`#/game/${g}/${b.dataset.k}`)); }
 R.games = () => {
   setTabs('kid', '');
   view(bar('Trò chơi', '#/be', starPill()) + `<div class="grid"><a class="tcard" href="#/kham-pha" style="background:#FFF1C9"><img class="ic" src="${IMG('w/speech-balloon')}" alt=""><b>Ghép câu</b><small>Make a sentence</small></a>${GAMES.map(g => `<a class="tcard" href="#/game/${g[0]}" style="background:${g[4]}"><img class="ic" src="${IMG(g[3])}" alt=""><b>${g[1]}</b><small>${g[2]}</small></a>`).join('')}</div>`);
@@ -277,15 +278,15 @@ R.g_nghe = (k) => {
   setTabs(null);
   let n = 0;
   const play = () => {
-    const t = gameTopic(k); const w = pick(t.w), opts = shuffle([w, ...shuffle(t.w.filter(x => x[0] !== w[0])).slice(0, 3)]);
+    const t = gameTopic(k); const lv = Math.min(LS.get('ngheN', 4), 8, t.w.length); const w = pick(t.w), opts = shuffle([w, ...shuffle(t.w.filter(x => x[0] !== w[0])).slice(0, lv - 1)]);
     const q = `Where is the ${w[0]}?`;
     view(bar('Nghe và chọn hình', '#/game', starPill()) + topicSel('nghe', k) + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}</div>
      <div class="gq"><button id="rep">🔊</button><span>Where is the <b>${esc(w[0])}</b>?</span></div>
-     <div class="gimgs">${opts.map(o => `<button class="gimg" data-w="${esc(o[0])}"><img src="${wsrc(o)}" alt=""></button>`).join('')}</div>`);
+     <div class="glv">Cấp ${lv - 3} · ${lv} hình</div><div class="gimgs n${lv}">${opts.map(o => `<button class="gimg" data-w="${esc(o[0])}"><img src="${wsrc(o)}" alt=""></button>`).join('')}</div>`);
     bindSel('nghe');
     say(q); $('#rep').onclick = () => say(q);
     app.querySelectorAll('.gimg').forEach(b => b.onclick = async () => {
-      if (b.dataset.w === w[0]) { b.classList.add('ok'); n++; await say('Yes! ' + w[0] + '!'); if (n >= 5) { await roundDone(); n = 0; } play(); }
+      if (b.dataset.w === w[0]) { b.classList.add('ok'); n++; await say('Yes! ' + w[0] + '!'); if (n >= 5) { LS.set('ngheN', Math.min(8, LS.get('ngheN', 4) + 1)); await roundDone(); n = 0; } if (location.hash.startsWith('#/game/nghe')) play(); }
       else { b.classList.add('no'); say('This is ' + (/^[aeiou]/i.test(b.dataset.w) ? 'an ' : 'a ') + b.dataset.w + '. Try again!'); }
     });
   };
@@ -304,18 +305,53 @@ R.g_bong = (k) => {
     if (!document.body.contains(sky)) { clearInterval(timer); return; }
     const w = Math.random() < .4 ? target : pick(t.w);
     const b = document.createElement('button'); b.className = 'bl';
-    const W = sky.clientWidth; b.style.left = (8 + Math.random() * Math.max(10, W - 120)) + 'px';
-    b.style.background = pick(COLS); b.style.animationDuration = (6 + Math.random() * 3) + 's';
+    const W = sky.clientWidth; if (sky.querySelectorAll('.bl').length >= 5) return; b.style.left = (8 + Math.random() * Math.max(10, W - 140)) + 'px';
+    b.style.background = pick(COLS); b.style.animationDuration = (10 + Math.random() * 3) + 's';
     b.innerHTML = `<img src="${wsrc(w)}" alt="">`;
-    b.onclick = async () => {
-      if (w[0] === target[0]) { b.style.transition = 'transform .2s,opacity .2s'; b.style.transform += ' scale(1.6)'; b.style.opacity = 0; setTimeout(() => b.remove(), 200); n++; hs(); await say('Pop! ' + w[0] + '!'); if (n >= 5) { clearInterval(timer); await roundDone(); n = 0; timer = setInterval(spawn, 1100); } newTarget(); }
+    b._hit = async () => {
+      if (b._done) return;
+      if (w[0] === target[0]) { b._done = 1; b.style.transition = 'transform .2s,opacity .2s'; b.style.transform += ' scale(1.6)'; b.style.opacity = 0; setTimeout(() => b.remove(), 200); n++; hs(); await say('Pop! ' + w[0] + '!'); if (n >= 5) { clearInterval(timer); await roundDone(); n = 0; timer = setInterval(spawn, 1600); } newTarget(); }
       else { b.classList.add('no'); say(w[0] + '!'); }
     };
     b.addEventListener('animationend', () => b.remove());
     sky.appendChild(b);
   };
+  // tap anywhere near a balloon pops it (moving targets are hard for small fingers)
+  sky.addEventListener('pointerdown', e => {
+    e.preventDefault(); let best = null, bd = 1e9;
+    sky.querySelectorAll('.bl').forEach(x => { if (x._done) return; const r = x.getBoundingClientRect(); const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2); const d = Math.hypot(dx, dy); if (d < bd) { bd = d; best = x; } });
+    if (best && bd < 110) best._hit();
+  });
   $('#rep').onclick = () => say('Pop the ' + target[0] + '!');
-  newTarget(); spawn(); timer = setInterval(spawn, 1100);
+  newTarget(); spawn(); timer = setInterval(spawn, 1600);
+};
+R.g_banh = (k) => {
+  setTabs(null);
+  let n = 0;
+  const play = () => {
+    const t = gameTopic(k); const w = pick(t.w), opts = shuffle([w, ...shuffle(t.w.filter(x => x[0] !== w[0])).slice(0, 2)]);
+    const q = `Kick the ball to the ${w[0]}!`;
+    view(bar('Đá banh', '#/game', starPill()) + topicSel('banh', k) + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}</div>
+     <div class="gq"><button id="rep">🔊</button><span>Kick to the <b>${esc(w[0])}</b>!</span></div>
+     <div class="pitch"><div class="goals">${opts.map(o => `<button class="goal" data-w="${esc(o[0])}"><span class="net"></span><img src="${wsrc(o)}" alt=""></button>`).join('')}</div>
+     <img class="ball" id="ball" src="${IMG('w/soccer-ball')}" alt=""><div class="kickhint">👆 Chạm vào khung thành đúng hình</div></div>`);
+    bindSel('banh');
+    say(q); $('#rep').onclick = () => say(q);
+    let busy = false;
+    app.querySelectorAll('.goal').forEach(g => g.onclick = async () => {
+      if (busy) return; busy = true;
+      const ball = $('#ball'), br = ball.getBoundingClientRect(), gr = g.getBoundingClientRect();
+      const dx = gr.left + gr.width / 2 - (br.left + br.width / 2), dy = gr.top + gr.height * .55 - (br.top + br.height / 2);
+      ball.style.transition = 'transform .55s cubic-bezier(.2,.7,.3,1)'; ball.style.transform = `translate(${dx}px,${dy}px) rotate(540deg) scale(.6)`;
+      await new Promise(r => setTimeout(r, 560));
+      if (g.dataset.w === w[0]) { g.classList.add('ok'); n++; await say('Goal! ' + w[0] + '!'); if (n >= 5) { await roundDone(); n = 0; } if (location.hash.startsWith('#/game/banh')) play(); }
+      else {
+        g.classList.add('no'); ball.style.transform = 'translate(0,0) rotate(0) scale(1)';
+        await say('This is ' + (/^[aeiou]/i.test(g.dataset.w) ? 'an ' : 'a ') + g.dataset.w + '. Try again!'); busy = false;
+      }
+    });
+  };
+  play();
 };
 R.g_ghep = (k) => {
   setTabs(null);
@@ -728,6 +764,9 @@ function route() {
 }
 window.addEventListener('hashchange', route);
 const credP = fetch('data/photo-credits.json', { cache: 'no-cache' }).then(r => r.json()).then(d => Object.assign(CRED, d)).catch(() => {});
+// kids tap fast: stop iOS double-tap / pinch zoom
+['gesturestart', 'gesturechange'].forEach(ev => document.addEventListener(ev, e => e.preventDefault(), { passive: false }));
+let lastTouch = 0; document.addEventListener('touchend', e => { const t = Date.now(); if (t - lastTouch < 350 && !e.target.closest('input,textarea,select')) e.preventDefault(); lastTouch = t; }, { passive: false });
 window.XM = { custom, PH, singular, example, $, esc, say, toast, cheer, bump, wsrc, IMG, ALL, LS, stars, addStar, topic, setTabs, bar, view, starPill, R, go, pick, pickVoice, day, today };
 Promise.all([idb().then(phLoadAll).catch(() => {}), credP]).then(route, route);
 })();
