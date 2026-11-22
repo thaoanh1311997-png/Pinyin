@@ -42,3 +42,4 @@ create policy bm_files_sel on storage.objects for select to authenticated using 
 create policy bm_files_ins on storage.objects for insert to authenticated with check (bucket_id = 'files' and (storage.foldername(name))[1] = auth.uid()::text);
 create policy bm_files_upd on storage.objects for update to authenticated using (bucket_id = 'files' and (storage.foldername(name))[1] = auth.uid()::text);
 create policy bm_files_del on storage.objects for delete to authenticated using (bucket_id = 'files' and (storage.foldername(name))[1] = auth.uid()::text);
+create or replace function public.bm_ping() returns int language sql stable as $$ select 1 $$; grant execute on function public.bm_ping() to anon;

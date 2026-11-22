@@ -13,4 +13,4 @@ jobs:
         run: |
           KEY=$(grep -oE "key: '[^']+'" shared/sync.js | head -1 | cut -d"'" -f2)
           URL=$(grep -oE "url: 'https://[^']+'" shared/sync.js | head -1 | cut -d"'" -f2)
-          curl -fsS "$URL/rest/v1/kv?select=k&limit=1" -H "apikey: $KEY" -H "Authorization: Bearer $KEY" -o /dev/null -w "%{http_code}\n"
+          curl -fsS -X POST "$URL/rest/v1/rpc/bm_ping" -H "apikey: $KEY" -H "Authorization: Bearer $KEY" -o /dev/null -w "%{http_code}\n"
