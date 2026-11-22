@@ -46,7 +46,7 @@ function mascot(cls) {
 /* ---------------- pinyin ---------------- */
 var PY = window.pinyinPro;
 /* pinyin fixes: common polyphones that pinyin-pro gets wrong in context */
-try { PY.customPinyin({ '长满': 'zhǎng mǎn', '长高': 'zhǎng gāo', '长出': 'zhǎng chū', '长得': 'zhǎng de', '长胖': 'zhǎng pàng', '调高': 'tiáo gāo', '调低': 'tiáo dī', '背不动': 'bēi bú dòng', '背走': 'bēi zǒu', '背着': 'bēi zhe', '背起': 'bēi qǐ', '种了': 'zhòng le', '种下': 'zhòng xià', '种树': 'zhòng shù', '种菜': 'zhòng cài', '还给': 'huán gěi', '还钱': 'huán qián', '还书': 'huán shū', '塞翁': 'sài wēng', '椰子': 'yē zi', '难处': 'nán chu', '一点儿': 'yì diǎn r', '一会儿': 'yí huì r', '一块儿': 'yí kuài r', '玩儿': 'wán r', '哪儿': 'nǎ r', '这儿': 'zhè r', '那儿': 'nà r', '有点儿': 'yǒu diǎn r', '一下儿': 'yí xià r', '好好儿': 'hǎo hāo r', '慢慢儿': 'màn mān r', '没事儿': 'méi shì r', '一边儿': 'yì biān r', '朝三暮四': 'zhāo sān mù sì', '乐广': 'yuè guǎng', '蔺相如': 'lìn xiàng rú', '桃子': 'táo zi', '斧子': 'fǔ zi', '豆子': 'dòu zi', '袋子': 'dài zi', '金子': 'jīn zi', '蚊子': 'wén zi', '妻子': 'qī zi', '粽子': 'zòng zi', '橡子': 'xiàng zi', '杯子': 'bēi zi', '一下子': 'yí xià zi', '和尚': 'hé shang', '石头': 'shí tou', '有多重': 'yǒu duō zhòng', '担心得': 'dān xīn de', '只会': 'zhǐ huì', '一只会': 'yì zhī huì', '只剩': 'zhǐ shèng', '只装': 'zhǐ zhuāng', '只得到': 'zhǐ dé dào', '封为': 'fēng wéi', '还剑': 'huán jiàn', '还你': 'huán nǐ', '点着蜡烛': 'diǎn zhe là zhú', '点着了一根': 'diǎn zháo le yì gēn' }); } catch (e) {}
+try { PY.customPinyin({ '长满': 'zhǎng mǎn', '长高': 'zhǎng gāo', '长出': 'zhǎng chū', '长得': 'zhǎng de', '长胖': 'zhǎng pàng', '调高': 'tiáo gāo', '调低': 'tiáo dī', '背不动': 'bēi bú dòng', '背走': 'bēi zǒu', '背着': 'bēi zhe', '背起': 'bēi qǐ', '种了': 'zhòng le', '种下': 'zhòng xià', '种树': 'zhòng shù', '种菜': 'zhòng cài', '还给': 'huán gěi', '还钱': 'huán qián', '还书': 'huán shū', '塞翁': 'sài wēng', '椰子': 'yē zi', '难处': 'nán chu', '一点儿': 'yì diǎn r', '一会儿': 'yí huì r', '一块儿': 'yí kuài r', '玩儿': 'wán r', '哪儿': 'nǎ r', '这儿': 'zhè r', '那儿': 'nà r', '有点儿': 'yǒu diǎn r', '一下儿': 'yí xià r', '好好儿': 'hǎo hāo r', '慢慢儿': 'màn mān r', '没事儿': 'méi shì r', '一边儿': 'yì biān r', '朝三暮四': 'zhāo sān mù sì', '乐广': 'yuè guǎng', '蔺相如': 'lìn xiàng rú', '桃子': 'táo zi', '斧子': 'fǔ zi', '豆子': 'dòu zi', '袋子': 'dài zi', '金子': 'jīn zi', '蚊子': 'wén zi', '妻子': 'qī zi', '粽子': 'zòng zi', '橡子': 'xiàng zi', '杯子': 'bēi zi', '一下子': 'yí xià zi', '和尚': 'hé shang', '石头': 'shí tou', '有多重': 'yǒu duō zhòng', '担心得': 'dān xīn de', '只会': 'zhǐ huì', '一只会': 'yì zhī huì', '只剩': 'zhǐ shèng', '只装': 'zhǐ zhuāng', '只得到': 'zhǐ dé dào', '封为': 'fēng wéi', '还剑': 'huán jiàn', '还你': 'huán nǐ', '点着蜡烛': 'diǎn zhe là zhú', '点着了一根': 'diǎn zháo le yì gēn', '看中文': 'kàn zhōng wén', '看中国': 'kàn zhōng guó', '人参加': 'rén cān jiā', '着急': 'zháo jí', '生长': 'shēng zhǎng', '长成了': 'zhǎng chéng le', '有空吗': 'yǒu kòng ma', '一有空': 'yì yǒu kòng', '有空常': 'yǒu kòng cháng', '出口量': 'chū kǒu liàng', '借阅量': 'jiè yuè liàng', '适量': 'shì liàng', '倒水': 'dào shuǐ', '倒了一杯': 'dào le yì bēi', '继续倒': 'jì xù dào', '提供': 'tí gōng', '涨红': 'zhàng hóng', '只比': 'zhǐ bǐ', '只带': 'zhǐ dài', '只读': 'zhǐ dú', '只学习': 'zhǐ xué xí', '舍不得': 'shě bu de', '踏实': 'tā shi' }); } catch (e) {}
 var DE_NEXT = '到意出分奖病罪知失益体当以逞手宠势票主天', DE_PRE = '获取难心赢求所舍免自夺彼雅安'; // 得 stays dé
 var DEI_PRE = '我你他她它们就也都少须还'; // modal 得 = děi
 var DI_PRE = '了在等局海两多一散的满土大天当各本外内此场基草田园陆山盆工目该某产境遍原落空耕荒雪平高低绿圣宝福胜营阵驻腹属领湿沼盐坡谷洼旱农墓'; // noun + 地 → dì
@@ -161,37 +161,22 @@ function easeBadge(ez) {
 }
 
 /* ---------------- speech (TTS) ---------------- */
-var TTS = { voices: [], f: null, m: null, rate: LS.get('rate', 0.9) };
-function pickVoices() {
-  if (!window.speechSynthesis) return;
-  var v = speechSynthesis.getVoices().filter(function (x) { return /^zh[-_](CN|Hans)/i.test(x.lang) || x.lang === 'zh'; });
-  if (!v.length) v = speechSynthesis.getVoices().filter(function (x) { return /^zh/i.test(x.lang) && !/HK|TW|yue/i.test(x.lang); });
-  TTS.voices = v;
-  var male = v.filter(function (x) { return /yunxi|yunyang|yunjian|kangkang|li-?mu|男|male|xiaoyou/i.test(x.name) && !/female/i.test(x.name); });
-  var fem = v.filter(function (x) { return male.indexOf(x) < 0; });
-  TTS.f = fem.find(function (x) { return /tingting|xiaoxiao|xiaoyi|huihui|google/i.test(x.name); }) || fem[0] || v[0] || null;
-  TTS.m = male[0] || null;
-}
-if (window.speechSynthesis) { pickVoices(); speechSynthesis.onvoiceschanged = pickVoices; }
+// Giọng đọc dùng chung (shared/voice.js): câu có sẵn trên web = giọng AI thu sẵn; câu mới = giọng máy tốt nhất, ngắt theo câu.
+var TTS = { rate: LS.get('rate', 0.9) };
 var speakJob = 0;
-function stopSpeak() { speakJob++; try { speechSynthesis.cancel(); } catch (e) {} $$('.play.on').forEach(function (b) { b.classList.remove('on'); }); }
+function stopSpeak() { speakJob++; try { if (window.BMVoice) BMVoice.stop(); else speechSynthesis.cancel(); } catch (e) {} $$('.play.on').forEach(function (b) { b.classList.remove('on'); }); }
 function speakLines(lines, onDone, onLine) {
-  if (!window.speechSynthesis) { toast('Trình duyệt này không có giọng đọc 😢'); if (onDone) onDone(); return; }
+  if (!window.BMVoice || !BMVoice.available()) { toast('Trình duyệt này không có giọng đọc 😢'); if (onDone) onDone(); return; }
   stopSpeak(); var job = ++speakJob; var i = 0;
   var next = function () {
     if (job !== speakJob) return;
     if (i >= lines.length) { if (onDone) onDone(); return; }
     var L = lines[i++]; if (onLine) onLine(i - 1);
-    var u = new SpeechSynthesisUtterance(L.text); u.lang = 'zh-CN';
-    var r = TTS.rate * (L.slow ? 0.7 : 1);
-    if (L.who === 'm') { if (TTS.m) { u.voice = TTS.m; u.pitch = 1; } else { if (TTS.f) u.voice = TTS.f; u.pitch = 0.62; } }
-    else if (L.who === 'q') { if (TTS.f) u.voice = TTS.f; u.pitch = 1.05; }
-    else { if (TTS.f) u.voice = TTS.f; u.pitch = L.who === 'f' ? 1.18 : 1; }
-    u.rate = r;
-    var done = false; var fin = function () { if (done) return; done = true; clearTimeout(guard); setTimeout(next, L.gap || 450); };
-    u.onend = fin; u.onerror = fin;
-    var guard = setTimeout(fin, 1500 + L.text.length * 420 / r);
-    speechSynthesis.speak(u);
+    if (lines[i]) BMVoice.prefetch(lines[i].text, lines[i].who);
+    BMVoice.speak(L.text, { rate: TTS.rate * (L.slow ? 0.7 : 1), who: L.who === 'q' ? 'n' : L.who }).then(function () {
+      if (job !== speakJob) return;
+      setTimeout(next, L.gap || 450);
+    });
   };
   next();
 }
@@ -1116,7 +1101,7 @@ var _vocab = routes.vocab;
 
 /* =============================== GRAMMAR =============================== */
 var GCNT = { 1: 70, 2: 78, 3: 96, 4: 95, 5: 70, 6: 50, 7: 134 };
-var GV = '20261122a';
+var GV = '20261122v';
 var gramP = null;
 function loadGrammar() {
   if (window.GRAMMAR) return Promise.resolve(window.GRAMMAR);

@@ -160,6 +160,7 @@ html[data-theme="dark"] .allok{color:#5FDBA5}
 </head>
 <body>
 <script src="shared/nav.js?v=14"></script>
+<script src="shared/voice.js?v=1"></script>
 <div class="floaty" aria-hidden="true"><span style="left:4%;top:18%">学</span><span style="right:6%;top:34%;animation-delay:-4s">汉</span><span style="left:8%;top:62%;animation-delay:-8s;font-size:30px">字</span><span style="right:10%;top:80%;animation-delay:-2s;font-size:34px">好</span></div>
 
 <main class="wrap">
@@ -267,7 +268,7 @@ html[data-theme="dark"] .allok{color:#5FDBA5}
   /* Bánh Mì nói */
   var HI=[['你好！','Xin chào!'],['加油！','Cố lên!'],['你真棒！','Bạn giỏi quá!'],['我们一起学吧！','Mình cùng học nhé!'],['今天学习了吗？','Hôm nay học chưa?'],['慢慢来～','Cứ từ từ nha~']];
   var hiN=0, bud=$('buddy'), bub=$('bubble');
-  function say(t,lang){try{if(!('speechSynthesis' in window))return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang=lang||'zh-CN';u.rate=.9;var v=speechSynthesis.getVoices().filter(function(x){return /^zh(-|_)CN/i.test(x.lang)})[0];if(v)u.voice=v;speechSynthesis.speak(u);}catch(e){}}
+  function say(t){try{if(window.BMVoice)BMVoice.speak(t,{rate:.9});}catch(e){}}
   function poke(){hiN=(hiN+1)%HI.length;bub.textContent=HI[hiN][0];bub.title=HI[hiN][1];bub.style.animation='none';bub.offsetWidth;bub.style.animation='';bud.classList.remove('jump');bud.offsetWidth;bud.classList.add('jump');say(HI[hiN][0]);}
   bud.addEventListener('click',poke);bud.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();poke();}});
 
@@ -322,7 +323,6 @@ html[data-theme="dark"] .allok{color:#5FDBA5}
   showQ();
   $('qNext').onclick=function(){qi=(qi+1)%Q.length;showQ(true)};
   $('qSay').onclick=function(){say(Q[qi][0])};
-  if('speechSynthesis' in window){try{speechSynthesis.getVoices();}catch(e){}}
 })();
 </script>
 </body>

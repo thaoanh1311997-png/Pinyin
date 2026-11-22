@@ -514,6 +514,7 @@ body.v-Lesson .wrap{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))
 </head>
 <body class="tone">
 <script src="../shared/nav.js?v=14"></script>
+<script src="../shared/voice.js?v=1"></script>
 <header class="top"><div class="top-in">
   <button class="back" id="goBack" aria-label="Quay lại" hidden><svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
   <button class="brand" id="goHome" aria-label="Về trang chủ"><span class="mascot-slot"></span><b>Học video</b></button>
@@ -915,34 +916,20 @@ async function translateLines(lines,onEach){
 }
 
 /* ======================= speech (TTS) ======================= */
-let VOICE=null;
-function pickVoice(){
-  if(!('speechSynthesis' in window)) return;
-  const vs=speechSynthesis.getVoices(); const zh=vs.filter(v=>/^(zh|cmn)/i.test(v.lang));
-  VOICE=zh.find(v=>/zh[-_]CN/i.test(v.lang)&&/Xiaoxiao|Yunxi|Google|Tingting|Huihui|Yaoyao|Kangkang/i.test(v.name))||zh.find(v=>/zh[-_]CN/i.test(v.lang))||zh.find(v=>!/HK|TW|yue/i.test(v.lang))||zh[0]||null;
-}
-if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+// Giọng đọc dùng chung (shared/voice.js): câu có sẵn = giọng AI thu sẵn; câu mới = giọng máy tốt nhất, ngắt nghỉ theo câu.
 let lastSpeakMs=0;
 function speak(text,rate=1,run){
-  return new Promise(res=>{
-    if(!('speechSynthesis' in window)){toast('Trình duyệt này không có giọng đọc. Hãy dùng Chrome, Edge hoặc Safari.');return res(false);}
-    speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(text.replace(/[“”"「」『』]/g,''));
-    u.lang='zh-CN'; if(VOICE)u.voice=VOICE; u.rate=Math.max(.5,Math.min(1.6,rate*.95));
-    const t0=performance.now(); let done=false;
-    const fin=()=>{if(done)return;done=true;clearTimeout(tm);clearInterval(iv);lastSpeakMs=performance.now()-t0;res(true);};
-    u.onend=fin;u.onerror=fin;
-    const tm=setTimeout(fin,2500+[...text].length*520/u.rate);
-    const iv=setInterval(()=>{if(run&&run.dead){speechSynthesis.cancel();fin();}},100);
-    speechSynthesis.speak(u);
-  });
+  if(!window.BMVoice||!BMVoice.available()){toast('Trình duyệt này không có giọng đọc. Hãy dùng Chrome, Edge hoặc Safari.');return Promise.resolve(false);}
+  const t0=performance.now();
+  const iv=setInterval(()=>{if(run&&run.dead){clearInterval(iv);BMVoice.stop();}},100);
+  return BMVoice.speak(text,{rate:Math.max(.5,Math.min(1.6,rate*.95))}).then(ok=>{clearInterval(iv);lastSpeakMs=performance.now()-t0;return true;});
 }
 
 /* ======================= player ======================= */
 let P=null, LES=null, MODE='shadow', CUR=0;
 let RUN={dead:true}, PLAYING=null;
 function newRun(){RUN.dead=true;stopAudio();RUN={dead:false};return RUN;}
-function stopAudio(){try{speechSynthesis.cancel()}catch(e){} if(P&&P.media)try{P.pause()}catch(e){} if(recAudio){recAudio.pause();recAudio=null;} }
+function stopAudio(){try{if(window.BMVoice)BMVoice.stop();else speechSynthesis.cancel()}catch(e){} if(P&&P.media)try{P.pause()}catch(e){} if(recAudio){recAudio.pause();recAudio=null;} }
 const isMedia=f=>/^(audio|video)\//.test(f.type||'')||/\.(mp3|m4a|aac|wav|ogg|oga|opus|flac|wma|amr|mpga|mp4|m4v|mov|webm|mkv|mpeg|3gp|caf|aiff?)$/i.test(f.name||'')||!/\.[a-z0-9]{2,4}$/i.test(f.name||'');
 const isAudio=f=>/^audio/.test(f.type||'')||/\.(mp3|m4a|aac|wav|ogg|oga|opus|flac|wma|amr|mpga)$/i.test(f.name||'');
 function ytId(u){
@@ -993,7 +980,7 @@ let MCN=0; function mascot(){return MASCOT.replace(/bbG/g,'bmG'+(++MCN));} // un
 $$('.mascot-slot').forEach(el=>el.outerHTML=mascot());
 function ttsBox(msg){
   const has='speechSynthesis' in window;
-  return `<div class="media tts">${mascot()}<div style="min-width:0"><b>${esc(LES.title)}</b><small>${esc(msg||(LES.lines.length+' câu · Bánh Mì đọc bằng giọng máy'+(has?'':' (trình duyệt này không có giọng đọc)')))}</small></div></div>`;
+  return `<div class="media tts">${mascot()}<div style="min-width:0"><b>${esc(LES.title)}</b><small>${esc(msg||(LES.lines.length+' câu · Bánh Mì đọc cho bạn nghe'+(has?'':' (trình duyệt này không có giọng đọc)')))}</small></div></div>`;
 }
 const hasTime=i=>P&&P.media&&LES.lines[i]&&LES.lines[i].s!=null;
 async function playSeg(i,run,opt={}){

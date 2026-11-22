@@ -219,6 +219,7 @@ table.bi col.num{width:28px}
 </head>
 <body>
 <script src="../shared/nav.js?v=14"></script>
+<script src="../shared/voice.js?v=1"></script>
 <div class="bar"><div class="in">
   <a class="back" href="./" aria-label="Về trang ra đề">←</a>
   <div><div class="t">Tài liệu ôn</div><div class="s" id="barSub">Dịch song ngữ · Luyện dịch · Ngữ pháp</div></div>
@@ -395,8 +396,7 @@ var VK={"名":"danh từ","动":"động từ","形":"tính từ","副":"phó t�
 function vkind(k){ return String(k||"").split("、").map(function(x){return VK[x]||x}).join(", "); }
 var VM=ls("tl.vmode")||"list", VS={i:0,show:false,order:null,q:null,score:0,done:0,key:""};
 function vocabList(L){ var out=[]; L.forEach(function(l){ (l.vocab||[]).forEach(function(v){ out.push({z:v[0],p:v[1],k:v[2],m:v[3],n:l.n}); }); }); return out; }
-function say(t){ try{ if(!window.speechSynthesis) { toast("Máy này chưa đọc được tiếng Trung"); return; } speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(String(t).replace(/[()（）]/g,"").replace(/……/g,"")); u.lang="zh-CN"; u.rate=0.8;
-  var vs=speechSynthesis.getVoices().filter(function(v){return /^zh(-|_)?(CN|Hans)?/i.test(v.lang)}); if(vs.length) u.voice=vs.filter(function(v){return /CN/i.test(v.lang)})[0]||vs[0]; speechSynthesis.speak(u); }catch(e){} }
+function say(t){ try{ if(!window.BMVoice||!BMVoice.available()) { toast("Máy này chưa đọc được tiếng Trung"); return; } BMVoice.speak(String(t).replace(/……/g,""),{rate:0.8}); }catch(e){} }
 function shuf(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
 function vocabHTML(L,sub){
   var V=vocabList(L), h='<div class="doc-title"><h1>TỪ VỰNG</h1><p>'+sub+' · '+V.length+' từ</p></div>';
