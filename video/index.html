@@ -1457,7 +1457,7 @@ $$('[data-go]').forEach(b=>b.onclick=()=>{const k=b.dataset.go; if(k==='video'){
 
 async function openLesson(les){
   newRun(); stopRec();
-  LES={...les,lines:les.lines.map(l=>({...l}))}; CUR=0; if(!LES.lines.length) MODE='shadow'; RECS={}; PRON={}; DICTST={}; FILLST={}; PRAC=null;
+  LES={...les,lines:les.lines.map(l=>({...l}))}; if(LES.lines.length&&(fragmented(LES.lines)||LES.lines.some(l=>cjkCount(l.zh)&&cleanZh(l.zh)!==l.zh))){ LES.lines=tidyLines(LES.lines); } CUR=0; if(!LES.lines.length) MODE='shadow'; RECS={}; PRON={}; DICTST={}; FILLST={}; PRAC=null;
   show('Lesson'); renderModes(); await mountMedia(); setMode(MODE);
   saveLesson();
   translateLines(LES.lines,l=>{const i=LES.lines.indexOf(l);$$(`[data-vi="${i}"]`).forEach(el=>{el.textContent=l.vi;el.classList.remove('wait');});})
@@ -1958,7 +1958,31 @@ async function autoSubsFile(){
   finally{ job.running=false; }
 }
 function stretchT(lines,dur){ try{const real=P&&P.media&&P.dur&&P.dur(); if(real&&Math.abs(real-dur)>0.05&&Math.abs(real/dur-1)<0.03){const k=real/dur; lines.forEach(l=>{l.s*=k;l.e*=k;});}}catch(e){} }
+// lyric/AI transcripts often come one word per line: glue short pieces into real phrases
+function fragmented(lines){ if(!lines||lines.length<8) return false; const sh=lines.filter(l=>cjkCount(l.zh)<=3).length; return sh/lines.length>=.5; }
+// some videos burn pinyin into their captions ("Zhǐjīn xǐyīyè… 纸巾、洗衣液…"): keep only the Chinese, the app adds its own pinyin
+const TONE_RE=/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/i;
+function cleanZh(t){
+  t=String(t||''); if(!cjkCount(t)) return t;
+  return t.replace(/[A-Za-zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüÜ'’][A-Za-zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüÜ'’\s,.!?;:-]*/g,m=>{
+    const ws=m.trim().split(/\s+/).filter(Boolean);
+    return TONE_RE.test(m)||ws.length>=3&&ws.every(w=>/^[a-zü'’,.!?;:-]+$/.test(w))?' ':m;
+  }).replace(/\s{2,}/g,' ').trim();
+}
+function tidyLines(lines){ return mergeShort((lines||[]).map(l=>({...l,zh:cleanZh(l.zh)})).filter(l=>cjkCount(l.zh))); }
+function mergeShort(lines){
+  if(!fragmented(lines)) return lines;
+  const out=[];
+  for(const l of lines){
+    const c=out[out.length-1], n=cjkCount(l.zh);
+    if(c&&cjkCount(c.zh)<8&&n&&l.s-c.e<1.5&&cjkCount(c.zh)+n<=14&&!/[。！？!?]$/.test(c.zh)){ c.zh+=(/[，,、；]$/.test(c.zh)?'':' ')+l.zh; c.e=Math.max(c.e,l.e); }
+    else out.push({s:l.s,e:l.e,zh:l.zh});
+  }
+  out.forEach(l=>{l.zh=l.zh.replace(/\s+/g,' ').trim();});
+  return out;
+}
 function finishGen(lines){
+  lines=tidyLines(lines);
   LES.lines=lines; if(!/^Video/.test(LES.title)||LES.title==='Video YouTube') LES.title=LES.title==='Video YouTube'?'Video · '+lines[0].zh.slice(0,16):LES.title;
   $('#topTitle').textContent=LES.title; saveLesson(); toast('Xong phụ đề! Chạm vào câu nào để nghe đoạn đó.',4000);
   setMode('shadow');
@@ -2503,7 +2527,7 @@ async function pWrite(){
     <div class="center muted" id="hwMsg" style="font-size:13.5px;margin-top:8px">Bấm “Tự viết” rồi dùng ngón tay hoặc chuột viết từng nét vào ô.</div></div>`;
   $$('[data-hw]').forEach(b=>b.onclick=()=>{PRAC.hw=b.dataset.hw;pWrite();});
   $('#hwSay').onclick=()=>speak(w,.8);
-  try{ await loadScript(LIB.hw); }catch(e){ $('#hwMsg').textContent='Không tải được bộ nét chữ (cần mạng).'; return; }
+  try{ await loadScript(LIB.hw); }catch(e){ const m=$('#hwMsg'); if(m) m.textContent='Không tải được bộ nét chữ (cần mạng).'; return; }
   if(PRAC.hw!==w) return;
   const cs=getComputedStyle(document.documentElement);
   const col=n=>cs.getPropertyValue(n).trim();
