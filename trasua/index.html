@@ -350,6 +350,53 @@ input.chr{width:64px;height:56px;border-radius:15px;border:2px solid var(--line)
 .ph .heard{font-size:14px;font-weight:800;margin-top:8px}
 .nopy rt{visibility:hidden}
 
+/* ngữ pháp */
+.t-gram{grid-column:1/-1;min-height:0;flex-direction:row;align-items:center;justify-content:flex-start;gap:14px;background:linear-gradient(150deg,#fff,#ebe5ff)}
+.t-gram .em{font-size:36px}
+.vgseg{display:flex;gap:8px;margin:0 0 12px}
+.vgseg a{flex:1;text-align:center;text-decoration:none;color:var(--ink2);background:var(--card);box-shadow:var(--sh);border-radius:16px;padding:10px 6px;font-weight:900;font-size:15px;border:2px solid transparent}
+.vgseg a.on{color:var(--tea);border-color:var(--tea)}
+.gstat{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 2px 12px;font-size:13px;font-weight:800;color:var(--ink2)}
+.gstat b{color:var(--ink);font-weight:900}.gstat .gnum{margin-left:auto}.gstat .gnum b{color:var(--mint);font-size:15px}
+.gbar{flex:1 1 100%;height:8px;border-radius:9px;background:var(--bg2);overflow:hidden}
+.gbar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--mint),var(--sky));transition:width .3s}
+.gtools{display:flex;gap:8px;align-items:center;margin-bottom:4px}
+.gtools .search{flex:1;min-width:0}
+.gpy{flex:none;align-self:stretch;border-radius:16px;padding:0 12px;background:var(--card);box-shadow:var(--sh);font-weight:900;font-size:13.5px;color:var(--ink2)}
+.gpy.on{color:var(--tea)}
+.gsec{display:flex;align-items:center;gap:8px;margin:18px 2px 8px;font-size:16px}
+.gsec b{font-weight:900}.gsec .ge2{font-size:20px}
+.gsec .gzc{font-size:13px;color:var(--ink2)}
+.gsec small{margin-left:auto;background:var(--bg2);color:var(--tea);border-radius:99px;padding:1px 9px;font-weight:900;font-size:12px}
+.gp{background:var(--card);border-radius:18px;box-shadow:var(--sh);margin-bottom:10px;overflow:hidden;border-left:5px solid transparent;transition:border-color .2s}
+.gp.open{border-left-color:var(--tea)}
+.gp.done{border-left-color:var(--mint)}
+.gh{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:12px 14px}
+.gn{flex:none;min-width:30px;height:30px;padding:0 6px;border-radius:10px;background:var(--bg2);color:var(--tea);display:grid;place-items:center;font-weight:900;font-size:13.5px}
+.gp.done .gn{background:var(--mint2);color:var(--mint)}
+.gm{flex:1;min-width:0;display:flex;flex-direction:column}
+.gz{font-size:17.5px;font-weight:500;line-height:1.45;word-break:break-word}
+.gt{font-size:13.5px;font-weight:700;color:var(--ink2);line-height:1.35;margin-top:2px}
+.gk{flex:none;font-size:26px;line-height:1;font-weight:900;color:var(--tea);transition:transform .2s}
+.gp.open .gk{transform:rotate(90deg)}
+.gp.done .gk{color:var(--mint);transform:none}
+.gh .badge{flex:none}
+.gb{padding:0 14px 14px;animation:gin .25s ease}
+@keyframes gin{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.gd{background:var(--sun2);color:#6b4f00;border-radius:14px;padding:10px 12px;font-weight:700;font-size:14.5px;line-height:1.55;margin-bottom:10px}
+.ge{position:relative;background:var(--bg);border-radius:14px;padding:8px 46px 8px 12px;margin-bottom:8px}
+.gl{font-size:20px;line-height:2.1}
+.gl ruby{margin:0 .08em}
+.gl rt{font-size:.56em;letter-spacing:.01em;color:var(--tea);font-weight:500}
+.gv{font-weight:700;color:#5b6b7a;font-size:14.5px;line-height:1.45}
+.gs{position:absolute;right:6px;top:8px;width:36px;height:36px;border-radius:12px;background:var(--card);box-shadow:var(--sh);font-size:17px}
+.gs:active,.gdone:active,.gh:active{transform:scale(.97)}
+.gdone{display:block;width:100%;margin-top:4px;padding:10px;border-radius:14px;border:2px dashed var(--line);font-weight:900;font-size:14.5px;color:var(--ink2)}
+.gdone.on{border:2px solid var(--mint);background:var(--mint2);color:var(--mint)}
+html[data-theme="dark"] .t-gram{background:linear-gradient(150deg,var(--card),#28213F)}
+html[data-theme="dark"] .gd{background:#3A2E14;color:#F5D98A}
+html[data-theme="dark"] .gv{color:#C9B3A2}
+html[data-theme="dark"] .gdone.on{background:#163329}
 .mascot-s{width:30px;height:30px;flex:none}
 .foot{text-align:center;font-size:12.5px;color:var(--ink2);margin:24px 0 8px;font-weight:700}
 @media (min-width:700px){
@@ -392,6 +439,6 @@ input.chr{width:64px;height:56px;border-radius:15px;border:2px solid var(--line)
 <script src="data/stories3.js?v=20261120c"></script>
 <script src="data/roleplay.js?v=20261120c"></script>
 <script src="lib/article.js?v=20261120c"></script>
-<script src="app.js?v=20261121c"></script>
+<script src="app.js?v=20261122a"></script>
 </body>
 </html>

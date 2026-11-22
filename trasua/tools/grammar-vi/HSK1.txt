@@ -1,0 +1,486 @@
+## 1
+t: Tiền tố 小 và 第
+d: 小 + họ: gọi thân mật người nhỏ tuổi hơn (小高 = cậu Cao). 第 + số: chỉ thứ tự (第一 = thứ nhất).
+- Tiểu Cao đi đâu rồi?
+- Hôm nay chúng ta học bài thứ nhất.
+
+## 2
+t: Hậu tố 们 và 边
+d: Danh từ chỉ người + 们 = số nhiều (同学们 = các bạn học). Từ chỉ phương hướng + 边 = phía, bên (里边 = bên trong).
+- Các bạn học sinh, chào các em!
+- Trong trường có siêu thị.
+- Bên ngoài đang mưa đấy.
+- Rạp chiếu phim ở phía sau bệnh viện.
+
+## 3
+t: Danh từ chỉ phương vị
+d: Đặt SAU danh từ để chỉ vị trí: 桌子上 (trên bàn), 书店里 (trong hiệu sách). Khác tiếng Việt: tiếng Trung nói "bàn trên" chứ không phải "trên bàn".
+- Trên bàn có mấy quyển sách?
+- Trong hiệu sách rất đông người.
+- Họ đều ở nước ngoài.
+
+## 4
+t: Động từ năng nguyện 会, 能
+d: 会 = biết (kỹ năng học được). 能 = có thể (có khả năng, điều kiện cho phép). Phủ định: 不会, 不能.
+- Tôi biết nói tiếng Trung.
+- Anh ấy không biết lái xe.
+- Ngày mai bạn có đi được không?
+- Cô ấy bị ốm rồi, không thể đến lớp.
+
+## 5
+t: Động từ năng nguyện 想, 要
+d: 想 = muốn, nghĩ đến việc (mong muốn nhẹ). 要 = muốn, sẽ, cần (ý chí mạnh hơn). Đứng trước động từ.
+- Tôi muốn mua một ít hoa quả.
+- Bạn muốn uống trà không?
+- Họ sẽ đi hiệu sách.
+- Tôi muốn học tiếng Hán.
+
+## 6
+t: Động từ năng nguyện 可以
+d: 可以 + động từ = được phép, có thể. 不可以 = không được (cấm). Hỏi xin phép: 我可以……吗？
+- Ở đây không được ăn đồ.
+- Tôi có thể hỏi một câu được không?
+
+## 7
+t: Từ ly hợp
+d: Từ gồm động từ + tân ngữ, có thể tách ra để chèn 了, 一下, số lượng… vào giữa: 睡觉 → 睡一觉, 下课 → 下了课. Từ ly hợp không mang thêm tân ngữ phía sau.
+- Anh ấy đi bệnh viện khám bệnh rồi.
+- Tôi muốn ngủ một giấc, nghỉ ngơi một chút.
+- Trong giờ học không được nói chuyện.
+- Hôm nay tôi học tiết tiếng Trung.
+- Tan học xong tôi sẽ đi nhà ăn.
+- Tan làm xong bạn làm gì?
+- Hôm qua cô ấy bị ốm.
+
+## 8
+t: Đại từ nghi vấn
+d: Dùng để hỏi, đặt đúng vị trí của thông tin cần hỏi (không đảo lên đầu câu). 几 hỏi số nhỏ (thường dưới 10), 多少 hỏi số bất kỳ, 多 + tính từ hỏi mức độ (多大 = bao nhiêu tuổi).
+- Em trai bạn bao nhiêu tuổi?
+- Bộ quần áo này bao nhiêu tiền?
+- Bây giờ là mấy giờ?
+- Cô ấy là người nước nào?
+- Bạn đi đâu?
+- Bạn sống ở đâu?
+- Những quyển nào là sách tiếng Hán?
+- Kia là cái gì?
+- Người kia là ai?
+- Bạn đến trường bằng cách nào?
+- Thời tiết ngày mai thế nào?
+
+## 9
+t: Đại từ nhân xưng
+d: 我 tôi, 你 bạn, 您 ngài/ông/bà (lịch sự), 他 anh ấy, 她 cô ấy, 它 nó (con vật, đồ vật). Thêm 们 thành số nhiều. 大家 = mọi người.
+- Tôi là học sinh.
+- Bạn là người nước nào?
+- Em chào thầy/cô ạ!
+- Anh ấy biết lái xe không?
+- Cô ấy có phải là giáo viên không?
+- Chúng tôi đều là sinh viên.
+- Các bạn là học sinh à?
+- Họ đi đâu rồi?
+- Các cô ấy đều là bạn của tôi.
+- Bạn xem, nó đang ăn kìa.
+- Mấy chú chó con này đẹp thật, chúng tên là gì?
+- Mọi người đều thích học tiếng Hán.
+
+## 10
+t: Đại từ chỉ thị
+d: 这 (này, gần) – 那 (kia, xa). 这儿/这里 = ở đây, 那儿/那里 = ở đó. 这些/那些 = những… này/kia. 有的…有的… = có người…, có người….
+- Đây là sách của ai?
+- Cái điện thoại kia bao nhiêu tiền?
+- Tôi học tiếng Trung ở đây.
+- Ở đó có một hiệu sách.
+- Đây là nhà tôi.
+- Ở đó có một nhà hàng.
+- Đây là sách của thầy giáo.
+- Tôi không quen những người đó.
+- Đến nhà hàng rồi, mọi người có người muốn ăn cơm, có người muốn ăn mì.
+- Cái cốc này bao nhiêu tiền?
+- Cô ấy ở phòng kia.
+- Có một số học sinh không ở trong trường.
+
+## 11
+t: Số từ
+d: Đếm số dùng 二, trước lượng từ dùng 两 (两个, 两百). Số 0 ở giữa đọc 零 (一百零六 = 106). 半 = rưỡi, nửa: 九点半 (9 giờ rưỡi), 半个小时 (nửa tiếng).
+- một cái, hai trăm, năm mươi tám, một trăm linh sáu, hai nghìn ba trăm năm mươi, chín giờ rưỡi, nửa tiếng
+
+## 12
+t: Lượng từ chuyên dùng
+d: Số + lượng từ + danh từ: 一本书 (một quyển sách). 本 sách vở, 个 chung, 家 cửa hàng/công ty, 口 người trong nhà, 块 tiền (đồng), 件 quần áo/sự việc, 只 con vật nhỏ, 元 đồng (văn viết).
+- Quyển sách này là sách tiếng Trung.
+- Tôi đã ăn hai cái bánh bao.
+- Phía trước có một hiệu sách.
+- Nhà bạn có mấy người?
+- Tôi có mười đồng.
+- Chú mèo con này đẹp thật.
+- Bộ quần áo này ba trăm tệ.
+
+## 13
+t: Lượng từ mượn từ danh từ: 杯
+d: Mượn đồ đựng làm lượng từ: 一杯茶 (một cốc trà). Khi số là 一 có thể lược: 喝杯茶 = uống cốc trà.
+- Uống cốc trà đi.
+
+## 14
+t: Lượng từ thời gian
+d: 日/号 ngày (号 dùng trong khẩu ngữ), 岁 tuổi, 点 giờ, 分 phút, 年 năm, 天 ngày. Các từ này đi thẳng sau số, không cần 个 (一年, 一天; nhưng 一个月).
+- Hôm nay là ngày mấy tháng mấy?
+- Năm nay cô ấy mấy tuổi?
+- Bây giờ là tám giờ hai mươi phút.
+- Một năm có mười hai tháng.
+- Một ngày bạn học mấy chữ Hán?
+
+## 15
+t: Phó từ chỉ mức độ
+d: Đứng trước tính từ / động từ tâm lý. 很 rất (trung tính), 非常 vô cùng, 太…了 quá…, 真 thật là, 有点儿 hơi (thường mang ý không hài lòng).
+- Tôi vô cùng thích học tiếng Trung.
+- Hoa quả ở đây rất rẻ.
+- Trong phòng nóng quá.
+- Món ăn ở đây ngon thật.
+- Hôm nay trời hơi lạnh.
+
+## 16
+t: Phó từ phạm vi 都
+d: 都 = đều, tất cả. Đứng trước động từ, tổng hợp những người/vật đã nêu ở phía TRƯỚC nó.
+- Chúng tôi đều học tiếng Hán.
+- Họ đều là sinh viên Trung Quốc.
+
+## 17
+t: Phó từ thời gian 在, 正在
+d: 在 / 正在 + động từ = đang làm gì. 正在 nhấn mạnh "ngay lúc này".
+- Họ đang làm gì?
+- Các học sinh đang học.
+
+## 18
+t: Phó từ tần suất 再
+d: 再 + động từ = lại, thêm lần nữa (việc chưa xảy ra, ở tương lai).
+- Tôi muốn mua thêm một quyển nữa.
+- Tôi hỏi thêm một câu nữa, được không?
+
+## 19
+t: Phó từ liên kết 还, 也
+d: 还 = còn, ngoài ra còn (bổ sung thêm). 也 = cũng (giống nhau). Cả hai đứng trước động từ, không đứng đầu câu.
+- Tôi muốn ăn mì, còn muốn ăn bánh bao nữa.
+- Tôi có hai chị gái, còn có một anh trai.
+- Anh ấy là học sinh, tôi cũng là học sinh.
+- Tôi học tiếng Hán, em trai tôi cũng học tiếng Hán.
+
+## 20
+t: Phó từ phủ định 不, 没(有), 不要
+d: 不 phủ định hiện tại, tương lai, thói quen, và 是. 没(有) phủ định việc đã xảy ra (không dùng kèm 了). 不要 = đừng (cấm, khuyên).
+- Cô ấy không phải là giáo viên.
+- Tôi không xem tivi.
+- Cô ấy đi siêu thị rồi, tôi không đi.
+- Mọi người đừng nói chuyện.
+
+## 21
+t: Giới từ 在 (chỉ nơi chốn)
+d: 在 + nơi chốn + động từ = làm gì ở đâu. Cụm 在… đứng TRƯỚC động từ (khác tiếng Việt).
+- Tôi muốn làm việc ở Trung Quốc.
+- Bạn học tiếng Trung ở đâu?
+
+## 22
+t: Giới từ 和, 对 (chỉ đối tượng)
+d: 和 + người + 一起 + động từ = cùng ai làm gì. 对 + người + 说 = nói với ai. Phủ định đặt trước giới từ: 没和…一起.
+- Tôi không cùng cô ấy đi siêu thị.
+- Tôi nói "cảm ơn" với thầy giáo.
+
+## 23
+t: Liên từ 和
+d: 和 = và, nối hai danh từ / cụm danh từ. Không dùng 和 để nối hai câu hay hai động từ.
+- Tôi và chị gái đều thích hát.
+- Hôm nay và ngày mai đều mưa.
+
+## 24
+t: Trợ từ kết cấu 的
+d: Định ngữ + 的 + danh từ = … của… (我的手机 = điện thoại của tôi). Quan hệ thân thiết có thể bỏ 的: 我妈妈.
+- Đây là điện thoại của bạn à?
+- Cô ấy là bạn thân của tôi.
+
+## 25
+t: Trợ từ động thái 了 (了1)
+d: Động từ + 了 = hành động đã hoàn thành. Thường có số lượng hoặc định ngữ sau: 学了十个汉字.
+- Hôm nay chúng tôi đã học mười chữ Hán.
+- Tôi đã mua một ít táo.
+
+## 26
+t: Trợ từ ngữ khí 吧, 了, 吗, 呢
+d: 吧: đề nghị (…đi, nhé). 了 (了2) cuối câu: tình huống đã thay đổi. 吗: câu hỏi có/không. 呢: ① đang làm gì (正在…呢); ② còn… thì sao? (你呢？); ③ … đâu? (你的手机呢？).
+- Chúng ta đi thôi.
+- Tám giờ rồi, dậy đi.
+- Cô ấy ốm rồi, đang nghỉ ở nhà đấy.
+- Anh ấy là người Trung Quốc à?
+- Bộ phim này hay không?
+- Cô ấy đang học bài đấy.
+- Tôi là người Trung Quốc, còn bạn?
+- A: Điện thoại của bạn đâu?
+- B: Điện thoại của tôi ở trong phòng.
+
+## 27
+t: Thán từ 喂
+d: 喂 (wèi) = alô (gọi điện thoại), hoặc "này" để gọi người khác.
+- Alô, xin hỏi thầy Lý có ở đó không ạ?
+- Này, bạn đi đâu đấy?
+
+## 28
+t: Cụm từ liên hợp
+d: Hai thành phần ngang hàng ghép lại (có hoặc không có 和).
+- anh trai và chị gái, hôm nay và ngày mai, có hay không
+
+## 29
+t: Cụm từ chính phụ
+d: Thành phần bổ nghĩa đứng TRƯỚC thành phần chính: 好朋友 (bạn tốt), 很喜欢 (rất thích).
+- bạn tốt, cặp sách của tôi, rất thích
+
+## 30
+t: Cụm động – tân
+d: Động từ + tân ngữ.
+- mua đồ, về trường, đến công ty
+
+## 31
+t: Cụm chủ – vị
+d: Chủ ngữ + vị ngữ tạo thành một cụm.
+- chúng tôi học, đứa trẻ vui, căn phòng rất rộng
+
+## 32
+t: Cụm số lượng
+d: Số từ + lượng từ.
+- một cốc, hai cái
+
+## 33
+t: Cụm giới – tân
+d: Giới từ + danh từ, đứng trước động từ.
+- học ở trường, nói với thầy giáo, nói tiếng Hán với bạn
+
+## 34
+t: Cụm phương vị
+d: Danh từ + từ chỉ phương vị.
+- trên bàn, trong nhà hàng, dưới gầm ghế
+
+## 35
+t: Chủ ngữ là danh từ, đại từ
+d: Chủ ngữ thường là danh từ, đại từ hoặc cụm danh từ, đứng đầu câu.
+- Bộ phim rất hay.
+- Cô ấy là giáo viên.
+- Quyển sách này bao nhiêu tiền?
+
+## 36
+t: Vị ngữ là danh từ, số từ, cụm số lượng
+d: Khi nói ngày tháng, thứ, tuổi, giá tiền… có thể bỏ 是: 明天星期三 (Ngày mai thứ Tư). Phủ định thì phải dùng 不是.
+- Ngày mai là thứ Tư.
+- Nhà hàng kia thế nào?
+- Năm nay tôi mười hai tuổi, anh trai tôi mười lăm.
+- Quyển sách này hai mươi tám đồng.
+
+## 37
+t: Vị ngữ là động từ, tính từ
+d: Tính từ làm vị ngữ trực tiếp, không cần 是, thường có 很: 我很好. Không nói 我是很好.
+- Thầy giáo đến rồi.
+- Anh trai đi đến trường rồi.
+- Phòng của tôi không rộng.
+- Món này rất ngon.
+
+## 38
+t: Tân ngữ là danh từ, đại từ
+d: Tân ngữ đứng sau động từ.
+- Tôi uống trà.
+- Ngày mai tôi đi tìm bạn.
+- Tôi đã ăn hai mươi cái sủi cảo.
+
+## 39
+t: Định ngữ
+d: Định ngữ (thành phần bổ nghĩa cho danh từ) luôn đứng TRƯỚC danh từ: 中文歌 (bài hát tiếng Trung), 便宜的手机 (điện thoại rẻ). Tính từ 2 âm tiết thường thêm 的.
+- Cô ấy không biết hát bài hát tiếng Trung.
+- Thầy giáo tiếng Trung của tôi là người Trung Quốc.
+- Tôi muốn mua chiếc điện thoại rẻ.
+- Dưới gầm bàn có một chú chó con.
+
+## 40
+c: 句子成分/状语/
+t: Trạng ngữ: phó từ, tính từ, từ chỉ thời gian – nơi chốn
+d: Trạng ngữ đứng TRƯỚC động từ: thời gian (十点), nơi chốn (在网上), phó từ (不, 非常). Thứ tự hay gặp: chủ ngữ + thời gian + nơi chốn + động từ.
++ 他不吃包子。 | Anh ấy không ăn bánh bao.
++ 这个房间非常干净。 | Căn phòng này vô cùng sạch sẽ.
++ 你认真写！ | Bạn viết cẩn thận vào!
++ 他十点睡觉。 | Anh ấy mười giờ đi ngủ.
++ 我们下午去吧。 | Chiều chúng ta đi nhé.
++ 她在网上买了两本书。 | Cô ấy đã mua hai quyển sách trên mạng.
+
+## 41
+t: Bổ ngữ động lượng 一下
+d: Động từ + 一下 = làm thử, làm một chút (giọng nhẹ nhàng, lịch sự).
+- Nghỉ một chút đi.
+- Cho hỏi một chút, bệnh viện ở đâu?
+- Tôi muốn xem thử bộ quần áo kia.
+- Mời viết tên của bạn vào.
+
+## 42
+t: Câu vị ngữ động từ
+d: Chủ ngữ + động từ (+ tân ngữ).
+- Tôi đã mua một cái bánh mì.
+- Hôm nay anh ấy không nghỉ.
+
+## 43
+t: Câu vị ngữ tính từ
+d: Chủ ngữ + (很/真…) + tính từ. Không dùng 是 trước tính từ.
+- Hôm nay trời rất nóng.
+- Con gái bạn xinh thật!
+
+## 44
+t: Câu vị ngữ danh từ
+d: Dùng cho thứ, ngày, giờ, tuổi, giá cả; không cần 是.
+- Hôm nay là thứ Hai.
+- Bây giờ là mười hai giờ rưỡi.
+
+## 45
+t: Câu không chủ ngữ
+d: Câu không có (không cần) chủ ngữ: chào hỏi, hiện tượng tự nhiên.
+- Xin lỗi!
+- Trời mưa rồi.
+
+## 46
+t: Câu trần thuật
+d: Câu kể, nói về một sự việc (khẳng định hoặc phủ định).
+- Cô ấy là bạn của tôi.
+- Tôi không muốn ăn mì.
+
+## 47
+t: Câu hỏi có/không (dùng 吗)
+d: Câu trần thuật + 吗？ Trả lời: 是/对/不是….
+- Anh ấy là người Trung Quốc à?
+
+## 48
+t: Câu hỏi có từ để hỏi
+d: Dùng 谁, 什么, 哪, 哪儿… đặt đúng chỗ thông tin cần hỏi; KHÔNG thêm 吗.
+- Anh ấy là người nước nào?
+
+## 49
+t: Câu hỏi chính phản
+d: Động từ/tính từ + 不/没 + động từ/tính từ: 想不想, 冷不冷. Hoặc …了没有？ cho việc đã xảy ra. Không thêm 吗.
+- Bạn có muốn học tiếng Trung không?
+- Bạn đã ăn tối chưa?
+- Các bạn học sinh đến đủ chưa?
+- Hôm nay có lạnh không?
+
+## 50
+t: Câu cầu khiến
+d: Yêu cầu, mời, khuyên, cấm: 请…, …吧, 不要/别….
+- Mời ông/bà ngồi.
+- Đi thôi!
+- Mọi người đừng nói chuyện!
+
+## 51
+t: Câu cảm thán
+d: Bày tỏ cảm xúc: 真…啊！, 太…了！
+- Hôm nay lạnh thật đấy!
+- Đắt quá!
+
+## 52
+t: Câu chữ 是 (đồng nhất, phân loại)
+d: A 是 B = A là B. Phủ định: 不是.
+- Anh trai tôi là sinh viên.
+
+## 53
+t: Câu chữ 有 (sở hữu)
+d: A 有 B = A có B. Phủ định chỉ dùng 没有 (không nói 不有).
+- Tôi có anh trai, không có chị gái.
+
+## 54
+t: Câu tồn hiện: nơi chốn + 是 + danh từ
+d: Nói ở chỗ đó là cái gì (người nói biết rõ chỗ đó là gì).
+- Phía trước có phải là rạp chiếu phim không?
+- Phía sau siêu thị là một nhà hàng.
+
+## 55
+t: Câu tồn hiện: nơi chốn + 有 + số lượng + danh từ
+d: Ở đâu có cái gì. Nơi chốn đứng đầu câu, không cần 在.
+- Bên ngoài trường có một hiệu sách.
+- Trên bàn có một quyển sách tiếng Trung.
+
+## 56
+t: Câu liên động (hành động sau là mục đích)
+d: Chủ ngữ + động từ 1 (đi/đến…) + động từ 2 (để làm gì). Thứ tự theo trình tự thời gian.
+- Tôi đến Trung Quốc học tiếng Hán.
+- Buổi tối chúng tôi đến rạp xem phim.
+
+## 57
+t: Câu liên động (hành động trước là phương thức)
+d: 坐/开/骑 + phương tiện + 去/来/上班… = đi bằng phương tiện gì.
+- Tôi đi máy bay đến Thượng Hải.
+- Bố ngày nào cũng lái xe đi làm.
+
+## 58
+t: Câu hai tân ngữ
+d: Chủ ngữ + động từ (给, 问, 教, 送…) + tân ngữ người + tân ngữ vật.
+- Thầy giáo đưa cho tôi một quyển sách.
+- Tôi hỏi bạn một câu hỏi.
+
+## 59
+t: Câu phức không dùng từ nối
+d: Các vế đặt cạnh nhau, quan hệ hiểu qua ngữ cảnh.
+- Đây là anh trai tôi, anh ấy học tiếng Trung.
+- Tôi có một chị gái, không có em gái.
+- Hôm nay cô ấy bị ốm, không đi học được.
+- Sáng đi hay chiều đi? Bạn nói đi.
+
+## 60
+t: Câu phức đẳng lập: ……，也……
+d: Vế sau dùng 也 = cũng, nói hai điều giống nhau.
+- Tôi thích hát, em trai tôi cũng thích hát.
+- Sủi cảo của nhà hàng này rất ngon, cũng rất rẻ.
+
+## 61
+t: Câu phức đẳng lập: ……，还……
+d: Vế sau dùng 还 = còn, bổ sung thêm thông tin.
+- Căn phòng này rất rộng, lại còn rất đẹp.
+- Tôi biết nói tiếng Anh, còn biết nói tiếng Hán.
+
+## 62
+t: Thể hoàn thành (了1)
+d: Động từ + 了 + số lượng/tân ngữ: hành động đã xong. Phủ định: 没 + động từ (bỏ 了).
+- Bạn đã học được bao nhiêu chữ Hán?
+- Tôi đã mua một ít táo.
+
+## 63
+t: Thể biến đổi (了2)
+d: 了 cuối câu báo hiệu tình hình mới, đã thay đổi: 八点了 (đã tám giờ rồi), 病了 (ốm rồi).
+- Tám giờ rồi, dậy đi.
+- Cô ấy ốm rồi, đang nghỉ ở nhà.
+
+## 64
+t: Thể tiếp diễn: 在/正在 + động từ
+d: Hành động đang diễn ra.
+- Các bạn học sinh đang học.
+
+## 65
+t: Thể tiếp diễn: 在/正在 + động từ + 呢
+d: Thêm 呢 cuối câu làm câu tự nhiên, nhấn mạnh "đang".
+- Thầy Vương đang gọi điện thoại đấy.
+
+## 66
+t: Thể tiếp diễn: ……呢
+d: Chỉ dùng 呢 cuối câu cũng diễn tả "đang".
+- Tôi không xem tivi, tôi đang học bài.
+
+## 67
+t: Cách nói số tiền
+d: Khẩu ngữ: 块 (đồng) – 毛 (hào) – 分 (xu); văn viết: 元 – 角 – 分. Giá theo đơn vị: 三块一个 = ba đồng một cái.
+- Quyển sách này hai mươi bốn đồng.
+- Bánh bao ba đồng một cái.
+
+## 68
+t: Số thứ tự: 第 + số
+d: 第 + số (+ lượng từ) = thứ…: 第一本 (quyển thứ nhất), 第六课 (bài thứ sáu).
+- Hôm nay chúng ta học bài thứ sáu.
+- Quyển thứ nhất là sách của tôi, quyển thứ hai là sách của cô ấy.
+
+## 69
+t: Cách nói năm, tháng, ngày, thứ
+d: Thứ tự từ lớn đến nhỏ: năm → tháng → ngày → thứ. Năm đọc từng số: 2022年 = èr líng èr èr nián. Thứ Hai đến thứ Bảy: 星期一 … 星期六; Chủ nhật: 星期日/星期天.
+- ngày 4 tháng 2 năm 2022
+- ngày 15 tháng 9, ngày 1 tháng 5
+- thứ Hai, thứ Ba, thứ Tư, thứ Năm, thứ Sáu, thứ Bảy, Chủ nhật
+
+## 70
+t: Cách nói giờ
+d: 点 giờ, 分 phút, 半 rưỡi. Phút dưới 10 thêm 零: 七点零五 (7:05).
+- hai giờ, bảy giờ năm phút, chín giờ hai mươi (phút), mười giờ rưỡi
