@@ -253,7 +253,7 @@ function topicSel(g, k) { return `<div class="seg">${['all', ...topicList().filt
 function bindSel(g) { app.querySelectorAll('.seg button').forEach(b => b.onclick = () => go(`#/game/${g}/${b.dataset.k}`)); }
 R.games = () => {
   setTabs('kid', '');
-  view(bar('Trò chơi', '#/be', starPill()) + `<div class="grid"><a class="tcard" href="#/kham-pha" style="background:#FFF1C9"><img class="ic" src="${IMG('w/speech-balloon')}" alt=""><b>Ghép câu</b><small>Make a sentence</small></a>${GAMES.map(g => `<a class="tcard" href="#/game/${g[0]}" style="background:${g[4]}"><img class="ic" src="${IMG(g[3])}" alt=""><b>${g[1]}</b><small>${g[2]}</small></a>`).join('')}</div>`);
+  view(bar('Trò chơi', '#/be', starPill()) + `<div class="grid ggrid"><a class="tcard" href="#/kham-pha" style="background:#FFF1C9"><img class="ic" src="${IMG('w/speech-balloon')}" alt=""><b>Ghép câu</b><small>Make a sentence</small></a>${GAMES.map(g => `<a class="tcard" href="#/game/${g[0]}" style="background:${g[4]}"><img class="ic" src="${IMG(g[3])}" alt=""><b>${g[1]}</b><small>${g[2]}</small></a>`).join('')}</div>`);
 };
 function roundDone(score) { bump('games'); addStar(); return cheer('Yay! Good job!', true); }
 R.g_doan = (k) => {
@@ -318,6 +318,8 @@ function foodTopic(k) {
 const KIDS = [['baby', 'w/baby'], ['boy', 'w/boy'], ['girl', 'w/girl']], FRUITERS = [['bunny', 'w/rabbit-face'], ['monkey', 'w/monkey-face'], ['piggy', 'w/pig-face']];
 const isFruit = en => { en = en.toLowerCase(); return ALL.some(x => x.t === 'fruits' && [en, singular(en)].includes(x.en.toLowerCase())); };
 const feeder = w => isFruit(w[0]) && Math.random() < .6 ? pick(FRUITERS) : pick(/honey|candy|coffee/i.test(w[0]) ? KIDS.slice(1) : KIDS);
+// laptop: mouse wheel scrolls the topic chip rows sideways
+addEventListener('wheel', e => { const g = e.target.closest && e.target.closest('.seg'); if (!g || Math.abs(e.deltaX) > Math.abs(e.deltaY) || g.scrollWidth <= g.clientWidth) return; e.preventDefault(); g.scrollLeft += e.deltaY; }, { passive: false });
 // keep the page from sliding sideways on phones
 addEventListener('scroll', () => { if (scrollX) scrollTo(0, scrollY); }, { passive: true });
 R.g_an = (k) => {
@@ -622,7 +624,7 @@ R.journey = () => {
 /* ---------- parent ---------- */
 R.bame = () => {
   setTabs('parent', '#/bame');
-  const row = (h, ic, t, d) => `<a class="prow mk" href="${h}"><img src="${IMG('w/' + ic)}" alt=""><div><b>${t}</b><small>${d}</small></div><span class="go">›</span></a>`;
+  const row = (h, ic, t, d, x = '') => `<a class="prow mk ${x}" href="${h}"><img src="${IMG('w/' + ic)}" alt=""><div><b>${t}</b><small>${d}</small></div><span class="go">›</span></a>`;
   const mini = (h, ic, t) => `<a class="pmini" href="${h}"><img src="${IMG('w/' + ic)}" alt=""><b>${t}</b></a>`;
   view(`<div class="parent">${topbar('parent')}
   ${window.XMX ? XMX.dailyCard() : ''}
@@ -632,7 +634,7 @@ R.bame = () => {
   <h3 class="psec">🌱 Dạy con</h3>
   ${row('#/bame/cach-day', 'light-bulb', 'Cách dạy con tiếng Anh', '12 mẹo dễ làm mỗi ngày')}
   ${row('#/bame/hoat-dong', 'spiral-notepad', 'Hoạt động theo chủ đề', 'Chơi mà học với đồ vật thật')}
-  ${row('#/bame/tu-lop', 'pencil', 'Từ vựng con học trên lớp', 'Nhập từ, chụp ảnh thật cho bé học')}
+  ${row('#/bame/tu-lop', 'pencil', 'Từ vựng con học trên lớp', 'Nhập từ, chụp ảnh thật cho bé học', 'wide')}
   <h3 class="psec">📊 Theo dõi & cài đặt</h3>
   <div class="pminis">${mini('#/bame/so-tien-bo', 'trophy', 'Sổ tiến bộ')}${mini('#/bame/gio-xem', 'alarm-clock', 'Giờ xem')}${mini('#/bame/giong-doc', 'speaking-head', 'Giọng đọc')}</div>
   <a class="credit-link" href="#/bame/nguon-anh">📷 Nguồn ảnh flashcard</a></div>`);
