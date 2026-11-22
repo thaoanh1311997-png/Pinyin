@@ -20,26 +20,17 @@
   };
 
   /* ---------- đọc tiếng Trung ---------- */
-  var voice = null;
-  function pickVoice() {
-    if (!('speechSynthesis' in window)) return;
-    var vs = speechSynthesis.getVoices().filter(function (v) { return /^(zh|cmn)/i.test(v.lang); });
-    var pref = function (re) { return vs.filter(function (v) { return re.test(v.lang) || re.test(v.name); })[0]; };
-    voice = pref(/zh[-_]CN/i) || pref(/Mandarin|Tingting|Xiaoxiao|Yunxi|Huihui/i) || vs.filter(function (v) { return !/HK|TW|yue|Cantonese/i.test(v.lang + v.name); })[0] || vs[0] || null;
-  }
-  if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+  // Giọng đọc dùng chung (shared/voice.js): từ/câu có sẵn = giọng AI thu sẵn, còn lại = giọng máy tốt nhất.
   var warned = false;
   var spkId = 0;
   G.speak = function (text, rate, then) {
-    var id = ++spkId;
-    if (!('speechSynthesis' in window)) { if (!warned) { warned = true; G.toast('Máy này chưa có giọng đọc tiếng Trung 🙈'); } return; }
-    try {
-      speechSynthesis.cancel();
-      var u = new SpeechSynthesisUtterance(String(text).replace(/……|…/g, '，').replace(/HSK/g, 'H S K'));
-      u.lang = 'zh-CN'; if (voice) u.voice = voice; u.rate = rate || 0.85;
-      if (then) u.onend = function () { if (id === spkId) setTimeout(function () { if (id === spkId) then(); }, 250); };
-      speechSynthesis.speak(u);
-    } catch (e) {}
+    var id = ++spkId, V = window.BMVoice;
+    if (!V || !V.available()) { if (!warned) { warned = true; G.toast('Máy này chưa có giọng đọc tiếng Trung 🙈'); } return; }
+    text = String(text == null ? '' : text);
+    if (!text) { V.stop(); return; }
+    V.speak(text.replace(/HSK/g, 'H S K'), { rate: rate || 0.85 }).then(function (ok) {
+      if (ok && then && id === spkId) setTimeout(function () { if (id === spkId) then(); }, 250);
+    });
   };
 
   /* ---------- âm thanh vui (tự tạo, không tải file) ---------- */
@@ -327,7 +318,7 @@
 
   /* ---------- điều hướng ---------- */
   var current = null;
-  G.stopAll = function () { if (current && current.stop) try { current.stop(); } catch (e) {} current = null; if ('speechSynthesis' in window) try { speechSynthesis.cancel(); } catch (e) {} };
+  G.stopAll = function () { if (current && current.stop) try { current.stop(); } catch (e) {} current = null; try { if (window.BMVoice) BMVoice.stop(); } catch (e) {} };
   function route(force) {
     var id = (location.hash.match(/^#\/(\w+)/) || [])[1];
     var g = id && G.games[id];
