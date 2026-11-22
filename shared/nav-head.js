@@ -30,6 +30,8 @@
   window.BM_THEME_GET = function () { return th; };
   if (document.readyState === 'loading') {
     document.write('<link rel="stylesheet" id="bm-theme-css" href="' + BASE + 'shared/theme.css?v=13">');
+    // đồng bộ giữa các máy: phải chạy trước code của trang
+    if (!window.BM_SYNC) document.write('<script src="' + BASE + 'shared/sync.js?v=1"><\/script>');
     document.addEventListener('DOMContentLoaded', function () { window.BM_THEME(th); });
   }
   function on() {
