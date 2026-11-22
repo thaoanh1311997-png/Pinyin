@@ -284,7 +284,7 @@ function render() {
   if (EX && name !== 'room') { /* leaving exam room by back button */ }
   stopSpeak(); closeSheet(); APP.onclick = null; APP.oninput = null;
   document.body.classList.toggle('room', name === 'room');
-  $$('#tabs a').forEach(function (a) { a.classList.toggle('on', a.dataset.t === (name === 'read' ? 'news' : name === 'result' || name === 'room' || name === 'level' ? 'exam' : name === 'cards' || name === 'quiz' ? 'vocab' : name === 'topic' || name === 'role' || name === 'play' ? 'talk' : name)); });
+  $$('#tabs a').forEach(function (a) { a.classList.toggle('on', a.dataset.t === (name === 'read' ? 'news' : name === 'result' || name === 'room' || name === 'level' ? 'exam' : name === 'cards' || name === 'quiz' || name === 'grammar' ? 'vocab' : name === 'topic' || name === 'role' || name === 'play' ? 'talk' : name)); });
   RT++;
   var fn = routes[name] || routes.home;
   if (curRoute !== h) window.scrollTo(0, 0);
@@ -313,7 +313,8 @@ routes.home = function () {
     '<a class="tile t-news" href="#/news"><span class="em">📰</span><div><b>Đọc báo</b><br><small>Tin thật · truyện · pinyin · dịch</small></div></a>' +
     '<a class="tile t-exam" href="#/exam"><span class="em">📝</span><div><b>Phòng thi HSK</b><br><small>' + (last ? 'Lần gần nhất: ' + last.score + '/' + last.max : 'HSK 1–6 · HSK 3.0') + '</small></div></a>' +
     '<a class="tile t-vocab" href="#/vocab"><span class="em">🃏</span><div><b>Từ vựng</b><br><small>' + (due ? due + ' từ cần ôn' : 'Flashcard theo cấp HSK') + '</small></div></a>' +
-    '<a class="tile t-talk" href="#/talk"><span class="em">💬</span><div><b>Giao tiếp</b><br><small>12 chủ đề đời thường</small></div></a></div>' +
+    '<a class="tile t-talk" href="#/talk"><span class="em">💬</span><div><b>Giao tiếp</b><br><small>12 chủ đề đời thường</small></div></a>' +
+    '<a class="tile t-gram" href="#/grammar"><span class="em">📐</span><div><b>Ngữ pháp</b><br><small>593 điểm · HSK 1 → 7–9 · có ví dụ</small></div></a></div>' +
     '<div class="sec-t">💡 Câu hôm nay</div>' +
     '<div class="ph"><div class="zl zh">' + ruby(pick[0]) + '</div><div class="v">' + esc(pick[1]) + '</div><div class="acts"><button data-say="' + esc(pick[0]) + '">🔊 Nghe</button><button data-say="' + esc(pick[0]) + '" data-slow="1">🐢 Chậm</button></div></div>' +
     '<div class="sec-t">📖 Truyện hôm nay <small><a href="#/news/story">Xem tất cả →</a></small></div>' + easyCard(window.STORY[Math.floor(Date.now() / 864e5) % window.STORY.length]) +
@@ -1015,7 +1016,7 @@ routes.vocab = async function (a, b) {
   var learned = list.filter(function (v) { return srs[v.w] && srs[v.w].i >= 3; }).length;
   var due = list.filter(function (v) { return srs[v.w] && srs[v.w].d <= Date.now(); }).length;
   var fresh = list.filter(function (v) { return !srs[v.w]; }).length;
-  APP.innerHTML = top('🃏 <span>Từ vựng</span>') +
+  APP.innerHTML = top('🃏 <span>Từ vựng</span>') + vgSeg('v') +
     '<div class="seg" id="sysseg">' + SYS.map(function (s) { return '<button data-s="' + s[0] + '" class="' + (sys === s[0] && lv !== 'nb' ? 'on' : '') + '">' + s[1] + '</button>'; }).join('') + '<button data-s="nb" class="' + (lv === 'nb' ? 'on' : '') + '">⭐ Sổ tay</button></div>' +
     (lv !== 'nb' ? '<div class="chips">' + levels.map(function (l) { return '<a class="chip' + (String(l) === String(lv) ? ' on' : '') + '" style="text-decoration:none;color:inherit" href="#/vocab/' + sys + '/' + l + '">' + (l === 'all' ? '📚 Tất cả' : 'HSK ' + (l === 7 ? '7–9' : l)) + '</a>'; }).join('') + '</div>' : '') +
     (lv !== 'nb' ? '<div class="note" style="margin-top:0">' + SYSNOTE[sys] + '</div>' : '') +
@@ -1112,6 +1113,123 @@ routes.quiz = async function (kind, sys, lv) {
 };
 // the word sheet "vocab/nb" route alias
 var _vocab = routes.vocab;
+
+/* =============================== GRAMMAR =============================== */
+var GCNT = { 1: 70, 2: 78, 3: 96, 4: 95, 5: 70, 6: 50, 7: 134 };
+var GV = '20261122a';
+var gramP = null;
+function loadGrammar() {
+  if (window.GRAMMAR) return Promise.resolve(window.GRAMMAR);
+  if (gramP) return gramP;
+  gramP = new Promise(function (ok) {
+    var s = document.createElement('script'); s.src = 'data/grammar.js?v=' + GV;
+    s.onload = function () { ok(window.GRAMMAR || null); if (!window.GRAMMAR) gramP = null; };
+    s.onerror = function () { gramP = null; s.remove(); ok(null); };
+    document.head.appendChild(s);
+  });
+  return gramP;
+}
+var GSUB = { '名词': 'Danh từ', '动词': 'Động từ', '代词': 'Đại từ', '数词': 'Số từ', '量词': 'Lượng từ', '副词': 'Phó từ', '介词': 'Giới từ', '连词': 'Liên từ', '助词': 'Trợ từ', '叹词': 'Thán từ', '形容词': 'Tính từ',
+  '主语': 'Chủ ngữ', '谓语': 'Vị ngữ', '宾语': 'Tân ngữ', '定语': 'Định ngữ', '状语': 'Trạng ngữ', '补语': 'Bổ ngữ' };
+function gGroup(c) { // -> [key, emoji, Vietnamese, Chinese]
+  var a = c[0], b = c[1] || '';
+  if (a === '语素') return ['ms', '🧩', 'Tiền tố · hậu tố', '语素'];
+  if (a === '词类') return ['w' + b, '🔤', GSUB[b] || 'Từ loại', b || '词类'];
+  if (a === '短语') return b === '固定短语' ? ['fp', '🔗', 'Cụm từ cố định', '固定短语'] : ['ph', '🧱', 'Cụm từ', '短语'];
+  if (a === '句子成分') return ['s' + b, '🧭', b ? 'Thành phần câu: ' + (GSUB[b] || b) : 'Thành phần câu', b || '句子成分'];
+  if (a === '句子的类型') {
+    if (b === '句型') return ['st', '📏', 'Kiểu câu', '句型'];
+    if (b === '句类') return ['sk', '❓', 'Câu hỏi · cầu khiến · cảm thán', '句类'];
+    if (/特殊/.test(b)) return ['sp', '✨', 'Câu đặc biệt (把, 被, 比…)', '特殊句型'];
+    if (b === '多重复句') return ['cm', '🪜', 'Câu phức nhiều tầng', '多重复句'];
+    return ['cx', '🔀', 'Câu phức', '复句'];
+  }
+  if (a === '动作的态') return ['as', '⏳', 'Thể của động tác (了, 着, 过…)', '动作的态'];
+  if (a === '特殊表达法') return ['ex', '🔢', 'Cách nói số, giờ, ngày', '特殊表达法'];
+  if (a === '固定格式') return ['ff', '📐', 'Cấu trúc cố định', '固定格式'];
+  if (/语段/.test(a)) return ['pg', '📄', 'Liên kết đoạn văn', '语段'];
+  return ['o', '📌', 'Khác', a];
+}
+function gRuby(zh, py) {
+  var s = (py || '').split(' '), k = 0;
+  return Array.from(zh).map(function (c) { return isCJK(c) && s[k] != null ? '<ruby>' + esc(c) + '<rt>' + esc(s[k++]) + '</rt></ruby>' : esc(c); }).join('');
+}
+function gLv(l) { return l === '7' ? '7–9' : l; }
+function gCard(lv, p, open, showLv) {
+  var id = lv + '-' + p.n; var done = LS.get('gdone', {})[id];
+  return '<div class="gp' + (open ? ' open' : '') + (done ? ' done' : '') + '" id="g' + id + '" data-g="' + id + '">' +
+    '<button class="gh" data-gt="' + id + '"><span class="gn">' + p.n + '</span><span class="gm"><span class="gz zh">' + esc(p.z) + '</span><span class="gt">' + esc(p.t) + '</span></span>' +
+    (showLv ? '<span class="badge b' + lv + '">HSK ' + gLv(lv) + '</span>' : '') + '<span class="gk">' + (done ? '✓' : '›') + '</span></button>' +
+    (open ? gBody(lv, p) : '') + '</div>';
+}
+function gBody(lv, p) {
+  var id = lv + '-' + p.n; var done = LS.get('gdone', {})[id];
+  return '<div class="gb"><div class="gd">💡 ' + esc(p.d) + '</div>' +
+    p.e.map(function (e) { return '<div class="ge"><div class="gl zh">' + gRuby(e[0], e[1]) + '</div><div class="gv">' + esc(e[2]) + '</div><button class="gs" data-say="' + esc(e[0]) + '" aria-label="Nghe">🔊</button></div>'; }).join('') +
+    '<button class="gdone' + (done ? ' on' : '') + '" data-gd="' + id + '">' + (done ? '✓ Đã thuộc' : '☆ Đánh dấu đã thuộc') + '</button></div>';
+}
+function vgSeg(on) {
+  return '<div class="vgseg"><a href="#/vocab" class="' + (on === 'v' ? 'on' : '') + '">🃏 Từ vựng</a><a href="#/grammar" class="' + (on === 'g' ? 'on' : '') + '">📐 Ngữ pháp</a></div>';
+}
+routes.grammar = async function (lv, n) {
+  var T = top('📐 <span>Ngữ pháp</span>');
+  APP.innerHTML = T + vgSeg('g') + '<div class="empty">Đang mở sổ ngữ pháp… ⏳</div>';
+  var rt = RT; var G = await loadGrammar(); if (rt !== RT) return;
+  if (!G) { APP.innerHTML = T + vgSeg('g') + '<div class="card">Không tải được phần ngữ pháp. Kiểm tra mạng rồi <a href="javascript:location.reload()">tải lại</a> nhé.</div>'; return; }
+  lv = String(lv || LS.get('glv', '1')); if (!G[lv]) lv = '1'; LS.set('glv', lv);
+  var list = G[lv]; var showPy = LS.get('gpy', true);
+  var openId = n ? lv + '-' + n : '';
+  var learned = function () { var d = LS.get('gdone', {}); return list.filter(function (p) { return d[lv + '-' + p.n]; }).length; };
+  APP.innerHTML = T + vgSeg('g') +
+    '<div class="chips">' + ['1', '2', '3', '4', '5', '6', '7'].map(function (l) { return '<a class="chip' + (l === lv ? ' on' : '') + '" style="text-decoration:none;color:inherit" href="#/grammar/' + l + '">HSK ' + gLv(l) + '</a>'; }).join('') + '</div>' +
+    '<div class="gstat"><span class="gsrc">📗 Đề cương HSK 2025 · đủ <b>593</b> điểm</span><span class="gnum"><b id="glearn">' + learned() + '</b>/' + list.length + ' đã thuộc</span><div class="gbar"><i id="gbar" style="width:' + Math.round(learned() * 100 / list.length) + '%"></i></div></div>' +
+    '<div class="gtools"><input class="search" id="gsearch" placeholder="Tìm: 把, so sánh, bổ ngữ…" autocomplete="off"><button class="gpy' + (showPy ? ' on' : '') + '" id="gpy">' + (showPy ? 'Pinyin ✓' : 'Pinyin ✗') + '</button></div>' +
+    '<div id="glist" class="' + (showPy ? '' : 'nopy') + '"></div>';
+  var q = '';
+  var draw = function () {
+    var el = $('#glist'); var h = '';
+    if (q) {
+      var s = q.toLowerCase(), st = stripTone(s).replace(/\s/g, '');
+      var hits = [];
+      ['1', '2', '3', '4', '5', '6', '7'].forEach(function (l) { G[l].forEach(function (p) {
+        var txt = (p.z + ' ' + p.t + ' ' + p.d + ' ' + p.e.map(function (e) { return e[0] + ' ' + e[2]; }).join(' ')).toLowerCase();
+        var pys = stripTone(p.e.map(function (e) { return e[1]; }).join('|')).replace(/ /g, '');
+        if (txt.indexOf(s) >= 0 || stripTone(txt).indexOf(stripTone(s)) >= 0 || (st.length > 2 && pys.indexOf(st) >= 0)) hits.push([l, p]);
+      }); });
+      h = '<div class="sec-t" style="margin-top:6px">🔎 ' + hits.length + ' kết quả <small>ở mọi cấp</small></div>' +
+        (hits.length ? hits.slice(0, 80).map(function (x) { return gCard(x[0], x[1], false, true); }).join('') + (hits.length > 80 ? '<div class="empty small">Gõ cụ thể hơn để thu hẹp kết quả nhé</div>' : '') : '<div class="empty">Không tìm thấy 🙈</div>');
+    } else {
+      var last = '';
+      list.forEach(function (p) {
+        var g = gGroup(p.c);
+        if (g[0] !== last) { var cnt = 0; for (var i = list.indexOf(p); i < list.length && gGroup(list[i].c)[0] === g[0]; i++) cnt++; h += '<div class="gsec"><span class="ge2">' + g[1] + '</span><b>' + esc(g[2]) + '</b><span class="zh gzc">' + esc(g[3]) + '</span><small>' + cnt + '</small></div>'; last = g[0]; }
+        h += gCard(lv, p, (lv + '-' + p.n) === openId, false);
+      });
+    }
+    el.innerHTML = h;
+  };
+  draw();
+  if (openId && $('#g' + openId)) setTimeout(function () { var e = $('#g' + openId); if (e) e.scrollIntoView({ block: 'start', behavior: 'smooth' }); }, 60);
+  var tq; $('#gsearch').oninput = function () { var v = this.value.trim(); clearTimeout(tq); tq = setTimeout(function () { q = v; draw(); }, 180); };
+  $('#gpy').onclick = function () { showPy = !showPy; LS.set('gpy', showPy); this.classList.toggle('on', showPy); this.textContent = showPy ? 'Pinyin ✓' : 'Pinyin ✗'; $('#glist').classList.toggle('nopy', !showPy); };
+  $('#glist').onclick = function (e) {
+    var t = e.target.closest('[data-gt]');
+    if (t) {
+      var box = t.parentNode, id = t.dataset.gt, a = id.split('-'), p = G[a[0]].find(function (x) { return String(x.n) === a[1]; });
+      if (box.classList.contains('open')) { box.classList.remove('open'); var b = $('.gb', box); if (b) b.remove(); }
+      else { box.classList.add('open'); box.insertAdjacentHTML('beforeend', gBody(a[0], p)); act('gram'); }
+      return;
+    }
+    var d = e.target.closest('[data-gd]');
+    if (d) {
+      var all = LS.get('gdone', {}), k = d.dataset.gd; if (all[k]) delete all[k]; else all[k] = 1; LS.set('gdone', all);
+      var on = !!all[k]; d.classList.toggle('on', on); d.textContent = on ? '✓ Đã thuộc' : '☆ Đánh dấu đã thuộc';
+      var bx = d.closest('.gp'); bx.classList.toggle('done', on); $('.gk', bx).textContent = on ? '✓' : '›';
+      var L = learned(); $('#glearn').textContent = L; $('#gbar').style.width = Math.round(L * 100 / list.length) + '%';
+      if (on) { toast('Giỏi quá! 🎉'); if (L === list.length) confetti(); }
+    }
+  };
+};
 
 /* =============================== TALK =============================== */
 routes.talk = function () {

@@ -1,0 +1,508 @@
+## 1
+t: Hậu tố 面
+d: Từ phương vị + 面 = phía, mặt: 前面 (phía trước), 里面 (bên trong), 后面 (phía sau). Nghĩa giống 前边, 里边.
+- Tôi muốn ngồi ở phía trước lớp học.
+- Trong cặp sách của bạn có gì?
+- Phía sau trường có một siêu thị.
+
+## 2
+t: Danh từ phương vị 左, 右
+d: 左边 bên trái, 右边 bên phải. Hay đứng trước danh từ làm định ngữ: 左边那件 (cái bên trái kia).
+- Cái bên trái kia bao nhiêu tiền?
+- Người bên phải bạn là ai?
+
+## 3
+t: Lặp lại động từ
+d: Động từ đơn: AA, A一A, A了A (đã làm). Động từ 2 âm tiết: ABAB. Ý nghĩa: làm thử, làm một chút, giọng nhẹ nhàng. Âm lặp lại thường đọc thanh nhẹ.
+- Quyển sách kia có thể cho tôi xem một chút không?
+- Mời mọi người nói thử về sở thích của mình.
+- Tôi nếm thử một chút, thấy rất ngon.
+- Uống cốc trà, nghỉ ngơi một chút đi.
+
+## 4
+t: Động từ năng nguyện 可能
+d: 可能 + động từ = có lẽ, có thể (phỏng đoán).
+- Có lẽ cô ấy về nhà rồi.
+- Có lẽ con mèo ở trong phòng.
+
+## 5
+t: Từ ly hợp 帮忙, 游泳, 跳舞, 跑步
+d: Có thể tách: 帮我一个忙 (giúp tôi một việc). Lặp lại theo kiểu AAB: 游游泳, 跳跳舞, 跑跑步. Không nói 帮忙我 – phải nói 帮我的忙 / 帮我一个忙.
+- Bạn có thể giúp tôi một việc không?
+- Tối cùng đi bơi một chút, vận động một chút nhé.
+- Tối thứ Bảy, tôi thích cùng các bạn hát hò, nhảy nhót.
+- Có thời gian bạn có thể ra ngoài chạy bộ một chút.
+
+## 6
+t: Đại từ nghi vấn 为什么
+d: 为什么 = tại sao, đứng sau chủ ngữ, trước động từ.
+- Hôm qua tại sao anh ấy không đi học?
+- Tại sao bạn muốn học tiếng Trung?
+
+## 7
+t: Đại từ nhân xưng 自己
+d: 自己 = tự mình, bản thân. 你自己去 = bạn tự đi.
+- Chiều nay tôi có việc, bạn tự đi được không?
+
+## 8
+t: Đại từ chỉ thị 那么, 那样, 这么, 这样, 每
+d: 这么/那么 + tính từ = như thế này/như thế kia (nhấn mức độ). 这样/那样 = như thế này/kia (cách thức, tính chất). 每 + lượng từ = mỗi (每天, 每个人), thường đi với 都.
+- Tại sao anh ấy học giỏi như thế?
+- Chuyện như vậy thường hay có.
+- Đông người thế này, mai chúng ta lại đến nhé.
+- Chữ này viết như thế này, đúng không?
+- Mỗi ngày bạn đến trường bằng cách nào?
+
+## 9
+t: Lặp lại tính từ
+d: AA (高高的), AABB (高高兴兴). Lặp lại để miêu tả sinh động, nhấn mạnh. Sau khi lặp lại thì không dùng 很, 非常 nữa; làm trạng ngữ thì thêm 地.
+- Cô ấy dáng cao cao, mắt to to, vô cùng xinh đẹp.
+- Mọi người vui vui vẻ vẻ về nhà.
+
+## 10
+t: Số từ 万, 好多, 多
+d: 万 = vạn (10.000): 两万三千 = 23.000. 好多 = rất nhiều. Số + 多 = hơn (số ước lượng): 二十多年 = hơn hai mươi năm.
+- hai vạn ba nghìn (23.000), năm vạn lẻ tám trăm (50.800), rất nhiều đồ, rất nhiều người, hơn hai mươi năm, hơn năm mươi người
+
+## 11
+t: Lượng từ chuyên dùng 条, 位, 间, 名
+d: 条 vật dài (quần, đường, cá), 位 người (kính trọng), 间 phòng, 名 người (trang trọng, theo danh sách).
+- một chiếc quần, một vị giáo viên, một phòng học, một học sinh
+
+## 12
+t: Lượng từ mượn 包
+d: 包 = gói, túi, bọc.
+- một túi quần áo, một gói sách
+
+## 13
+t: Động lượng từ 次
+d: Động từ + số + 次 = làm mấy lần.
+- đi một lần, xem một lần
+
+## 14
+t: Phó từ mức độ 多, 好, 最
+d: 多 + tính từ + 啊！ = …biết bao (cảm thán). 好 + tính từ = thật là, rất (khẩu ngữ). 最 = nhất.
+- Chú chó con này đáng yêu biết bao!
+- Phòng học này to thật đấy!
+- Tôi thích chơi bóng rổ nhất.
+
+## 15
+t: Phó từ phạm vi 一起
+d: 一起 + động từ = cùng nhau làm gì. Hay đi với 和/跟: 和你一起去.
+- Tối nay chúng ta cùng ăn cơm nhé.
+- Cùng đi xem phim, thế nào?
+
+## 16
+t: Phó từ thời gian 还, 已经, 有时(候), 快, 快要, 正
+d: 还 = vẫn (còn) chưa; 已经 = đã (rồi), hay đi với 了; 有时候 = có lúc; 快 = mau, nhanh lên; 快要…了 = sắp…rồi; 正 = đúng lúc đang.
+- Anh ấy vẫn chưa ngủ dậy.
+- Thầy Trương đã tan làm rồi.
+- Tôi có lúc đi siêu thị mua đồ.
+- Trời mưa rồi, mau về nhà đi.
+- Năm mới sắp đến rồi.
+- Lúc tôi ra ngoài, anh ấy đang ngủ.
+
+## 17
+t: Phó từ tần suất 常, 经常
+d: 常/经常 = thường, thường xuyên. Phủ định hay dùng 不常.
+- Tôi không hay đi tàu điện ngầm.
+- Bạn có thường mua đồ trên mạng không?
+
+## 18
+t: Phó từ phủ định 别
+d: 别 + động từ = đừng (cấm, khuyên). Giống 不要 nhưng khẩu ngữ hơn.
+- Trời mưa rồi, đừng ra ngoài nữa.
+- Đừng quên, ngày mai có bài kiểm tra.
+
+## 19
+t: Phó từ liên kết 再, 就
+d: 先…再… = trước tiên…rồi mới… (việc chưa làm). 就 = thì, liền (kết quả, nối tiếp ngay): 一…就… = vừa…là….
+- Tôi nghỉ một lát trước rồi mới làm việc.
+- Bạn rửa tay xong rồi hãy ăn hoa quả.
+- Vì người không khỏe nên tôi đã không đi học.
+- Anh ấy vừa đến Bắc Kinh là đi Trường Thành ngay.
+
+## 20
+t: Phó từ ngữ khí 都, 就, 还是
+d: 都…了 = đã…rồi (nhấn mạnh muộn, nhiều). 就 = chính là, ngay (khẳng định): 就在旁边 = ngay bên cạnh; 就买这件 = mua luôn cái này. 还是 = tốt hơn là, vẫn nên (khuyên, lựa chọn sau khi cân nhắc).
+- Đã mười hai giờ rồi, mau đi ngủ đi.
+- Bến xe ở ngay cạnh quán ăn kia.
+- Mua luôn cái màu trắng này đi.
+- Bên ngoài rất lạnh, tốt hơn là mặc thêm chút áo đi.
+
+## 21
+t: Giới từ 从 (thời gian, nơi chốn)
+d: 从 = từ. 从…到… = từ…đến….
+- Chúng tôi học từ tám giờ đến mười hai giờ.
+- Bạn từ đâu đến?
+
+## 22
+t: Giới từ 往 (phương hướng)
+d: 往 + phương hướng + động từ = đi/nhìn về phía…: 往前走 = đi thẳng về phía trước.
+- Bạn đi thẳng về phía trước từ đây.
+- Từ đây nhìn xuống, đẹp thật đấy!
+
+## 23
+t: Giới từ 从 (đường đi qua)
+d: 从 + nơi chốn + 过/进/出… = đi qua/vào/ra từ chỗ nào.
+- Tuyến xe buýt này không đi qua cổng trường.
+- Cửa trước không mở, chúng ta đi vào từ cửa sau đi.
+
+## 24
+t: Giới từ 给
+d: 给 + người + động từ = làm gì cho ai / đối với ai: 给妈妈打电话 = gọi điện cho mẹ.
+- Tôi thường gọi điện thoại cho bố mẹ.
+- Tôi mua cho thầy giáo một cốc cà phê.
+
+## 25
+t: Giới từ 比
+d: A 比 B + tính từ = A … hơn B. Không dùng 很, 非常 trước tính từ trong câu 比.
+- Hôm nay nóng hơn hôm qua.
+- Tôi thấy cái màu đỏ đẹp hơn cái màu đen.
+
+## 26
+t: Giới từ 跟
+d: 跟 + người + động từ = với ai, cùng ai: 跟我说 = nói với tôi.
+- Kể cho tôi nghe về sở thích của bạn đi.
+- Tôi đã gặp anh ấy một lần.
+
+## 27
+t: Giới từ 因为 (nguyên nhân)
+d: 因为 + danh từ = vì, do…
+- Vì phim Trung Quốc mà tôi bắt đầu học tiếng Trung.
+
+## 28
+t: Liên từ 跟
+d: A 跟 B = A và B (khẩu ngữ, giống 和).
+- Bố và mẹ đều không có nhà.
+- Tôi và anh trai đều đi học ở Trung Quốc.
+
+## 29
+t: Liên từ nối câu: 但(是), 那, 虽然, 还是, 因为, 所以
+d: 但是 = nhưng; 那 = vậy thì; 虽然…但是… = tuy…nhưng…; 还是 = hay là (câu hỏi lựa chọn); 因为…所以… = vì…nên….
+- Món ăn của quán này rất ngon, nhưng hơi đắt.
+- Bạn không khỏe, vậy thì đừng đi nữa.
+- Điện thoại tuy không to nhưng có thể giúp chúng ta làm rất nhiều việc.
+- Bạn muốn uống trà hay uống cà phê?
+- Vì dạo này ngày nào tôi cũng xem điện thoại nên mắt hơi khó chịu.
+
+## 30
+t: Trợ từ kết cấu 得, 地
+d: Động từ + 得 + bổ ngữ (đánh giá kết quả, mức độ): 说得很好 = nói rất giỏi. Tính từ/trạng từ + 地 + động từ (cách thức): 高兴地唱歌 = vui vẻ hát.
+- Anh ấy nói tiếng Hán rất giỏi.
+- Mọi người đang vui vẻ ca hát.
+
+## 31
+t: Trợ từ động thái 过
+d: Động từ + 过 = đã từng (trải nghiệm). Phủ định: 没 + động từ + 过.
+- Bạn đã từng học tiếng Trung chưa?
+- Tôi chưa từng đến Bắc Kinh.
+
+## 32
+t: Trợ từ động thái 着
+d: Động từ + 着 = đang (trong trạng thái), …sẵn. Diễn tả trạng thái kéo dài hoặc cách thức đi kèm hành động khác.
+- Anh ấy đang mặc một chiếc quần màu đen.
+- Cửa lớp học đang mở.
+- Họ vừa hát vừa nhảy, rất vui vẻ.
+
+## 33
+t: Trợ từ ngữ khí 呢, 吧, 的, 啊
+d: 呢 trong câu hỏi có từ để hỏi: làm câu nhẹ nhàng hơn. 吧 = chắc là…phải không (đoán, cần xác nhận). 的 trong câu 是…的: nhấn mạnh thời gian, nơi chốn, cách thức. 啊 = cảm thán.
+- Sao cô ấy lại không ở nhà nhỉ?
+- Ngày mai bạn muốn đi đâu?
+- Đây là điện thoại của bạn phải không?
+- Muộn thế này rồi, siêu thị chắc đã đóng cửa rồi nhỉ?
+- Tôi đến Trung Quốc vào tháng 9 năm ngoái.
+- Chúng tôi quen nhau ở Bắc Kinh.
+- Họ đi máy bay đến Thượng Hải.
+- Bữa tối hôm nay là do tôi nấu.
+- Bạn nói tiếng Hán giỏi thật đấy!
+
+## 34
+t: Cụm động – bổ
+d: Động từ + bổ ngữ (kết quả, xu hướng, trạng thái, số lượng).
+- nghe hiểu, quay về, chạy rất nhanh, đợi một chút
+
+## 35
+t: Cụm chữ 的
+d: … + 的 thay cho danh từ đã biết: 白色的 = cái màu trắng, 妈妈做的 = món mẹ nấu.
+- của thầy giáo, cái màu trắng, cái rẻ, món mẹ nấu
+
+## 36
+t: Cụm liên vị
+d: Hai động từ nối tiếp cùng một chủ ngữ.
+- đến học, đi Thượng Hải du lịch, đi tàu điện ngầm đến trường
+
+## 37
+t: Cụm kiêm ngữ
+d: Tân ngữ của động từ trước đồng thời là chủ ngữ của động từ sau: 请他来 = mời anh ấy đến.
+- mời anh ấy đến, gọi bạn giúp đỡ, bảo mẹ giặt quần áo
+
+## 38
+t: Cụm danh từ
+d: Cụm có chức năng như một danh từ.
+- máy tính mới, sách của thầy giáo, vé tàu hỏa, một cậu bé, hai cái (vật dài), căn phòng này
+
+## 39
+t: Cụm động từ
+d: Cụm có chức năng như một động từ.
+- viết chữ Hán, nghe hiểu, quay về, thường xuyên lên mạng, có thể đi vào
+
+## 40
+t: Cụm tính từ
+d: Cụm có chức năng như một tính từ.
+- rất mệt, vô cùng bận, chậm một chút
+
+## 41
+t: Cụm cố định 什么的
+d: Liệt kê + 什么的 = …vân vân, …các thứ.
+- Anh ấy thích hát, nhảy các thứ.
+- Bóng đá, bóng rổ các kiểu, tôi đều thích.
+
+## 42
+t: Cấu trúc 还是……吧
+d: = tốt hơn là…, vẫn nên… đi (đưa ra lời khuyên/lựa chọn sau khi cân nhắc).
+- Những món này tôi đều chưa ăn bao giờ, tốt hơn là bạn gọi đi.
+- Tốt hơn là bạn đi bệnh viện khám đi.
+
+## 43
+t: Cấu trúc 要/快要/就要……了
+d: = sắp…rồi. 就要…了 có thể đi với thời gian cụ thể (下星期就要…了); 快要…了 thì KHÔNG đi với thời gian cụ thể.
+- Phim sắp bắt đầu rồi.
+- Chúng tôi sắp khai giảng rồi.
+- Tuần sau là thi rồi.
+
+## 44
+t: Cấu trúc 都……了
+d: = đã…rồi (nhấn mạnh đã muộn/đã nhiều, thường kèm ý trách, giục).
+- Đã muộn thế này rồi, sao bạn vẫn chưa ngủ?
+- Đã mười một giờ rồi, đừng xem tivi nữa.
+
+## 45
+t: Chủ ngữ bị động (chủ ngữ là đối tượng chịu tác động)
+d: Đưa vật chịu tác động lên đầu câu, không cần 被: 水果都吃完了 = Hoa quả ăn hết rồi.
+- Hoa quả ăn hết rồi.
+- Quyển sách đó tôi đọc rồi.
+
+## 46
+t: Cụm danh từ làm vị ngữ
+d: Miêu tả ngoại hình, quê quán, tuổi tác… không cần 是.
+- Cô ấy dáng cao, mắt to, rất xinh.
+- Thầy Vương người Thượng Hải, hơn bốn mươi tuổi.
+
+## 47
+t: Động từ, cụm chủ – vị làm định ngữ
+d: Cụm động từ/chủ vị + 的 + danh từ: 唱歌的女孩儿 = cô gái đang hát. Bắt buộc có 的.
+~ 2 | 这就是我儿子学习汉语的学校。
+- Cô bé đang hát kia là ai?
+- Đây chính là ngôi trường con trai tôi học tiếng Hán.
+- Tôi vẫn chưa biết thời gian bắt đầu chiếu phim.
+
+## 48
+t: Bổ ngữ kết quả: 错, 懂, 好, 会, 完
+d: Động từ + bổ ngữ kết quả: 写错 (viết sai), 听懂 (nghe hiểu), 洗好 (giặt xong xuôi), 学会 (học được, biết rồi), 做完 (làm xong). Phủ định: 没 + động từ + bổ ngữ.
+- Chữ này bạn viết sai rồi.
+- Lời thầy giáo bạn nghe hiểu chưa?
+- Quần áo đã giặt xong rồi.
+- Tôi đã học được bơi rồi.
+- Bài nhiều quá, tôi làm không xong.
+
+## 49
+t: Bổ ngữ xu hướng đơn: 来/去
+d: Động từ + 来 (hướng về phía người nói) / 去 (rời xa người nói): 上来 (đi lên đây), 回去 (quay về đó).
+- Bạn lên đây đi, tôi đợi bạn ở trên lầu.
+- Muộn quá rồi, bạn mau về đi.
+
+## 50
+t: Bổ ngữ xu hướng đơn: 上/下/进/出/过/回
+d: Động từ + 上 (lên), 下 (xuống), 进 (vào), 出 (ra), 过 (qua), 回 (về).
+- Máy bay bay lên trời rồi.
+- Em trai chạy xuống lầu rồi.
+- Thầy giáo đi vào văn phòng rồi.
+- Anh ấy lấy ra một quyển sách từ trong túi.
+- Chúng ta cùng đi bộ về trường nhé.
+
+## 51
+t: Bổ ngữ xu hướng kép
+d: Động từ + 上/下/进/出/回/过/起 + 来/去. Tân ngữ chỉ nơi chốn phải đặt trước 来/去: 走进教室来. Tân ngữ chỉ vật có thể đặt trước hoặc sau 来/去.
+~ 5 | 王老师走进教室来了。
+- Xe chạy tới rồi, mọi người mau lên xe.
+- Cô ấy đang đợi ở bên kia, chúng ta đi qua đó đi.
+- Anh ấy lấy ra một quyển sách tiếng Trung từ trong cặp.
+- Mẹ mua một ít hoa quả từ siêu thị về.
+- Thầy Vương đi vào lớp học rồi.
+- Xe của chúng ta có lái vào trong trường được không?
+- Bạn có thể đứng dậy được không?
+- Sao họ vẫn chưa đi lên đây nhỉ?
+- Bạn đợi tôi trên lầu, tôi mang lên cho bạn.
+- Họ từ trên núi đi xuống rồi.
+- Những đồ này bạn giúp tôi mang xuống nhé.
+
+## 52
+t: Bổ ngữ trạng thái: động từ + 得 + tính từ
+d: Đánh giá, miêu tả kết quả của hành động. Có tân ngữ thì lặp lại động từ hoặc đưa tân ngữ lên trước: (打)篮球打得很好.
+- Mọi người chơi rất vui.
+- Anh ấy chơi bóng rổ rất giỏi.
+
+## 53
+t: Bổ ngữ thời lượng
+d: Động từ + 了 + khoảng thời gian = làm trong bao lâu. Thêm 了 cuối câu = đến giờ vẫn còn tiếp tục.
+- Tôi đã học tiếng Trung được hai năm rồi.
+- Tôi đã đợi cô ấy hơn một tiếng đồng hồ.
+- Hôm qua họ xem tivi suốt cả buổi tối.
+
+## 54
+t: Tính từ + bổ ngữ số lượng
+d: Tính từ + 一些/一点儿/两岁… = hơn bao nhiêu (dùng trong so sánh).
+- Đi tàu điện ngầm nhanh hơn đi xe buýt một chút.
+- Anh trai tôi lớn hơn tôi hai tuổi.
+
+## 55
+t: Câu vị ngữ chủ – vị
+d: Vị ngữ là cả một cụm chủ – vị: 她 | 个子很高 (Cô ấy | dáng rất cao).
+- Cô ấy dáng người rất cao.
+- Việc này tôi biết.
+
+## 56
+t: Câu hỏi lựa chọn với 还是
+d: A 还是 B？ = A hay B? Không thêm 吗.
+- Là tôi tự đi, hay bạn đi cùng tôi?
+- Bạn thích chơi bóng rổ hay thích đá bóng?
+
+## 57
+t: Câu cầu khiến với 别
+d: 别 + động từ (+ 了) = đừng…(nữa).
+- Trời mưa rồi, đừng ra ngoài nữa.
+- Đừng quên, ngày mai có bài kiểm tra.
+
+## 58
+t: Câu chữ 是: giải thích, đặc điểm
+d: 是 + … + 的 = nói rõ đặc điểm, tính chất: 是新的 = là đồ mới.
+- Bộ quần áo đó là đồ mới.
+- Cái điện thoại này bị hỏng, không dùng được.
+
+## 59
+t: Câu chữ 有: đạt tới (mức độ)
+d: 有 + số lượng = có tới, đạt tới…(không). Thường dùng để hỏi ước lượng.
+- Thầy Vương có tới ba mươi tuổi không?
+- Chỗ hoa quả này có tới một trăm đồng không?
+
+## 60
+t: Câu tồn hiện: nơi chốn + động từ + 着 + danh từ
+d: Miêu tả ở đâu có ai/cái gì đang ở trạng thái nào: 门口站着一个人 = Ở cửa có một người đang đứng.
+- Ở cửa có một người đang đứng.
+- Trong lớp có hơn mười học sinh đang ngồi.
+
+## 61
+t: Câu so sánh: A 比 B + tính từ
+d: A hơn B về tính chất nào đó.
+- Chị gái cao hơn tôi.
+- Xe buýt rẻ hơn tàu điện ngầm.
+
+## 62
+t: Câu so sánh: A 比 B + tính từ + chênh lệch
+d: Sau tính từ thêm mức chênh: 两岁 (hai tuổi), 一点儿 (một chút), 多了/得多 (hơn nhiều). Không dùng 很/非常/太.
+- Anh trai lớn hơn tôi hai tuổi.
+- Cà phê đắt hơn trà sữa một chút.
+- Hôm nay lạnh hơn hôm qua nhiều.
+- Chiều cao của chị cao hơn em gái nhiều.
+
+## 63
+t: Câu so sánh: A 有/没有 B (这么/那么) + tính từ
+d: A 有 B … 吗？= A có … bằng B không? A 没有 B (那么) … = A không … bằng B.
+- Bạn có cao bằng anh ấy không?
+- Hôm nay không lạnh bằng hôm qua.
+- Tiếng Hán của tôi không giỏi bằng bạn.
+
+## 64
+t: Câu so sánh có bổ ngữ trạng thái
+d: A 比 B + động từ + 得 + tính từ, hoặc A + động từ + 得 + 比 B + tính từ. Hai cách cùng nghĩa.
+- Cô ấy nói giỏi hơn tôi.
+- Tôi chạy nhanh hơn em trai.
+
+## 65
+t: Câu 是……的: nhấn mạnh thời gian, nơi chốn, cách thức, người làm
+d: Dùng cho việc ĐÃ xảy ra. 是 đặt trước phần cần nhấn mạnh (có thể lược), 的 ở cuối câu.
+- Tôi đến Trung Quốc vào tháng 9 năm ngoái.
+- Chúng tôi quen nhau ở Bắc Kinh.
+- Họ đi Thượng Hải bằng máy bay.
+- Bữa tối hôm nay là do tôi nấu.
+
+## 66
+t: Câu kiêm ngữ: 请/叫/让
+d: Chủ ngữ + 请 (mời)/叫 (gọi, bảo)/让 (để, bảo) + người + động từ.
+- Mẹ bảo tôi đi siêu thị mua hoa quả.
+- Tôi muốn mời thầy giáo dạy tôi tiếng Trung.
+- Thầy giáo bảo chúng tôi giới thiệu sở thích của bản thân.
+
+## 67
+t: Câu hai tân ngữ với 给
+d: Động từ (送, 卖, 借, 还…) + 给 + người + vật.
+- Bố tặng cho tôi một chiếc điện thoại mới.
+- Anh ấy bán cho tôi một quyển sách tiếng Trung.
+
+## 68
+t: Câu phức lựa chọn: (是)……，还是……
+d: = …hay là…? (câu hỏi lựa chọn).
+- Bạn uống trà hay uống cà phê?
+- Bạn thích cái màu trắng hay cái màu đen?
+
+## 69
+t: Câu phức chuyển ngoặt: 虽然……，但是……
+d: = Tuy…nhưng…. 虽然 có thể đứng trước hoặc sau chủ ngữ.
+- Tuy thời gian học không dài, nhưng anh ấy nói tiếng Hán rất giỏi.
+- Học tiếng Hán tuy khó nhưng rất thú vị.
+
+## 70
+t: Câu phức nhân quả: 因为……，所以……
+d: = Vì…nên….
+- Vì vé máy bay đắt quá nên tôi định đi tàu hỏa.
+- Vì bố tôi làm việc ở Trung Quốc nên tôi đến đây học tiếng Trung.
+
+## 71
+t: Câu rút gọn: 一……就……
+d: = Vừa…là…/ hễ…là…. 一 và 就 đều đứng trước động từ.
+- Anh ấy vừa tan học là đi chơi bóng rổ.
+- Tôi cứ đến trung tâm thương mại là muốn mua sắm.
+
+## 72
+t: Thể duy trì: 着 (trạng thái kéo dài)
+d: Động từ + 着: trạng thái tiếp tục tồn tại (cửa đang mở, đang đứng).
+- Cửa đang mở, bạn vào đi.
+- Đừng đứng nữa, mời ngồi đi.
+
+## 73
+t: Thể duy trì: 着 (hành động kéo dài)
+d: 正 + động từ + 着 + … + 呢: hành động đang tiếp diễn.
+- Họ đang ăn cơm.
+- Trong lớp đang có tiết học.
+
+## 74
+t: Thể kinh nghiệm: 过
+d: Động từ + 过 = đã từng. Phủ định: 没 + động từ + 过.
+- Bạn đã từng học tiếng Trung chưa?
+- Tôi chưa từng đến Bắc Kinh.
+
+## 75
+t: Số thứ tự: số + lượng từ
+d: Không cần 第: 三楼 = tầng 3, 304路 = tuyến (xe buýt) 304 (đọc từng số: sān líng sì).
+- Phòng của tôi ở tầng ba.
+- Bạn có thể đi xe buýt tuyến 304.
+
+## 76
+t: Số ước lượng với 几
+d: 几 trong câu trần thuật = vài, mấy: 几件 = mấy cái, 几百 = vài trăm.
+- Mấy bộ quần áo này bạn giặt giúp tôi nhé.
+- Trường chúng tôi có vài trăm học sinh nước ngoài.
+
+## 77
+t: Số ước lượng: số + 多 + lượng từ
+d: Dùng với số tròn chục, trăm (20, 5000…): 二十多个 = hơn hai mươi cái.
+- Trong lớp có hơn hai mươi học sinh.
+- Cái điện thoại kia hơn năm nghìn đồng.
+
+## 78
+t: Số ước lượng: số + lượng từ + 多
+d: Dùng với số lẻ (1–9) hoặc đơn vị liên tục: 三年多 = hơn ba năm (3 năm và vài tháng).
+- Tôi đến Trung Quốc đã hơn ba năm rồi.
+- Con trai thầy Vương năm nay hơn sáu tuổi rồi.
