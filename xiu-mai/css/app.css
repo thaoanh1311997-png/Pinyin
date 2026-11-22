@@ -722,3 +722,6 @@ button.tile{font-family:inherit;cursor:pointer;width:100%}
  .seg::-webkit-scrollbar{height:6px}.seg::-webkit-scrollbar-thumb{background:rgba(90,52,24,.25);border-radius:9px}
  .gimgs.n5,.gimgs.n6{max-width:680px}.gimgs.n7,.gimgs.n8{max-width:760px}
 }
+/* real photos: always show the whole subject (a square crop cut the dog's head off); small list thumbnails keep filling their box */
+img[src*="img/p/"],img[src^="blob:"],img[src^="data:image"]{object-fit:contain!important;background:#fff}
+.mylist .it img,.lopit img,.wotd img,.vc .th img,.dvc img,.dvt .th img,.avatar img,.tb-av img,.panelc.art .cart,.photo .pv img{object-fit:cover!important}
