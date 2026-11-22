@@ -291,15 +291,24 @@ R.g_noi = (k) => {
     setTimeout(() => say(ex), 300); $('#rep').onclick = () => say(w[0], { rate: 0.8 });
     const win = async () => { n++; $('#res').innerHTML = '🌟 Giỏi quá!'; await say('Yes! ' + w[0] + '! Great job!'); if (n >= 5) { await roundDone(); n = 0; } if (location.hash.startsWith('#/game/noi')) play(); };
     $('#ok').onclick = win;
+    let tries = 0;
     if (SR) $('#mic').onclick = () => {
-      const r = new SR(), b = $('#mic'); r.lang = 'en-US'; r.maxAlternatives = 5; b.classList.add('on'); $('#res').textContent = '👂 Đang nghe bé nói…';
-      let got = false;
-      r.onresult = e => { got = true; const target = w[0].toLowerCase(); const alts = [...e.results[0]].map(a => a.transcript.toLowerCase().replace(/[^a-z ]/g, '').trim());
-        const good = alts.some(a => a.includes(target) || a.split(' ').some(x => x && (lev(x, target) <= Math.max(1, Math.floor(target.length * .4)) || (x.length > 1 && target.startsWith(x.slice(0, 2))))));
-        if (good) win(); else { $('#res').innerHTML = `Bé nói “${esc(alts[0] || '…')}”. Thử lại nha! 💪`; say(w[0], { rate: 0.8 }); } };
-      r.onerror = () => { $('#res').textContent = 'Chưa nghe rõ, bấm micro nói lại nha. (Ba mẹ có thể bấm 👍)'; };
-      r.onend = () => { b.classList.remove('on'); if (!got && $('#res').textContent.startsWith('👂')) $('#res').textContent = 'Chưa nghe rõ, bấm micro nói lại nha.'; };
-      try { r.start(); } catch (e) { r.onend(); }
+      try { speechSynthesis.cancel(); } catch (e) {}
+      const r = new SR(), b = $('#mic'); r.lang = 'en-US'; r.maxAlternatives = 5; r.interimResults = true; r.continuous = false;
+      b.classList.add('on'); $('#res').textContent = '👂 Đang nghe bé nói…';
+      let heard = '', done = false;
+      const target = w[0].toLowerCase(), tw = target.split(' ');
+      const key = x => x.replace(/[aeiouy]/g, '').replace(/(.)\1+/g, '$1'); // rough "sounds like": consonant skeleton
+      const close = x => x && (lev(x, target) <= Math.max(1, Math.floor(target.length * .45)) || x[0] === target[0] && key(x) === key(target) || (x.length > 1 && target.startsWith(x.slice(0, 2))) || tw.some(t => t.length > 2 && lev(x, t) <= 1));
+      const ok = a => a.includes(target) || close(a.replace(/ /g, '')) || a.split(' ').some(close);
+      const finish = good => { if (done) return; done = true; try { r.stop(); } catch (e) {} b.classList.remove('on'); tries++;
+        if (good) return win();
+        if (heard && tries >= 3) { tries = 0; $('#res').innerHTML = '💪 Bé cố gắng giỏi lắm!'; return win(); }
+        $('#res').innerHTML = heard ? `Máy nghe là “${esc(heard)}”. Nói lại to và rõ hơn nha! 💪` : 'Chưa nghe thấy bé, để micro gần miệng bé rồi nói lại nha.'; say(w[0], { rate: 0.8 }); };
+      r.onresult = e => { for (let i = e.resultIndex; i < e.results.length; i++) { const alts = [...e.results[i]].map(x => x.transcript.toLowerCase().replace(/[^a-z ]/g, '').trim()).filter(Boolean); if (alts[0]) heard = alts[0]; if (alts.some(ok)) return finish(true); if (e.results[i].isFinal) return finish(false); } };
+      r.onerror = ev => { if (done) return; if (/not-allowed|service-not-allowed/.test(ev.error)) { done = true; b.classList.remove('on'); $('#res').innerHTML = 'Máy chưa cho dùng micro. Vào <b>Cài đặt › Safari › Micro</b> chọn <b>Cho phép</b>, rồi thử lại. (Ba mẹ có thể bấm 👍)'; } };
+      r.onend = () => { if (!done) finish(false); };
+      try { r.start(); } catch (e) { finish(false); }
     };
   };
   play();
@@ -308,16 +317,27 @@ R.g_noi = (k) => {
 const FOODT = ['fruits', 'vegetables', 'food', 'sweets', 'drinks'], FOODK = ['lop', ...FOODT];
 const NOFEED = new Set(['tea', 'coffee', 'soda', 'milk tea', 'ice', 'hot chocolate', 'chili', 'salt', 'sugar', 'pepper']);
 const isFood = en => !NOFEED.has(en.toLowerCase()) && ALL.some(x => FOODT.includes(x.t) && x.en.toLowerCase() === en.toLowerCase());
-const foodLop = () => (topic('lop') || { w: [] }).w.filter(w => isFood(w[0]) || isFood(singular(w[0].toLowerCase())));
+// class words usable here: food/drink (eat it) or small things a child can be handed (toys, clothes, baby & school things)
+const GIVET = ['toys', 'clothes', 'baby', 'school'];
+const NOGIVE = new Set(['button', 'ring', 'stroller', 'car seat', 'high chair', 'potty', 'slide', 'sandbox', 'rocking horse', 'kick scooter', 'scissors', 'glue', 'paper clip', 'teacher', 'student', 'paint']);
+const kindOf = en => {
+  en = String(en).toLowerCase(); const s = singular(en);
+  const hit = ALL.find(x => [en, s].includes(x.en.toLowerCase()) && (FOODT.includes(x.t) || GIVET.includes(x.t)));
+  if (!hit) return null; const e = hit.en.toLowerCase();
+  if (FOODT.includes(hit.t)) return NOFEED.has(e) ? null : 'food';
+  return NOGIVE.has(e) ? null : 'give';
+};
+const foodLop = () => (topic('lop') || { w: [] }).w.filter(w => kindOf(w[0]));
+const poolOf = kd => (kd === 'give' ? GIVET : FOODT).flatMap(k => topic(k).w).filter(w => kindOf(w[0]) === kd);
 function foodTopic(k) {
   if (FOODT.includes(k)) { const T = topic(k); return { k, vi: T.vi, w: T.w.filter(w => !NOFEED.has(w[0].toLowerCase())) }; }
-  const L = foodLop(); if ((k === 'lop' || !k) && L.length >= 3) return { k: 'lop', vi: 'Từ trên lớp', w: L };
+  const L = foodLop(); if ((k === 'lop' || !k) && L.length) return { k: 'lop', vi: 'Từ trên lớp', w: L };
   return foodTopic(pick(FOODT));
 }
 // people can eat anything; animals only get fruit (bunny/monkey/piggy really eat fruit)
 const KIDS = [['baby', 'w/baby'], ['boy', 'w/boy'], ['girl', 'w/girl']], FRUITERS = [['bunny', 'w/rabbit-face'], ['monkey', 'w/monkey-face'], ['piggy', 'w/pig-face']];
 const isFruit = en => { en = en.toLowerCase(); return ALL.some(x => x.t === 'fruits' && [en, singular(en)].includes(x.en.toLowerCase())); };
-const feeder = w => isFruit(w[0]) && Math.random() < .6 ? pick(FRUITERS) : pick(/honey|candy|coffee/i.test(w[0]) ? KIDS.slice(1) : KIDS);
+const feeder = w => kindOf(w[0]) === 'give' ? pick(KIDS) : isFruit(w[0]) && Math.random() < .6 ? pick(FRUITERS) : pick(/honey|candy|coffee/i.test(w[0]) ? KIDS.slice(1) : KIDS);
 // laptop: mouse wheel scrolls the topic chip rows sideways
 addEventListener('wheel', e => { const g = e.target.closest && e.target.closest('.seg'); if (!g || Math.abs(e.deltaX) > Math.abs(e.deltaY) || g.scrollWidth <= g.clientWidth) return; e.preventDefault(); g.scrollLeft += e.deltaY; }, { passive: false });
 // keep the page from sliding sideways on phones
@@ -326,13 +346,16 @@ R.g_an = (k) => {
   setTabs(null);
   let n = 0;
   const play = () => {
-    const t = foodTopic(k); const w = pick(t.w), opts = shuffle([w, ...shuffle(t.w.filter(x => x[0] !== w[0])).slice(0, 2)]);
+    const t = foodTopic(k); const w = pick(t.w), kd = kindOf(w[0]) || 'food';
+    let others = shuffle(t.w.filter(x => x[0] !== w[0] && (kindOf(x[0]) || 'food') === kd));
+    if (others.length < 2) others = others.concat(shuffle(poolOf(kd).filter(x => x[0].toLowerCase() !== w[0].toLowerCase() && !others.some(o => o[0].toLowerCase() === x[0].toLowerCase()))));
+    const opts = shuffle([w, ...others.slice(0, 2)]);
     const [an, ai] = feeder(w); const q = `Give the ${an} the ${w[0]}!`;
-    view(bar('Cho thú ăn', '#/game', starPill()) + `<div class="seg">${FOODK.filter(x => x !== 'lop' || foodLop().length >= 3).map(x => `<button data-k="${x}" class="${t.k === x ? 'on' : ''}">${x === 'lop' ? 'Từ trên lớp' : topic(x).vi}</button>`).join('')}</div>` + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}</div>
+    view(bar('Cho thú ăn', '#/game', starPill()) + `<div class="seg">${FOODK.filter(x => x !== 'lop' || foodLop().length).map(x => `<button data-k="${x}" class="${t.k === x ? 'on' : ''}">${x === 'lop' ? 'Từ trên lớp' : topic(x).vi}</button>`).join('')}</div>` + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}</div>
      <div class="gq"><button id="rep">🔊</button><span>Give the ${an} the <b>${esc(w[0])}</b>!</span></div>
      <div class="feed"><div class="fan" id="fan"><img src="${IMG(ai)}" alt=""><div class="fmouth"></div></div>
      <div class="fitems">${opts.map(o => `<div class="fit" data-w="${esc(o[0])}"><img src="${wsrc(o)}" alt="" draggable="false"></div>`).join('')}</div>
-     <div class="kickhint">👆 Kéo hoặc chạm vào đồ ăn đúng</div></div>`);
+     <div class="kickhint">👆 Kéo hoặc chạm vào hình đúng</div></div>`);
     bindSel('an');
     say(q); $('#rep').onclick = () => say(q);
     const fan = $('#fan'); let busy = false;
@@ -341,7 +364,7 @@ R.g_an = (k) => {
       const fr = fan.getBoundingClientRect(), er = el.getBoundingClientRect();
       el.style.transition = 'transform .45s cubic-bezier(.3,.8,.4,1)'; el.style.transform = `translate(${fr.left + fr.width / 2 - er.left - er.width / 2}px,${fr.top + fr.height * .62 - er.top - er.height / 2}px) scale(.35)`;
       await new Promise(r => setTimeout(r, 460));
-      if (el.dataset.w === w[0]) { el.style.opacity = 0; fan.classList.add('yum'); n++; await say('Yum yum! ' + w[0] + '!'); if (n >= 5) { await roundDone(); n = 0; } if (location.hash.startsWith('#/game/an')) play(); }
+      if (el.dataset.w === w[0]) { el.style.opacity = 0; fan.classList.add('yum'); n++; await say((kd === 'give' ? 'Thank you! ' : 'Yum yum! ') + w[0] + '!'); if (n >= 5) { await roundDone(); n = 0; } if (location.hash.startsWith('#/game/an')) play(); }
       else { fan.classList.add('nope'); el.style.transform = ''; await say('No, thank you! That is ' + (/^[aeiou]/i.test(el.dataset.w) ? 'an ' : 'a ') + el.dataset.w + '.'); fan.classList.remove('nope'); el.classList.add('no'); busy = false; }
     };
     app.querySelectorAll('.fit').forEach(el => {
