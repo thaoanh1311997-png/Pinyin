@@ -1166,7 +1166,7 @@ function groqJSON(messages) {
       body: JSON.stringify({ model: GQ_MODELS[mi], messages: messages, temperature: 0.2, max_tokens: 900, response_format: { type: 'json_object' } }) })
       .then(function (r) {
         if (r.status === 429 || r.status >= 500) { tries++; if (tries > 3) throw new Error('AI đang bận, thử lại sau ít phút nhé'); return new Promise(function (ok) { setTimeout(ok, 3000 * tries); }).then(go1); }
-        if (r.status === 401) { try { localStorage.removeItem('bb.groq'); } catch (e) {} throw new Error('KEY'); }
+        if (r.status === 401) { try { window.BM_dropKey ? BM_dropKey('bb.groq') : localStorage.removeItem('bb.groq'); } catch (e) {} throw new Error('KEY'); }
         if (r.status === 400 || r.status === 404) { if (mi < GQ_MODELS.length - 1) { mi++; return go1(); } throw new Error('AI báo lỗi ' + r.status); }
         if (!r.ok) throw new Error('AI lỗi ' + r.status);
         return r.json().then(function (j) { var c = j.choices[0].message.content; try { return JSON.parse(c); } catch (e) { var m = c.match(/\{[\s\S]*\}/); if (m) return JSON.parse(m[0]); throw new Error('AI trả về sai định dạng'); } });

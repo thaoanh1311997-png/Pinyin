@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<script src="../shared/nav-head.js?v=13"></script>
+<script src="../shared/nav-head.js?v=14"></script>
 <meta name="theme-color" content="#F4F6F8">
 <title>Bánh Mì · Học tiếng Trung qua video</title>
 <meta name="description" content="Dán link video hoặc chọn file giáo trình, học tiếng Trung với pinyin, bản dịch, shadowing, phát âm, nghe chép, điền từ và luyện tập.">
@@ -1765,10 +1765,11 @@ async function decode16k(file,onProg){
 // Groq cloud Whisper (large-v3-turbo): a 12-minute lesson takes seconds instead of minutes
 const GROQ_DEFAULT='';
 // keys arrive once per device through a private link (?gq=…&sdk=…), never stored in the page source
-(()=>{try{const q=new URLSearchParams(location.search),k=q.get('gq'),d=q.get('sdk');if(k&&k.length>20)localStorage.setItem('bb.groq',k);if(d&&d.length>10)localStorage.setItem('bb.sdkey',d);if(k||d)history.replaceState(null,'',location.pathname);}catch(e){}})();
+(()=>{try{const q=new URLSearchParams(location.search),k=q.get('gq'),d=q.get('sdk');if(k&&k.length>20)saveKey('bb.groq',k);if(d&&d.length>10)saveKey('bb.sdkey',d);if(k||d)history.replaceState(null,'',location.pathname);}catch(e){}})();
+function saveKey(k,v){if(window.BM_saveKey)BM_saveKey(k,v);else try{localStorage.setItem(k,v);}catch(e){}}
 function takeKeys(t){ t=String(t||''); let n=0;
   const g=t.match(/gsk_\w{20,}/), d=t.match(/sd_\w{10,}/);
-  try{ if(g){localStorage.setItem('bb.groq',g[0]);n++;} if(d){localStorage.setItem('bb.sdkey',d[0]);n++;} }catch(e){}
+  try{ if(g){saveKey('bb.groq',g[0]);n++;} if(d){saveKey('bb.sdkey',d[0]);n++;} }catch(e){}
   return n; }
 function groqKey(){try{return localStorage.getItem('bb.groq')||GROQ_DEFAULT;}catch(e){return GROQ_DEFAULT;}}
 function wav16(a){
@@ -1985,7 +1986,7 @@ async function rowsToLines(rows){
 }
 // Supadata transcript API (free 100 requests/month, user's own key)
 const SD_DEFAULT='';
-(()=>{try{const k=new URLSearchParams(location.search).get('sdk');if(k&&k.length>10){localStorage.setItem('bb.sdkey',k);history.replaceState(null,'',location.pathname);}}catch(e){}})();
+(()=>{try{const k=new URLSearchParams(location.search).get('sdk');if(k&&k.length>10){saveKey('bb.sdkey',k);history.replaceState(null,'',location.pathname);}}catch(e){}})();
 function sdKey(){try{return localStorage.getItem('bb.sdkey')||SD_DEFAULT;}catch(e){return SD_DEFAULT;}}
 async function fromSupadata(id,onWait){
   const key=sdKey(); if(!key) return null;
@@ -2063,14 +2064,15 @@ async function autoSubsYT(){
   }catch(e){
     if(job.stop||LES!==les) return;
     job.running=false;
-    noSubs(sdKey()?'Chưa lấy được phụ đề cho video này'+(sdErr?' (lỗi: '+sdErr.slice(0,80)+')':'')+'. Kiểm tra lại API key, hoặc dùng cách bên dưới.':'Làm bước dưới 1 lần là từ nay dán link là có phụ đề.');
+    if(/^401$|^403$/.test(sdErr)&&window.BM_dropKey) BM_dropKey('bb.sdkey');
+    noSubs(sdKey()?(/^(402|429)$/.test(sdErr)?'Key Supadata hết lượt miễn phí của tháng này rồi. Đầu tháng sau dùng lại được, giờ dán phụ đề bên dưới nha.':'Video này chưa có phụ đề tiếng Trung để lấy (bài hát hay bị vậy). Dán lời bài hát bên dưới là học được nha.'):(/^(401|403)$/.test(sdErr)?'Key Supadata cũ không còn dùng được. Chép key mới dán vào ô dưới nha.':'Máy này chưa lưu key Supadata. Dán key 1 lần là từ nay dán link là có phụ đề.'));
   }
 }
 function noSubs(msg){ // ask for a transcript, or make one from a file
   GEN=null;
   $('#panel').innerHTML=`<div class="pc"><h2 style="font-size:22px">Thêm phụ đề để học</h2>
     <p class="muted" style="margin:6px 0 0">${esc(msg||'Dán bản chép lời tiếng Trung của video vào đây (hoặc mở file .srt) để có pinyin, dịch và các bài luyện.')}</p>
-    ${LES.src&&LES.src.type==='youtube'?`<div class="grab"><h3>Dán link là có phụ đề</h3><div class="muted" style="font-size:14px">Đăng ký miễn phí ở <a href="https://dash.supadata.ai/" target="_blank" rel="noopener">supadata.ai</a> (bằng Google), chép <b>API key</b> rồi dán vào đây. Làm 1 lần thôi.</div>
+    ${LES.src&&LES.src.type==='youtube'&&sdKey()?`<div class="muted" style="font-size:13px;margin-top:8px">✅ Đã lưu key Supadata trên máy này. <a href="#" id="sdChg">Đổi key</a></div>`:''}${LES.src&&LES.src.type==='youtube'&&!sdKey()?`<div class="grab"><h3>Dán link là có phụ đề</h3><div class="muted" style="font-size:14px">Mở <a href="https://dash.supadata.ai/" target="_blank" rel="noopener">dash.supadata.ai</a> (đăng nhập Google), chép <b>API key</b> rồi dán vào đây. Từ giờ máy sẽ nhớ luôn.</div>
       <div class="row" style="margin-top:10px;flex-wrap:nowrap"><input class="in" id="sdKey" placeholder="Dán API key vào đây" autocomplete="off" style="flex:1;min-width:0"><button class="btn pri sm" id="sdSave">Lưu</button></div></div>`:''}
     ${LES.src&&LES.src.type==='youtube'&&!IS_MOB?grabBox():''}
     ${LES.src&&LES.src.type==='file'&&IS_MOB?`<div class="grab"><h3>Dán mã máy chủ nhanh</h3><div class="muted" style="font-size:14px">Chép nguyên cái link mã Claude gửi (hoặc chỉ mã gsk_…), dán vào ô dưới rồi bấm Lưu. Làm 1 lần trên máy này thôi.</div>
@@ -2081,7 +2083,8 @@ function noSubs(msg){ // ask for a transcript, or make one from a file
     <div class="row" style="margin-top:12px"><button class="btn pri" id="lsGo">${IC.check}Dùng phụ đề này</button><label class="btn out sm" for="lsFile" style="cursor:pointer">Mở file .srt</label><input type="file" id="lsFile" accept=".srt,.vtt,.txt,.ass,text/*" hidden></div>
     <details class="help"><summary>Cách khác: tự chép phụ đề</summary><ol><li>Mở video trên YouTube bằng máy tính, bấm <b>…thêm</b> dưới video, chọn <b>Hiện bản chép lời</b>.</li><li>Bôi đen toàn bộ bản chép lời, bấm Ctrl + C, rồi dán vào ô trên.</li><li>Hoặc tải phụ đề .srt ở downsub.com rồi bấm “Mở file .srt”.</li></ol></details></div>`;
   if($('#gqSave')) $('#gqSave').onclick=()=>{ if(!takeKeys($('#gqKey').value)||!groqKey()){toast('Chưa thấy mã gsk_… trong ô. Chép lại link Claude gửi nha.',4000);return;} toast('Đã lưu mã! Đang làm phụ đề…'); autoSubsFile(); };
-  if($('#sdSave')) $('#sdSave').onclick=()=>{const k=$('#sdKey').value.trim();if(k.length<10){toast('Dán API key vào ô trước nha.');return;}try{localStorage.setItem('bb.sdkey',k);}catch(e){}toast('Đã lưu! Đang lấy phụ đề…');setMode('shadow');};
+  if($('#sdChg')) $('#sdChg').onclick=e=>{e.preventDefault();if(window.BM_dropKey)BM_dropKey('bb.sdkey');else try{localStorage.removeItem('bb.sdkey');}catch(_){} noSubs('Dán key Supadata mới vào ô dưới nha.');};
+  if($('#sdSave')) $('#sdSave').onclick=()=>{const v=$('#sdKey').value.trim(),m=v.match(/sd_\w{10,}/),k=m?m[0]:v;if(k.length<10){toast('Dán API key vào ô trước nha.');return;}saveKey('bb.sdkey',k);toast('Đã lưu! Đang lấy phụ đề…');setMode('shadow');};
   $('#lsFile').onchange=async e=>{const f=e.target.files[0];if(f)$('#lsSub').value=await f.text();};
   if($('#lsAuto')) $('#lsAuto').onclick=()=>autoSubsFile();
   if($('#lsVid')) $('#lsVid').onchange=e=>{const f=e.target.files[0];if(!f)return;if(!isMedia(f)){toast('File này không phải video hay âm thanh. Hãy chọn file nghe (mp3, m4a…) hoặc video.',4500);e.target.value='';return;}LES.src={type:'file',name:f.name,url:URL.createObjectURL(f),file:f,audio:isAudio(f)};mountMedia().then(()=>autoSubsFile());};

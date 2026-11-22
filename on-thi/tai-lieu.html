@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script src="../shared/nav-head.js?v=13"></script>
+<script src="../shared/nav-head.js?v=14"></script>
 <title>Tài liệu ôn thi</title>
 <meta name="theme-color" content="#fff7ef">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1037,7 +1037,7 @@ function runJob(doc,segs,box,onFinish){
   .catch(function(e){
     busy(false); unrun(); btns.forEach(function(b){b.disabled=false});
     var li=steps.querySelector("li.doing"); if(li){ li.className="err"; li.firstChild.textContent="✗"; li.lastChild.textContent+=" → "+e.message; } else toast(e.message);
-    if(/Key/.test(e.message)){ ls("bb.groq",null); var kb=$("#keyBox"); if(kb) kb.classList.remove("hidden"); }
+    if(/Key/.test(e.message)){ ls("bb.groq",null); if(window.BM_dropKey) BM_dropKey("bb.groq"); var kb=$("#keyBox"); if(kb) kb.classList.remove("hidden"); }
     onFinish(false,e);
   });
 }

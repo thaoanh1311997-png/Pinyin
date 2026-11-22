@@ -45,3 +45,29 @@
   };
   window.BM_VT();
 })();
+/* Giữ mã máy chủ (Groq / Supadata) lâu dài: chép thêm vào IndexedDB, nếu localStorage bị Safari xoá thì tự lấy lại */
+(function () {
+  var K = ['bb.groq', 'bb.sdkey'];
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(function () {}); } catch (e) {}
+  try {
+    var rq = indexedDB.open('bm-keys', 1);
+    rq.onupgradeneeded = function () { rq.result.createObjectStore('k'); };
+    rq.onsuccess = function () {
+      var db = rq.result, st = db.transaction('k', 'readwrite').objectStore('k');
+      K.forEach(function (k) {
+        var v = null; try { v = localStorage.getItem(k); } catch (e) {}
+        if (v && v.length > 9) { st.put(v, k); return; }
+        var g = st.get(k); g.onsuccess = function () { if (g.result) { try { localStorage.setItem(k, g.result); } catch (e) {} } };
+      });
+    };
+  } catch (e) {}
+  // gọi khi key sai để xoá hẳn (cả bản dự phòng)
+  window.BM_dropKey = function (k) {
+    try { localStorage.removeItem(k); } catch (e) {}
+    try { var r = indexedDB.open('bm-keys', 1); r.onsuccess = function () { try { r.result.transaction('k', 'readwrite').objectStore('k').delete(k); } catch (e) {} }; } catch (e) {}
+  };
+  window.BM_saveKey = function (k, v) {
+    try { localStorage.setItem(k, v); } catch (e) {}
+    try { var r = indexedDB.open('bm-keys', 1); r.onupgradeneeded = function () { r.result.createObjectStore('k'); }; r.onsuccess = function () { try { r.result.transaction('k', 'readwrite').objectStore('k').put(v, k); } catch (e) {} }; } catch (e) {}
+  };
+})();
