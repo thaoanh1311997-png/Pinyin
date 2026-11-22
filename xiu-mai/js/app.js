@@ -648,6 +648,14 @@ async function makeWord(x) {
   else { const s = item.img ? `Where is the ${en}?` : `Can you say "${en}"?`; item.ex = [s, (await gtx(s)) || '']; }
   return item;
 }
+R.color = () => {
+  setTabs('parent', '#/bame/tu-lop');
+  const run = () => window.XMP && window.XMP();
+  if (window.XMP) return run();
+  view(bar('In tô màu', '#/bame/tu-lop') + '<p class="muted">Đang mở…</p>');
+  let n = 0; const done = () => { if (++n === 2) run(); };
+  for (const f of ['js/cmap.js?v=1', 'js/print.js?v=1']) { const sc = document.createElement('script'); sc.src = f; sc.onload = done; document.head.appendChild(sc); }
+};
 R.lop = () => {
   setTabs('parent', '#/bame/tu-lop');
   let L = custom();
@@ -662,7 +670,7 @@ R.lop = () => {
    <textarea id="words" rows="4" placeholder="Gõ liền nhiều từ, cách nhau bằng dấu phẩy hoặc xuống dòng.&#10;Ví dụ: cat, dog, bird, monkey, banana" autocapitalize="none" autocomplete="off" spellcheck="false"></textarea>
    <p class="muted lophint">Web tự tách từng từ, tự thêm nghĩa tiếng Việt, hình và câu mẫu. Muốn tự ghi nghĩa thì gõ: <b>dog - con chó</b></p>
    <button class="btn" id="add">✨ Tạo flashcard</button><div id="prog" class="lopprog" hidden></div></div>
-   <div class="panel sec mylist"><div class="ph">📚 Đã nhập (${L.length} từ)</div>${L.length ? `<a class="btn" style="display:block;margin-bottom:12px;text-decoration:none" href="#/flash/lop">Cho bé học bằng Flashcard ▶</a>` + L.map((w, i) => `<div class="it lopit"><img src="${pic(w)}" alt=""><div class="lw"><b>${esc(w.en)}</b> <span class="muted">${esc(w.vi)}</span>${w.ex ? `<button class="lex" data-i="${i}">💬 ${esc(w.ex[0])}<small>${esc(w.ex[1] || '')}</small></button>` : ''}</div>
+   <div class="panel sec mylist"><div class="ph">📚 Đã nhập (${L.length} từ)</div>${L.length ? `<a class="btn" style="display:block;margin-bottom:12px;text-decoration:none" href="#/flash/lop">Cho bé học bằng Flashcard ▶</a><a class="btn prt" style="display:block;margin-bottom:12px;text-decoration:none" href="#/bame/in-to-mau">🖍️ In trang tô màu ôn từ</a>` + L.map((w, i) => `<div class="it lopit"><img src="${pic(w)}" alt=""><div class="lw"><b>${esc(w.en)}</b> <span class="muted">${esc(w.vi)}</span>${w.ex ? `<button class="lex" data-i="${i}">💬 ${esc(w.ex[0])}<small>${esc(w.ex[1] || '')}</small></button>` : ''}</div>
      <div class="lact">${!w.ph && !/^[pw]\//.test(w.img || '') ? `<button class="lsw" data-i="${i}" title="Đổi hình khác">🔄</button>` : ''}<label class="lcam" title="Chụp ảnh thật">📷<input type="file" accept="image/*" data-i="${i}" hidden></label><button class="x" data-i="${i}" aria-label="Xóa">🗑️</button></div></div>`).join('') : '<p class="muted" style="margin:0">Chưa có từ nào. Gõ các từ bé học trên lớp vào ô phía trên nhé.</p>'}</div>`);
   $('#add').onclick = async () => {
     const xs = splitWords($('#words').value); if (!xs.length) { toast('Gõ từ tiếng Anh vào ô trước nha'); return; }
@@ -714,12 +722,12 @@ function route() {
   if (a === 'bame') {
     if (!b) return R.bame();
     if (b === 'hoi-thoai') return c ? R.ep(c) : R.eps();
-    return ({ 'cau-noi': R.phrases, 'cach-day': R.tips, 'hoat-dong': R.acts, 'tu-lop': R.lop, 'nhat-ky': R.journal, 'nguon-anh': R.credits, 'thiet-ke': R.design }[b] || R.bame)();
+    return ({ 'cau-noi': R.phrases, 'cach-day': R.tips, 'hoat-dong': R.acts, 'tu-lop': R.lop, 'in-to-mau': R.color, 'nhat-ky': R.journal, 'nguon-anh': R.credits, 'thiet-ke': R.design }[b] || R.bame)();
   }
   R.role();
 }
 window.addEventListener('hashchange', route);
 const credP = fetch('data/photo-credits.json', { cache: 'no-cache' }).then(r => r.json()).then(d => Object.assign(CRED, d)).catch(() => {});
-window.XM = { example, $, esc, say, toast, cheer, bump, wsrc, IMG, ALL, LS, stars, addStar, topic, setTabs, bar, view, starPill, R, go, pick, pickVoice, day, today };
+window.XM = { custom, PH, singular, example, $, esc, say, toast, cheer, bump, wsrc, IMG, ALL, LS, stars, addStar, topic, setTabs, bar, view, starPill, R, go, pick, pickVoice, day, today };
 Promise.all([idb().then(phLoadAll).catch(() => {}), credP]).then(route, route);
 })();
