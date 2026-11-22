@@ -1,0 +1,17 @@
+name: Giọng đọc WebKit test (manual)
+on: workflow_dispatch
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - run: npm i --no-save playwright && npx playwright install webkit chromium
+      - name: Serve site and run WebKit (iPhone) + Chromium
+        run: |
+          mkdir -p /tmp/srv && ln -s "$PWD" /tmp/srv/Pinyin
+          (cd /tmp/srv && python3 -m http.server 8765 >/dev/null 2>&1 &)
+          sleep 2
+          BROWSER=webkit node tools/voice/voice-test.cjs
+          BROWSER=chromium node tools/voice/voice-test.cjs
