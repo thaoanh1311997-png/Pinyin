@@ -276,6 +276,26 @@ R.g_doan = (k) => {
   play();
 };
 const lev = (a, b) => { const m = a.length, n = b.length, d = [...Array(n + 1).keys()]; for (let i = 1; i <= m; i++) { let p = d[0]; d[0] = i; for (let j = 1; j <= n; j++) { const t = d[j]; d[j] = Math.min(d[j] + 1, d[j - 1] + 1, p + (a[i - 1] === b[j - 1] ? 0 : 1)); p = t; } } return d[n]; };
+// shared, forgiving speech check for little kids: listens while they talk, accepts close-sounding words
+window.XMHear = target => new Promise(res => {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR) return res({ err: 'none' });
+  try { speechSynthesis.cancel(); } catch (e) {}
+  const r = new SR(); r.lang = 'en-US'; r.maxAlternatives = 5; r.interimResults = true; r.continuous = false;
+  const T = String(target).toLowerCase().replace(/[’]/g, "'").replace(/[^a-z' ]/g, ' ').replace(/\s+/g, ' ').trim();
+  const words = T.split(' ').filter(w => w.length > 1); let heard = '', done = false;
+  const sk = x => x.replace(/[aeiouy']/g, '').replace(/(.)\1+/g, '$1');
+  const wclose = (x, t) => x === t || lev(x, t) <= Math.max(1, Math.floor(t.length * .45)) || (x[0] === t[0] && sk(x) === sk(t)) || (x.length > 1 && t.length <= 7 && t.startsWith(x.slice(0, 2)));
+  const ok = a => { if (!a) return false; if (a.includes(T)) return true; const hw = a.split(' ').filter(Boolean);
+    if (words.length <= 1) return hw.some(x => wclose(x, T.replace(/ /g, ''))) || wclose(a.replace(/ /g, ''), T.replace(/ /g, ''));
+    const hit = words.filter(t => hw.some(x => wclose(x, t))).length; return hit >= Math.max(1, Math.ceil(words.length * .4)); };
+  const fin = (good, err) => { if (done) return; done = true; try { r.stop(); } catch (e) {} res({ good, heard, err }); };
+  r.onresult = e => { for (let i = e.resultIndex || 0; i < e.results.length; i++) { const al = [...e.results[i]].map(x => x.transcript.toLowerCase().replace(/[’]/g, "'").replace(/[^a-z' ]/g, ' ').replace(/\s+/g, ' ').trim()).filter(Boolean); if (al[0]) heard = al[0]; if (al.some(ok)) return fin(true); if (e.results[i].isFinal) return fin(false); } };
+  r.onerror = ev => { if (/not-allowed|service-not-allowed/.test(ev.error)) fin(false, 'deny'); };
+  r.onend = () => fin(false);
+  try { r.start(); } catch (e) { fin(false, 'start'); }
+});
+window.XMHearMsg = (h, tries) => h.err === 'deny' ? 'Máy chưa cho dùng micro. Vào <b>Cài đặt › Safari › Micro</b> chọn <b>Cho phép</b>, rồi thử lại. (Ba mẹ có thể bấm 👍)'
+  : h.heard ? `Máy nghe là “${esc(h.heard)}”. Nói lại to và rõ hơn nha! 💪` : 'Chưa nghe thấy bé, để micro gần miệng bé rồi nói lại nha.';
 R.g_noi = (k) => {
   setTabs(null);
   let n = 0;
@@ -292,23 +312,13 @@ R.g_noi = (k) => {
     const win = async () => { n++; $('#res').innerHTML = '🌟 Giỏi quá!'; await say('Yes! ' + w[0] + '! Great job!'); if (n >= 5) { await roundDone(); n = 0; } if (location.hash.startsWith('#/game/noi')) play(); };
     $('#ok').onclick = win;
     let tries = 0;
-    if (SR) $('#mic').onclick = () => {
-      try { speechSynthesis.cancel(); } catch (e) {}
-      const r = new SR(), b = $('#mic'); r.lang = 'en-US'; r.maxAlternatives = 5; r.interimResults = true; r.continuous = false;
-      b.classList.add('on'); $('#res').textContent = '👂 Đang nghe bé nói…';
-      let heard = '', done = false;
-      const target = w[0].toLowerCase(), tw = target.split(' ');
-      const key = x => x.replace(/[aeiouy]/g, '').replace(/(.)\1+/g, '$1'); // rough "sounds like": consonant skeleton
-      const close = x => x && (lev(x, target) <= Math.max(1, Math.floor(target.length * .45)) || x[0] === target[0] && key(x) === key(target) || (x.length > 1 && target.startsWith(x.slice(0, 2))) || tw.some(t => t.length > 2 && lev(x, t) <= 1));
-      const ok = a => a.includes(target) || close(a.replace(/ /g, '')) || a.split(' ').some(close);
-      const finish = good => { if (done) return; done = true; try { r.stop(); } catch (e) {} b.classList.remove('on'); tries++;
-        if (good) return win();
-        if (heard && tries >= 3) { tries = 0; $('#res').innerHTML = '💪 Bé cố gắng giỏi lắm!'; return win(); }
-        $('#res').innerHTML = heard ? `Máy nghe là “${esc(heard)}”. Nói lại to và rõ hơn nha! 💪` : 'Chưa nghe thấy bé, để micro gần miệng bé rồi nói lại nha.'; say(w[0], { rate: 0.8 }); };
-      r.onresult = e => { for (let i = e.resultIndex; i < e.results.length; i++) { const alts = [...e.results[i]].map(x => x.transcript.toLowerCase().replace(/[^a-z ]/g, '').trim()).filter(Boolean); if (alts[0]) heard = alts[0]; if (alts.some(ok)) return finish(true); if (e.results[i].isFinal) return finish(false); } };
-      r.onerror = ev => { if (done) return; if (/not-allowed|service-not-allowed/.test(ev.error)) { done = true; b.classList.remove('on'); $('#res').innerHTML = 'Máy chưa cho dùng micro. Vào <b>Cài đặt › Safari › Micro</b> chọn <b>Cho phép</b>, rồi thử lại. (Ba mẹ có thể bấm 👍)'; } };
-      r.onend = () => { if (!done) finish(false); };
-      try { r.start(); } catch (e) { finish(false); }
+    if (SR) $('#mic').onclick = async () => {
+      const b = $('#mic'); if (b.classList.contains('on')) return; b.classList.add('on'); $('#res').textContent = '👂 Đang nghe bé nói…';
+      const h = await XMHear(w[0]); if (!location.hash.startsWith('#/game/noi')) return; b.classList.remove('on');
+      if (h.good) return win();
+      if (h.err !== 'deny') tries++;
+      if (h.heard && tries >= 3) { tries = 0; $('#res').innerHTML = '💪 Bé cố gắng giỏi lắm!'; return win(); }
+      $('#res').innerHTML = XMHearMsg(h, tries); if (h.err !== 'deny') say(w[0], { rate: 0.8 });
     };
   };
   play();

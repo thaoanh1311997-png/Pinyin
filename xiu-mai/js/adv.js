@@ -163,16 +163,13 @@
         const h = () => (prev ? sayAs(prev[0], prev[1]).then(() => new Promise(r => setTimeout(r, 300))) : Promise.resolve()).then(() => sayAs('K', it[1]));
         $('#h').onclick = h; setTimeout(h, 350);
         $('#y').onclick = () => { say('Good job!'); next(); };
-        if (SR) $('#m').onclick = () => {
-          const r = new SR(); r.lang = 'en-US'; r.maxAlternatives = 3; const m = $('#m'); m.disabled = true; m.textContent = '👂 Đang nghe…';
-          const key = norm(it[1]).split(' ').filter(w => w.length > 1);
-          r.onresult = e => { const heard = norm([...e.results[0]].map(a => a.transcript).join(' '));
-            const hit = key.filter(w => heard.includes(w)).length;
-            if (hit >= Math.max(1, Math.ceil(key.length * 0.5))) { $('#o').innerHTML = `Xíu Mại nghe: “${esc(e.results[0][0].transcript)}” 🌟`; say('Great!'); setTimeout(next, 900); }
-            else $('#o').innerHTML = `Xíu Mại nghe: “${esc(e.results[0][0].transcript)}”. Thử lại nhé! 💪`; };
-          r.onerror = e => { $('#o').textContent = e.error === 'not-allowed' ? 'Cho phép web dùng micro nhé (hoặc bấm 👍).' : 'Chưa nghe rõ, thử lại hoặc bấm 👍.'; };
-          r.onend = () => { const m2 = $('#m'); if (m2) { m2.disabled = false; m2.textContent = '🎤 Bé nói'; } };
-          try { r.start(); } catch (e) { r.onend(); }
+        let tries = 0;
+        if (SR) $('#m').onclick = async () => {
+          const m = $('#m'); if (m.disabled) return; m.disabled = true; m.textContent = '👂 Đang nghe…';
+          const h = await XMHear(it[1]); const m2 = $('#m'); if (!m2) return; m2.disabled = false; m2.textContent = '🎤 Bé nói';
+          if (h.err !== 'deny') tries++;
+          if (h.good || (h.heard && tries >= 3)) { $('#o').innerHTML = h.good ? `Xíu Mại nghe: “${esc(h.heard)}” 🌟` : '💪 Bé cố gắng giỏi lắm!'; say('Great!'); setTimeout(next, 900); return; }
+          $('#o').innerHTML = XMHearMsg(h, tries);
         };
       }
     }
