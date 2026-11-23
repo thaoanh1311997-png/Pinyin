@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22T22:24:02.494Z",
+ "updated": "2026-11-23T22:29:37.511Z",
  "channels": [
   {
    "key": "supersimple",
@@ -423,6 +423,11 @@
    "title": "Dream English Kids",
    "videos": [
     {
+     "id": "d9fzjan-rLc",
+     "t": "Color What Do You See? Songs | 20 Minutes | Dream English Kids",
+     "d": "21:03"
+    },
+    {
      "id": "Cf6UvJVN9pM",
      "t": "Vehicle Colors | What Do You See? Song | Find It Version | Dream English Kids",
      "d": "3:31"
@@ -536,11 +541,6 @@
      "id": "Q3pjiKEEDnU",
      "t": "Monkeys and Apes Long Play | What Do You See? Song and More | Dream English Kids",
      "d": "11:57"
-    },
-    {
-     "id": "w2NF8Qywq-M",
-     "t": "Sea Creatures - What Is It? 🐬  | Guessing Game, Vocabulary Builder | Dream English Kids",
-     "d": "2:50"
     }
    ]
   },
@@ -695,6 +695,11 @@
    "title": "Sesame Street",
    "videos": [
     {
+     "id": "HqAG_kACajc",
+     "t": "Elmo and Tango's Puppy Playdate 🐶 🐾 | Sesame Street Full Episode",
+     "d": "26:45"
+    },
+    {
      "id": "RvvM0dY1_hA",
      "t": "Elmo Songs with Friends! Ms. Rachel, Peppa Pig, Bounce Patrol & MORE 😊 | 90 Mins | Sesame Street",
      "d": "1:32:36"
@@ -808,11 +813,6 @@
      "id": "ZEuzViYEC0s",
      "t": "Elmo's Halloween Festival! 🎃 🦇  | 2 HOURS | Sesame Street",
      "d": "2:04:09"
-    },
-    {
-     "id": "typhnoiFdgE",
-     "t": "Solve Mysteries with Elmo & Abby! 🔍  | FOUR Sesame Street Full Episodes",
-     "d": "2:41:57"
     }
    ]
   },
