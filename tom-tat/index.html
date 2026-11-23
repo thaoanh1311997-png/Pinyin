@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script src="../shared/nav-head.js?v=16"></script>
+<title>Tóm tắt đoạn văn · Bánh Mì</title>
+<meta name="description" content="Dán đoạn hội thoại hay bài khóa tiếng Trung, nhận đoạn văn xuôi tóm tắt khoảng 200 chữ, có pinyin, bản dịch tiếng Việt và nghe đọc.">
+<meta name="theme-color" content="#FFF7EC">
+<link rel="icon" href="../shared/banhmi.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../shared/banhmi-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Nunito:wght@600;700;800;900&family=Inter:wght@500;600&display=swap">
+<style>
+:root{--bg:#FFF7EC;--ink:#3B2414;--ink2:#7A5F4C;--card:#fff;--line:#F1E2CF;--soft:#FBEAF6;--ac:#B4479C;--ac2:#E98BD3;--acd:#8E2F7A;--py:#C2410C;--ok:#12A66A;--bad:#D64545;
+  --f:Nunito,"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;--zh:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;--pyf:Inter,system-ui,sans-serif}
+html[data-theme="dark"]{--bg:#1B1410;--ink:#F7EBDD;--ink2:#CDB6A3;--card:#2A201A;--line:#45352A;--soft:#3A2335;--ac:#E07BC8;--ac2:#8E3C80;--acd:#F3A6E0;--py:#FFA26B;--ok:#5FDBA5;--bad:#FF8A8A}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:700 16px/1.5 var(--f);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+button,textarea,input{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.hidden{display:none!important}
+.wrap{max-width:860px;margin:0 auto;padding:14px 16px 60px}
+/* hero */
+.hero{position:relative;border-radius:28px;padding:20px 18px 18px;background:linear-gradient(135deg,#FFE1F3,#FFF0DC 70%);overflow:hidden;animation:up .45s ease-out both}
+html[data-theme="dark"] .hero{background:linear-gradient(135deg,#3A2135,#3A2A18 70%)}
+.hero::after{content:"述";position:absolute;right:-6px;bottom:-34px;font:700 130px/1 var(--zh);color:var(--ac);opacity:.09}
+.hero .hi{display:inline-block;font:700 14px var(--zh);color:var(--acd);background:rgba(255,255,255,.75);padding:3px 11px;border-radius:99px}
+html[data-theme="dark"] .hero .hi{background:#2A201A}
+.hero h1{margin:8px 0 4px;font-size:28px;line-height:1.15;font-weight:900}
+.hero h1 em{font-style:normal;color:var(--ac)}
+.hero p{margin:0;color:var(--ink2);font-size:15.5px;max-width:520px}
+@keyframes up{from{opacity:0;transform:translateY(12px)}}
+/* card */
+.card{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:16px;margin-top:14px;animation:up .45s ease-out both}
+.card h2{margin:0 0 10px;font-size:19px;font-weight:900;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card h2 .sp{flex:1}
+textarea{width:100%;min-height:190px;resize:vertical;border:2px solid var(--line);border-radius:18px;padding:12px 14px;background:var(--bg);font:500 17px/1.7 var(--zh);outline:none;transition:border-color .2s}
+textarea:focus{border-color:var(--ac)}
+textarea::placeholder{font-family:var(--f);font-weight:700;color:#B9A08C}
+.meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;color:var(--ink2);font-size:14px}
+.meta .sp{flex:1}
+.lnk{background:none;border:0;padding:4px 2px;color:var(--ac);font-weight:800;font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:14px}
+.lbl{font-size:15px;font-weight:800;color:var(--ink2);margin-right:2px}
+.chip{border:2px solid var(--line);background:var(--card);border-radius:99px;padding:6px 11px;font-weight:800;font-size:14.5px;transition:all .15s;white-space:nowrap}
+.chip.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:18px;padding:12px 18px;font-weight:900;font-size:16px;background:var(--soft);color:var(--acd);transition:transform .12s}
+.btn:active{transform:scale(.96)}
+.btn.pri{background:linear-gradient(135deg,var(--ac),#D468B8);color:#fff;box-shadow:0 5px 0 #8A2F75;font-size:18px;padding:14px 20px}
+.btn.pri:active{box-shadow:0 2px 0 #8A2F75;transform:translateY(3px)}
+.btn.pri[disabled]{opacity:.6;cursor:wait}
+.btn.sm{padding:8px 12px;font-size:14.5px;border-radius:14px}
+.go{width:100%;margin-top:16px}
+.keybox{margin-top:12px;padding:12px;border-radius:16px;background:var(--soft)}
+.keybox input{width:100%;margin-top:6px;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--card);font-size:15px}
+.keybox small{display:block;color:var(--ink2);font-size:13.5px;margin-top:6px}
+/* progress */
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.steps li{display:flex;align-items:center;gap:10px;font-size:15.5px;color:var(--ink2)}
+.steps li i{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;font-style:normal;font-size:14px;background:var(--line)}
+.steps li.run{color:var(--ink)}.steps li.run i{background:var(--soft);border:3px solid var(--ac);border-right-color:transparent;animation:spin .8s linear infinite}
+.steps li.ok{color:var(--ink)}.steps li.ok i{background:var(--ok);color:#fff}
+.steps li small{color:var(--ink2);font-weight:700}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err{margin-top:10px;padding:10px 12px;border-radius:14px;background:#FFE8E8;color:#9B1C1C;font-size:15px}
+html[data-theme="dark"] .err{background:#3E1F22;color:#FFB3B3}
+/* result */
+.badge{font-size:13.5px;font-weight:800;padding:3px 10px;border-radius:99px;background:var(--soft);color:var(--acd)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tg{border:2px solid var(--line);background:var(--card);border-radius:14px;padding:7px 12px;font-weight:800;font-size:14.5px}
+.tg.on{border-color:var(--ac);color:var(--acd);background:var(--soft)}
+.zh{font:500 21px/2.05 var(--zh);text-align:left;word-break:break-all;letter-spacing:.5px}
+.zh.py{line-height:2.6}
+.zh ruby{ruby-position:over;margin:0 1px}
+.zh rt{font:500 12.5px/1 var(--pyf);color:var(--py);letter-spacing:0}
+.zh .s{border-radius:8px;transition:background .2s;cursor:pointer}
+.zh .s.say{background:#FFE9A8}
+html[data-theme="dark"] .zh .s.say{background:#5A4318}
+.vi{margin-top:14px;padding-top:12px;border-top:2px dashed var(--line);font-size:17px;line-height:1.7;font-weight:600}
+.vi b{display:block;font-size:14px;color:var(--ink2);font-weight:800;margin-bottom:2px}
+.pts{margin:0;padding-left:22px;font-size:16px;line-height:1.6;font-weight:600}
+.pts li{margin:3px 0}
+.pair{padding:10px 0;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:flex-start}
+.pair:last-child{border-bottom:0}
+.pair .n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--soft);color:var(--acd);display:grid;place-items:center;font-size:13px;font-weight:900;margin-top:4px}
+.pair .t{flex:1;min-width:0}
+.pair .pz{font:500 18px/1.6 var(--zh)}
+.pair .pp{font:500 14px/1.5 var(--pyf);color:var(--py)}
+.pair .pv{font-size:15.5px;font-weight:600;color:var(--ink2)}
+.pair button{flex:none;border:0;background:var(--soft);border-radius:12px;width:38px;height:38px;font-size:17px}
+details.card summary{cursor:pointer;font-size:18px;font-weight:900;list-style:none;display:flex;align-items:center;gap:8px}
+details.card summary::-webkit-details-marker{display:none}
+details.card summary::after{content:"›";margin-left:auto;font-size:24px;color:var(--ink2);transition:transform .2s}
+details.card[open] summary::after{transform:rotate(90deg)}
+details.card[open] summary{margin-bottom:8px}
+.note{font-size:14px;color:var(--ink2);margin-top:8px}
+/* history */
+.hist{display:flex;flex-direction:column;gap:8px}
+.hi-it{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:var(--bg);border:2px solid var(--line);text-align:left;width:100%}
+.hi-it .tx{flex:1;min-width:0}
+.hi-it b{display:block;font:500 16px/1.4 var(--zh);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hi-it small{color:var(--ink2);font-size:13px}
+.hi-it .x{border:0;background:none;color:var(--ink2);font-size:18px;padding:4px 6px}
+.empty{color:var(--ink2);font-size:15px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;background:#3B2414;color:#fff;padding:10px 18px;border-radius:99px;font-weight:800;font-size:15px;z-index:60;transition:all .25s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (min-width:720px){.hero{padding:28px 30px 24px}.hero h1{font-size:36px}.card{padding:20px 22px}.zh{font-size:23px}}
+@media (max-width:370px){.hero h1{font-size:25px}.zh{font-size:19px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{#bm-nav,.hero,#inCard,#histCard,.tools,.toast,.pair button{display:none!important}.card{border:0;padding:0}}
+</style>
+</head>
+<body>
+<script src="../shared/nav.js?v=15"></script>
+<script src="../shared/voice.js?v=1"></script>
+
+<main class="wrap">
+  <header class="hero">
+    <span class="hi" lang="zh-CN">🪄 复述 · 缩写</span>
+    <h1>Tóm tắt <em>đoạn văn</em></h1>
+    <p>Dán hội thoại hay bài trong sách vào, Bánh Mì viết lại thành một đoạn văn xuôi tiếng Trung đủ ý, có pinyin và tiếng Việt.</p>
+  </header>
+
+  <section class="card" id="inCard">
+    <h2>📋 Đoạn văn của bạn</h2>
+    <textarea id="src" lang="zh-CN" placeholder="Dán đoạn hội thoại hoặc bài khóa tiếng Trung vào đây…"></textarea>
+    <div class="meta"><span id="cnt">0 chữ</span><span class="sp"></span><button class="lnk" id="pasteBtn" type="button">📥 Dán</button><button class="lnk" id="sampleBtn" type="button">Thử đoạn mẫu</button><button class="lnk" id="clearBtn" type="button">Xoá</button></div>
+    <div class="row"><span class="lbl">Dài khoảng:</span>
+      <button class="chip" type="button" data-n="150">150 chữ</button>
+      <button class="chip on" type="button" data-n="200">200 chữ</button>
+      <button class="chip" type="button" data-n="300">300 chữ</button>
+    </div>
+    <div class="keybox hidden" id="keyBox">
+      <label for="keyInp">🔑 Key AI Groq (miễn phí, chỉ nhập 1 lần trên máy này)</label>
+      <input id="keyInp" placeholder="gsk_…" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <small>Máy nào đã dùng “Tài liệu ôn” thì có sẵn key rồi, không cần nhập.</small>
+    </div>
+    <button class="btn pri go" id="goBtn" type="button">🪄 Tóm tắt</button>
+  </section>
+
+  <section class="card hidden" id="progCard">
+    <h2>⏳ Bánh Mì đang viết…</h2>
+    <ul class="steps" id="steps"></ul>
+    <div class="err hidden" id="err"></div>
+  </section>
+
+  <div id="out"></div>
+
+  <section class="card" id="histCard">
+    <h2>🗂️ Đã tóm tắt <span class="sp"></span></h2>
+    <div class="hist" id="hist"></div>
+  </section>
+</main>
+<div class="toast" id="toast"></div>
+
+<script src="../trasua/lib/pinyin-pro.js"></script>
+<script>
+(function(){
+"use strict";
+var $=function(s){return document.querySelector(s)};
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function ls(k,v){try{ if(v===undefined) return localStorage.getItem(k); if(v===null) localStorage.removeItem(k); else localStorage.setItem(k,v);}catch(e){return null}}
+var tt=null; function toast(m){ var t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(tt); tt=setTimeout(function(){t.classList.remove("on")},2600); }
+var HAN=/[㐀-鿿]/g;
+function hanCount(s){ return (String(s).match(HAN)||[]).length; }
+
+/* ---------------- pinyin (từ điển pinyin-pro, không dùng AI) ---------------- */
+var PY=window.pinyinPro;
+try{ PY.customPinyin({ '长满':'zhǎng mǎn','长高':'zhǎng gāo','长出':'zhǎng chū','长得':'zhǎng de','长胖':'zhǎng pàng','长大':'zhǎng dà','调高':'tiáo gāo','调低':'tiáo dī','背不动':'bēi bú dòng','背着':'bēi zhe','背起':'bēi qǐ','种了':'zhòng le','种树':'zhòng shù','种菜':'zhòng cài','还给':'huán gěi','还钱':'huán qián','还书':'huán shū','一点儿':'yì diǎn r','一会儿':'yí huì r','一块儿':'yí kuài r','玩儿':'wán r','哪儿':'nǎ r','这儿':'zhè r','那儿':'nà r','有点儿':'yǒu diǎn r','一下儿':'yí xià r','好好儿':'hǎo hāo r','慢慢儿':'màn mān r','没事儿':'méi shì r','和尚':'hé shang','石头':'shí tou','只会':'zhǐ huì','只剩':'zhǐ shèng','只好':'zhǐ hǎo','只有':'zhǐ yǒu','只是':'zhǐ shì','只能':'zhǐ néng','着急':'zháo jí','睡着':'shuì zháo','找着':'zhǎo zháo','看中文':'kàn zhōng wén','看中国':'kàn zhōng guó','人参加':'rén cān jiā','生长':'shēng zhǎng','有空':'yǒu kòng','没空':'méi kòng','倒水':'dào shuǐ','提供':'tí gōng','舍不得':'shě bu de','踏实':'tā shi','觉得':'jué de','记得':'jì de','晓得':'xiǎo de','了解':'liǎo jiě','为了':'wèi le','得到':'dé dào','得了':'dé le','教书':'jiāo shū','教汉语':'jiāo hàn yǔ','教中文':'jiāo zhōng wén','教我':'jiāo wǒ','教他':'jiāo tā','教她':'jiāo tā','教你':'jiāo nǐ','教孩子':'jiāo hái zi','一行人':'yì xíng rén','银行':'yín háng','行李':'xíng li','差不多':'chà bu duō','东西':'dōng xi','朋友':'péng you','衣服':'yī fu','休息':'xiū xi','漂亮':'piào liang','认识':'rèn shi','告诉':'gào su','知道':'zhī dao','打算':'dǎ suan','意思':'yì si','客气':'kè qi','舒服':'shū fu','麻烦':'má fan','明白':'míng bai','清楚':'qīng chu','喜欢':'xǐ huan','先生':'xiān sheng','学生':'xué sheng','时候':'shí hou','地方':'dì fang','事情':'shì qing','关系':'guān xi','名字':'míng zi','爸爸':'bà ba','妈妈':'mā ma','哥哥':'gē ge','姐姐':'jiě jie','弟弟':'dì di','妹妹':'mèi mei','孩子':'hái zi','儿子':'ér zi','女儿':'nǚ ér','头发':'tóu fa','暖和':'nuǎn huo','凉快':'liáng kuai','热闹':'rè nao','聪明':'cōng ming','奇怪':'qí guài','便宜':'pián yi','商量':'shāng liang','收拾':'shōu shi','照顾':'zhào gù','打扮':'dǎ ban','打扫':'dǎ sǎo' }); }catch(e){}
+var DE_NEXT='到意出分奖病罪知失益体当以逞手宠势票主天',DE_PRE='获取难心赢求所舍免自夺彼雅安',DEI_PRE='我你他她它们就也都少须还',DI_PRE='了在等局海两多一散的满土大天当各本外内此场基草田园陆山盆工目该某产境遍原落空耕荒雪平高低绿圣宝福胜营阵驻腹属领湿沼盐坡谷洼旱农墓',DI_NEXT='方区点图球铁下上面址带震位磁边毯板道里主形质狱块段域势标壳盘基契租价产铺砖窖心底层图';
+function fixPy(r){
+  for(var i=0;i<r.length;i++){ var x=r[i],pv=r[i-1],nx=r[i+1]; if(!x.isZh||!pv||!pv.isZh) continue;
+    if(x.origin==='得'&&x.pinyin==='dé'&&!(nx&&nx.isZh&&DE_NEXT.indexOf(nx.origin)>=0)&&DE_PRE.indexOf(pv.origin)<0&&!(pv.origin==='不'&&nx&&nx.origin==='不')) x.pinyin=DEI_PRE.indexOf(pv.origin)>=0&&nx&&nx.isZh?'děi':'de';
+    else if(x.origin==='地'&&x.pinyin==='dì'&&nx&&nx.isZh&&(DI_PRE.indexOf(pv.origin)<0||/适当|恰当|相当|充分/.test((r[i-2]?r[i-2].origin:'')+pv.origin))&&DI_NEXT.indexOf(nx.origin)<0&&(r[i-2]&&r[i-2].isZh)) x.pinyin='de';
+  }
+  return r;
+}
+function pyAll(t){ try{ return fixPy(PY.pinyin(t,{type:'all'})); }catch(e){ return [].map.call(t,function(c){return{origin:c,pinyin:'',isZh:/[㐀-鿿]/.test(c)}}); } }
+function ruby(t){ return pyAll(t).map(function(x){ return x.isZh?'<ruby>'+esc(x.origin)+'<rt>'+esc(x.pinyin)+'</rt></ruby>':esc(x.origin); }).join(''); }
+function pyLine(t){ return pyAll(t).filter(function(x){return x.isZh||/[，。！？；：、,.!?;:]/.test(x.origin)}).map(function(x){return x.isZh?x.pinyin:x.origin.replace(/[，、]/,',').replace(/[。]/,'.').replace(/[！]/,'!').replace(/[？]/,'?').replace(/[；]/,';').replace(/[：]/,':')}).join(' ').replace(/ ([,.!?;:])/g,'$1'); }
+
+/* ---------------- giọng đọc ---------------- */
+var speaking=null;
+function stopSay(){ try{ if(window.BMVoice) BMVoice.stop(); }catch(e){} document.querySelectorAll(".s.say").forEach(function(x){x.classList.remove("say")}); speaking=null; }
+function say(t,el){ try{ if(!window.BMVoice||!BMVoice.available()){ toast("Máy này chưa đọc được tiếng Trung"); return Promise.resolve(false); }
+  stopSay(); if(el) el.classList.add("say"); var me=speaking={};
+  return BMVoice.speak(t,{rate:0.85}).then(function(r){ if(el) el.classList.remove("say"); return r&&speaking===me; },function(){ if(el) el.classList.remove("say"); return false; }); }catch(e){ return Promise.resolve(false); } }
+
+/* ---------------- AI (Groq, miễn phí) ---------------- */
+(function(){ try{ var k=new URLSearchParams(location.search).get("gq"); if(k&&k.length>20){ if(window.BM_saveKey) BM_saveKey("bb.groq",k); else ls("bb.groq",k); history.replaceState(null,"",location.pathname); } }catch(e){} })();
+function groqKey(){ return ls("bb.groq")||""; }
+/* thứ tự ưu tiên: model giỏi tiếng Trung trước */
+var MODELS=[
+  {id:"moonshotai/kimi-k2-instruct-0905",tpm:10000},
+  {id:"openai/gpt-oss-120b",tpm:8000,x:{reasoning_effort:"low"}},
+  {id:"qwen/qwen3-32b",tpm:6000,x:{reasoning_effort:"none"}},
+  {id:"llama-3.3-70b-versatile",tpm:12000},
+  {id:"meta-llama/llama-4-maverick-17b-128e-instruct",tpm:6000}
+];
+var MST={};
+function sleep(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+function retryIn(t){ var m=String(t).match(/try again in\s*((?:[\d.]+h)?(?:[\d.]+m(?!s))?(?:[\d.]+s)?(?:[\d.]+ms)?)/i); if(!m||!m[1]) return 0;
+  var s=0,x; if(x=m[1].match(/([\d.]+)h/)) s+=x[1]*3600; if(x=m[1].match(/([\d.]+)m(?!s)/)) s+=x[1]*60; if((x=m[1].match(/([\d.]+)s/))&&!/ms$/.test(m[1])) s+=+x[1]; if(x=m[1].match(/([\d.]+)ms/)) s+=x[1]/1000; return s; }
+/* gọi AI, trả về JSON. avoid: model nên tránh (để bước soát lỗi dùng model khác) */
+function groq(messages,maxTok,onWait,avoid){
+  var key=groqKey(), net=0, srv=0;
+  function pick(){ var now=Date.now(), best=null;
+    for(var i=0;i<MODELS.length;i++){ var m=MODELS[i], st=MST[m.id]=MST[m.id]||{}; if(st.dead) continue;
+      var w=Math.max(0,(st.until||0)-now)+(m.id===avoid?1500:0); if(!best||w<best.w) best={m:m,w:w}; }
+    return best; }
+  function go(){
+    var pk=pick(); if(!pk) return Promise.reject(new Error("AI miễn phí đang bận hoặc hết lượt hôm nay, lát nữa thử lại nha"));
+    if(pk.w>1500){ if(pk.w>20*60*1000) return Promise.reject(new Error("Hết lượt AI miễn phí hôm nay, mai thử lại nha")); if(onWait) onWait(Math.ceil(pk.w/1000)); return sleep(Math.min(pk.w,15000)).then(go); }
+    var m=pk.m, st=MST[m.id];
+    var ctl=window.AbortController?new AbortController():null, to=setTimeout(function(){ if(ctl) ctl.abort(); },90000);
+    var body={model:m.id,messages:messages,temperature:0.3,max_tokens:maxTok,response_format:{type:"json_object"}}; for(var k in (m.x||{})) body[k]=m.x[k];
+    return fetch("https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},body:JSON.stringify(body),signal:ctl?ctl.signal:undefined})
+    .then(function(r){
+      clearTimeout(to); net=0;
+      if(r.status===401) throw new Error("KEY");
+      if(r.status===429||r.status===413) return r.text().then(function(t){
+        var ra=parseFloat(r.headers.get("retry-after"))||0, ri=retryIn(t), day=/per day|TPD|RPD/i.test(t);
+        if(r.status===413||/Requested\s*\d+/i.test(t)&&/per minute|TPM/i.test(t)&&!ri){ st.until=Date.now()+60000; return go(); }
+        st.until=Date.now()+Math.max(ri,ra,day?900:6)*1000+400; return go(); });
+      if(r.status>=500){ srv++; if(srv>6) throw new Error("Máy chủ AI đang lỗi, lát nữa thử lại nha"); st.until=Date.now()+4000*srv; return go(); }
+      if(r.status===400||r.status===404) return r.text().then(function(t){
+        if(/json_validate_failed|failed_generation/i.test(t)&&(st.jf=(st.jf||0)+1)<3) return go();
+        st.dead=true; return go(); });
+      if(!r.ok) throw new Error("AI lỗi "+r.status);
+      return r.json().then(function(j){
+        var c=(j.choices&&j.choices[0].message.content)||""; c=c.replace(/<think>[\s\S]*?<\/think>/g,"");
+        try{ var o=JSON.parse(c); o._m=m.id; return o; }catch(e){ var mm=c.match(/\{[\s\S]*\}/); if(mm) try{ var o2=JSON.parse(mm[0]); o2._m=m.id; return o2; }catch(e2){} st.until=Date.now()+1000; return go(); } });
+    },function(e){
+      clearTimeout(to); if(e&&e.message&&/KEY|Máy chủ|Hết lượt|AI lỗi/.test(e.message)) throw e;
+      net++; if(net>4) throw new Error("Mạng chập chờn, kiểm tra mạng rồi bấm lại nha");
+      if(onWait) onWait(3*net); return sleep(3000*net).then(go);
+    });
+  }
+  return go();
+}
+
+/* ---------------- các bước tóm tắt ---------------- */
+function clean(t){
+  t=String(t||"").replace(/\r/g,"").replace(/[ \t　]+/g," ").trim();
+  if(hanCount(t)>30){ /* bỏ dòng pinyin / số trang / dòng không có chữ Hán */
+    t=t.split("\n").filter(function(l){ return hanCount(l)>0||/^[A-ZＡ-Ｚ甲乙][：:]/.test(l.trim()); }).join("\n"); }
+  return t.replace(/\n{3,}/g,"\n\n");
+}
+function range(n){ return {lo:Math.round(n*0.85), hi:Math.round(n*1.15)}; }
+var SYS_SUM=[
+"你是有经验的对外汉语老师，帮越南学生做“缩写/复述”练习。学生会给你一段原文：可能是对话，也可能是课文、短文，偶尔是越南语。",
+"任务：把原文改写成一段叙述体的中文短文（散文体，像讲故事一样连贯）。",
+"要求：",
+"1. 必须包含原文所有重要信息：谁、什么时候、在哪儿、发生了什么、为什么、结果怎么样、人物的想法和感受、文章的中心意思。次要细节可以省略。",
+"2. 绝对不能添加原文没有的信息，不能改变事实、数字、人名、地名；不要写评价或道理，除非原文有。",
+"3. 对话要改成叙述：不用“A：”“B：”，不用引号直接引语，改用间接引语（如：玛丽告诉大卫，她明天要去银行换钱）。用原文里的人名；没有名字就用“两个朋友”“一位顾客和售货员”等原文身份。原文用第一人称“我”叙述的，可以继续用“我”。",
+"4. 语言：尽量使用原文里的词语和语法，句子通顺、自然、准确，符合汉语习惯，适合中级水平学生学习；不用生僻词和原文没有的成语；不要有语病和错别字。",
+"5. 只写一段，不分段，不加标题。只用简体字和中文标点（，。！？、；：“”）。",
+"6. 长度：{lo}–{hi}个汉字（目标{n}字）。写完自己数一数，长了就删次要细节，短了就补原文里的细节。",
+"先用中文列出原文的要点（每条一句，按原文顺序），再写短文。",
+"只输出JSON：{\"points\":[\"要点1\",\"要点2\"],\"summary\":\"短文\"}"
+].join("\n");
+var SYS_LEN=[
+"你是对外汉语老师。下面是一篇原文和根据原文写的缩写短文。",
+"短文现在有{c}个汉字，要求是{lo}–{hi}个汉字（目标{n}字）。请{how}",
+"规则：保留原文所有重要信息；不能添加原文没有的内容；不能改变事实；用原文的词语，句子通顺自然，无语病；只写一段，简体字，中文标点，不用对话格式。",
+"只输出JSON：{\"summary\":\"修改后的短文\"}"
+].join("\n");
+var SYS_CHK=[
+"你是非常严格的汉语老师和编辑。请对照原文，逐句检查学生写的缩写短文：",
+"1) 有没有和原文不一致的事实（人物、时间、地点、数字、原因、结果、谁说了什么）或原文没有的内容；",
+"2) 有没有漏掉原文的重要信息；",
+"3) 有没有语病、错别字、搭配不当、不自然的说法、繁体字、英文或越南语；",
+"4) 是不是一段连贯的叙述（不能有“A：”或直接引语对话）。",
+"如果有问题，就改好，给出完整的新短文，长度保持在{lo}–{hi}个汉字；改动越少越好，用原文的词语。如果没有问题，summary原样返回。",
+"只输出JSON：{\"issues\":[\"用越南语简单说明每个问题，没有问题就空数组\"],\"summary\":\"最终短文\"}"
+].join("\n");
+var SYS_VI=[
+"Bạn là giáo viên dịch Trung–Việt giỏi. Dịch từng câu tiếng Trung trong mảng \"zh\" sang tiếng Việt, và dịch từng ý trong mảng \"points\".",
+"Yêu cầu: dịch đúng nghĩa, đủ ý, không thêm bớt; câu tiếng Việt tự nhiên, trôi chảy như người Việt viết, đúng ngữ pháp và chính tả, có dấu đầy đủ.",
+"Tên người: tên phương Tây giữ tên gốc (玛丽 → Mary, 大卫 → David, 麦克 → Mike, 安娜 → Anna, 杰克 → Jack); tên người Trung Quốc dùng âm Hán Việt (田芳 → Điền Phương, 张东 → Trương Đông, 王老师 → thầy Vương / cô Vương tùy ngữ cảnh). Địa danh Trung Quốc dùng tên Việt quen thuộc (北京 → Bắc Kinh, 上海 → Thượng Hải).",
+"Xưng hô ngôi thứ ba: dùng \"anh ấy / cô ấy / họ\" hợp ngữ cảnh; \"我\" dịch là \"tôi\".",
+"Mảng \"vi\" phải có ĐÚNG số phần tử bằng mảng \"zh\" (câu thứ i dịch câu thứ i). Mảng \"points_vi\" có đúng số phần tử bằng \"points\".",
+"Chỉ trả về JSON: {\"vi\":[\"...\"],\"points_vi\":[\"...\"]}"
+].join("\n");
+function fill(s,o){ return s.replace(/\{(\w+)\}/g,function(_,k){ return o[k]!=null?o[k]:""; }); }
+function tidy(z){ /* chuẩn hoá đoạn văn AI trả về */
+  z=String(z||"").replace(/\s+/g,"").replace(/,/g,"，").replace(/([\u3400-\u9fff”])([.?!;:])/g,function(_,a,b){ return a+{".":"。","?":"？","!":"！",";":"；",":":"："}[b]; });
+  z=z.replace(/"([^"]*)"/g,"“$1”");
+  if(z&&!/[。！？”]$/.test(z)) z+="。";
+  return z;
+}
+function sentences(z){ var a=z.match(/[^。！？]+[。！？]+[”’」]*/g)||[z]; var rest=z.slice(a.join("").length); if(rest) a.push(rest); return a.filter(function(s){return s.trim()}); }
+function bad(z){ return !z||hanCount(z)<20||/[A-Za-z]{3,}|[：:]\s*“|^[AB甲乙][：:]/.test(z); }
+
+function summarize(src,N,ui){
+  var srcH=hanCount(src), n=N, note="";
+  if(srcH && srcH<N*1.25){ n=Math.max(50,Math.round(srcH*0.6/10)*10); note="Đoạn gốc chỉ có "+srcH+" chữ nên bản tóm tắt khoảng "+n+" chữ."; }
+  var R=range(n), o={n:n,lo:R.lo,hi:R.hi};
+  var onWait=function(s){ ui.wait(s); };
+  var res={n:n,note:note}, sumModel="";
+  ui.step(0);
+  return groq([{role:"system",content:fill(SYS_SUM,o)},{role:"user",content:"原文：\n"+src}],2200,onWait).then(function(j){
+    sumModel=j._m; res.points=(j.points||[]).filter(function(x){return typeof x==="string"&&x.trim()}).slice(0,14);
+    var z=tidy(j.summary); if(bad(z)) throw new Error("AI viết chưa đúng, bấm Tóm tắt lần nữa nha");
+    ui.step(1);
+    var tries=0;
+    function fixLen(z){ var c=hanCount(z); if((c>=R.lo&&c<=R.hi)||tries>=3) return Promise.resolve(z); tries++;
+      ui.sub(1,"đang có "+c+" chữ");
+      var how=c>R.hi?"缩短到"+n+"字左右：删掉次要细节、合并句子，但不要删掉要点。":"加长到"+n+"字左右：补充原文里有的细节，不要编造。";
+      return groq([{role:"system",content:fill(SYS_LEN,{c:c,lo:R.lo,hi:R.hi,n:n,how:how})},{role:"user",content:"原文：\n"+src+"\n\n短文：\n"+z}],1600,onWait).then(function(k){
+        var z2=tidy(k.summary); if(bad(z2)) return z;
+        var c2=hanCount(z2); if(Math.abs(c2-n)>=Math.abs(c-n)&&!(c2>=R.lo&&c2<=R.hi)) return tries>=3?z:fixLen(z2.length?z2:z);
+        return fixLen(z2); }); }
+    return fixLen(z);
+  }).then(function(z){
+    ui.sub(1,hanCount(z)+" chữ"); ui.step(2);
+    return groq([{role:"system",content:fill(SYS_CHK,o)},{role:"user",content:"原文：\n"+src+"\n\n学生的短文：\n"+z}],2000,onWait,sumModel).then(function(k){
+      var z2=tidy(k.summary), c2=hanCount(z2);
+      res.issues=(k.issues||[]).filter(function(x){return typeof x==="string"&&x.trim()});
+      if(!bad(z2)&&c2>=R.lo*0.9&&c2<=R.hi*1.1) return z2; return z; },function(e){ if(/KEY/.test(e.message)) throw e; return z; });
+  }).then(function(z){
+    res.zh=z; res.sents=sentences(z); res.count=hanCount(z); ui.step(3);
+    var ask=function(){ return groq([{role:"system",content:SYS_VI},{role:"user",content:JSON.stringify({zh:res.sents,points:res.points})}],2400,onWait); };
+    return ask().then(function(k){
+      if(!Array.isArray(k.vi)||k.vi.length!==res.sents.length) return ask();
+      return k; }).then(function(k){
+      if(!Array.isArray(k.vi)||k.vi.length!==res.sents.length) throw new Error("Chưa dịch được, bấm Tóm tắt lần nữa nha");
+      res.vi=k.vi.map(function(x){return String(x||"").trim()});
+      res.pvi=Array.isArray(k.points_vi)&&k.points_vi.length===res.points.length?k.points_vi.map(String):[];
+      ui.step(4); return res; });
+  });
+}
+
+/* ---------------- giao diện ---------------- */
+var N=+(ls("tt.n")||200); if([150,200,300].indexOf(N)<0) N=200;
+document.querySelectorAll(".chip").forEach(function(b){ b.classList.toggle("on",+b.dataset.n===N);
+  b.onclick=function(){ N=+b.dataset.n; ls("tt.n",String(N)); document.querySelectorAll(".chip").forEach(function(x){x.classList.toggle("on",x===b)}); }; });
+var src=$("#src");
+src.value=ls("tt.draft")||"";
+function upCnt(){ var h=hanCount(src.value); $("#cnt").textContent=h?h+" chữ Hán":(src.value.trim()?src.value.trim().split(/\s+/).length+" từ":"0 chữ"); }
+src.addEventListener("input",function(){ upCnt(); ls("tt.draft",src.value); }); upCnt();
+$("#clearBtn").onclick=function(){ src.value=""; ls("tt.draft",null); upCnt(); src.focus(); };
+$("#pasteBtn").onclick=function(){ if(!navigator.clipboard||!navigator.clipboard.readText){ src.focus(); toast("Nhấn giữ vào ô rồi chọn Dán nha"); return; }
+  navigator.clipboard.readText().then(function(t){ if(!t){ toast("Chưa có gì để dán"); return; } src.value=t; ls("tt.draft",t); upCnt(); },function(){ src.focus(); toast("Nhấn giữ vào ô rồi chọn Dán nha"); }); };
+var SAMPLE="田芳：玛丽，周末你有什么打算？\n玛丽：我想去商店买一件毛衣。天气越来越冷了，我从国内只带来了夏天的衣服，没有厚衣服。\n田芳：我也要买东西，下个星期是我妈妈的生日，我想给她买一条围巾。我们一起去吧。\n玛丽：好啊！去哪儿买比较好？\n田芳：听说学校旁边新开了一家商场，东西又好又便宜，现在还在打折呢。\n玛丽：太好了！我们怎么去？坐公共汽车还是骑自行车？\n田芳：商场离学校不远，走路二十分钟就到了。我们走着去吧，还可以锻炼身体。\n玛丽：好主意。我来中国以后，常常坐车，很少运动，觉得自己胖了一点儿。\n田芳：那我们星期六上午九点出发，我在宿舍楼下等你。\n玛丽：九点有点儿早，周末我想多睡一会儿。九点半怎么样？\n田芳：行，就九点半吧。买完东西，我们可以在附近的饭馆吃午饭。那家饭馆的饺子很有名，很多留学生都喜欢去。\n玛丽：我早就想去尝尝了！不过我不太会用筷子，你得教我。\n田芳：没问题，用筷子不难，多练习就会了。";
+$("#sampleBtn").onclick=function(){ src.value=SAMPLE; ls("tt.draft",SAMPLE); upCnt(); toast("Đã dán đoạn mẫu, bấm Tóm tắt thử nha"); };
+if(!groqKey()) setTimeout(function(){ if(!groqKey()) $("#keyBox").classList.remove("hidden"); },1200);
+
+var STEPS=["Đọc bài, tìm các ý chính","Viết đoạn văn xuôi, canh độ dài","Soát lỗi, đối chiếu với bài gốc","Dịch sang tiếng Việt","Gắn pinyin"];
+var ui={
+  start:function(){ $("#steps").innerHTML=STEPS.map(function(s,i){return '<li data-i="'+i+'"><i></i><span>'+s+' <small></small></span></li>'}).join(""); $("#err").classList.add("hidden"); $("#progCard").classList.remove("hidden"); },
+  step:function(k){ document.querySelectorAll("#steps li").forEach(function(li,i){ li.className=i<k?"ok":i===k?"run":""; var ic=li.querySelector("i"); ic.textContent=i<k?"✓":""; if(i===k) li.querySelector("small").textContent=""; }); },
+  sub:function(k,t){ var li=document.querySelector('#steps li[data-i="'+k+'"] small'); if(li) li.textContent=t?"· "+t:""; },
+  wait:function(s){ var li=document.querySelector("#steps li.run small"); if(li) li.textContent="· AI đang bận, đợi "+s+" giây…"; }
+};
+var busy=false, CUR=null;
+$("#goBtn").onclick=function(){
+  if(busy) return;
+  var t=clean(src.value);
+  if(!t||(hanCount(t)<15&&t.length<60)){ toast("Dán đoạn văn dài hơn một chút nha"); src.focus(); return; }
+  if(hanCount(t)>4500){ toast("Đoạn dài quá, chia nhỏ khoảng 4.000 chữ mỗi lần nha"); return; }
+  var ki=$("#keyInp").value.trim(); if(ki){ if(window.BM_saveKey) BM_saveKey("bb.groq",ki); else ls("bb.groq",ki); }
+  if(!groqKey()){ $("#keyBox").classList.remove("hidden"); $("#keyInp").focus(); toast("Cần key AI Groq, nhập 1 lần là xong"); return; }
+  busy=true; var b=$("#goBtn"); b.disabled=true; b.textContent="⏳ Đang tóm tắt…"; stopSay();
+  $("#out").innerHTML=""; ui.start(); ui.step(0);
+  setTimeout(function(){ $("#progCard").scrollIntoView({behavior:"smooth",block:"center"}); },50);
+  summarize(t,N,ui).then(function(r){
+    r.src=t; r.ts=Date.now(); r.id=r.ts.toString(36); r.N=N;
+    saveHist(r); render(r);
+    setTimeout(function(){ $("#progCard").classList.add("hidden"); },500);
+  }).catch(function(e){
+    var m=e&&e.message||"Có lỗi, thử lại nha";
+    if(/KEY/.test(m)){ m="Key AI không đúng hoặc hết hạn, nhập lại key nha"; if(window.BM_dropKey) BM_dropKey("bb.groq"); else ls("bb.groq",null); $("#keyInp").value=""; $("#keyBox").classList.remove("hidden"); }
+    $("#err").textContent="😥 "+m; $("#err").classList.remove("hidden");
+    document.querySelectorAll("#steps li.run").forEach(function(li){ li.className=""; });
+  }).then(function(){ busy=false; b.disabled=false; b.textContent="🪄 Tóm tắt"; });
+};
+
+var showPy=ls("tt.py")!=="0", showVi=ls("tt.vi")!=="0";
+function render(r){
+  CUR=r;
+  var zhHtml=r.sents.map(function(s,i){ return '<span class="s" data-i="'+i+'">'+(showPy?ruby(s):esc(s))+'</span>'; }).join("");
+  var pts=(r.pvi&&r.pvi.length?r.pvi:r.points)||[];
+  var h='<section class="card" id="resCard">'+
+    '<h2>✨ Đoạn tóm tắt <span class="badge">'+r.count+' chữ Hán</span><span class="sp"></span></h2>'+
+    (r.note?'<div class="note" style="margin:-4px 0 10px">'+esc(r.note)+'</div>':'')+
+    '<div class="tools"><button class="btn sm" id="sayAll" type="button">🔊 Nghe cả đoạn</button>'+
+    '<button class="tg'+(showPy?' on':'')+'" id="tgPy" type="button">Pinyin</button>'+
+    '<button class="tg'+(showVi?' on':'')+'" id="tgVi" type="button">Tiếng Việt</button>'+
+    '<button class="tg" id="cpBtn" type="button">📋 Chép</button></div>'+
+    '<div class="zh'+(showPy?' py':'')+'" id="zhBox" lang="zh-CN">'+zhHtml+'</div>'+
+    '<div class="vi'+(showVi?'':' hidden')+'" id="viBox"><b>🇻🇳 Dịch tiếng Việt</b>'+esc(r.vi.join(" "))+'</div>'+
+    '<div class="note">Chạm vào một câu để nghe riêng câu đó.</div>'+
+    '</section>'+
+    '<details class="card"><summary>🔍 Đối chiếu từng câu</summary>'+
+    r.sents.map(function(s,i){ return '<div class="pair"><div class="n">'+(i+1)+'</div><div class="t"><div class="pz" lang="zh-CN">'+esc(s)+'</div><div class="pp">'+esc(pyLine(s))+'</div><div class="pv">'+esc(r.vi[i]||"")+'</div></div><button type="button" data-say="'+i+'" aria-label="Nghe câu '+(i+1)+'">🔊</button></div>'; }).join("")+
+    '</details>'+
+    (pts.length?'<details class="card"><summary>📌 Các ý chính trong bài gốc</summary><ol class="pts">'+pts.map(function(p){return '<li>'+esc(p)+'</li>'}).join("")+'</ol><div class="note">Dùng để kiểm tra bản tóm tắt đã đủ ý chưa.</div></details>':'')+
+    '<details class="card"><summary>📄 Bài gốc</summary><div style="white-space:pre-wrap;font:500 17px/1.8 var(--zh)" lang="zh-CN">'+esc(r.src)+'</div></details>';
+  $("#out").innerHTML=h;
+  $("#sayAll").onclick=function(){ var b=this; if(b.dataset.on){ stopSay(); b.dataset.on=""; b.textContent="🔊 Nghe cả đoạn"; return; }
+    b.dataset.on="1"; b.textContent="⏹ Dừng"; var i=0, sp=document.querySelectorAll("#zhBox .s");
+    (function nx(){ if(!b.dataset.on||i>=r.sents.length){ b.dataset.on=""; b.textContent="🔊 Nghe cả đoạn"; return; }
+      var el=sp[i]; if(el&&el.scrollIntoView&&i>0) el.scrollIntoView({block:"nearest",behavior:"smooth"});
+      say(r.sents[i],el).then(function(ok){ if(!ok){ b.dataset.on=""; b.textContent="🔊 Nghe cả đoạn"; return; } i++; nx(); }); })(); };
+  $("#zhBox").onclick=function(e){ var s=e.target.closest(".s"); if(!s) return; var sa=$("#sayAll"); sa.dataset.on=""; sa.textContent="🔊 Nghe cả đoạn"; say(r.sents[+s.dataset.i],s); };
+  $("#tgPy").onclick=function(){ showPy=!showPy; ls("tt.py",showPy?"1":"0"); render(r); };
+  $("#tgVi").onclick=function(){ showVi=!showVi; ls("tt.vi",showVi?"1":"0"); this.classList.toggle("on",showVi); $("#viBox").classList.toggle("hidden",!showVi); };
+  $("#cpBtn").onclick=function(){ var t=r.zh+"\n\n"+r.sents.map(pyLine).join(" ")+"\n\n"+r.vi.join(" ");
+    var done=function(){ toast("Đã chép tiếng Trung, pinyin và tiếng Việt"); };
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done,function(){ fallbackCopy(t); done(); }); else { fallbackCopy(t); done(); } };
+  document.querySelectorAll("[data-say]").forEach(function(b){ b.onclick=function(){ say(r.sents[+b.dataset.say]); }; });
+}
+function fallbackCopy(t){ var a=document.createElement("textarea"); a.value=t; a.style.position="fixed"; a.style.opacity="0"; document.body.appendChild(a); a.select(); try{ document.execCommand("copy"); }catch(e){} a.remove(); }
+
+/* ---------------- lịch sử (lưu trên máy, đồng bộ nếu đã đăng nhập ☁) ---------------- */
+function getHist(){ try{ var a=JSON.parse(ls("tt.hist")||"[]"); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+function saveHist(r){ var a=getHist().filter(function(x){return x.src!==r.src||x.N!==r.N}); a.unshift({id:r.id,ts:r.ts,N:r.N,n:r.n,note:r.note,src:r.src,zh:r.zh,sents:r.sents,vi:r.vi,points:r.points,pvi:r.pvi,count:r.count}); a=a.slice(0,30);
+  while(a.length){ try{ localStorage.setItem("tt.hist",JSON.stringify(a)); break; }catch(e){ a.pop(); } } drawHist(); }
+function when(ts){ var d=new Date(ts), n=new Date(); var hm=("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2); return d.toDateString()===n.toDateString()?"Hôm nay "+hm:d.getDate()+"/"+(d.getMonth()+1)+" "+hm; }
+function drawHist(){ var a=getHist();
+  $("#hist").innerHTML=a.length?a.map(function(x){ return '<div class="hi-it" role="button" tabindex="0" data-id="'+x.id+'"><div class="tx"><b lang="zh-CN">'+esc(x.zh.slice(0,40))+'</b><small>'+when(x.ts)+' · '+x.count+' chữ</small></div><button class="x" type="button" data-del="'+x.id+'" aria-label="Xoá">✕</button></div>'; }).join(""):'<div class="empty">Chưa có bài nào. Tóm tắt xong sẽ tự lưu ở đây để xem lại.</div>'; }
+$("#hist").onclick=function(e){ var d=e.target.closest("[data-del]");
+  if(d){ var a=getHist().filter(function(x){return x.id!==d.dataset.del}); ls("tt.hist",JSON.stringify(a)); drawHist(); toast("Đã xoá"); return; }
+  var it=e.target.closest(".hi-it"); if(!it) return; var r=getHist().filter(function(x){return x.id===it.dataset.id})[0]; if(!r) return;
+  stopSay(); render(r); $("#progCard").classList.add("hidden"); setTimeout(function(){ $("#resCard").scrollIntoView({behavior:"smooth",block:"start"}); },50); };
+$("#hist").onkeydown=function(e){ if(e.key==="Enter"&&e.target.classList.contains("hi-it")) e.target.click(); };
+drawHist();
+window.addEventListener("storage",function(e){ if(e.key==="tt.hist") drawHist(); });
+window.TT={summarize:summarize,clean:clean,tidy:tidy,sentences:sentences,hanCount:hanCount,pyLine:pyLine,render:render,SYS:{SUM:SYS_SUM,LEN:SYS_LEN,CHK:SYS_CHK,VI:SYS_VI},fill:fill,groq:groq};
+})();
+</script>
+</body>
+</html>

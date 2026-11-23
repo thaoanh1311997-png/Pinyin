@@ -3,7 +3,7 @@
   var me = document.currentScript;
   var BASE = new URL('../', me ? me.src : location.href).pathname;
   var rel = location.pathname.indexOf(BASE) === 0 ? location.pathname.slice(BASE.length) : '';
-  var id = /^video\//.test(rel) ? 'video' : /^trasua\//.test(rel) ? 'trasua' : /^on-thi\//.test(rel) ? 'onthi' : /^pdf\//.test(rel) ? 'pdf' : /^vo\//.test(rel) ? 'vo' : /^game\//.test(rel) ? 'game' : /^sach\//.test(rel) ? 'sach' : 'home';
+  var id = /^video\//.test(rel) ? 'video' : /^trasua\//.test(rel) ? 'trasua' : /^on-thi\//.test(rel) ? 'onthi' : /^pdf\//.test(rel) ? 'pdf' : /^vo\//.test(rel) ? 'vo' : /^game\//.test(rel) ? 'game' : /^sach\//.test(rel) ? 'sach' : /^(tom-tat|chu-han)\//.test(rel) ? 'soichu' : 'home';
   var IN = {
     video: 'from{opacity:0;transform:translateX(26px)}',
     trasua: 'from{opacity:0;transform:translateY(18px)}',
@@ -12,6 +12,7 @@
     vo: 'from{opacity:0;transform:translateY(14px) rotate(-.6deg)}',
     game: 'from{opacity:0;transform:scale(.96) rotate(.6deg)}',
     sach: 'from{opacity:0;transform:translateX(-22px)}',
+    soichu: 'from{opacity:0;transform:translateY(16px) scale(.985)}',
     home: 'from{opacity:0;transform:scale(1.025)}'
   };
   // giao diện sáng/tối dùng chung (lưu trên máy: bm.theme)

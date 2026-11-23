@@ -10,12 +10,14 @@
     { id: 'onthi', path: 'on-thi/', name: 'Ôn thi trên lớp', short: 'Ôn thi', emo: '📝', c: '#F2643F', c2: '#FFAE8A', d: 'Ra đề, chấm điểm, tài liệu ôn' },
     { id: 'vo', path: 'vo/', name: 'Vở tập viết', short: 'Tập viết', emo: '✍️', c: '#7C5CDB', c2: '#B39DFF', d: 'Tạo vở ô chữ, in hoặc viết trên iPad' },
     { id: 'game', path: 'game/', name: 'Mini game', short: 'Game', emo: '🎮', c: '#2F7BEA', c2: '#7FB6FF', d: 'Nối chữ, dạo phố, đoán chữ, ghép bộ thủ' },
+    { id: 'soichu', path: 'tom-tat/', also: ['chu-han/'], name: 'Soi chữ - Tóm ý', short: 'Soi chữ', emo: '🔍', c: '#B4479C', c2: '#E98BD3', d: 'Tra cấu tạo chữ Hán, tóm tắt đoạn văn',
+      tabs: [{ path: 'chu-han/', emo: '🔍', name: 'Soi chữ Hán' }, { path: 'tom-tat/', emo: '🪄', name: 'Tóm ý đoạn văn' }] },
     { id: 'sach', path: 'sach/', name: 'Tài liệu miễn phí', short: 'Tài liệu', emo: '📚', c: '#5E9A2B', c2: '#A9D86E', d: 'Đọc sách ngay trong web, đề HSK chính thức' },
     { id: 'pdf', path: 'pdf/', name: 'Đọc PDF có Pinyin', short: 'PDF', emo: '📄', c: '#1593A6', c2: '#6FD0DE', d: 'Mở giáo trình, hiện pinyin từng chữ' }
   ];
   var rel = location.href.indexOf(BASE) === 0 ? location.pathname.slice(new URL(BASE).pathname.length) : '';
   var cur = SECS[0];
-  SECS.forEach(function (s) { if (s.path && rel.indexOf(s.path) === 0) cur = s; });
+  SECS.forEach(function (s) { if (s.path && [s.path].concat(s.also || []).some(function (p) { return rel.indexOf(p) === 0; })) cur = s; });
   if (/^index\.html$/.test(rel) || rel === '') cur = SECS[0];
   window.BM_SECTIONS = SECS; window.BM_BASE = BASE;
 
@@ -93,6 +95,11 @@
     '#bm-sheet .bm-home b{margin:0}' +
     '#bm-sheet .bm-wide{grid-column:1/-1}' +
     '@keyframes bmPop{to{opacity:1;transform:none}}' +
+    '#bm-tabs{padding:10px 16px 0}#bm-tabs .bm-tw{max-width:560px;margin:0 auto;display:flex;gap:6px;padding:5px;border-radius:99px;background:rgba(255,255,255,.75);border:2px solid #F1E2CF}' +
+    '#bm-tabs .bm-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;border-radius:99px;text-decoration:none;font:800 15px/1.2 Nunito,system-ui,sans-serif;color:#7A5F4C;white-space:nowrap;transition:background .2s,color .2s}' +
+    '#bm-tabs .bm-tab i{font-style:normal}#bm-tabs .bm-tab.on{background:linear-gradient(135deg,var(--bmc),var(--bmc2));color:#fff;box-shadow:0 4px 10px -6px var(--bmc)}' +
+    'html[data-theme=dark] #bm-tabs .bm-tw{background:#2A201A;border-color:#45352A}html[data-theme=dark] #bm-tabs .bm-tab{color:#CDB6A3}html[data-theme=dark] #bm-tabs .bm-tab.on{color:#fff}' +
+    '@media (max-width:370px){#bm-tabs .bm-tab{font-size:13.5px;padding:8px 6px}}@media print{#bm-tabs{display:none}}' +
     /* chuyển trang nhẹ nhàng: mỗi mục một kiểu trượt/mờ riêng, ngắn ~0.3s */
     '@keyframes bmFade{from{opacity:0}}' +
     'html.bm-fx-in body{animation:bmFade .32s ease-out both}' +
@@ -118,6 +125,17 @@
   }
 
   function url(s) { return BASE + s.path; }
+  /* trang mới chưa đưa lên thì ẩn link tới nó (kiểm tra 1 lần mỗi phiên) */
+  window.BM_LIVE = function (path, cb) {
+    var k = 'bm.live.' + path, v = null;
+    try { v = sessionStorage.getItem(k); } catch (e) {}
+    if (v) { cb(v === '1'); return; }
+    if (!window.fetch || !/^https?:/.test(location.protocol)) { cb(true); return; }
+    fetch(BASE + path, { method: 'HEAD', cache: 'no-store' }).then(function (r) { return r.ok; }, function () { return true; }).then(function (ok) {
+      try { sessionStorage.setItem(k, ok ? '1' : '0'); } catch (e) {}
+      cb(ok);
+    });
+  };
   function vars(el, s) { el.style.setProperty('--bmc', s.c); el.style.setProperty('--bmc2', s.c2); }
 
   /* ---------- thanh trên cùng ---------- */
@@ -139,6 +157,22 @@
     };
     bleed(); addEventListener('resize', bleed);
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bleed);
+    /* mục gộp nhiều trang (vd. Soi chữ - Tóm ý): thanh chuyển trang nhỏ ngay dưới thanh trên cùng */
+    if (cur.tabs) {
+      var tb = document.createElement('div'); tb.id = 'bm-tabs'; vars(tb, cur);
+      tb.innerHTML = '<div class="bm-tw">' + cur.tabs.map(function (t) {
+        var on = rel.indexOf(t.path) === 0;
+        return '<a class="bm-tab' + (on ? ' on' : '') + '" data-bm-go="' + cur.id + '" data-p="' + t.path + '" href="' + BASE + t.path + '"' + (on ? ' aria-current="page"' : '') + '><i>' + t.emo + '</i>' + t.name + '</a>';
+      }).join('') + '</div>';
+      nav.parentNode.insertBefore(tb, nav.nextSibling);
+      // chỉ hiện thanh khi có từ 2 trang đã đưa lên trở lên
+      tb.style.display = 'none';
+      var tabs = [].slice.call(tb.querySelectorAll('.bm-tab')), left = tabs.length, live = 0;
+      tabs.forEach(function (a) {
+        var done = function (ok) { if (!ok) a.style.display = 'none'; else live++; if (--left === 0 && live > 1) tb.style.display = ''; };
+        if (a.classList.contains('on')) done(true); else window.BM_LIVE(a.getAttribute('data-p'), done);
+      });
+    }
   }
 
   /* ---------- bảng chọn mục ---------- */

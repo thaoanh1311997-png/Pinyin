@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Bánh Mì · Học tiếng Trung mỗi ngày</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script src="shared/nav-head.js?v=15"></script>
+<script src="shared/nav-head.js?v=16"></script>
 <meta name="description" content="Bánh Mì: học tiếng Trung qua video, đọc báo, luyện thi HSK, ôn thi trên lớp và đọc giáo trình PDF có pinyin. Tất cả trong một trang.">
 <meta name="theme-color" content="#FFF7EC">
 <link rel="icon" href="shared/banhmi.svg" type="image/svg+xml">
@@ -74,6 +74,12 @@ a.chip:active{transform:scale(.95)}
 .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
 .tags span{font-size:12px;font-weight:800;background:rgba(255,255,255,.25);padding:2px 9px;border-radius:99px}
 .go{flex:none;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.28);display:grid;place-items:center;font-size:18px;font-weight:900;transition:transform .25s}
+.app.grp{cursor:default}.app.grp:hover{transform:none}.app.grp:active{transform:none}
+.gbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.gb{flex:1 1 140px;display:flex;align-items:center;justify-content:center;gap:4px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.95);color:#8E2F7A;text-decoration:none;font-weight:900;font-size:15.5px;box-shadow:0 4px 0 rgba(0,0,0,.12);transition:transform .15s;white-space:nowrap}
+.gb:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.gb:hover{transform:translateY(-2px)}
+html[data-theme="dark"] .gb{background:#2D231C;color:#F3A6E0}
 .app:hover .go{transform:translateX(4px)}
 
 /* hai cột dưới */
@@ -159,8 +165,9 @@ html[data-theme="dark"] .allok{color:#5FDBA5}
 </style>
 </head>
 <body>
-<script src="shared/nav.js?v=14"></script>
+<script src="shared/nav.js?v=15"></script>
 <script src="shared/voice.js?v=1"></script>
+<script>document.addEventListener("DOMContentLoaded",function(){var a=document.getElementById("gbChu");if(a&&window.BM_LIVE){a.style.display="none";BM_LIVE("chu-han/",function(ok){a.style.display=ok?"":"none"})}});</script>
 <div class="floaty" aria-hidden="true"><span style="left:4%;top:18%">学</span><span style="right:6%;top:34%;animation-delay:-4s">汉</span><span style="left:8%;top:62%;animation-delay:-8s;font-size:30px">字</span><span style="right:10%;top:80%;animation-delay:-2s;font-size:34px">好</span></div>
 
 <main class="wrap">
@@ -211,13 +218,18 @@ html[data-theme="dark"] .allok{color:#5FDBA5}
         <div class="tags"><span>Nối Đôi</span><span>Dạo phố</span><span>Đoán chữ</span><span>Ghép bộ thủ</span></div></div>
       <div class="go">›</div>
     </a>
+    <div class="app grp in" data-zh="述" style="--c:#B4479C;--c2:#E98BD3;animation-delay:.3s">
+      <div class="ico">🔍</div>
+      <div class="tx"><b>Soi chữ - Tóm ý</b><small>Tra cấu tạo, ý nghĩa từng chữ Hán. Dán đoạn văn, nhận bản tóm tắt tiếng Trung ~200 chữ có pinyin và tiếng Việt.</small>
+        <div class="gbtns"><a class="gb" id="gbChu" data-bm-go="soichu" href="chu-han/">🔍 Soi chữ Hán</a><a class="gb" data-bm-go="soichu" href="tom-tat/">🪄 Tóm ý đoạn văn</a></div></div>
+    </div>
     <a class="app in" data-bm-go="pdf" href="pdf/" data-zh="拼" style="--c:#1593A6;--c2:#5CC8D6;animation-delay:.3s">
       <div class="ico">📄</div>
       <div class="tx"><b>Đọc PDF có Pinyin</b><small>Mở giáo trình PDF hay ảnh chụp, pinyin hiện trên từng chữ.</small>
         <div class="tags"><span>Kể cả bản scan</span><span>Chạm xem nghĩa</span></div></div>
       <div class="go">›</div>
     </a>
-    <a class="app in wide" data-bm-go="sach" href="sach/" data-zh="书" style="--c:#5E9A2B;--c2:#9BCF5F;animation-delay:.36s">
+    <a class="app in" data-bm-go="sach" href="sach/" data-zh="书" style="--c:#5E9A2B;--c2:#9BCF5F;animation-delay:.36s">
       <div class="ico">📚</div>
       <div class="tx"><b>Tài liệu miễn phí</b><small>Bấm là đọc ngay trong web: sách Hán ngữ của bạn, 85 cuốn truyện tranh và giáo trình mở, đề HSK chính thức.</small>
         <div class="tags"><span>Sách của tôi</span><span>Truyện tranh</span><span>Giáo trình MIT</span><span>Đề HSK</span></div></div>
