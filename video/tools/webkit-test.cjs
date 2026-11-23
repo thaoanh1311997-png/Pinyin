@@ -74,4 +74,28 @@ const fs=require('fs');
  }
  await b.close();
 
+})()).then(()=>(async()=>{
+
+ const b=await chromium.launch();
+ for(const mode of ['words','refuse']){
+  const ctx=await b.newContext(devices['iPhone 13']);
+  await ctx.addInitScript(()=>{localStorage.setItem('bb.groq','gsk_'+'x'.repeat(40));});
+  let calls=[];
+  await ctx.route(/ytimg|youtube|translate|mymemory|supabase|supadata/,r=>r.abort());
+  await ctx.route(/api\.groq\.com/,async r=>{const body=r.request().postDataBuffer().toString('latin1'); const hasW=/timestamp_granularities/.test(body); calls.push(hasW);
+    if(mode==='refuse'&&hasW) return r.fulfill({status:400,contentType:'application/json',body:'{"error":{"message":"bad"}}'});
+    const d={segments:[{start:0,end:8,text:'第一句话你好'},{start:8,end:15,text:'第二句话谢谢'}]};
+    if(hasW) d.words=[{word:'第一',start:3.2,end:4},{word:'你好',start:5,end:6.5},{word:'第二',start:9,end:10},{word:'谢谢',start:12,end:14}];
+    r.fulfill({status:200,contentType:'application/json',body:JSON.stringify(d)});});
+  const pg=await ctx.newPage(); const errs=[]; pg.on('pageerror',e=>errs.push(e.message));
+  await pg.goto('http://localhost:8765/Pinyin/video/_t.html'); await pg.waitForTimeout(1200);
+  const r=await pg.evaluate(()=>__E(`(async()=>{const blob=await (await fetch('/Pinyin/t40.wav')).blob(); const f=new File([blob],'t.wav',{type:'audio/wav'});
+    LES={id:'g1',title:'Test',src:{type:'file',name:f.name,url:URL.createObjectURL(f),file:f,audio:true},lines:[]}; show('Lesson'); renderModes(); await mountMedia(); setMode('shadow');
+    for(let k=0;k<60&&!LES.lines.length;k++) await sleep(200);
+    return LES.lines.map(l=>l.zh+'@'+l.s+'-'+l.e);})()`));
+  console.log(mode,JSON.stringify(r),'calls',calls,errs);
+  await ctx.close();
+ }
+ await b.close();
+
 })()).catch(e=>{console.error(e);process.exit(1);});

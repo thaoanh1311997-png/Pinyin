@@ -2,12 +2,12 @@ name: Học video WebKit test (manual)
 on: workflow_dispatch
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: 20}
-      - run: npm i --no-save playwright ffmpeg-static && npx playwright install webkit
+      - run: npm i --no-save playwright ffmpeg-static && npx playwright install --with-deps webkit
       - name: Make 22-minute test audio
         run: |
           $(node -p "require('ffmpeg-static')") -v error -f lavfi -i "sine=frequency=440:duration=1350" -f lavfi -i "anoisesrc=d=1350:a=0.02" -filter_complex amix=inputs=2 -ac 2 -ar 44100 -b:a 160k t.mp3
