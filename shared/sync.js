@@ -280,8 +280,12 @@
         return JSON.stringify(u);
       }
       if (isIdArr(a) && isIdArr(b)) {
-        var seen = {}, out = [];
-        b.concat(a).forEach(function (x) { if (!seen[x.id]) { seen[x.id] = 1; out.push(x); } });
+        var pos = {}, out = [];
+        b.concat(a).forEach(function (x) { // cùng một bài ở hai máy → giữ bản sửa sau cùng
+          var j = pos[x.id];
+          if (j == null) { pos[x.id] = out.length; out.push(x); }
+          else if ((x.at || 0) > (out[j].at || 0)) out[j] = x;
+        });
         if (out[0] && out[0].at != null) out.sort(function (x, y) { return (y.at || 0) - (x.at || 0); });
         return JSON.stringify(out);
       }
@@ -417,17 +421,29 @@
       .catch(function (e) { lastErr = e && e.message || 'lỗi'; console.warn('[bm-sync]', e); });
     return p.then(function () { busy = false; progress = ''; ui(); if (again) { again = false; schedulePush(300); } });
   }
+  // đang nghe/xem gì đó thì tuyệt đối không tải lại trang
+  function mediaBusy() {
+    try {
+      if (window.speechSynthesis && speechSynthesis.speaking) return true;
+      if (document.querySelector('iframe[src*="youtube"]')) return true;
+      var ms = document.querySelectorAll('audio,video');
+      for (var i = 0; i < ms.length; i++) if (!ms[i].paused && !ms[i].ended) return true;
+    } catch (e) {}
+    return false;
+  }
+  // dữ liệu từ máy khác đã được ghi thầm vào máy này: trang tự cập nhật qua sự kiện 'bm-sync',
+  // lần mở trang sau sẽ thấy đủ. Không hiện nút bấm, không bao giờ làm gián đoạn bài đang học.
   function refreshPage(force) {
     try { window.dispatchEvent(new CustomEvent('bm-sync', { detail: { changed: true } })); } catch (e) {}
-    if (force || (!touched && now() - bootAt < 20000)) { location.reload(); return; }
-    toast('Có bài mới từ máy khác', 'Cập nhật', function () { location.reload(); });
+    if (mediaBusy()) return;
+    if (force || (!touched && now() - bootAt < 20000)) location.reload();
   }
   ['pointerdown', 'keydown'].forEach(function (ev) { addEventListener(ev, function () { touched = true; }, { capture: true, passive: true }); });
 
   if (ON && auth) {
     setTimeout(run, 300);
     setInterval(function () { if (document.visibilityState === 'visible') run(); }, 45000);
-    document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') { bootAt = now(); touched = false; run(); } else if (Object.keys(dirtyKV).length) flushKV(); });
+    document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') run(); else if (Object.keys(dirtyKV).length) flushKV(); });
     addEventListener('online', function () { run(); });
     addEventListener('pagehide', function () { if (Object.keys(dirtyKV).length) flushKV(); });
   }

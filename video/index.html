@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<script src="../shared/nav-head.js?v=14"></script>
+<script src="../shared/nav-head.js?v=15"></script>
 <meta name="theme-color" content="#F4F6F8">
 <title>Bánh Mì · Học tiếng Trung qua video</title>
 <meta name="description" content="Dán link video hoặc chọn file giáo trình, học tiếng Trung với pinyin, bản dịch, shadowing, phát âm, nghe chép, điền từ và luyện tập.">
@@ -953,7 +953,7 @@ async function mountMedia(){
     await new Promise(res=>{
       const yp=new YT.Player('ytBox',{videoId:src.id,playerVars:{playsinline:1,rel:0,modestbranding:1,iv_load_policy:3,cc_load_policy:0},
         events:{onReady:()=>{
-          P={media:true,kind:'yt',time:()=>yp.getCurrentTime()||0,play:()=>yp.playVideo(),pause:()=>yp.pauseVideo(),seek:t=>yp.seekTo(t,true),rate:r=>{try{yp.setPlaybackRate(r)}catch(e){}},playing:()=>yp.getPlayerState()===1,dur:()=>{try{return yp.getDuration()||0}catch(e){return 0}}};
+          P={media:true,kind:'yt',time:()=>yp.getCurrentTime()||0,play:()=>yp.playVideo(),pause:()=>yp.pauseVideo(),seek:t=>yp.seekTo(t,true),rate:r=>{try{yp.setPlaybackRate(r)}catch(e){}},playing:()=>yp.getPlayerState()===1,paused:()=>{const s=yp.getPlayerState();return s===2||s===0;},dur:()=>{try{return yp.getDuration()||0}catch(e){return 0}}};
           res();},
           onError:e=>{toast('YouTube không cho phát video này ở web khác (mã '+e.data+'). Thử video khác nha.',5000);res();}}});
       setTimeout(res,12000);
@@ -970,7 +970,7 @@ async function mountMedia(){
     }
     box.innerHTML=src.audio?'<div class="media audio"><audio id="vid" controls playsinline preload="auto"></audio></div>':'<div class="media"><video id="vid" controls playsinline preload="auto"></video></div>';
     const v=$('#vid'); v.src=src.url;
-    P={media:true,kind:'file',time:()=>v.currentTime,play:()=>v.play().catch(()=>{}),pause:()=>v.pause(),seek:t=>{v.currentTime=t},rate:r=>{v.playbackRate=r},playing:()=>!v.paused&&!v.ended,dur:()=>isFinite(v.duration)?v.duration:0};
+    P={media:true,kind:'file',time:()=>v.currentTime,play:()=>v.play().catch(()=>{}),pause:()=>v.pause(),seek:t=>{v.currentTime=t},rate:r=>{v.playbackRate=r},playing:()=>!v.paused&&!v.ended,paused:()=>v.paused||v.ended,dur:()=>isFinite(v.duration)?v.duration:0};
   } else {
     box.innerHTML=ttsBox();
   }
@@ -989,7 +989,8 @@ async function playSeg(i,run,opt={}){
   if(!hasTime(i)){ await speak(L.zh,rate,run); return; }
   const s=Math.max(0,L.s+S.offset), e=L.e+S.offset;
   P.rate(rate);
-  if(Math.abs(P.time()-s)>0.35||!P.playing()) P.seek(s);
+  if(Math.abs(P.time()-s)>0.35||!P.playing()) await seekWait(s,run);
+  if(run.dead) return;
   P.play();
   const t0=performance.now(), maxMs=((e-s)/rate+10)*1000;
   while(!run.dead){
@@ -999,6 +1000,11 @@ async function playSeg(i,run,opt={}){
     if(performance.now()-t0>maxMs) break;
   }
   if(!run.dead&&!opt.keep) P.pause();
+}
+// seek and wait until the player really is there (YouTube keeps reporting the old time for a moment)
+async function seekWait(t,run){
+  t=Math.max(0,t); P.seek(t); const t0=performance.now();
+  while(!run.dead&&performance.now()-t0<2500){ if(Math.abs(P.time()-t)<0.6) return; await sleep(40); }
 }
 function segDur(i){const L=LES.lines[i];return hasTime(i)?(L.e-L.s)/S.rate:lastSpeakMs/1000;}
 
@@ -1444,7 +1450,7 @@ $$('[data-go]').forEach(b=>b.onclick=()=>{const k=b.dataset.go; if(k==='video'){
 
 async function openLesson(les){
   newRun(); stopRec();
-  LES={...les,lines:les.lines.map(l=>({...l}))}; if(LES.lines.length&&(fragmented(LES.lines)||LES.lines.some(l=>cjkCount(l.zh)&&cleanZh(l.zh)!==l.zh))){ LES.lines=tidyLines(LES.lines); } CUR=0; if(!LES.lines.length) MODE='shadow'; RECS={}; PRON={}; DICTST={}; FILLST={}; PRAC=null;
+  LES={...les,lines:les.lines.map(l=>({...l}))}; if(LES.lines.length&&(fragmented(LES.lines)||LES.lines.some(l=>cjkCount(l.zh)&&cleanZh(l.zh)!==l.zh))){ LES.lines=tidyLines(LES.lines); } else LES.lines=normLines(LES.lines); CUR=0; if(!LES.lines.length) MODE='shadow'; RECS={}; PRON={}; DICTST={}; FILLST={}; PRAC=null;
   show('Lesson'); renderModes(); await mountMedia(); setMode(MODE);
   saveLesson();
   translateLines(LES.lines,l=>{const i=LES.lines.indexOf(l);$$(`[data-vi="${i}"]`).forEach(el=>{el.textContent=l.vi;el.classList.remove('wait');});})
@@ -1956,7 +1962,28 @@ function cleanZh(t){
     return TONE_RE.test(m)||ws.length>=3&&ws.every(w=>/^[a-zü'’,.!?;:-]+$/.test(w))?' ':m;
   }).replace(/\s{2,}/g,' ').trim();
 }
-function tidyLines(lines){ return mergeShort((lines||[]).map(l=>({...l,zh:cleanZh(l.zh)})).filter(l=>cjkCount(l.zh))); }
+function tidyLines(lines){ return normLines(mergeShort(normLines((lines||[]).map(l=>({...l,zh:cleanZh(l.zh)})).filter(l=>cjkCount(l.zh))))); }
+// Timed subtitles must run strictly by start time with no overlaps: captions from YouTube, Groq pieces or .srt files
+// can come out of order or overlap (rolling captions), which made the highlighted line jump back and forth.
+function normLines(lines){
+  lines=(lines||[]).filter(l=>l&&cjkCount(l.zh));
+  if(!lines.length||lines.some(l=>l.s==null||!isFinite(+l.s))) return lines; // text-only lessons keep their order
+  const srt=lines.map((l,i)=>({l,i,s:Math.max(0,+l.s)})).sort((a,b)=>a.s-b.s||a.i-b.i);
+  const out=[];
+  for(const x of srt){
+    const l={...x.l,s:x.s,e:isFinite(+x.l.e)&&+x.l.e>x.s?+x.l.e:x.s+3}, p=out[out.length-1];
+    if(p&&p.zh===l.zh&&l.s-p.e<1.5){ p.e=Math.max(p.e,l.e); continue; } // the same caption repeated
+    out.push(l);
+  }
+  out.forEach((l,k)=>{const n=out[k+1]; if(n&&l.e>n.s) l.e=n.s; if(l.e<l.s+0.3) l.e=l.s+0.3;});
+  return out;
+}
+// line being spoken at media time t (latest line that has started), -1 before the first line
+function lineAt(t){
+  const L=LES.lines; let lo=0, hi=L.length-1, r=-1;
+  while(lo<=hi){ const m=(lo+hi)>>1; if(L[m].s!=null&&L[m].s<=t+0.05){ r=m; lo=m+1; } else hi=m-1; }
+  return r;
+}
 function mergeShort(lines){
   if(!fragmented(lines)) return lines;
   const out=[];
@@ -2099,7 +2126,7 @@ function noSubs(msg){ // ask for a transcript, or make one from a file
   $('#lsFile').onchange=async e=>{const f=e.target.files[0];if(f)$('#lsSub').value=await f.text();};
   if($('#lsAuto')) $('#lsAuto').onclick=()=>autoSubsFile();
   if($('#lsVid')) $('#lsVid').onchange=e=>{const f=e.target.files[0];if(!f)return;if(!isMedia(f)){toast('File này không phải video hay âm thanh. Hãy chọn file nghe (mp3, m4a…) hoặc video.',4500);e.target.value='';return;}LES.src={type:'file',name:f.name,url:URL.createObjectURL(f),file:f,audio:isAudio(f)};mountMedia().then(()=>autoSubsFile());};
-  $('#lsGo').onclick=()=>{const lines=parseSubs($('#lsSub').value);if(!lines.length){toast('Chưa thấy câu tiếng Trung nào trong ô phụ đề.');return;}LES.lines=lines;saveLesson();renderModes();setMode('shadow');translateLines(LES.lines,l=>{const i=LES.lines.indexOf(l);$$(`[data-vi="${i}"]`).forEach(el=>{el.textContent=l.vi;el.classList.remove('wait');});}).then(()=>saveLesson());};
+  $('#lsGo').onclick=()=>{const lines=normLines(parseSubs($('#lsSub').value));if(!lines.length){toast('Chưa thấy câu tiếng Trung nào trong ô phụ đề.');return;}LES.lines=lines;saveLesson();renderModes();setMode('shadow');translateLines(LES.lines,l=>{const i=LES.lines.indexOf(l);$$(`[data-vi="${i}"]`).forEach(el=>{el.textContent=l.vi;el.classList.remove('wait');});}).then(()=>saveLesson());};
 }
 const fmtT=s=>{s=Math.max(0,Math.floor(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
 function hintText(){return S.shadow?'Nói theo: phát xong mỗi câu, web dừng lại để bạn nhắc lại.':S.loop?'Đang lặp lại câu đã chọn. Bấm nút lặp lần nữa để tắt.':'Chạm vào một câu để nghe. Chạm vào chữ trong câu đang chọn để xem nghĩa.';}
@@ -2115,11 +2142,13 @@ function lineTools(i){
     <button class="lt" data-a="edit">${IC.pen}Sửa câu</button>`;
 }
 function refreshTools(i){const el=$(`.line[data-i="${i}"] .ln-t`);if(el)el.innerHTML=lineTools(i);}
+let USER_SCROLL=0; // while the user scrolls the list by hand, auto-scroll waits a little
+['wheel','touchmove'].forEach(ev=>addEventListener(ev,()=>{USER_SCROLL=performance.now();},{passive:true}));
 function setActive(i,scroll=true){
   CUR=Math.max(0,Math.min(LES.lines.length-1,i));
   $$('#lines .line').forEach(el=>el.classList.toggle('act',+el.dataset.i===CUR));
   const el=$(`#lines .line[data-i="${CUR}"]`);
-  if(el&&scroll){ // keep the sentence just under the pinned video, not behind it
+  if(el&&scroll&&performance.now()-USER_SCROLL>3000){ // keep the sentence just under the pinned video, not behind it
     const side=$('.side'), ph=matchMedia('(max-width:959px)').matches&&!document.body.classList.contains('unpin');
     const top=ph&&side?side.getBoundingClientRect().bottom+12:90;
     const r=el.getBoundingClientRect(), dockH=ph?150:20;
@@ -2129,7 +2158,8 @@ function setActive(i,scroll=true){
 function setPlayIcon(on){const b=$('#pPlay');if(b){b.innerHTML=(on?IC.pause:IC.play)+'<small>'+(on?'Dừng':'Phát')+'</small>';b.setAttribute('aria-label',on?'Tạm dừng':'Phát');}}
 async function runFrom(i){
   const run=newRun(); PLAYING=run; setPlayIcon(true);
-  for(let k=i;k<LES.lines.length&&!run.dead;k++){
+  if(hasTime(Math.max(0,Math.min(LES.lines.length-1,i)))) await runMedia(i,run);
+  else for(let k=i;k<LES.lines.length&&!run.dead;k++){
     setActive(k);
     const nx=LES.lines[k+1];
     const keep=!S.shadow&&!S.loop&&hasTime(k)&&nx&&nx.s!=null&&Math.abs(nx.s-LES.lines[k].e)<0.6;
@@ -2141,6 +2171,28 @@ async function runFrom(i){
   }
   if(!run.dead){ run.dead=true; if(P&&P.media)P.pause(); }
   if(RUN===run) setPlayIcon(false);
+}
+// Video/audio with timed subtitles: the media plays on its own and the highlighted line follows its clock,
+// so lines only move forward in order. Nói theo / Lặp stop or repeat at the end of each line.
+async function runMedia(i,run){
+  const Ls=LES.lines; let k=Math.max(0,Math.min(Ls.length-1,i)), lastGo=0, idle=0;
+  const go=async j=>{ k=j; setActive(k); P.rate(S.rate); await seekWait(Ls[k].s+S.offset,run); if(!run.dead){ P.play(); lastGo=performance.now(); idle=0; } };
+  await go(k);
+  while(!run.dead){
+    await sleep(60); if(run.dead) break;
+    const t=P.time()-S.offset, L=Ls[k];
+    if(S.loop){
+      if(t>=L.e-0.05||t<L.s-1.5){ await go(k); continue; }
+    } else if(S.shadow){
+      if(t<L.s-1.5||t>L.e+2){ const j=lineAt(t); if(j>=0&&j!==k){ k=j; setActive(k); } }
+      else if(t>=L.e-0.05){ P.pause(); await gapWait(k,run); if(run.dead||k+1>=Ls.length) break; await go(k+1); continue; }
+    } else {
+      const j=lineAt(t); if(j>=0&&j!==k){ k=j; setActive(k); }
+      if(k===Ls.length-1&&t>=Ls[k].e+0.3) break;
+    }
+    // paused with the player's own buttons, or the video ended
+    if(P.paused&&P.paused()&&performance.now()-lastGo>1200){ if(++idle>=10) break; } else idle=0;
+  }
 }
 async function gapWait(k,run){
   const g=Math.max(2,segDur(k)*1.25+0.8); const el=$(`[data-gap="${k}"]`);
@@ -2193,8 +2245,7 @@ $('#panel').addEventListener('change',e=>{if(e.target.id==='rate'){S.rate=+e.tar
 setInterval(()=>{ // follow the video when it is played with its own controls
   if(MODE!=='shadow'||!LES||!P||!P.media||(PLAYING&&!PLAYING.dead)||$('#vLesson').hidden) return;
   if(!P.playing()) return;
-  const t=P.time()-S.offset; let i=-1;
-  for(let k=0;k<LES.lines.length;k++){const l=LES.lines[k];if(l.s!=null&&t>=l.s-0.05&&t<l.e)i=k;}
+  const i=lineAt(P.time()-S.offset);
   if(i>=0&&i!==CUR) setActive(i);
 },250);
 
@@ -2664,6 +2715,8 @@ window.addEventListener('hashchange',()=>importGrab());
 
 /* ======================= start ======================= */
 renderLib(); renderStats(); show('Home');
+// lessons saved on another device arrive quietly: refresh the list without touching what is playing
+addEventListener('bm-sync',()=>{ try{ if(VIEW==='Home'){ renderLib(); renderStats(); } }catch(e){} });
 const hr=new Date().getHours(); $('#helloHi').textContent=hr<11?'Chào buổi sáng!':hr<14?'Chào buổi trưa!':hr<18?'Chào buổi chiều!':'Chào buổi tối!';
 setTimeout(()=>loadDict(),1500);
 importGrab();
