@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script src="../shared/nav-head.js?v=16"></script>
+<title>Soi chữ Hán · Bánh Mì</title>
+<meta name="description" content="Gõ một chữ Hán để xem chữ ghép từ những bộ nào, mỗi bộ nghĩa là gì, âm Hán Việt, pinyin, nghĩa tiếng Việt và câu chuyện nguồn gốc của chữ.">
+<meta name="theme-color" content="#FFF4E8">
+<link rel="icon" href="../shared/banhmi.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../shared/banhmi-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Noto+Sans+SC:wght@500;700&family=Nunito:wght@700;800;900&display=swap">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<script src="../shared/nav.js?v=15"></script>
+
+<div class="wrap">
+  <header class="hero in">
+    <div class="buddy" id="buddy"></div>
+    <div class="htx">
+      <h1>Soi chữ Hán <span>拆字</span></h1>
+      <p>Gõ một chữ, Bánh Mì tách chữ ra từng bộ và kể vì sao chữ có nghĩa như vậy.</p>
+    </div>
+  </header>
+
+  <form class="search in" id="f" autocomplete="off">
+    <input id="q" class="q" type="search" inputmode="text" enterkeyhint="search" placeholder="Gõ chữ Hán, vd: 好" aria-label="Chữ cần soi" maxlength="40">
+    <button class="go" type="submit" aria-label="Soi chữ">🔍<span> Soi</span></button>
+  </form>
+  <p class="tip">Gõ được cả âm Hán Việt hoặc pinyin, ví dụ <b>hảo</b> hay <b>hao</b>, rồi chọn chữ.</p>
+
+  <div class="chips" id="ex"></div>
+  <div id="pick" class="pick" hidden></div>
+  <div id="out" class="out"></div>
+
+  <section class="types card" id="types">
+    <h2>📚 Chữ Hán được tạo ra theo 4 cách chính</h2>
+    <div class="tgrid">
+      <div class="ty t-t"><b>🖼️ Tượng hình</b><p>Vẽ lại hình sự vật: 日 mặt trời, 山 núi, 木 cây.</p></div>
+      <div class="ty t-c"><b>👆 Chỉ sự</b><p>Thêm ký hiệu để chỉ ý: 上 trên, 下 dưới, 本 gốc cây.</p></div>
+      <div class="ty t-y"><b>🧩 Hội ý</b><p>Ghép nghĩa các phần: 木 + 木 = 林 rừng, 人 + 木 = 休 nghỉ.</p></div>
+      <div class="ty t-h"><b>🔤 Hình thanh</b><p>Một phần chỉ nghĩa, một phần chỉ âm: 女 + 马 = 妈 (mā). Khoảng 80% chữ Hán thuộc loại này.</p></div>
+    </div>
+  </section>
+
+  <p class="src">Nguồn dữ liệu: cấu tạo chữ và gợi ý nguồn gốc từ từ điển mở <a href="https://github.com/skishore/makemeahanzi" target="_blank" rel="noopener">Make Me a Hanzi</a>; âm Hán Việt và nghĩa từ <a href="https://github.com/ph0ngp/CVDICT" target="_blank" rel="noopener">CVDICT</a>; thứ tự nét từ <a href="https://hanziwriter.org" target="_blank" rel="noopener">Hanzi Writer</a>. Lời kể nguồn gốc là cách giải thích truyền thống để dễ nhớ, các nhà nghiên cứu chữ cổ đôi khi có cách giải thích khác.</p>
+</div>
+
+<script src="../shared/voice.js?v=1"></script>
+<script src="../vo/lib/hanzi-writer.min.js"></script>
+<script src="data/core.js?v=1"></script>
+<script src="app.js?v=1"></script>
+</body>
+</html>
