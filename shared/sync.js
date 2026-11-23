@@ -435,10 +435,11 @@
   // lần mở trang sau sẽ thấy đủ. Không hiện nút bấm, không bao giờ làm gián đoạn bài đang học.
   function refreshPage(force) {
     try { window.dispatchEvent(new CustomEvent('bm-sync', { detail: { changed: true } })); } catch (e) {}
-    if (mediaBusy()) return;
-    if (force || (!touched && now() - bootAt < 20000)) location.reload();
+    // chỉ tải lại khi trang vừa mở, chưa chạm/cuộn gì và không đang phát: người dùng không thấy gì bị đổi chỗ
+    if (!mediaBusy() && !touched && now() - bootAt < 20000 && (window.scrollY || 0) < 5) { location.reload(); return; }
+    if (force) toast('Đã lấy bài từ máy khác về máy này');
   }
-  ['pointerdown', 'keydown'].forEach(function (ev) { addEventListener(ev, function () { touched = true; }, { capture: true, passive: true }); });
+  ['pointerdown', 'keydown', 'wheel', 'touchstart', 'scroll'].forEach(function (ev) { addEventListener(ev, function () { touched = true; }, { capture: true, passive: true }); });
 
   if (ON && auth) {
     setTimeout(run, 300);
