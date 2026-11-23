@@ -11,9 +11,9 @@ const fs=require('fs');
   await pg.goto('http://localhost:8765/Pinyin/video/_t.html'); await pg.waitForTimeout(1500);
   const r=await pg.evaluate(()=>__E(`(async()=>{
     const blob=await (await fetch('/Pinyin/t40.wav')).blob();
-    const les={id:'tst',title:'Test',src:{type:'file',name:'t.wav',audio:true},lines:[
+    const les={id:'tst',title:'Test',src:{type:'file',name:'t.wav',audio:true,url:URL.createObjectURL(blob),file:new File([blob],'t.wav',{type:'audio/wav'})},lines:[
       {s:12,e:20,zh:'第三句话我们去学校'},{s:2,e:9,zh:'第一句话你好'},{s:7,e:14,zh:'第二句话谢谢你'},{s:20,e:26,zh:'第四句话再见'},{s:20.2,e:26,zh:'第四句话再见'},{s:26,e:38,zh:'最后一句话我很高兴'}]};
-    MDB.put('tst',{blob,name:'t.wav',audio:true}); await new Promise(r=>setTimeout(r,300));
+    
     await openLesson(les);
     const order=LES.lines.map(l=>l.zh[0]+l.zh[1]+l.zh[2]+'@'+l.s+'-'+l.e).join(' | ');
     S.rate=2; S.shadow=false; S.loop=false;
@@ -56,8 +56,8 @@ const fs=require('fs');
   pg.on('load',()=>loads++);
   await pg.goto('http://localhost:8765/Pinyin/video/_t.html'); await pg.waitForTimeout(1500);
   // 1) listening to audio in a lesson when an update arrives, inside the 20s boot window
-  await pg.evaluate(()=>__E(`(async()=>{const blob=await (await fetch('/Pinyin/t40.wav')).blob(); await MDB.put('tst',{blob,name:'t.wav',audio:true});
-    await openLesson({id:'tst',title:'Test',src:{type:'file',name:'t.wav',audio:true},lines:[{s:1,e:5,zh:'第一句话'},{s:5,e:30,zh:'第二句话'}]}); S.rate=1; runFrom(0);})()`));
+  await pg.evaluate(()=>__E(`(async()=>{const blob=await (await fetch('/Pinyin/t40.wav')).blob(); 
+    await openLesson({id:'tst',title:'Test',src:{type:'file',name:'t.wav',audio:true,url:URL.createObjectURL(blob),file:new File([blob],'t.wav',{type:'audio/wav'})},lines:[{s:1,e:5,zh:'第一句话'},{s:5,e:30,zh:'第二句话'}]}); S.rate=1; runFrom(0);})()`));
   await pg.waitForTimeout(1200); serve=true;
   await pg.evaluate(()=>BM_SYNC.run()); await pg.waitForTimeout(2500);
   const r1=await pg.evaluate(()=>({still:!document.getElementById('vLesson').hidden,playing:!document.getElementById('vid').paused,
