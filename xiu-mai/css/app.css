@@ -725,3 +725,9 @@ button.tile{font-family:inherit;cursor:pointer;width:100%}
 /* real photos: always show the whole subject (a square crop cut the dog's head off); small list thumbnails keep filling their box */
 img[src*="img/p/"],img[src^="blob:"],img[src^="data:image"]{object-fit:contain!important;background:#fff}
 .mylist .it img,.lopit img,.wotd img,.vc .th img,.dvc img,.dvt .th img,.avatar img,.tb-av img,.panelc.art .cart,.photo .pv img{object-fit:cover!important}
+
+/* listen & pick: bigger pictures inside the cards */
+.gimgs .gimg img{width:82%;height:82%}
+.gimgs .gimg img[src*="img/p/"],.gimgs .gimg img[src^="blob:"],.gimgs .gimg img[src^="data:image"]{width:94%;height:94%;max-height:94%;aspect-ratio:auto;border-width:0;border-radius:18px}
+.gimgs .gimg{padding:0;overflow:hidden}
+.hearts .glv2{font-size:14px;font-weight:800;color:var(--ink2);background:rgba(255,255,255,.7);border-radius:999px;padding:1px 10px;margin-left:8px;vertical-align:middle}

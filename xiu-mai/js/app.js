@@ -390,16 +390,34 @@ R.g_an = (k) => {
   };
   play();
 };
+// size the picture cards so they fill the free space between the question and the bottom bar
+function fitPics(g) {
+  if (!g) return;
+  const lay = () => {
+    if (!document.body.contains(g)) { removeEventListener('resize', lay); return; }
+    const n = g.children.length, gap = n > 6 ? 10 : 12;
+    const W = Math.min(g.parentElement.clientWidth, 980);
+    const nav = document.getElementById('tabs'); const navTop = nav && nav.offsetHeight ? nav.getBoundingClientRect().top : innerHeight;
+    const H = Math.max(150, navTop - g.getBoundingClientRect().top - 12);
+    let best = 0, bc = 2;
+    for (let c = 1; c <= 4; c++) { const r = Math.ceil(n / c); const sz = Math.min((W - gap * (c - 1)) / c, (H - gap * (r - 1)) / r); if (sz > best + 1) { best = sz; bc = c; } }
+    best = Math.floor(Math.max(84, Math.min(best, 300)));
+    Object.assign(g.style, { display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: gap + 'px', maxWidth: (best * bc + gap * (bc - 1) + 2) + 'px', margin: '0 auto' });
+    [...g.children].forEach(c => { c.style.width = c.style.height = best + 'px'; c.style.flex = 'none'; });
+  };
+  lay(); addEventListener('resize', lay);
+}
 R.g_nghe = (k) => {
   setTabs(null);
   let n = 0;
   const play = () => {
     const t = gameTopic(k); const lv = Math.min(LS.get('ngheN', 4), 8, t.w.length); const w = pick(t.w), opts = shuffle([w, ...shuffle(t.w.filter(x => x[0] !== w[0])).slice(0, lv - 1)]);
     const q = `Where is the ${w[0]}?`;
-    view(bar('Nghe và chọn hình', '#/game', starPill()) + topicSel('nghe', k) + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}</div>
+    view(bar('Nghe và chọn hình', '#/game', starPill()) + topicSel('nghe', k) + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}<small class="glv2">Cấp ${lv - 3}</small></div>
      <div class="gq"><button id="rep">🔊</button><span>Where is the <b>${esc(w[0])}</b>?</span></div>
-     <div class="glv">Cấp ${lv - 3} · ${lv} hình</div><div class="gimgs n${lv}">${opts.map(o => `<button class="gimg" data-w="${esc(o[0])}"><img src="${wsrc(o)}" alt=""></button>`).join('')}</div>`);
+     <div class="gimgs n${lv}">${opts.map(o => `<button class="gimg" data-w="${esc(o[0])}"><img src="${wsrc(o)}" alt=""></button>`).join('')}</div>`);
     bindSel('nghe');
+    fitPics($('.gimgs'));
     say(q); $('#rep').onclick = () => say(q);
     app.querySelectorAll('.gimg').forEach(b => b.onclick = async () => {
       if (b.dataset.w === w[0]) { b.classList.add('ok'); n++; await say('Yes! ' + w[0] + '!'); if (n >= 5) { LS.set('ngheN', Math.min(8, LS.get('ngheN', 4) + 1)); await roundDone(); n = 0; } if (location.hash.startsWith('#/game/nghe')) play(); }
