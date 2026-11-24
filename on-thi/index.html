@@ -361,7 +361,37 @@ function startExam(st){
     });
     exam.secs.push({s:s,items:items});
   });
+  renderExam(); saveCur(true);
+}
+/* ---------- BÀI ĐANG LÀM: tự lưu từng câu, tải lại trang / web cập nhật vẫn làm tiếp được ---------- */
+var curT=0;
+function saveCur(now){
+  if(!exam||exam.done||exam.review) return;
+  clearTimeout(curT);
+  var go=function(){ try{
+    var snap={st:exam.st,start:exam.start,set:curSet.id,at:Date.now(),secs:exam.secs.map(function(sec){ return {s:sec.s,items:sec.items.map(function(q){ return {type:q.type,it:q.it,pts:q.pts,user:q.user,order:q.order}; })}; })};
+    localStorage.setItem("ot.cur",JSON.stringify(snap));
+  }catch(e){} };
+  if(now) go(); else curT=setTimeout(go,250);
+}
+function dropCur(){ clearTimeout(curT); try{ localStorage.removeItem("ot.cur"); }catch(e){} }
+function resumeCur(){
+  var snap=null; try{ snap=JSON.parse(localStorage.getItem("ot.cur")); }catch(e){}
+  if(!snap||!snap.secs||!snap.st) return false;
+  var set=SETS.filter(function(x){return x.id===snap.set})[0]; if(!set) return false;
+  curSet=set;
+  exam={st:snap.st,start:snap.start,done:false,secs:snap.secs};
   renderExam();
+  exam.secs.forEach(function(sec,si){ sec.items.forEach(function(q,qi){
+    var qe=$("#q"+si+"_"+qi); if(!qe) return;
+    if(q.type==="mcq"&&q.user!=null){ var o=qe.querySelector('.opt[data-opt="'+q.user+'"]'); if(o) o.classList.add("sel"); }
+    else if(q.type==="sx"){ q.user=q.user||[]; drawSx(qe,q); }
+    else if(q.type==="dt"){ var b=qe.querySelector(".blank"); if(b) b.value=q.user||""; }
+    else { var ta=qe.querySelector("textarea"); if(ta) ta.value=q.user||""; }
+  }); });
+  progress();
+  setTimeout(function(){ toast("Đã mở lại bài đang làm dở, làm tiếp nha ✍️"); },300);
+  return true;
 }
 function sectionTitle(s,i){return ROMAN[i]+". "+(s.title||TYPES[s.type].long)}
 function renderExam(){
@@ -424,14 +454,14 @@ function bindExam(){
   var v=$("#examView");
   v.onclick=function(e){
     var t=e.target.closest("button"); if(!t) return;
-    if(t.id==="xBack"){ if(exam.done||confirmLeave()) renderHome(); return; }
+    if(t.id==="xBack"){ if(exam.done||exam.review||confirmLeave()){ if(!exam.done&&!exam.review) dropCur(); renderHome(); } return; }
     var qe=t.closest("[data-q]"); var q=qe?getQ(qe.dataset.q):null;
-    if(t.dataset.opt!=null&&!exam.done){ q.user=+t.dataset.opt; qe.querySelectorAll(".opt").forEach(function(o){o.classList.toggle("sel",o===t)}); progress(); }
+    if(t.dataset.opt!=null&&!exam.done){ q.user=+t.dataset.opt; qe.querySelectorAll(".opt").forEach(function(o){o.classList.toggle("sel",o===t)}); progress(); saveCur(); }
     else if(t.dataset.tile!=null&&!exam.done){
       var pi=+t.dataset.tile, line=qe.querySelector("[data-line]");
       if(t.parentNode===line){ q.user.splice(q.user.indexOf(pi),1); }
       else { q.user.push(pi); }
-      drawSx(qe,q); progress();
+      drawSx(qe,q); progress(); saveCur();
     }
     else if(t.dataset.card){ openCard(t.dataset.card); }
     else if(t.dataset.copy!=null){ copyText(askText(q)); }
@@ -444,10 +474,10 @@ function bindExam(){
   };
   v.oninput=function(e){
     var qe=e.target.closest("[data-q]"); if(!qe||exam.done) return;
-    getQ(qe.dataset.q).user=e.target.value; progress();
+    getQ(qe.dataset.q).user=e.target.value; progress(); saveCur();
   };
 }
-function confirmLeave(){ return window.confirm("Thoát đề này? Bài đang làm sẽ không được lưu."); }
+function confirmLeave(){ return window.confirm("Thoát đề này? Bài đang làm dở sẽ bị xoá."); }
 function drawSx(qe,q){
   var line=qe.querySelector("[data-line]"), it=q.it;
   line.innerHTML=q.user.map(function(pi){return '<button class="tile" data-tile="'+pi+'">'+esc(it.p[pi])+'</button>'}).join("");
@@ -505,7 +535,7 @@ function submit(){
   var all=[]; exam.secs.forEach(function(s){all=all.concat(s.items)});
   var left=all.filter(function(q){return !answered(q)}).length;
   if(left && !window.confirm("Còn "+left+" câu chưa làm. Nộp luôn?")) return;
-  exam.done=true; exam.took=Math.round((Date.now()-exam.start)/1000); clearInterval(timerH);
+  exam.done=true; exam.took=Math.round((Date.now()-exam.start)/1000); clearInterval(timerH); dropCur();
   exam.secs.forEach(function(sec){ sec.items.forEach(function(q){ q.grade=autoGrade(q); }); });
   decorateAll();
   renderFoot(); renderScore(true);
@@ -760,7 +790,10 @@ function parseStructure(text){
 
 /* ---------- START ---------- */
 window.__ot={exam:function(){return exam}};
-function boot(){ pickSet(); renderHome();
+window.addEventListener("pagehide",function(){ saveCur(true); });
+document.addEventListener("visibilitychange",function(){ if(document.visibilityState==="hidden") saveCur(true); });
+window.BM_BUSY=function(){ return !!(exam&&!exam.done&&!exam.review); };
+function boot(){ pickSet(); renderHome(); try{ resumeCur(); }catch(e){}
   $("#sheet").addEventListener("click",function(e){ if(e.target.closest("[data-close]")) closeSheet(); var c=e.target.closest("[data-card]"); if(c) openCard(c.dataset.card); });
   document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeSheet(); });
 }

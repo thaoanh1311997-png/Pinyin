@@ -281,13 +281,31 @@
 /* ---------- tự cập nhật bản mới (nhất là khi mở từ biểu tượng ngoài màn hình chính) ---------- */
 (function () {
   if (!window.fetch || location.protocol.indexOf('http') !== 0) return;
-  var key = 'bm.ver:' + location.pathname, last = 0;
+  var key = 'bm.ver:' + location.pathname, last = 0, touched = false, shown = false;
+  ['pointerdown', 'keydown', 'input'].forEach(function (t) { document.addEventListener(t, function () { touched = true; }, { capture: true, passive: true }); });
+  function offer() {
+    if (shown || !document.body) return; shown = true;
+    var b = document.createElement('button'); b.type = 'button';
+    b.textContent = '✨ Web có bản mới · bấm để cập nhật';
+    b.style.cssText = 'position:fixed;left:50%;top:calc(64px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:2147482100;border:0;border-radius:999px;padding:9px 16px;font:800 14px Nunito,system-ui,sans-serif;background:#3B2414;color:#fff;box-shadow:0 8px 22px -8px rgba(0,0,0,.45);cursor:pointer;max-width:92vw';
+    b.onclick = function () {
+      var busy = false; try { busy = !!(window.BM_BUSY && window.BM_BUSY()); } catch (e) {}
+      if (busy && !confirm('Bài đang làm đã được lưu, cập nhật xong sẽ mở lại đúng chỗ. Cập nhật nhé?')) return;
+      location.reload();
+    };
+    document.body.appendChild(b);
+    setTimeout(function () { if (b.parentNode) b.remove(); shown = false; }, 12000);
+  }
   function check() {
     var now = Date.now(); if (now - last < 60000) return; last = now;
     fetch(location.pathname, { cache: 'reload' }).then(function (r) {
       var v = r.headers.get('etag') || r.headers.get('last-modified'); if (!r.ok || !v) return;
       var old = null; try { old = localStorage.getItem(key); localStorage.setItem(key, v); } catch (e) { return; }
-      if (old && old !== v) location.reload();
+      if (old && old !== v) {
+        // chỉ tự tải lại khi chưa đụng vào trang; đang làm bài / đang gõ thì hỏi trước, không bao giờ làm mất bài
+        var busy = false; try { busy = !!(window.BM_BUSY && window.BM_BUSY()); } catch (e) {}
+        if (!touched && !busy) location.reload(); else offer();
+      }
     }).catch(function () {});
   }
   check();
