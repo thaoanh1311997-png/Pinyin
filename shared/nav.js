@@ -271,6 +271,13 @@
   } catch (e) {}
 })();
 
+/* ---------- nút góc: tra từ nhanh + hỏi đáp (shared/hoi.js) ---------- */
+(function () {
+  var me = document.currentScript; if (!me || window.__BM_HOI) return;
+  function go() { var s = document.createElement('script'); s.src = new URL('hoi.js?v=1', me.src).href; s.async = true; document.head.appendChild(s); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
+})();
+
 /* ---------- tự cập nhật bản mới (nhất là khi mở từ biểu tượng ngoài màn hình chính) ---------- */
 (function () {
   if (!window.fetch || location.protocol.indexOf('http') !== 0) return;
