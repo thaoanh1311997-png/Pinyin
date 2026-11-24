@@ -131,7 +131,13 @@ allc = set(MM) | set(CV)
 CORE = {c: rec(c) for c in sorted(need) if c in MM or c in CV}
 REST = {c: rec(c) for c in sorted(allc - set(CORE)) if c in MM}
 # chữ có trong tập thường gặp (để gợi ý tìm theo Hán Việt / pinyin)
-common = ''.join(c for c in core if c in CORE)
+LV, CNT = {}, {}
+for r_ in voc:
+    for ch_ in set(H(r_[0])):
+        CNT[ch_] = CNT.get(ch_, 0) + 1
+        if r_[4] and r_[4] <= 6: LV[ch_] = min(LV.get(ch_, 9), r_[4])
+# thứ tự gợi ý: cấp HSK thấp trước, trong cùng cấp chữ có mặt trong nhiều từ trước
+common = ''.join(sorted((c for c in core if c in CORE), key=lambda c: (LV.get(c, 7), -CNT.get(c, 0))))
 
 os.makedirs(os.path.join(ROOT, 'chu-han/data'), exist_ok=True)
 with open(os.path.join(ROOT, 'chu-han/data/core.js'), 'w', encoding='utf-8') as f:
@@ -153,11 +159,14 @@ def tone3(p):
     o = o.replace('ü', 'v')
     return o + tone if re.match(r'^[a-z]*[aeiouv][a-z]*$', o) and o != 'xx' else None
 SYL = {}
+ORDER = {c: i for i, c in enumerate(common)}
 for src in (CORE, REST):
     for c, r_ in src.items():
         if c in '儿一不': continue
         for p_ in set((r_.get('p') or '').split(',')) | {m_[0] for m_ in r_.get('m', [])}:
             k = tone3(p_) if p_ else None
-            if k and k not in SYL: SYL[k] = c
+            if k and (k.endswith('5') or c not in '了么地的得着子们吗呢吧啊'): SYL.setdefault(k, []).append(c)
+for k in SYL:  # chữ thường gặp và chỉ có một cách đọc trước
+    SYL[k] = sorted(dict.fromkeys(SYL[k]), key=lambda c: (len(((CORE.get(c) or REST.get(c) or {}).get('p') or '').split(',')) > 1, ORDER.get(c, 99999)))[:12]
 json.dump(dict(sorted(SYL.items())), open(os.path.join(HERE, 'syllables.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
 print('syllables', len(SYL))

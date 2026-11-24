@@ -3,7 +3,7 @@ Trang Soi chữ Hán phát đúng âm của từng cách đọc (chữ đa âm n
 Dùng chung bộ chuyển âm của tools/voice/gen.py: ép pinyin cho chữ đại diện rồi để misaki đổi ra âm vị.
 Chạy (cần mô hình như tools/voice/README.md): python tools/chu-han/gen_py.py
 """
-import os, sys, json, numpy as np
+import os, re, sys, json, numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
 sys.path.insert(0, os.path.join(ROOT, 'tools', 'voice'))
@@ -15,12 +15,19 @@ os.makedirs(OUT, exist_ok=True)
 SYL = json.load(open(os.path.join(HERE, 'syllables.json'), encoding='utf-8'))
 SPEED = float(os.environ.get('SPEED', '0.85'))
 log, bad = {}, []
-for py, ch in SYL.items():
+def ok(py, ph):
+    if not ph.strip() or '❓' in ph: return False
+    m = re.search(r'(\d)\s*$', ph)
+    return bool(m) and m.group(1) == py[-1]
+for py, chs in SYL.items():
     fn = os.path.join(OUT, py + '.mp3')
-    ph = gen.phonemes(ch, [py])
+    ph, ch = '', None
+    for c in chs:
+        ph = gen.phonemes(c, [py])
+        if ok(py, ph): ch = c; break
     log[py] = [ch, ph]
+    if ch is None: bad.append(py); continue
     if os.path.exists(fn) and not os.environ.get('FORCE'): continue
-    if not ph.strip() or '❓' in ph: bad.append(py); continue
     a = gen.trim(gen.kok.synth(ph, gen.VOICE['n'], SPEED))
     rms = np.sqrt(np.mean(a ** 2)) + 1e-9
     a = a * min(0.1 / rms, 0.95 / (np.max(np.abs(a)) + 1e-9))
