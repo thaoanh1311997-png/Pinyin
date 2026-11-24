@@ -39,12 +39,25 @@ html[data-theme="dark"] .hero .hi{background:#2A201A}
 textarea{width:100%;min-height:190px;resize:vertical;border:2px solid var(--line);border-radius:18px;padding:12px 14px;background:var(--bg);font:500 17px/1.7 var(--zh);outline:none;transition:border-color .2s}
 textarea:focus{border-color:var(--ac)}
 textarea::placeholder{font-family:var(--f);font-weight:700;color:#B9A08C}
+.picks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.pk{display:flex;align-items:center;justify-content:center;gap:7px;border:2px dashed var(--ac2);background:var(--soft);color:var(--acd);border-radius:16px;padding:11px 8px;font-weight:900;font-size:15.5px;cursor:pointer;text-align:center;line-height:1.25;transition:transform .12s}
+.pk:active{transform:scale(.96)}
+.pk small{display:block;font-weight:700;font-size:12px;opacity:.8}
+.pk input{display:none}
+.fst{margin:-2px 0 10px;padding:10px 12px;border-radius:14px;background:var(--bg);border:2px solid var(--line);font-size:14.5px}
+.fst .bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:7px}
+.fst .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .3s}
+.fst .rg{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px}
+.fst .rg input{width:64px;border:2px solid var(--line);border-radius:10px;padding:6px 8px;background:var(--card);font-weight:800;text-align:center}
+.fst.bad{background:#FFE8E8;color:#9B1C1C;border-color:#F5C2C2}
+html[data-theme="dark"] .fst.bad{background:#3E1F22;color:#FFB3B3;border-color:#6B3438}
+textarea.drag{border-color:var(--ac);background:var(--soft)}
 .meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;color:var(--ink2);font-size:14px}
 .meta .sp{flex:1}
 .lnk{background:none;border:0;padding:4px 2px;color:var(--ac);font-weight:800;font-size:14px;text-decoration:underline;text-underline-offset:3px}
 .row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:14px}
 .lbl{font-size:15px;font-weight:800;color:var(--ink2);margin-right:2px}
-.chip{border:2px solid var(--line);background:var(--card);border-radius:99px;padding:6px 11px;font-weight:800;font-size:14.5px;transition:all .15s;white-space:nowrap}
+.chip{border:2px solid var(--line);background:var(--card);border-radius:99px;padding:6px 10px;font-weight:800;font-size:14px;transition:all .15s;white-space:nowrap}
 .chip.on{background:var(--ac);border-color:var(--ac);color:#fff}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:18px;padding:12px 18px;font-weight:900;font-size:16px;background:var(--soft);color:var(--acd);transition:transform .12s}
 .btn:active{transform:scale(.96)}
@@ -125,9 +138,14 @@ details.card[open] summary{margin-bottom:8px}
 
   <section class="card" id="inCard">
     <h2>📋 Đoạn văn của bạn</h2>
-    <textarea id="src" lang="zh-CN" placeholder="Dán đoạn hội thoại hoặc bài khóa tiếng Trung vào đây…"></textarea>
+    <div class="picks">
+      <label class="pk">📷 <span>Ảnh chụp sách<small>được nhiều ảnh</small></span><input type="file" id="imgIn" accept="image/*" multiple></label>
+      <label class="pk">📎 <span>Chọn tệp<small>PDF · Word · .txt</small></span><input type="file" id="fileIn" accept=".pdf,.docx,.txt,.doc,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,image/*" multiple></label>
+    </div>
+    <div class="fst hidden" id="fst"></div>
+    <textarea id="src" lang="zh-CN" placeholder="…hoặc dán đoạn hội thoại, bài khóa tiếng Trung vào đây"></textarea>
     <div class="meta"><span id="cnt">0 chữ</span><span class="sp"></span><button class="lnk" id="pasteBtn" type="button">📥 Dán</button><button class="lnk" id="sampleBtn" type="button">Thử đoạn mẫu</button><button class="lnk" id="clearBtn" type="button">Xoá</button></div>
-    <div class="row"><span class="lbl">Dài khoảng:</span>
+    <div class="row"><span class="lbl">Độ dài:</span>
       <button class="chip" type="button" data-n="150">150 chữ</button>
       <button class="chip on" type="button" data-n="200">200 chữ</button>
       <button class="chip" type="button" data-n="300">300 chữ</button>
@@ -256,6 +274,8 @@ var SYS_SUM=[
 "1. 必须包含原文所有重要信息：谁、什么时候、在哪儿、发生了什么、为什么、结果怎么样、人物的想法和感受、文章的中心意思。次要细节可以省略。",
 "2. 绝对不能添加原文没有的信息，不能改变事实、数字、人名、地名；不要写评价或道理，除非原文有。",
 "3. 对话要改成叙述：不用“A：”“B：”，不用引号直接引语，改用间接引语（如：玛丽告诉大卫，她明天要去银行换钱）。用原文里的人名；没有名字就用“两个朋友”“一位顾客和售货员”等原文身份。原文用第一人称“我”叙述的，可以继续用“我”。",
+"原文里如果有页眉、页码、生词表、练习题（如“回答课文问题”），那不是课文内容，不要写进短文。",
+"原文可能来自拍照识别，个别字可能识别错了，请根据上下文理解正确的意思，不要照抄错字。",
 "4. 语言：尽量使用原文里的词语和语法，句子通顺、自然、准确，符合汉语习惯，适合中级水平学生学习；不用生僻词和原文没有的成语；不要有语病和错别字。",
 "5. 只写一段，不分段，不加标题。只用简体字和中文标点（，。！？、；：“”）。",
 "6. 长度：{lo}–{hi}个汉字（目标{n}字）。写完自己数一数，长了就删次要细节，短了就补原文里的细节。",
@@ -342,9 +362,128 @@ var src=$("#src");
 src.value=ls("tt.draft")||"";
 function upCnt(){ var h=hanCount(src.value); $("#cnt").textContent=h?h+" chữ Hán":(src.value.trim()?src.value.trim().split(/\s+/).length+" từ":"0 chữ"); }
 src.addEventListener("input",function(){ upCnt(); ls("tt.draft",src.value); }); upCnt();
-$("#clearBtn").onclick=function(){ src.value=""; ls("tt.draft",null); upCnt(); src.focus(); };
+$("#clearBtn").onclick=function(){ JOB++; fstHide(); src.value=""; ls("tt.draft",null); upCnt(); src.focus(); };
 $("#pasteBtn").onclick=function(){ if(!navigator.clipboard||!navigator.clipboard.readText){ src.focus(); toast("Nhấn giữ vào ô rồi chọn Dán nha"); return; }
   navigator.clipboard.readText().then(function(t){ if(!t){ toast("Chưa có gì để dán"); return; } src.value=t; ls("tt.draft",t); upCnt(); },function(){ src.focus(); toast("Nhấn giữ vào ô rồi chọn Dán nha"); }); };
+
+/* ---------------- lấy chữ từ ảnh / tệp ---------------- */
+function loadScript(u){ return new Promise(function(res,rej){ var x=document.createElement("script"); x.src=u; x.onload=res; x.onerror=function(){ x.remove(); rej(new Error("Không tải được công cụ đọc chữ, kiểm tra mạng rồi thử lại nha")); }; document.head.appendChild(x); }); }
+var LIB={
+  pdf:"https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js",
+  pdfw:"https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js",
+  mammoth:"https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js",
+  tess:"https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js",
+  tessw:"https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/worker.min.js",
+  tessc:"https://cdn.jsdelivr.net/npm/tesseract.js-core@5.1.1",
+  lang:"https://cdn.jsdelivr.net/npm/@tesseract.js-data/chi_sim@1.0.0/4.0.0_best_int"
+};
+var MOBILE=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.platform));
+var OCRW=null;
+function ocrWorker(){ if(OCRW) return OCRW;
+  OCRW=(window.Tesseract?Promise.resolve():loadScript(LIB.tess)).then(function(){ return Tesseract.createWorker("chi_sim",1,{workerPath:LIB.tessw,corePath:LIB.tessc,langPath:LIB.lang}); })
+    .then(function(w){ return w.setParameters({preserve_interword_spaces:"1"}).then(function(){ return w; },function(){ return w; }); });
+  OCRW.catch(function(){ OCRW=null; }); return OCRW; }
+/* sách in xuống dòng giữa câu: nối lại cho liền (giữ dòng hội thoại "Tên：" và đoạn trống) */
+function joinLines(t){ var L=String(t).split("\n"), out=[];
+  L.forEach(function(l){ var prev=out.length?out[out.length-1]:"";
+    if(prev.trim()&&l.trim()&&hanCount(prev)>=4&&!/[。！？!?…”」：:）)]\s*$/.test(prev)&&!/^\s*(?![说问答道讲喊])[^\s：:]{1,6}[：:]/.test(l)&&!/[A-Za-z]{3,}/.test(l)&&!/^\s*[（(]?\s*\d+\s*[)）.、]/.test(l)) out[out.length-1]=prev.replace(/\s+$/,"")+l.replace(/^\s+/,"");
+    else out.push(l); });
+  return out.join("\n"); }
+function cleanOcr(t){ var out="",x=String(t||""); for(var i=0;i<x.length;i++){ var c=x[i]; if(/[ \t]/.test(c)&&/[㐀-鿿，。！？：；“”、（）]/.test(out.slice(-1))&&/^[ \t]*[㐀-鿿，。！？：；“”、（）]/.test(x.slice(i))) continue; out+=c; }
+  out=out.replace(/([\u3400-\u9fff])\s*:\s*(?=[“\u3400-\u9fff])/g,"$1：").replace(/([\u3400-\u9fff”])\s*,\s*(?=[\u3400-\u9fff“])/g,"$1，").replace(/([\u3400-\u9fff])\s*\?/g,"$1？").replace(/([。！？])\1+/g,"$1").replace(/。(?=[。，])/g,"");
+  /* bỏ dòng rác: không có chữ Hán (số trang, chữ Latin nhận nhầm) */
+  out=out.split("\n").filter(function(l){ return !l.trim()||hanCount(l)>=2||(hanCount(l)===1&&/[：:]/.test(l)); }).join("\n");
+  return joinLines(out.replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n").trim()); }
+/* AI sửa chữ nhận sai (chỉ sửa chữ sai, không viết lại). Kiểm tra kỹ: kết quả phải gần y hệt bản gốc, nếu khác nhiều thì giữ bản gốc */
+var SYS_OCR=["下面是用OCR从中文课本照片识别出来的文字，里面有少量识别错误。请你：",
+"1. 根据上下文，只改正明显识别错的字和标点（例如“答从说”应为“爸爸说”，“嘱只”应为“嘱咐”，“一一”在句中表示破折号时改为“——”）。",
+"2. 删除页眉、页码、英文乱码这类不是课文内容的行。",
+"3. 其他内容一个字也不要改：不要改写，不要补充，不要删减正文，不要改变说法，保留原来的分行和对话格式（如“玛丽：”）。",
+"只输出JSON：{\"text\":\"改好的全文\"}"].join("\n");
+function lcs(a,b){ var n=b.length, prev=new Uint16Array(n+1), cur=new Uint16Array(n+1); for(var i=1;i<=a.length;i++){ for(var j=1;j<=n;j++) cur[j]=a.charCodeAt(i-1)===b.charCodeAt(j-1)?prev[j-1]+1:Math.max(prev[j],cur[j-1]); var t=prev; prev=cur; cur=t; } return prev[n]; }
+function hanOnly(t){ return (String(t).match(HAN)||[]).join(""); }
+function fixChunk(t){ return groq([{role:"system",content:SYS_OCR},{role:"user",content:t}],Math.min(4000,Math.ceil(hanCount(t)*1.6)+300),function(sec){ prog("⏳ AI đang sửa chữ nhận sai (đợi "+sec+" giây)…",1,2); })
+  .then(function(j){ var o=String(j.text||"").replace(/\r/g,"").trim(), a=hanOnly(t), b=hanOnly(o);
+    if(!b||b.length<a.length*0.75||b.length>a.length*1.05) return {t:t,n:0};
+    var l=lcs(a,b); if(l/b.length<0.93) return {t:t,n:0};
+    return {t:o,n:Math.max(0,b.length-l)}; },function(e){ if(/KEY/.test(e.message)) throw e; return {t:t,n:0}; }); }
+function aiFixOcr(t){
+  if(!groqKey()||hanCount(t)<20) return Promise.resolve({t:t,n:0});
+  var paras=t.split(/\n(?=\s*\n)|\n/), chunks=[], cur="";
+  paras.forEach(function(p){ if(cur&&hanCount(cur+p)>900){ chunks.push(cur); cur=""; } cur+=(cur?"\n":"")+p; }); if(cur) chunks.push(cur);
+  var out=[], fixed=0, i=0;
+  return (function next(){ if(i>=chunks.length) return Promise.resolve({t:out.join("\n"),n:fixed});
+    prog("⏳ AI đang soát lại chữ nhận được"+(chunks.length>1?" ("+(i+1)+"/"+chunks.length+")":"")+"…",i+0.5,chunks.length);
+    return fixChunk(chunks[i]).then(function(r){ out.push(r.t); fixed+=r.n; i++; return next(); }); })()
+  .catch(function(){ return {t:t,n:0}; }); }
+function ocr(c){ return ocrWorker().then(function(w){ return w.recognize(c); }).then(function(r){ c.width=c.height=0; return cleanOcr(r.data.text); },function(e){ c.width=c.height=0; throw e; }); }
+function isImg(f){ return /^image\//.test(f.type)||/\.(jpe?g|png|heic|heif|webp|bmp|gif)$/i.test(f.name); }
+/* ảnh to thì thu nhỏ (tối đa 2400px) cho nhẹ máy; ảnh nhỏ (chụp màn hình) phóng lên để chữ rõ hơn */
+function imgCanvas(f){ return new Promise(function(res,rej){ var u=URL.createObjectURL(f), im=new Image();
+  im.onload=function(){ var m=Math.max(im.naturalWidth,im.naturalHeight), k=m>2400?2400/m:(m<1200?Math.min(2,1500/m):1), c=document.createElement("canvas");
+    c.width=Math.round(im.naturalWidth*k); c.height=Math.round(im.naturalHeight*k); var x=c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,c.width,c.height); x.imageSmoothingQuality="high"; x.drawImage(im,0,0,c.width,c.height); URL.revokeObjectURL(u); res(c); };
+  im.onerror=function(){ URL.revokeObjectURL(u); rej(new Error("Máy không mở được ảnh "+f.name+" (thử chụp lại dạng JPG nha)")); }; im.src=u; }); }
+var WL=null; function wake(on){ try{ if(on&&navigator.wakeLock&&!WL) navigator.wakeLock.request("screen").then(function(w){ WL=w; }).catch(function(){}); if(!on&&WL){ WL.release(); WL=null; } }catch(e){} }
+var JOB=0;
+function fst(html,cls){ var f=$("#fst"); f.className="fst"+(cls?" "+cls:""); f.innerHTML=html; }
+function fstHide(){ $("#fst").className="fst hidden"; }
+function prog(msg,d,t){ fst(esc(msg)+'<div class="bar"><i style="width:'+(t?Math.round(d/t*100):8)+'%"></i></div>'); }
+function useText(t,label,nfix){
+  t=String(t||"").replace(/\r/g,"").replace(/ /g," ").replace(/\n{3,}/g,"\n\n").trim();
+  if(!t||(hanCount(t)<8&&t.length<40)){ fst("😥 "+esc(label)+": không thấy chữ nào. Ảnh cần rõ, đủ sáng, chụp thẳng trang sách nha.","bad"); return; }
+  src.value=t; ls("tt.draft",t); upCnt(); src.scrollTop=0;
+  var h=hanCount(t);
+  fst("✅ "+esc(label)+": lấy được "+(h?h+" chữ Hán":t.length+" ký tự")+". "+(nfix?" AI đã sửa "+nfix+" chữ nhận sai.":"")+" Xem lại chữ trong ô bên dưới (sửa chữ sai nếu có) rồi bấm <b>Tóm tắt</b>."+(h>4500?"<br>⚠️ Dài quá, xoá bớt còn khoảng 4.000 chữ nha.":""));
+  setTimeout(function(){ src.scrollIntoView({behavior:"smooth",block:"center"}); },80);
+}
+function fail(e){ wake(false); fst("😥 "+esc(e&&e.message||"Không đọc được, thử lại nha"),"bad"); }
+function doImages(fs){ var my=++JOB; fs.sort(function(a,b){ return a.name.localeCompare(b.name,undefined,{numeric:true}); });
+  wake(true); prog("⏳ Đang chuẩn bị đọc chữ (lần đầu hơi lâu một chút)…",0,0); var out=[], i=0;
+  (function next(){ if(my!==JOB) return; if(i>=fs.length){ aiFixOcr(out.join("\n")).then(function(r){ if(my!==JOB) return; wake(false); useText(r.t,fs.length>1?fs.length+" ảnh":"Ảnh",r.n); }); return; }
+    prog("⏳ Đang đọc chữ ảnh "+(i+1)+"/"+fs.length+"…",i+0.3,fs.length);
+    imgCanvas(fs[i]).then(ocr).then(function(t){ out.push(t); i++; next(); }).catch(fail); })(); }
+var PDF=null;
+function pdfPageText(p){ return PDF.getPage(p).then(function(pg){ return pg.getTextContent().then(function(tc){ var L=[],last=null,line="";
+  tc.items.forEach(function(it){ var y=Math.round(it.transform[5]); if(last!==null&&Math.abs(y-last)>3){ L.push(line); line=""; } line+=it.str; last=y; if(it.hasEOL){ L.push(line); line=""; last=null; } });
+  if(line) L.push(line); pg.cleanup(); return joinLines(L.join("\n")); }); }); }
+function pdfPageImg(p){ return PDF.getPage(p).then(function(pg){ var v1=pg.getViewport({scale:1}), vp=pg.getViewport({scale:(MOBILE?1400:1700)/v1.width}), c=document.createElement("canvas");
+  c.width=Math.round(vp.width); c.height=Math.round(vp.height); var x=c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,c.width,c.height);
+  return pg.render({canvasContext:x,viewport:vp}).promise.then(function(){ pg.cleanup(); return c; }); }); }
+function readPdf(a,b,name){ var my=++JOB, out=[], p=a, scanned=false; wake(true);
+  (function next(){ if(my!==JOB) return; if(p>b){ var lb=name+(a===b?" (trang "+a+")":" (trang "+a+"–"+b+")"); (scanned?aiFixOcr(out.join("\n")):Promise.resolve({t:out.join("\n"),n:0})).then(function(r){ if(my!==JOB) return; wake(false); useText(r.t,lb,r.n); }); return; }
+    prog("⏳ Đang đọc trang "+p+" ("+(p-a+1)+"/"+(b-a+1)+")…",p-a+0.3,b-a+1);
+    pdfPageText(p).then(function(t){ if(hanCount(t)>=15||t.replace(/\s/g,"").length>120) return t; /* trang scan → đọc chữ trong ảnh */
+      scanned=true; prog("⏳ Trang "+p+" là ảnh scan, đang đọc chữ…",p-a+0.5,b-a+1); return pdfPageImg(p).then(ocr); })
+    .then(function(t){ out.push(t); p++; next(); }).catch(fail); })(); }
+function doPdf(f){ var my=++JOB; prog("⏳ Đang mở PDF…",0,0);
+  (window.pdfjsLib?Promise.resolve():loadScript(LIB.pdf)).then(function(){ pdfjsLib.GlobalWorkerOptions.workerSrc=LIB.pdfw; return f.arrayBuffer(); })
+  .then(function(buf){ return pdfjsLib.getDocument({data:buf}).promise; }).then(function(pdf){ if(my!==JOB) return; PDF=pdf; var n=pdf.numPages, name=f.name.replace(/\.[^.]+$/,"");
+    if(n<=6) return readPdf(1,n,name);
+    fst("📕 <b>"+esc(f.name)+"</b> có "+n+" trang. Chọn trang có bài cần tóm tắt:"+
+      '<div class="rg">Từ trang <input id="pgA" type="number" inputmode="numeric" min="1" max="'+n+'" value="1"> đến <input id="pgB" type="number" inputmode="numeric" min="1" max="'+n+'" value="'+Math.min(n,3)+'"><button class="btn sm" id="pgGo" type="button">📖 Lấy chữ</button></div>');
+    $("#pgGo").onclick=function(){ var A=Math.max(1,Math.min(n,parseInt($("#pgA").value,10)||1)), B=Math.max(1,Math.min(n,parseInt($("#pgB").value,10)||A)); if(B<A){ var t=A; A=B; B=t; }
+      if(B-A>=20){ toast("Mỗi lần lấy tối đa 20 trang nha"); B=A+19; } readPdf(A,B,name); }; })
+  .catch(function(e){ fail(new Error("Không mở được PDF"+(/password/i.test(e&&e.name||"")?" (file có mật khẩu)":"")+". Thử lại hoặc chụp ảnh trang sách nha")); }); }
+function doDocx(f){ var my=++JOB; prog("⏳ Đang đọc file Word…",0,0);
+  (window.mammoth?Promise.resolve():loadScript(LIB.mammoth)).then(function(){ return f.arrayBuffer(); }).then(function(buf){ return mammoth.extractRawText({arrayBuffer:buf}); })
+  .then(function(r){ if(my===JOB) useText(r.value,f.name); }).catch(function(){ fail(new Error("Không đọc được file Word này. Mở bằng Word rồi lưu lại dạng .docx hoặc PDF nha")); }); }
+function doTxt(f){ ++JOB; f.arrayBuffer().then(function(b){ var t; try{ t=new TextDecoder("utf-8",{fatal:true}).decode(b); }catch(e){ try{ t=new TextDecoder("gb18030").decode(b); }catch(e2){ t=new TextDecoder().decode(b); } } useText(t.replace(/^﻿/,""),f.name); }).catch(fail); }
+function takeFiles(fs){ fs=[].slice.call(fs||[]); if(!fs.length) return; if(busy){ toast("Đang tóm tắt, đợi xong rồi thêm tệp nha"); return; }
+  var imgs=fs.filter(isImg); if(imgs.length===fs.length) return doImages(imgs);
+  var f=fs.filter(function(x){ return !isImg(x); })[0]; if(fs.length>1) toast("Mỗi lần chọn 1 tệp thôi, web lấy "+f.name+" nha");
+  if(/\.pdf$/i.test(f.name)||f.type==="application/pdf") return doPdf(f);
+  if(/\.docx$/i.test(f.name)) return doDocx(f);
+  if(/\.(txt|text|md|csv)$/i.test(f.name)||/^text\//.test(f.type)) return doTxt(f);
+  if(/\.(doc|pages|ppt|pptx|xls|xlsx|key|odt|rtf)$/i.test(f.name)) return fst("😥 File ."+esc(f.name.split(".").pop())+" web chưa đọc được. Mở file rồi lưu thành <b>PDF</b> hoặc <b>Word (.docx)</b> rồi chọn lại nha.","bad");
+  fst("😥 File này chưa hỗ trợ. Dùng ảnh, PDF, Word (.docx) hoặc .txt nha.","bad"); }
+$("#imgIn").onchange=function(){ var f=this.files; takeFiles(f); this.value=""; };
+$("#fileIn").onchange=function(){ var f=this.files; takeFiles(f); this.value=""; };
+/* kéo thả tệp vào ô chữ, hoặc dán ảnh chụp màn hình (Ctrl+V) */
+["dragenter","dragover"].forEach(function(ev){ src.addEventListener(ev,function(e){ if(e.dataTransfer&&[].indexOf.call(e.dataTransfer.types||[],"Files")>=0){ e.preventDefault(); src.classList.add("drag"); } }); });
+["dragleave","drop"].forEach(function(ev){ src.addEventListener(ev,function(){ src.classList.remove("drag"); }); });
+src.addEventListener("drop",function(e){ if(e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files.length){ e.preventDefault(); takeFiles(e.dataTransfer.files); } });
+src.addEventListener("paste",function(e){ var it=[].slice.call((e.clipboardData&&e.clipboardData.items)||[]).filter(function(x){ return x.kind==="file"&&/^image\//.test(x.type); });
+  if(it.length&&!(e.clipboardData.getData("text/plain")||"").trim()){ e.preventDefault(); takeFiles(it.map(function(x){ var f=x.getAsFile(); try{ return new File([f],"anh-dan.png",{type:f.type}); }catch(er){ return f; } })); } });
 var SAMPLE="田芳：玛丽，周末你有什么打算？\n玛丽：我想去商店买一件毛衣。天气越来越冷了，我从国内只带来了夏天的衣服，没有厚衣服。\n田芳：我也要买东西，下个星期是我妈妈的生日，我想给她买一条围巾。我们一起去吧。\n玛丽：好啊！去哪儿买比较好？\n田芳：听说学校旁边新开了一家商场，东西又好又便宜，现在还在打折呢。\n玛丽：太好了！我们怎么去？坐公共汽车还是骑自行车？\n田芳：商场离学校不远，走路二十分钟就到了。我们走着去吧，还可以锻炼身体。\n玛丽：好主意。我来中国以后，常常坐车，很少运动，觉得自己胖了一点儿。\n田芳：那我们星期六上午九点出发，我在宿舍楼下等你。\n玛丽：九点有点儿早，周末我想多睡一会儿。九点半怎么样？\n田芳：行，就九点半吧。买完东西，我们可以在附近的饭馆吃午饭。那家饭馆的饺子很有名，很多留学生都喜欢去。\n玛丽：我早就想去尝尝了！不过我不太会用筷子，你得教我。\n田芳：没问题，用筷子不难，多练习就会了。";
 $("#sampleBtn").onclick=function(){ src.value=SAMPLE; ls("tt.draft",SAMPLE); upCnt(); toast("Đã dán đoạn mẫu, bấm Tóm tắt thử nha"); };
 if(!groqKey()) setTimeout(function(){ if(!groqKey()) $("#keyBox").classList.remove("hidden"); },1200);
