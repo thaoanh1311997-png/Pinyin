@@ -142,3 +142,22 @@ with open(os.path.join(ROOT, 'chu-han/data/core.js'), 'w', encoding='utf-8') as 
 with open(os.path.join(ROOT, 'chu-han/data/rest.json'), 'w', encoding='utf-8') as f:
     json.dump(REST, f, ensure_ascii=False, separators=(',', ':'))
 print('core', len(CORE), 'rest', len(REST), 'common', len(common))
+
+# danh sách âm tiết (pinyin số) có trong dữ liệu → tools/chu-han/syllables.json (thu giọng từng âm: gen_py.py)
+TM = {'ā':'a1','á':'a2','ǎ':'a3','à':'a4','ē':'e1','é':'e2','ě':'e3','è':'e4','ī':'i1','í':'i2','ǐ':'i3','ì':'i4','ō':'o1','ó':'o2','ǒ':'o3','ò':'o4','ū':'u1','ú':'u2','ǔ':'u3','ù':'u4','ǖ':'ü1','ǘ':'ü2','ǚ':'ü3','ǜ':'ü4'}
+def tone3(p):
+    p = p.strip().lower(); tone = '5'; o = ''
+    for ch_ in p:
+        if ch_ in TM: o += TM[ch_][0]; tone = TM[ch_][1]
+        else: o += ch_
+    o = o.replace('ü', 'v')
+    return o + tone if re.match(r'^[a-z]*[aeiouv][a-z]*$', o) and o != 'xx' else None
+SYL = {}
+for src in (CORE, REST):
+    for c, r_ in src.items():
+        if c in '儿一不': continue
+        for p_ in set((r_.get('p') or '').split(',')) | {m_[0] for m_ in r_.get('m', [])}:
+            k = tone3(p_) if p_ else None
+            if k and k not in SYL: SYL[k] = c
+json.dump(dict(sorted(SYL.items())), open(os.path.join(HERE, 'syllables.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
+print('syllables', len(SYL))

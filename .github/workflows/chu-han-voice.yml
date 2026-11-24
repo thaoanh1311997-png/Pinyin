@@ -1,0 +1,30 @@
+name: Thu giọng âm tiết cho Soi chữ Hán
+on:
+  workflow_dispatch:
+    inputs:
+      branch: {description: 'Nhánh để đẩy file âm thanh lên', default: 'chu-han-audio'}
+      force: {description: 'Thu lại tất cả (1) hay chỉ âm còn thiếu (trống)', default: ''}
+permissions:
+  contents: write
+jobs:
+  gen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install -q "misaki[zh]==0.9.4" onnxruntime lameenc numpy pypinyin
+      - name: Model
+        run: |
+          sudo mkdir -p /home/user/tts && sudo chown -R $USER /home/user
+          cd /home/user/tts && curl -sSL -o k.tar.bz2 https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kokoro-multi-lang-v1_1.tar.bz2 && tar xjf k.tar.bz2 && rm k.tar.bz2 && ls kokoro-multi-lang-v1_1 | head
+      - name: Generate
+        run: NT=4 FORCE="${{ inputs.force }}" python tools/chu-han/gen_py.py
+      - name: Commit
+        run: |
+          git config user.name "voice-bot"; git config user.email "voice-bot@users.noreply.github.com"
+          git checkout -B "${{ inputs.branch }}"
+          git add audio/py tools/chu-han/gen_py_log.json
+          git commit -q -m "Soi chữ Hán: giọng đọc từng âm tiết (audio/py)" || true
+          git push -f origin "${{ inputs.branch }}"
