@@ -119,7 +119,7 @@
     h += '</div></div>';
     if (d.m && d.m.length) {
       h += '<ul class="means">';
-      d.m.forEach(function (m) { h += '<li><b>' + esc(m[0]) + '</b>' + (m[1] ? '<i>' + esc(m[1]) + '</i>' : '') + '<span>' + esc(m[2]) + '</span></li>'; });
+      d.m.forEach(function (m) { h += '<li><button type="button" class="say mini" data-say="' + esc(ch) + '" data-py="' + esc(m[0]) + '" aria-label="Nghe ' + esc(m[0]) + '">🔊</button><b>' + esc(m[0]) + '</b>' + (m[1] ? '<i>' + esc(m[1]) + '</i>' : '') + '<span>' + esc(m[2]) + '</span></li>'; });
       h += '</ul>';
     }
     // phép ghép
@@ -165,9 +165,36 @@
     h += '</div>';
     if (d.r && d.r !== ch) { var rn = cname(d.r, ''); h += '<p class="rad">Tra từ điển theo bộ: <button type="button" class="lk zh" data-c="' + esc(d.r) + '">' + esc(d.r) + '</button> ' + esc(rn.n) + '</p>'; }
     else if (d.r === ch && BT[ch]) h += '<p class="rad">Chữ này chính là <b>bộ ' + esc(BT[ch][0]) + '</b>, một trong 214 bộ thủ.</p>';
-    h += '<div class="acts"><button type="button" class="btn stroke-b">✍️ Thứ tự nét</button><button type="button" class="btn say" data-say="' + esc(ch) + '">🔊 Nghe đọc</button></div><div class="sw" hidden><div class="hw"></div><p class="sc"></p></div>';
+    h += '<div class="acts"><button type="button" class="btn stroke-b">✍️ Thứ tự nét</button><button type="button" class="btn say" data-say="' + esc(ch) + '" data-py="' + esc(sayPy(d)) + '">🔊 Nghe đọc</button></div><div class="sw" hidden><div class="hw"></div><p class="sc"></p></div>';
     h += '</article>';
     return h;
+  }
+
+  /* ---------- phát âm: file giọng AI thu sẵn cho đúng âm tiết + thanh điệu (audio/py/hao3.mp3) ---------- */
+  function sayPy(d) { return d && d.m && d.m.length ? d.m[0][0] : firstPy(d); }
+  function tone3(p) {
+    var t = '5', o = String(p || '').trim().toLowerCase().replace(/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/g, function (c) { var x = TONE[c]; t = x[1]; return x[0]; }).replace(/ü/g, 'v');
+    return /^[a-z]+$/.test(o) ? o + t : '';
+  }
+  var AU = null, playing = null;
+  function fallback(ch) {
+    if (window.BMVoice) BMVoice.speak(ch, { rate: 0.9 });
+    else if (window.speechSynthesis) { try { speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(ch); u.lang = 'zh-CN'; speechSynthesis.speak(u); } catch (e) {} }
+  }
+  function say(ch, py, btn) {
+    try { if (window.BMVoice) BMVoice.stop(); } catch (e) {}
+    var f = tone3(py);
+    if (!f) { fallback(ch); return; }
+    if (!AU) { AU = new Audio(); AU.preload = 'auto'; }
+    if (playing) playing.classList.remove('on');
+    playing = btn || null; if (playing) playing.classList.add('on');
+    var done = function () { if (playing) playing.classList.remove('on'); playing = null; };
+    AU.onended = done;
+    AU.onerror = function () { done(); fallback(ch); };
+    try { AU.pause(); } catch (e) {}
+    AU.src = '../audio/py/' + f + '.mp3';
+    try { AU.playbackRate = 1; } catch (e) {}
+    var pr = AU.play(); if (pr && pr.catch) pr.catch(function (e) { if (e && e.name !== 'AbortError') { done(); fallback(ch); } });
   }
 
   /* ---------- nét chữ ---------- */
@@ -268,12 +295,85 @@
     });
   }
 
-  $('#f').addEventListener('submit', function (e) { e.preventDefault(); try { q.blur(); } catch (x) {} run(q.value); });
+  /* ---------- gợi ý khi đang gõ (pinyin / Hán Việt / chữ Hán) ---------- */
+  var sug = $('#sug'), IX = null, CI = null;
+  function buildIx() {
+    if (IX) return IX;
+    IX = [];
+    Array.from(COMMON).forEach(function (c, i) {
+      var d = D[c]; if (!d) return;
+      var rd = [], seen = {};
+      (d.m || []).forEach(function (m) { if (!seen[m[0]]) { seen[m[0]] = 1; rd.push({ p: m[0], h: m[1], m: m[2] }); } });
+      (d.p || '').split(',').forEach(function (p) { if (p && !seen[p]) { seen[p] = 1; rd.push({ p: p, h: firstHV(d), m: shortMean(d) }); } });
+      rd.forEach(function (r) { r.t3 = tone3(r.p); r.b = r.t3.replace(/\d$/, ''); r.hs = (r.h || '').split(/,\s*/).filter(Boolean); r.hf = r.hs.map(fold); });
+      IX.push({ c: c, i: i, rd: rd });
+    });
+    return IX;
+  }
+  function containing(ch) {
+    if (!CI) {
+      CI = {};
+      Array.from(COMMON).forEach(function (c) { var d = D[c]; if (!d || !d.d) return; Array.from(new Set(leavesOf(parse(d.d), []))).forEach(function (l) { (CI[l] = CI[l] || []).push(c); }); });
+    }
+    return (CI[ch] || []).filter(function (c) { return c !== ch; });
+  }
+  function rowOf(c, r, why) {
+    var d = getSync(c); if (!d) return '';
+    r = r || { p: sayPy(d), h: firstHV(d), m: (mainEntry(d) || [0, 0, shortMean(d)])[2] };
+    return '<div class="sr" role="option"><button type="button" class="sr-go" data-c="' + c + '"><b class="zh">' + c + '</b><span class="sr-t"><span class="sr-py">[' + esc(r.p) + ']' + (r.h ? ' <i>[' + esc(r.h.toUpperCase()) + ']</i>' : '') + (why ? ' <em>' + esc(why) + '</em>' : '') + '</span><span class="sr-m">' + esc(r.m || '') + '</span></span></button>' +
+      '<button type="button" class="say sr-say" data-say="' + c + '" data-py="' + esc(r.p) + '" aria-label="Nghe">🔊</button></div>';
+  }
+  function suggest(text) {
+    text = String(text || '').trim();
+    if (!text) return '';
+    var hs = Array.from(new Set(text.match(HANG) || [])), h = '';
+    if (hs.length) {
+      hs.slice(0, 6).forEach(function (c) { h += rowOf(c); });
+      if (hs.length === 1) containing(hs[0]).slice(0, 24).forEach(function (c) { h += rowOf(c, null, 'có ' + hs[0]); });
+      return h;
+    }
+    var raw = text.toLowerCase().replace(/\s+/g, ''), f = fold(raw).replace(/\s+/g, ''), num = /^[a-zü]+[1-5]$/.test(raw.replace('ü', 'v')) ? raw.replace('ü', 'v') : '';
+    var marked = /[^a-z0-9]/.test(raw), hits = [];
+    var pyOnly = /[āēīōūǖǎěǐǒǔǚǘǜü]/.test(raw), hvOnly = /[ảãạẩẫậằắẳẵặấầẻẽẹềếểễệỉĩịỏõọồốổỗộờớởỡợủũụừứửữựỳýỷỹỵăâđêôơư]/.test(raw);
+    if (!f) return '';
+    buildIx().forEach(function (e) {
+      e.rd.forEach(function (r) {
+        var s = -1, why = '';
+        if (num && r.t3 === num) s = 0;
+        else if (!num && marked && !hvOnly && r.p.toLowerCase() === raw) s = 0;
+        else if (!num && !marked && r.p === raw) s = 0.5;
+        else if (!num && !pyOnly && r.hs.indexOf(raw) >= 0) { s = marked ? 0 : 2; why = 'Hán Việt'; }
+        else if (!num && !marked && r.b === f.replace(/u:|ü/g, 'v')) s = 1;
+        else if (!num && pyOnly && r.b === tone3(raw).replace(/\d$/, '')) s = 5;
+        else if (!num && !marked && r.hf.indexOf(f) >= 0) { s = 3; why = 'Hán Việt'; }
+        else if (!num && !marked && f.length >= 2 && r.b.indexOf(f) === 0) s = 4;
+        if (s >= 0) hits.push({ s: s, i: e.i, c: e.c, r: r, why: why });
+      });
+    });
+    hits.sort(function (a, b) { return a.s - b.s || a.i - b.i; });
+    var seen = {}, rows = [];
+    hits.forEach(function (x) { var k = x.c + x.r.p; if (seen[k] || rows.length >= 40) return; seen[k] = 1; rows.push(rowOf(x.c, x.r, x.why)); });
+    return rows.length ? rows.join('') : '<p class="sr-none">Chưa thấy chữ nào đọc là <b>' + esc(text) + '</b>. Bạn thử gõ không dấu (vd: ma) nhé.</p>';
+  }
+  var sugT = 0;
+  function showSug() {
+    var html = suggest(q.value);
+    sug.innerHTML = html; sug.hidden = !html; sug.scrollTop = 0;
+  }
+  q.addEventListener('input', function () { clearTimeout(sugT); sugT = setTimeout(showSug, 90); });
+  q.addEventListener('focus', function () { if (q.value.trim() && sug.hidden) showSug(); });
+  sug.addEventListener('click', function (e) { var g = e.target.closest('.sr-go'); if (g) { sug.hidden = true; } });
+
+  $('#f').addEventListener('submit', function (e) {
+    e.preventDefault(); try { q.blur(); } catch (x) {}
+    if (HAN.test(q.value)) { sug.hidden = true; run(q.value); }
+    else { clearTimeout(sugT); showSug(); }
+  });
   document.addEventListener('click', function (e) {
     var t = e.target.closest('[data-c],.say,.stroke-b');
     if (!t) return;
     if (t.classList.contains('stroke-b')) { showStroke(t.closest('.res')); return; }
-    if (t.classList.contains('say')) { var s = t.getAttribute('data-say'); if (window.BMVoice) BMVoice.speak(s, { rate: 0.8 }); else if (window.speechSynthesis) { var u = new SpeechSynthesisUtterance(s); u.lang = 'zh-CN'; speechSynthesis.speak(u); } return; }
+    if (t.classList.contains('say')) { say(t.getAttribute('data-say'), t.getAttribute('data-py'), t); return; }
     var c = t.getAttribute('data-c');
     if (c) { e.preventDefault(); run(c); }
   });
@@ -285,5 +385,5 @@
   if (init) run(init, { scroll: false });
 
   // để kiểm thử
-  window.__CH = { card: card, get: get, parts: parts, searchSound: searchSound, soundNote: soundNote };
+  window.__CH = { tone3: tone3, card: card, get: get, parts: parts, searchSound: searchSound, soundNote: soundNote };
 })();

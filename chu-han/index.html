@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Noto+Sans+SC:wght@500;700&family=Nunito:wght@700;800;900&display=swap">
-<link rel="stylesheet" href="style.css?v=1">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 <script src="../shared/nav.js?v=15"></script>
@@ -31,7 +31,8 @@
     <input id="q" class="q" type="search" inputmode="text" enterkeyhint="search" placeholder="Gõ chữ Hán, vd: 好" aria-label="Chữ cần soi" maxlength="40">
     <button class="go" type="submit" aria-label="Soi chữ">🔍<span> Soi</span></button>
   </form>
-  <p class="tip">Gõ được cả âm Hán Việt hoặc pinyin, ví dụ <b>hảo</b> hay <b>hao</b>, rồi chọn chữ.</p>
+  <div id="sug" class="sug" hidden></div>
+  <p class="tip">Gõ chữ Hán, pinyin (<b>ma</b>, <b>ma3</b>, <b>mǎ</b>) hoặc âm Hán Việt (<b>mã</b>), gợi ý hiện ngay để chọn.</p>
 
   <div class="chips" id="ex"></div>
   <div id="pick" class="pick" hidden></div>
@@ -47,12 +48,12 @@
     </div>
   </section>
 
-  <p class="src">Nguồn dữ liệu: cấu tạo chữ và gợi ý nguồn gốc từ từ điển mở <a href="https://github.com/skishore/makemeahanzi" target="_blank" rel="noopener">Make Me a Hanzi</a>; âm Hán Việt và nghĩa từ <a href="https://github.com/ph0ngp/CVDICT" target="_blank" rel="noopener">CVDICT</a>; thứ tự nét từ <a href="https://hanziwriter.org" target="_blank" rel="noopener">Hanzi Writer</a>. Lời kể nguồn gốc là cách giải thích truyền thống để dễ nhớ, các nhà nghiên cứu chữ cổ đôi khi có cách giải thích khác.</p>
+  <p class="src">Nguồn dữ liệu: cấu tạo chữ và gợi ý nguồn gốc từ từ điển mở <a href="https://github.com/skishore/makemeahanzi" target="_blank" rel="noopener">Make Me a Hanzi</a>; âm Hán Việt và nghĩa từ <a href="https://github.com/ph0ngp/CVDICT" target="_blank" rel="noopener">CVDICT</a>; thứ tự nét từ <a href="https://hanziwriter.org" target="_blank" rel="noopener">Hanzi Writer</a>; giọng đọc âm tiết của Chen Wang (<a href="https://github.com/hugolpz/audio-cmn" target="_blank" rel="noopener">audio-cmn</a>, CC BY-SA). Lời kể nguồn gốc là cách giải thích truyền thống để dễ nhớ, các nhà nghiên cứu chữ cổ đôi khi có cách giải thích khác.</p>
 </div>
 
 <script src="../shared/voice.js?v=1"></script>
 <script src="../vo/lib/hanzi-writer.min.js"></script>
-<script src="data/core.js?v=1"></script>
-<script src="app.js?v=1"></script>
+<script src="data/core.js?v=2"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>
