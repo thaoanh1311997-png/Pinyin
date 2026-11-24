@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T22:29:37.511Z",
+ "updated": "2026-11-24T22:34:44.507Z",
  "channels": [
   {
    "key": "supersimple",
@@ -287,6 +287,11 @@
    "title": "Dave and Ava - Nursery Rhymes and Baby Songs",
    "videos": [
     {
+     "id": "3YKnvvyzPNI",
+     "t": "🌞 Opposites for Kids | Baby Songs | Dave and Ava Nursery Rhymes 🌞",
+     "d": "5:16"
+    },
+    {
      "id": "khFMA2EP6ig",
      "t": "🐇 Oh, John the Rabbit | Dave and Ava Nursery Rhymes and Baby Songs | Baby Songs 🐇",
      "d": "30:53"
@@ -400,11 +405,6 @@
      "id": "5IIlv-GtLz4",
      "t": "😊 Ava Ava Yes Mama | Dave and Ava Nursery Rhymes | Brush Your Teeth | Baby Rhymes and Kids Songs 😊",
      "d": "30:42"
-    },
-    {
-     "id": "jLUwG25T9II",
-     "t": "🤗 New Opposites for Kids | Nursery Rhymes  and Baby Songs | Dave and Ava 🤗",
-     "d": "4:34"
     }
    ]
   },
@@ -695,14 +695,14 @@
    "title": "Sesame Street",
    "videos": [
     {
+     "id": "uUudukv3bEI",
+     "t": "The Thankful Song with Elmo and Chris Pratt 🧡 🍂  | Sesame Street Songs",
+     "d": "2:00"
+    },
+    {
      "id": "HqAG_kACajc",
      "t": "Elmo and Tango's Puppy Playdate 🐶 🐾 | Sesame Street Full Episode",
      "d": "26:45"
-    },
-    {
-     "id": "RvvM0dY1_hA",
-     "t": "Elmo Songs with Friends! Ms. Rachel, Peppa Pig, Bounce Patrol & MORE 😊 | 90 Mins | Sesame Street",
-     "d": "1:32:36"
     },
     {
      "id": "QLC32zDmgTI",
