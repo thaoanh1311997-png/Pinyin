@@ -255,6 +255,7 @@ R.games = () => {
   setTabs('kid', '');
   view(bar('Trò chơi', '#/be', starPill()) + `<div class="grid ggrid"><a class="tcard" href="#/kham-pha" style="background:#FFF1C9"><img class="ic" src="${IMG('w/speech-balloon')}" alt=""><b>Ghép câu</b><small>Make a sentence</small></a>${GAMES.map(g => `<a class="tcard" href="#/game/${g[0]}" style="background:${g[4]}"><img class="ic" src="${IMG(g[3])}" alt=""><b>${g[1]}</b><small>${g[2]}</small></a>`).join('')}</div>`);
 };
+const sayUpTo = (t, ms = 1600) => Promise.race([say(t), new Promise(r => setTimeout(r, ms))]);
 function roundDone(score) { bump('games'); addStar(); return cheer('Yay! Good job!', true); }
 R.g_doan = (k) => {
   setTabs(null);
@@ -374,8 +375,8 @@ R.g_an = (k) => {
       const fr = fan.getBoundingClientRect(), er = el.getBoundingClientRect();
       el.style.transition = 'transform .45s cubic-bezier(.3,.8,.4,1)'; el.style.transform = `translate(${fr.left + fr.width / 2 - er.left - er.width / 2}px,${fr.top + fr.height * .62 - er.top - er.height / 2}px) scale(.35)`;
       await new Promise(r => setTimeout(r, 460));
-      if (el.dataset.w === w[0]) { el.style.opacity = 0; fan.classList.add('yum'); n++; await say((kd === 'give' ? 'Thank you! ' : 'Yum yum! ') + w[0] + '!'); if (n >= 5) { await roundDone(); n = 0; } if (location.hash.startsWith('#/game/an')) play(); }
-      else { fan.classList.add('nope'); el.style.transform = ''; await say('No, thank you! That is ' + (/^[aeiou]/i.test(el.dataset.w) ? 'an ' : 'a ') + el.dataset.w + '.'); fan.classList.remove('nope'); el.classList.add('no'); busy = false; }
+      if (el.dataset.w === w[0]) { el.style.opacity = 0; fan.classList.add('yum'); n++; await sayUpTo((kd === 'give' ? 'Thank you! ' : 'Yum yum! ') + w[0] + '!'); if (n >= 5) { await roundDone(); n = 0; } if (location.hash.startsWith('#/game/an')) play(); }
+      else { fan.classList.add('nope'); el.style.transform = ''; el.classList.add('no'); say('No, thank you! That is ' + (/^[aeiou]/i.test(el.dataset.w) ? 'an ' : 'a ') + el.dataset.w + '.'); await new Promise(r => setTimeout(r, 350)); busy = false; setTimeout(() => fan.classList.remove('nope'), 900); }
     };
     app.querySelectorAll('.fit').forEach(el => {
       let sx, sy, moved = false;
@@ -391,14 +392,14 @@ R.g_an = (k) => {
   play();
 };
 // size the picture cards so they fill the free space between the question and the bottom bar
-function fitPics(g) {
+function fitPics(g, reserve = 0) {
   if (!g) return;
   const lay = () => {
     if (!document.body.contains(g)) { removeEventListener('resize', lay); return; }
     const n = g.children.length, gap = n > 6 ? 10 : 12;
-    const W = Math.min(g.parentElement.clientWidth, 980);
+    const pcs = getComputedStyle(g.parentElement); const W = Math.min(g.parentElement.clientWidth - parseFloat(pcs.paddingLeft) - parseFloat(pcs.paddingRight), 980);
     const nav = document.getElementById('tabs'); const navTop = nav && nav.offsetHeight ? nav.getBoundingClientRect().top : innerHeight;
-    const H = Math.max(150, navTop - g.getBoundingClientRect().top - 12);
+    const H = Math.max(150, navTop - g.getBoundingClientRect().top - 12 - reserve);
     let best = 0, bc = 2;
     for (let c = 1; c <= 4; c++) { const r = Math.ceil(n / c); const sz = Math.min((W - gap * (c - 1)) / c, (H - gap * (r - 1)) / r); if (sz > best + 1) { best = sz; bc = c; } }
     best = Math.floor(Math.max(84, Math.min(best, 300)));
@@ -469,7 +470,7 @@ R.g_banh = (k) => {
      <div class="gq"><button id="rep">🔊</button><span>Kick to the <b>${esc(w[0])}</b>!</span></div>
      <div class="pitch"><div class="goals">${opts.map(o => `<button class="goal" data-w="${esc(o[0])}"><span class="net"></span><img src="${wsrc(o)}" alt=""></button>`).join('')}</div>
      <img class="ball" id="ball" src="${IMG('w/soccer-ball')}" alt=""><div class="kickhint">👆 Chạm vào khung thành đúng hình</div></div>`);
-    bindSel('banh');
+    bindSel('banh'); fitPics($('.goals'), parseFloat(getComputedStyle($('.pitch')).paddingBottom) + 4);
     say(q); $('#rep').onclick = () => say(q);
     let busy = false;
     app.querySelectorAll('.goal').forEach(g => g.onclick = async () => {
@@ -478,10 +479,10 @@ R.g_banh = (k) => {
       const dx = gr.left + gr.width / 2 - (br.left + br.width / 2), dy = gr.top + gr.height * .55 - (br.top + br.height / 2);
       ball.style.transition = 'transform .55s cubic-bezier(.2,.7,.3,1)'; ball.style.transform = `translate(${dx}px,${dy}px) rotate(540deg) scale(.6)`;
       await new Promise(r => setTimeout(r, 560));
-      if (g.dataset.w === w[0]) { g.classList.add('ok'); n++; await say('Goal! ' + w[0] + '!'); if (n >= 5) { await roundDone(); n = 0; } if (location.hash.startsWith('#/game/banh')) play(); }
+      if (g.dataset.w === w[0]) { g.classList.add('ok'); n++; await sayUpTo('Goal! ' + w[0] + '!'); if (n >= 5) { await roundDone(); n = 0; } if (location.hash.startsWith('#/game/banh')) play(); }
       else {
-        g.classList.add('no'); ball.style.transform = 'translate(0,0) rotate(0) scale(1)';
-        await say('This is ' + (/^[aeiou]/i.test(g.dataset.w) ? 'an ' : 'a ') + g.dataset.w + '. Try again!'); busy = false;
+        g.classList.add('no'); ball.style.transition = 'transform .3s'; ball.style.transform = 'translate(0,0) rotate(0) scale(1)';
+        say('This is ' + (/^[aeiou]/i.test(g.dataset.w) ? 'an ' : 'a ') + g.dataset.w + '. Try again!'); await new Promise(r => setTimeout(r, 320)); busy = false;
       }
     });
   };
