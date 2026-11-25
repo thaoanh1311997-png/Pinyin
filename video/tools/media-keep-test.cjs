@@ -67,7 +67,7 @@ async function openLes(pg) {
       await pg.waitForTimeout(800);
       // reopen after reload: auto from IndexedDB
       await openLes(pg);
-      ok(await pg.isVisible('#vid') && !(await pg.isVisible('#needFile')), tag + ' after reload, original file opens by itself');
+      ok(await pg.isVisible('#vid') && !(await pg.isVisible('#needFile')), tag + ' after reload, original file opens by itself ' + (await pg.isVisible('#vid') ? '' : await pg.textContent('#mediaBox')));
       await pg.click('.line[data-i="1"]'); await pg.waitForTimeout(1500);
       const t = await pg.evaluate(() => document.querySelector('#vid').currentTime);
       ok(t >= 3 && await pg.evaluate(() => window.__spoke) === 0, tag + ' line 2 plays from the recording at ' + t.toFixed(2) + 's, no TTS');
@@ -86,13 +86,13 @@ async function openLes(pg) {
       // 3) remote delete of a still-listed lesson's file must be ignored
       mk.st.recs['bb-media|f|"v1"'] = { id: 'bb-media|f|"v1"', db: 'bb-media', st: 'f', t: Date.now() + 1e6, del: true, data: null, pullable: true, updated_at: new Date().toISOString() };
       await pg.evaluate(() => BM_SYNC.run()); await pg.waitForTimeout(1500);
-      const still = await pg.evaluate(() => new Promise(r => { const q = indexedDB.open('bb-media'); q.onsuccess = () => { const g = q.result.transaction('f').objectStore('f').get('v1'); g.onsuccess = () => r(!!(g.result && g.result.blob)); }; }));
+      const still = await pg.evaluate(() => new Promise(r => { const q = indexedDB.open('bb-media'); q.onsuccess = () => { const g = q.result.transaction('f').objectStore('f').get('v1'); g.onsuccess = () => r(!!(g.result && (g.result.blob || g.result.buf))); }; }));
       ok(still, tag + ' remote delete does not wipe the file of a lesson still in the list');
       // 4) big file (60MB) is uploaded in parts, not skipped
-      await pg.evaluate(async (n) => { const b = new Blob([new Uint8Array(n)], { type: 'audio/mpeg' }); await new Promise(r => { const q = indexedDB.open('bb-media'); q.onsuccess = () => { const t = q.result.transaction('f', 'readwrite'); t.objectStore('f').put({ blob: b, name: 'big.mp3', audio: true }, 'v2'); t.oncomplete = r; }; }); }, 60 * 1024 * 1024);
+      await pg.evaluate(async (n) => { const b = new Uint8Array(n).buffer; await new Promise(r => { const q = indexedDB.open('bb-media'); q.onsuccess = () => { const t = q.result.transaction('f', 'readwrite'); t.objectStore('f').put({ blob: null, buf: b, type: 'audio/mpeg', name: 'big.mp3', audio: true }, 'v2'); t.oncomplete = r; }; }); }, 60 * 1024 * 1024);
       await pg.waitForTimeout(300); await pg.evaluate(() => BM_SYNC.run()); await pg.waitForTimeout(6000);
       const r2 = mk.st.recPosts.find(r => r.id === 'bb-media|f|"v2"');
-      ok(r2 && r2.data && r2.data.blob.parts && r2.data.blob.parts.length === 2 && mk.st.filePosts.every(f => f[1] <= 50 * 1024 * 1024), tag + ' 60MB file uploaded as ' + (r2 && r2.data && r2.data.blob.parts ? r2.data.blob.parts.length : 0) + ' parts');
+      ok(r2 && r2.data && r2.data.buf.parts && r2.data.buf.parts.length === 2 && mk.st.filePosts.every(f => f[1] <= 50 * 1024 * 1024), tag + ' 60MB file uploaded as ' + (r2 && r2.data && r2.data.buf.parts ? r2.data.buf.parts.length : 0) + ' parts');
       // 5) a put that never landed must not be pushed as a delete
       await pg.evaluate(() => { const d = JSON.parse(localStorage.getItem('bm.sync.drec') || '{}'); d['bb-media|f|"ghost"'] = 1; localStorage.setItem('bm.sync.drec', JSON.stringify(d)); });
       await b.close(); }

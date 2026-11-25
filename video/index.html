@@ -962,7 +962,7 @@ async function mountMedia(){
     });
   } else if(src.type==='file'){
     const les=LES;
-    const fromDB=async()=>{ const m=await MDB.get(les.id); if(m&&m.blob&&les.src===src&&!src.url){ src.file=new File([m.blob],m.name||src.name||'file',{type:m.blob.type}); src.url=URL.createObjectURL(m.blob); src.audio=m.audio!=null?m.audio:src.audio; SAVED_MEDIA.add(les.id); } return !!src.url; };
+    const fromDB=async()=>{ const m=await MDB.get(les.id); const bl=m&&(m.blob||(m.buf?new Blob([m.buf],{type:m.type||''}):null)); if(bl&&les.src===src&&!src.url){ src.file=new File([bl],m.name||src.name||'file',{type:bl.type}); src.url=URL.createObjectURL(bl); src.audio=m.audio!=null?m.audio:src.audio; SAVED_MEDIA.add(les.id); } return !!src.url; };
     if(!src.url) await fromDB();
     // not on this device yet: fetch the original recording from the user's cloud copy (☁️) right away
     if(!src.url&&window.BM_SYNC&&BM_SYNC.fetchRec&&BM_SYNC.state().auth){
@@ -1033,8 +1033,14 @@ async function keepMedia(id,file){
   if(!id||!file||SAVED_MEDIA.has(id)) return; SAVED_MEDIA.add(id);
   try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persist().catch(()=>{});
     // store as plain Blob (old iOS can't store File objects)
-    await MDB.put(id,{blob:new Blob([file],{type:file.type||''}),name:file.name,audio:isAudio(file)});
-  }catch(e){ SAVED_MEDIA.delete(id); console.warn('keepMedia',e); }
+    const rec={blob:new Blob([file],{type:file.type||''}),name:file.name,audio:isAudio(file)};
+    const quota=e=>/quota/i.test(((e&&e.name)||'')+((e&&e.message)||''));
+    try{ await MDB.put(id,rec); }
+    catch(e){ if(quota(e)) throw e;
+      // Safari private mode cannot store Blobs: keep the raw bytes instead
+      rec.blob=null; rec.buf=await file.arrayBuffer(); rec.type=file.type||''; await MDB.put(id,rec); }
+  }catch(e){ SAVED_MEDIA.delete(id); console.warn('keepMedia',e);
+    toast(/quota/i.test(((e&&e.name)||'')+((e&&e.message)||''))?'Máy hết chỗ nên chưa lưu được file nghe này. Xoá bớt bài cũ rồi chọn lại file nha.':'Chưa lưu được file nghe trên máy này, lần sau có thể phải chọn lại file.',5000); }
 }
 function lessons(){return store.get('bb.lessons',[]);}
 function saveLesson(){
@@ -2738,7 +2744,7 @@ window.addEventListener('hashchange',()=>importGrab());
 /* ======================= start ======================= */
 renderLib(); renderStats(); show('Home');
 // lessons saved on another device arrive quietly: refresh the list without touching what is playing
-addEventListener('bm-sync',()=>{ try{ if(VIEW==='Home'){ renderLib(); renderStats(); } else if(VIEW==='Lesson'&&needFile()&&$('#needFile')){ MDB.get(LES.id).then(m=>{ if(m&&m.blob&&needFile()&&$('#needFile')) mountMedia(); }); } }catch(e){} });
+addEventListener('bm-sync',()=>{ try{ if(VIEW==='Home'){ renderLib(); renderStats(); } else if(VIEW==='Lesson'&&needFile()&&$('#needFile')){ MDB.get(LES.id).then(m=>{ if(m&&(m.blob||m.buf)&&needFile()&&$('#needFile')) mountMedia(); }); } }catch(e){} });
 const hr=new Date().getHours(); $('#helloHi').textContent=hr<11?'Chào buổi sáng!':hr<14?'Chào buổi trưa!':hr<18?'Chào buổi chiều!':'Chào buổi tối!';
 setTimeout(()=>loadDict(),1500);
 importGrab();

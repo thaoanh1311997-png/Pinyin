@@ -183,19 +183,20 @@
   function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); }
   function blobPath(id, sub) { return auth.uid + '/' + hash(id) + '-' + hash(id + '#' + sub) + '.bin'; }
   // thay Blob/ArrayBuffer bằng tham chiếu file, trả về danh sách file cần gửi
+  // file lớn hơn 50MB: gửi từng phần 40MB, ghi danh sách phần vào tham chiếu
+  function packBlob(v, id, ups, sub, ref) {
+    var p = blobPath(id, sub); ref.__b = p; ref.size = v.size;
+    if (v.size > MAX_FILE && v.size <= MAX_TOTAL) {
+      ref.parts = [];
+      for (var o = 0, i = 0; o < v.size; o += PART, i++) { var pp = i ? blobPath(id, sub + '#p' + i) : p; ref.parts.push(pp); ups.push({ path: pp, blob: v.slice(o, o + PART) }); }
+    } else ups.push({ path: p, blob: v });
+    return ref;
+  }
   function pack(v, id, ups, sub) {
     sub = sub || 'v';
-    if (v instanceof Blob) {
-      var p = blobPath(id, sub);
-      if (v.size > MAX_FILE && v.size <= MAX_TOTAL) { // file lớn: gửi từng phần
-        var parts = [];
-        for (var o = 0, i = 0; o < v.size; o += PART, i++) { var pp = i ? blobPath(id, sub + '#p' + i) : p; parts.push(pp); ups.push({ path: pp, blob: v.slice(o, o + PART) }); }
-        return { __b: p, parts: parts, type: v.type || '', size: v.size, name: v.name || undefined };
-      }
-      ups.push({ path: p, blob: v }); return { __b: p, type: v.type || '', size: v.size, name: v.name || undefined };
-    }
-    if (v instanceof ArrayBuffer) { var pa = blobPath(id, sub + ':ab'); ups.push({ path: pa, blob: new Blob([v]) }); return { __b: pa, ab: 1, size: v.byteLength }; }
-    if (ArrayBuffer.isView && ArrayBuffer.isView(v) && !(v instanceof DataView)) { var bb = new Blob([v]); ups.push({ path: blobPath(id, sub + ':u8'), blob: bb }); return { __b: blobPath(id, sub + ':u8'), u8: 1, size: bb.size }; }
+    if (v instanceof Blob) return packBlob(v, id, ups, sub, { type: v.type || '', name: v.name || undefined });
+    if (v instanceof ArrayBuffer) return packBlob(new Blob([v]), id, ups, sub + ':ab', { ab: 1 });
+    if (ArrayBuffer.isView && ArrayBuffer.isView(v) && !(v instanceof DataView)) return packBlob(new Blob([v]), id, ups, sub + ':u8', { u8: 1 });
     if (Array.isArray(v)) return v.map(function (x, i) { return pack(x, id, ups, sub + '.' + i); });
     if (v && typeof v === 'object' && !(v instanceof Date)) { var o = {}; for (var k in v) if (Object.prototype.hasOwnProperty.call(v, k)) o[k] = pack(v[k], id, ups, sub + '.' + k); return o; }
     return v;
@@ -234,7 +235,13 @@
     if (ref.parts && ref.parts.length) { // file lớn được cắt phần → tải lần lượt rồi ghép
       var bufs = [];
       return ref.parts.reduce(function (a, p) { return a.then(function () { return getPart(p).then(function (ab) { bufs.push(ab); }); }); }, Promise.resolve())
-        .then(function () { return new Blob(bufs, { type: ref.type || '' }); });
+        .then(function () {
+          var b = new Blob(bufs, { type: ref.type || '' });
+          if (!ref.ab && !ref.u8) return b;
+          var all = new Uint8Array(ref.size || bufs.reduce(function (n, x) { return n + x.byteLength; }, 0)), o = 0;
+          bufs.forEach(function (x) { all.set(new Uint8Array(x), o); o += x.byteLength; });
+          b._ab = all.buffer; return b;
+        });
     }
     return getPart(ref.__b).then(function (ab) { var b = new Blob([ab], { type: ref.type || '' }); b._ab = ab; return b; });
   }
@@ -420,7 +427,7 @@
       return openDB('bb-media').then(function (d) {
         return idbAll(d, 'f').then(function (rows) {
           d.close();
-          rows.forEach(function (kv) { var v = kv[1], b = v && v.blob; if (b && b.size > MAX_FILE) { var id = recId('bb-media', 'f', kv[0]); dirtyRec[id] = 1; if (!times[id]) times[id] = now(); } });
+          rows.forEach(function (kv) { var v = kv[1], n = v && (v.blob ? v.blob.size : v.buf ? v.buf.byteLength : 0); if (n > MAX_FILE) { var id = recId('bb-media', 'f', kv[0]); dirtyRec[id] = 1; if (!times[id]) times[id] = now(); } });
         });
       });
     }).then(function () { sset('media2', 1); saveState(); }, function () {});
