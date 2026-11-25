@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24T22:34:44.507Z",
+ "updated": "2026-11-25T22:31:18.465Z",
  "channels": [
   {
    "key": "supersimple",
@@ -695,6 +695,11 @@
    "title": "Sesame Street",
    "videos": [
     {
+     "id": "Ri-FuFz0Nes",
+     "t": "Abby’s Magical Beasties ✨ | Sesame Street Full Episode",
+     "d": "26:44"
+    },
+    {
      "id": "uUudukv3bEI",
      "t": "The Thankful Song with Elmo and Chris Pratt 🧡 🍂  | Sesame Street Songs",
      "d": "2:00"
@@ -808,11 +813,6 @@
      "id": "KzwKQK_znZg",
      "t": "Monster on the Street: Nursery Rhyme Karaoke with Elmo & Grover 🎤  | Sesame Street Songs 🎵",
      "d": "2:49"
-    },
-    {
-     "id": "ZEuzViYEC0s",
-     "t": "Elmo's Halloween Festival! 🎃 🦇  | 2 HOURS | Sesame Street",
-     "d": "2:04:09"
     }
    ]
   },
@@ -967,6 +967,11 @@
    "title": "Hey Duggee Official",
    "videos": [
     {
+     "id": "lj7bJa17nyI",
+     "t": "It's Time To Get Ready For Christmas! | 20+ Minutes | Hey Duggee",
+     "d": "27:07"
+    },
+    {
      "id": "asYFjPNbsJY",
      "t": "Roly's BEST BITS! | Hey Duggee",
      "d": "20:00"
@@ -1080,11 +1085,6 @@
      "id": "Nhx30B6LgZ0",
      "t": "Duggee's Toys And Activities! ⚽️ | Hey Duggee",
      "d": "21:50"
-    },
-    {
-     "id": "OOCsJLR9BNs",
-     "t": "Scientific Exploration With The Squirrels 🔎 | Hey Duggee",
-     "d": "24:06"
     }
    ]
   },
@@ -1102,6 +1102,11 @@
    "id": "UCdknlZNiH-2VWrvjXkx9dJA",
    "title": "Pocoyo English - Official Channel",
    "videos": [
+    {
+     "id": "pBbgmWRcVVw",
+     "t": "😂 TRY Not to LAUGH! Pocoyo's GIGGLES! Funniest Laughing Moments | Pocoyo English | Cartoons for Kids",
+     "d": "2:04:46"
+    },
     {
      "id": "qh-_QLujwnM",
      "t": "🏡  Baby Pocoyó & Bea's ADORABLE New House Reveal! | Bea's WISH | Pocoyo English | Cartoons for Kids",
@@ -1216,11 +1221,6 @@
      "id": "ptf_gDPb3rw",
      "t": "BUZZ! 🐝 A BEE IN SPACE?! 🚀 | Pocoyo’s Rocket Adventure  | POCOYO ENGLISH | Cartoons for Kids",
      "d": "46:50"
-    },
-    {
-     "id": "upHdk14XS_Q",
-     "t": "Pocoyo Meets Ozzy Fox! 🦊💙 Hide & Seek with New Friends | Full Episode | Pocoyo English | Cartoon",
-     "d": "3:30"
     }
    ]
   },
