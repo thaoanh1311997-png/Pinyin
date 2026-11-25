@@ -256,6 +256,13 @@ details.help li{margin:6px 0}
 .media.tts small{color:#5B6774;font-weight:700}
 .media.audio{aspect-ratio:auto;background:var(--card);padding:12px}
 .media.audio audio{width:100%}
+.redo{display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;border-radius:16px;background:var(--green-soft);font-size:14px;font-weight:700}
+.redo span{flex:1;min-width:0}
+.redo .btn{flex:none}
+.skip{display:flex;gap:10px;margin-top:10px}
+.skb{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border:0;border-radius:16px;background:var(--card);color:var(--ink,inherit);font:inherit;font-weight:900;font-size:16px;box-shadow:var(--sh-1);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.skb:active{transform:scale(.97)}
+.skb .i{width:22px;height:22px}
 .mbar{display:flex;gap:10px;align-items:center;margin-top:10px}
 .menu-pill{flex:1;display:flex;align-items:center;gap:10px;min-height:48px;padding:0 14px;border-radius:16px;border:0;background:var(--card);box-shadow:var(--sh-1);font-weight:900;font-size:15.5px;text-align:left}
 .menu-pill .mi{width:30px;height:30px;color:var(--teal);display:grid;place-items:center}
@@ -898,15 +905,107 @@ async function viaMyMemory(t){
   const d=await r.json(); if(String(d.responseStatus)!=='200') throw new Error('m');
   return d.responseData.translatedText;
 }
+// Vietnamese must sound modern and natural: never the wuxia "ta / ngươi" style machine translators like
+const ARCHAIC=/(^|[^\p{L}])(ngươi|các ngươi|huynh|muội|tại hạ|các hạ|lão phu|bổn cô nương|tiểu nhân)(?=$|[^\p{L}])/iu;
+function hasTa(v){ return /(^|[^\p{L}])ta(?=$|[^\p{L}])/iu.test(String(v).replace(/(chúng|người|bọn|mình|tụi)\s+ta(?=$|[^\p{L}])/giu,'$1 _')); }
+function fixVi(v){
+  if(!v) return v;
+  let x=String(v).replace(/(^|[^\p{L}])(Các ngươi|các ngươi)(?=$|[^\p{L}])/gu,(m,a,b)=>a+(b[0]==='C'?'Các bạn':'các bạn'))
+    .replace(/(^|[^\p{L}])(Ngươi|ngươi)(?=$|[^\p{L}])/gu,(m,a,b)=>a+(b[0]==='N'?'Bạn':'bạn'));
+  x=x.replace(/(^|[^\p{L}])(chúng|người|bọn|mình|tụi)\s+ta(?=$|[^\p{L}])/giu,(m)=>m.replace(/ta$/,'\u0001'))
+    .replace(/(^|[^\p{L}])(Ta|ta)(?=$|[^\p{L}])/gu,(m,a,b)=>a+(b==='Ta'?'Tôi':'tôi')).replace(/\u0001/g,'ta');
+  // exam numbers at the start ("Bốn. ", "3. ")
+  x=x.replace(/^\s*(?:\d{1,3}|Một|Hai|Ba|Bốn|Năm|Sáu|Bảy|Tám|Chín|Mười)\s*[.、。:]\s+(?=\p{Lu})/u,'');
+  return x.trim();
+}
 async function trOne(t){
-  if(TR[t]) return TR[t];
+  if(TR[t]) return fixVi(TR[t]);
   let out;
   try{const d=await gtx(t);out=(d[0]||[]).map(x=>x[0]).join('').trim();}catch(e){out=await viaMyMemory(t);}
-  if(out){TR[t]=out;saveTR();} return out;
+  out=fixVi(out); if(out){TR[t]=out;saveTR();} return out;
+}
+/* ---- AI translation (Groq, the user's own key): whole-lesson context, natural modern Vietnamese, then a second check ---- */
+const TRV=2; // lessons translated with this version are not redone
+const AIM=[
+  {id:'moonshotai/kimi-k2-instruct-0905'},
+  {id:'llama-3.3-70b-versatile'},
+  {id:'openai/gpt-oss-120b',x:{reasoning_effort:'low'}},
+  {id:'qwen/qwen3-32b',x:{reasoning_effort:'none'}}
+];
+const AIST={};
+async function aiJSON(messages,avoid,maxTok=4000){
+  const key=groqKey(); if(!key) throw new Error('nokey');
+  let net=0,srv=0;
+  for(let guard=0;guard<14;guard++){
+    const now=Date.now(); let pk=null;
+    for(const m of AIM){ const st=AIST[m.id]=AIST[m.id]||{}; if(st.dead) continue; const w=Math.max(0,(st.until||0)-now)+(m.id===avoid?2000:0); if(!pk||w<pk.w) pk={m,w}; }
+    if(!pk) throw new Error('ai-down');
+    if(pk.w>0){ if(pk.w>120000) throw new Error('ai-limit'); await sleep(Math.min(pk.w,20000)); }
+    const m=pk.m, st=AIST[m.id];
+    const body={model:m.id,messages,temperature:0.2,max_tokens:maxTok,response_format:{type:'json_object'},...(m.x||{})};
+    let r; try{ r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+key},body:JSON.stringify(body)}); }
+    catch(e){ if(++net>3) throw e; await sleep(2500*net); continue; }
+    if(r.status===401) throw new Error('key');
+    if(r.status===429||r.status===413){ const t=await r.text(); const ra=parseFloat(r.headers.get('retry-after'))||0; const mm=t.match(/try again in\s*([\d.]+)s/i); st.until=Date.now()+Math.max(ra,mm?+mm[1]:0,/per day|TPD|RPD/i.test(t)?600:5)*1000+300; continue; }
+    if(r.status>=500){ if(++srv>4) throw new Error('ai-5xx'); st.until=Date.now()+3000*srv; continue; }
+    if(r.status===400||r.status===404){ const t=await r.text(); if(/json_validate_failed|failed_generation/i.test(t)&&(st.jf=(st.jf||0)+1)<3) continue; st.dead=true; continue; }
+    if(!r.ok) throw new Error('ai '+r.status);
+    const j=await r.json(); let c=((j.choices&&j.choices[0].message.content)||'').replace(/<think>[\s\S]*?<\/think>/g,'');
+    try{ const o=JSON.parse(c); o._m=m.id; return o; }catch(e){ const mm=c.match(/\{[\s\S]*\}/); if(mm) try{ const o=JSON.parse(mm[0]); o._m=m.id; return o; }catch(e2){} }
+  }
+  throw new Error('ai-fail');
+}
+const TR_SYS=`Bạn là biên dịch viên Trung–Việt giỏi, dịch phụ đề bài học tiếng Trung cho người Việt.
+Yêu cầu:
+- Dịch ĐÚNG nghĩa, đủ ý, không thêm bớt; câu tiếng Việt HIỆN ĐẠI, tự nhiên như người Việt nói hằng ngày.
+- Xưng hô theo ngữ cảnh đời thường: tôi/mình/bạn/cậu/anh/chị/em/cô/chú/cháu/con/bố/mẹ… Chọn theo quan hệ trong hội thoại (vd 小王 nói với 阿姨 → cháu/cô; bạn bè → mình/cậu). Giữ xưng hô nhất quán trong cùng một đoạn hội thoại.
+- TUYỆT ĐỐI KHÔNG dùng lối cổ trang/kiếm hiệp: ta, ngươi, các ngươi, huynh, muội, tại hạ, các hạ… (chỉ dùng khi chính văn bản là văn cổ).
+- Tên người: phiên âm Hán Việt (小王 → Tiểu Vương, 王阿姨 → cô Vương, 李老师 → thầy/cô Lý). Đơn vị, số, ngày giờ dịch đúng.
+- Câu hỏi trắc nghiệm trong bài nghe (男的是什么意思？…) dịch đúng dạng câu hỏi ("Ý của người nam là gì?").
+- Không viết lại số thứ tự đề bài ở đầu câu.
+Trả về JSON {"vi":["…", …]} đúng số câu và đúng thứ tự.`;
+function badVi(v){ return !v||typeof v!=='string'||/[\u3400-\u9fff]/.test(v)||ARCHAIC.test(v)||hasTa(v); }
+async function aiBatch(lines,from,to,draft){
+  const ctx=lines.slice(Math.max(0,from-6),from).map(l=>'- '+l.zh+(l.vi?' → '+l.vi:'')).join('\n');
+  const nxt=lines.slice(to,to+3).map(l=>'- '+l.zh).join('\n');
+  const list=lines.slice(from,to).map((l,k)=>(k+1)+'. '+l.zh).join('\n');
+  const n=to-from;
+  let o=await aiJSON([{role:'system',content:TR_SYS},{role:'user',content:(ctx?'Các câu ngay trước (để hiểu ngữ cảnh, KHÔNG dịch lại):\n'+ctx+'\n\n':'')+'Dịch '+n+' câu sau:\n'+list+(nxt?'\n\nCâu tiếp theo (chỉ để hiểu ngữ cảnh):\n'+nxt:'')}]);
+  let vi=Array.isArray(o.vi)?o.vi.map(x=>String(x||'').replace(/^\s*\d+\s*[.)]\s*/,'').trim()):[];
+  if(vi.length!==n) throw new Error('count');
+  // second look by another model: fix wrong meaning, unnatural wording, old-style pronouns, names
+  try{
+    const chk=lines.slice(from,to).map((l,k)=>(k+1)+'. '+l.zh+'\n   → '+vi[k]).join('\n');
+    const o2=await aiJSON([{role:'system',content:TR_SYS},{role:'user',content:(ctx?'Ngữ cảnh trước:\n'+ctx+'\n\n':'')+'Đây là bản dịch nháp '+n+' câu. Hãy soát từng câu với câu gốc: sửa chỗ sai nghĩa, thiếu ý, chưa tự nhiên, xưng hô sai hoặc kiểu cổ trang, tên riêng sai. Câu đã tốt thì giữ nguyên.\n'+chk}],o._m);
+    const v2=Array.isArray(o2.vi)?o2.vi.map(x=>String(x||'').replace(/^\s*\d+\s*[.)]\s*/,'').trim()):[];
+    if(v2.length===n) vi=vi.map((x,k)=>badVi(v2[k])?x:v2[k]);
+  }catch(e){ console.warn('review',e); }
+  return vi.map(fixVi);
+}
+// translate lines[idx] (all of them when idx is null) with the AI; returns false when the AI could not be used
+async function aiTranslate(lines,idx,onEach,live){
+  if(!groqKey()) return false;
+  const want=new Set(idx||lines.map((_,i)=>i)); if(!want.size) return true;
+  const order=[...want].sort((a,b)=>a-b), B=16;
+  // batches of neighbouring lines so each batch reads as one passage
+  const groups=[]; let g=[];
+  for(const i of order){ if(g.length&&(i!==g[g.length-1]+1||g.length>=B)){ groups.push(g); g=[]; } g.push(i); }
+  if(g.length) groups.push(g);
+  let any=false;
+  for(const gr of groups){
+    if(live&&live.dead) return any;
+    try{ const vi=await aiBatch(lines,gr[0],gr[gr.length-1]+1); gr.forEach((i,k)=>{ if(vi[k]){ lines[i].vi=vi[k]; onEach&&onEach(lines[i]); } }); any=true; }
+    catch(e){ console.warn('ai tr',e); if(/key|ai-down|ai-limit/.test(String(e&&e.message))) return any||false; }
+  }
+  return true;
 }
 async function translateLines(lines,onEach){
-  const todo=lines.filter(l=>!l.vi);
-  todo.forEach(l=>{if(TR[l.zh]){l.vi=TR[l.zh];onEach&&onEach(l);}});
+  const todo=lines.filter(l=>!l.vi); if(!todo.length) return true;
+  if(groqKey()){ try{ const ok=await aiTranslate(lines,lines.map((l,i)=>l.vi?-1:i).filter(i=>i>=0),onEach); if(ok&&lines.every(l=>l.vi)) return true; }catch(e){} }
+  return gTranslate(lines.filter(l=>!l.vi),onEach);
+}
+async function gTranslate(todo,onEach){
+  todo.forEach(l=>{if(TR[l.zh]){l.vi=fixVi(TR[l.zh]);onEach&&onEach(l);}});
   const rest=todo.filter(l=>!l.vi); if(!rest.length) return true;
   const chunks=[]; let cur=[],len=0;
   for(const l of rest){ if(len+l.zh.length>450&&cur.length){chunks.push(cur);cur=[];len=0;} cur.push(l);len+=l.zh.length+1; }
@@ -916,7 +1015,7 @@ async function translateLines(lines,onEach){
     try{
       const d=await gtx(ch.map(l=>l.zh.replace(/\n/g,' ')).join('\n'));
       const parts=(d[0]||[]).map(x=>x[0]).join('').split('\n').map(s=>s.trim());
-      if(parts.length===ch.length&&parts.every(Boolean)){ ch.forEach((l,k)=>{l.vi=parts[k];TR[l.zh]=parts[k];onEach&&onEach(l);}); saveTR(); continue; }
+      if(parts.length===ch.length&&parts.every(Boolean)){ ch.forEach((l,k)=>{l.vi=fixVi(parts[k]);TR[l.zh]=l.vi;onEach&&onEach(l);}); saveTR(); continue; }
       throw new Error('split');
     }catch(e){
       for(const l of ch){ try{ l.vi=await trOne(l.zh); onEach&&onEach(l);}catch(err){ok=false;} }
@@ -953,11 +1052,12 @@ function loadYT(){
   ytP=new Promise(res=>{const prev=window.onYouTubeIframeAPIReady;window.onYouTubeIframeAPIReady=()=>{prev&&prev();res(true)};loadScript(LIB.yt).catch(()=>{ytP=null;res(false)});setTimeout(()=>res(!!(window.YT&&YT.Player)),15000);});
   return ytP;
 }
+const SKIPBAR='<div class="skip"><button class="skb" data-skip="-10" aria-label="Lùi 10 giây"><svg class="i" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 3.5V8h4.5"/></svg>Lùi 10s</button><button class="skb" data-skip="10" aria-label="Tới 10 giây">Tới 10s<svg class="i" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 3.5V8h-4.5"/></svg></button></div>';
 async function mountMedia(){
   const box=$('#mediaBox'); P=null;
   const src=LES.src||{type:'tts'};
   if(src.type==='youtube'){
-    box.innerHTML='<div class="media"><div id="ytBox"></div></div>';
+    box.innerHTML='<div class="media"><div id="ytBox"></div></div>'+SKIPBAR;
     const ok=await loadYT();
     if(!ok){box.innerHTML=ttsBox('Không tải được video YouTube (kiểm tra mạng). Tạm dùng giọng đọc máy.');return;}
     await new Promise(res=>{
@@ -983,8 +1083,10 @@ async function mountMedia(){
       $('#reMedia').onchange=e=>{const f=e.target.files[0];if(!f)return;if(!isMedia(f)){toast('File này không phải video hay âm thanh. Hãy chọn file nghe (mp3, m4a…) hoặc video.',4500);e.target.value='';return;}src.url=URL.createObjectURL(f);src.file=f;src.audio=isAudio(f);src.name=f.name;SAVED_MEDIA.delete(les.id);keepMedia(les.id,f);saveLesson();mountMedia();};
       return;
     }
-    box.innerHTML=src.audio?'<div class="media audio"><audio id="vid" controls playsinline preload="auto"></audio></div>':'<div class="media"><video id="vid" controls playsinline preload="auto"></video></div>';
+    box.innerHTML=(src.audio?'<div class="media audio"><audio id="vid" controls playsinline preload="auto"></audio></div>':'<div class="media"><video id="vid" controls playsinline preload="auto"></video></div>')+SKIPBAR;
     const v=$('#vid'); v.src=src.url;
+    // subtitles made before word timing existed can run ahead of the voice: offer to redo them once
+    if(!LES.ver&&LES.lines.length&&groqKey()&&!LES.demo){ const n=document.createElement('div'); n.className='redo'; n.innerHTML='<span>Phụ đề bài này làm bằng bản cũ nên có chỗ chữ chạy trước giọng đọc.</span><button class="btn sm pri" id="redoSubs">Làm lại cho khớp</button>'; box.appendChild(n); $('#redoSubs').onclick=redoSubs; }
     P={media:true,kind:'file',time:()=>v.currentTime,play:()=>v.play().catch(()=>{}),pause:()=>v.pause(),seek:t=>{v.currentTime=t},rate:r=>{v.playbackRate=r},playing:()=>!v.paused&&!v.ended,paused:()=>v.paused||v.ended,dur:()=>isFinite(v.duration)?v.duration:0};
   } else {
     box.innerHTML=ttsBox();
@@ -1001,7 +1103,10 @@ const hasTime=i=>P&&P.media&&LES.lines[i]&&LES.lines[i].s!=null;
 // file lesson whose recording is not on this device: do not read it with a machine voice instead
 const needFile=()=>LES&&LES.src&&LES.src.type==='file'&&!(P&&P.media);
 function nudgeFile(){ const b=$('#needFile'); toast(b?'Bài này cần file gốc để nghe đúng giọng. Bấm “Chọn file” ở trên nha.':'Đang mở file gốc, chờ chút nha.',4000); if(b){ b.scrollIntoView({behavior:'smooth',block:'center'}); b.classList.remove('pulse'); void b.offsetWidth; b.classList.add('pulse'); } }
-async function playSeg(i,run,opt={}){
+let SEG=0; // a single sentence is being played by the app
+const appBusy=()=>(PLAYING&&!PLAYING.dead)||SEG>0;
+async function playSeg(i,run,opt={}){ SEG++; try{ return await playSeg0(i,run,opt); } finally { SEG--; } }
+async function playSeg0(i,run,opt={}){
   const L=LES.lines[i]; if(!L) return;
   const rate=opt.rate||S.rate;
   if(needFile()){ run.dead=true; nudgeFile(); return; }
@@ -1026,6 +1131,22 @@ async function seekWait(t,run){
   while(!run.dead&&performance.now()-t0<2500){ if(Math.abs(P.time()-t)<0.6) return; await sleep(40); }
 }
 function segDur(i){const L=LES.lines[i];return hasTime(i)?(L.e-L.s)/S.rate:lastSpeakMs/1000;}
+
+// ±10 s: jump inside the recording; if it was playing it keeps playing and the sentence follows
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-skip]'); if(!b||!P||!P.media) return;
+  const d=+b.dataset.skip, dur=P.dur&&P.dur()||1e9, t=Math.max(0,Math.min(dur-0.3,P.time()+d));
+  const was=(PLAYING&&!PLAYING.dead)||(P.playing&&P.playing());
+  if(PLAYING&&!PLAYING.dead&&LES.lines.length&&hasTime(0)){ runFrom(Math.max(0,lineAt(t-S.offset)),t); return; }
+  P.seek(t); if(LES.lines.length&&hasTime(0)){ const j=lineAt(t-S.offset); if(j>=0) setActive(j); }
+  if(was) P.play();
+});
+// playing with the player's own buttons: the highlighted sentence follows the voice too
+setInterval(()=>{ try{
+  if(VIEW!=='Lesson'||!P||!P.media||!LES||!LES.lines.length||!hasTime(0)) return;
+  if(appBusy()||!(P.playing&&P.playing())) return;
+  const j=lineAt(P.time()-S.offset-0.12); if(j>=0&&j!==CUR) setActive(j);
+}catch(e){} },250);
 
 /* ======================= library ======================= */
 // Audio/video files of lessons are kept in IndexedDB so a lesson reopens without picking the file again
@@ -1054,7 +1175,7 @@ function lessons(){return store.get('bb.lessons',[]);}
 function saveLesson(){
   if(!LES||LES.demo) return;
   const all=lessons().filter(x=>x.id!==LES.id);
-  const copy={id:LES.id,title:LES.title,src:LES.src?{type:LES.src.type,id:LES.src.id,name:LES.src.name,audio:LES.src.audio,fk:LES.src.fk}:{type:'tts'},lines:LES.lines.map(l=>({s:l.s,e:l.e,zh:l.zh,vi:l.vi||''})),at:Date.now()};
+  const copy={id:LES.id,title:LES.title,tv:LES.tv,ver:LES.ver,src:LES.src?{type:LES.src.type,id:LES.src.id,name:LES.src.name,audio:LES.src.audio,fk:LES.src.fk}:{type:'tts'},lines:LES.lines.map(l=>({s:l.s,e:l.e,zh:l.zh,vi:l.vi||''})),at:Date.now()};
   all.unshift(copy);
   while(all.length>40){ const x=all.pop(); if(x&&x.src&&x.src.type==='file') MDB.del(x.id); }
   if(LES.src&&LES.src.type==='file'&&LES.src.file) keepMedia(LES.id,LES.src.file);
@@ -1509,12 +1630,31 @@ $$('[data-go]').forEach(b=>b.onclick=()=>{const k=b.dataset.go; if(k==='video'){
 
 async function openLesson(les){
   newRun(); stopRec();
-  LES={...les,lines:les.lines.map(l=>({...l}))}; if(LES.lines.length&&(fragmented(LES.lines)||LES.lines.some(l=>cjkCount(l.zh)&&cleanZh(l.zh)!==l.zh))){ LES.lines=tidyLines(LES.lines); } else LES.lines=normLines(LES.lines); const pos=!LES.demo&&POS.get(LES.id); CUR=pos?Math.min(pos.i,Math.max(0,LES.lines.length-1)):0; if(!LES.lines.length) MODE='shadow'; RECS={}; PRON={}; DICTST={}; FILLST={}; PRAC=null;
+  LES={...les,lines:les.lines.map(l=>({...l}))}; const glued=LES.lines.length&&needsTidy(LES.lines);
+  if(LES.lines.length&&(glued||fragmented(LES.lines)||LES.lines.some(l=>cjkCount(l.zh)&&cleanZh(l.zh)!==l.zh))){ LES.lines=tidyLines(LES.lines); } else LES.lines=normLines(LES.lines); const pos=!LES.demo&&POS.get(LES.id); CUR=pos?Math.min(pos.i,Math.max(0,LES.lines.length-1)):0; if(!LES.lines.length) MODE='shadow'; RECS={}; PRON={}; DICTST={}; FILLST={}; PRAC=null;
   show('Lesson'); renderModes(); await mountMedia(); setMode(MODE);
   if(pos&&LES.lines.length&&(CUR>0||pos.t>3)){ restorePos(pos); }
   saveLesson();
-  translateLines(LES.lines,l=>{const i=LES.lines.indexOf(l);$$(`[data-vi="${i}"]`).forEach(el=>{el.textContent=l.vi;el.classList.remove('wait');});})
-    .then(ok=>{saveLesson(); if(!ok) toast('Một số câu chưa dịch được (mạng yếu?). Bấm vào câu để thử lại.',4000);});
+  const L0=LES, show1=l=>{ if(LES!==L0) return; const i=L0.lines.indexOf(l); $$(`[data-vi="${i}"]`).forEach(el=>{el.textContent=l.vi;el.classList.remove('wait');}); };
+  if(!L0.demo&&L0.lines.length&&L0.tv!==TRV) retranslate(L0,show1);
+  else translateLines(L0.lines,show1).then(ok=>{ if(LES===L0) saveLesson(); if(!ok&&LES===L0) toast('Một số câu chưa dịch được (mạng yếu?). Bấm vào câu để thử lại.',4000);});
+}
+// lessons translated the old way (machine translation, "ta/ngươi"…): translate again with the AI, line by line in place
+async function retranslate(les,show1){
+  if(!groqKey()){ // no AI key on this device: at least fix the old-style pronouns
+    les.lines.forEach(l=>{ if(l.vi){ const v=fixVi(l.vi); if(v!==l.vi){ l.vi=v; show1(l); } } });
+    if(LES===les) saveLesson();
+    return translateLines(les.lines,show1).then(()=>{ if(LES===les) saveLesson(); });
+  }
+  const live={get dead(){return LES!==les;}};
+  toast('Bánh Mì đang dịch lại bài này cho tự nhiên, chính xác hơn. Cứ học bình thường nha.',4500);
+  let n=0; const tick=()=>{ if(++n%16===0&&LES===les) saveLesson(); };
+  const ok=await aiTranslate(les.lines,null,l=>{show1(l);tick();},live);
+  if(LES!==les) return;
+  if(ok){ les.tv=TRV; LES.tv=TRV; }
+  await translateLines(les.lines,show1); // anything still empty
+  saveLesson();
+  if(ok) toast('Đã dịch lại xong cả bài.',3000);
 }
 // put the player and the highlighted sentence back where the user stopped (no auto-play)
 function restorePos(pos){
@@ -1865,12 +2005,14 @@ async function groqSend(blob,name,off){
   return (d.segments||[]).map(x=>{
     let st=x.start, en=x.end; const ws=W.filter(w=>w.start>=x.start-0.05&&w.end<=x.end+0.3);
     if(ws.length){ const a=ws[0].start, b=ws[ws.length-1].end; if(a>st&&a<en) st=a; if(b>st+0.3&&b<en) en=b; }
-    return {s:off+st,e:off+en,t:x.text};
+    return {s:off+st,e:off+en,t:x.text,ws:ws.map(w=>({w:String(w.word||''),s:off+w.start,e:off+w.end}))};
   });
 }
 async function groqLines(res){
   const lines=[];
-  for(const x of res){ const zh=(await toSimp(String(x.t||''))).trim(); if(!cjkCount(zh)) continue; const prev=lines[lines.length-1]; if(prev&&prev.zh===zh) continue; lines.push({s:x.s,e:Math.max(x.s+0.4,x.e),zh}); }
+  for(const x of res){ const zh=(await toSimp(String(x.t||''))).trim(); if(!cjkCount(zh)) continue;
+    // one Whisper segment can hold two sentences (or "6? 3. 王阿姨…"): cut it at sentence ends with the words' own times
+    for(const l of splitTimed({s:x.s,e:Math.max(x.s+0.4,x.e),zh},x.ws)){ const prev=lines[lines.length-1]; if(prev&&prev.zh===l.zh) continue; lines.push(l); } }
   lines.forEach((l,k)=>{const n=lines[k+1];if(n&&n.s<l.e)l.e=Math.max(l.s+0.3,n.s);});
   return lines;
 }
@@ -1945,13 +2087,22 @@ function wcall(w,msg,onEvt){
     w.postMessage(msg);
   });
 }
-async function autoSubsFile(){
+async function redoSubs(){
+  const les=LES; if(!les||!les.src||!les.src.file) return;
+  const back=les.lines, t=mediaNow(); const r=$('.redo'); if(r) r.remove();
+  newRun(); les.lines=[]; les.tv=undefined;
+  await autoSubsFile(true);
+  if(LES!==les) return;
+  if(!les.lines.length){ les.lines=back; renderModes(); setMode('shadow'); toast('Chưa làm lại được phụ đề (mạng hoặc máy chủ bận). Vẫn giữ bản cũ nha.',4500); return; }
+  if(t!=null){ const j=lineAt(t); if(j>=0) setActive(j); }
+}
+async function autoSubsFile(force){
   const job={stop:false,running:true,les:LES}; GEN=job; const les=LES;
   const base=les.src.file?les.src.file.name+'|'+les.src.file.size:'', fk=base?'v3|'+base:'';
-  const old=fk&&lessons().find(x=>x.src&&x.src.fk===fk&&x.lines&&x.lines.length&&x.id!==les.id);
+  const old=!force&&fk&&lessons().find(x=>x.src&&x.src.fk===fk&&x.lines&&x.lines.length&&x.id!==les.id);
   const tmpId=les.id, dropTmp=()=>{ if(tmpId===LES.id) return; store.set('bb.lessons',lessons().filter(x=>x.id!==tmpId)); SAVED_MEDIA.delete(tmpId); MDB.get(tmpId).then(m=>{ if(m) MDB.del(tmpId); }); };
   if(old){ job.running=false; les.title=old.title; LES.id=old.id; SAVED_MEDIA.delete(old.id); LES.lines=old.lines.map(l=>({...l})); LES.src.fk=fk; saveLesson(); dropTmp(); renderModes(); setMode('shadow'); toast('Bài này đã làm phụ đề rồi, mở lại ngay.'); return; }
-  if(fk){ les.src.fk=fk; const stale=lessons().find(x=>x.src&&x.src.fk&&x.src.fk!==fk&&x.src.fk.endsWith(base)&&x.id!==les.id); if(stale){ LES.id=stale.id; SAVED_MEDIA.delete(stale.id); if(les.src.file) keepMedia(stale.id,les.src.file); dropTmp(); } }
+  if(fk){ les.src.fk=fk; const stale=!force&&lessons().find(x=>x.src&&x.src.fk&&x.src.fk!==fk&&x.src.fk.endsWith(base)&&x.id!==les.id); if(stale){ LES.id=stale.id; SAVED_MEDIA.delete(stale.id); if(les.src.file) keepMedia(stale.id,les.src.file); dropTmp(); } }
   try{
     genUI('Bánh Mì đang nghe video…','Đang đọc âm thanh trong file',null);
     const blob=les.src.file||await (await fetch(les.src.url)).blob();
@@ -2039,7 +2190,59 @@ function cleanZh(t){
     return TONE_RE.test(m)||ws.length>=3&&ws.every(w=>/^[a-zü'’,.!?;:-]+$/.test(w))?' ':m;
   }).replace(/\s{2,}/g,' ').trim();
 }
-function tidyLines(lines){ return normLines(mergeShort(normLines((lines||[]).map(l=>({...l,zh:cleanZh(l.zh)})).filter(l=>cjkCount(l.zh))))); }
+function tidyLines(lines){ return normLines(mergeShort(normLines(splitAll((lines||[]).map(l=>({...l,zh:cleanZh(l.zh)})).filter(l=>cjkCount(l.zh)))))); }
+/* ---- one sentence per line, no exam numbers ---- */
+const isTok=c=>isCJK(c)||/[A-Za-z0-9]/.test(c);
+// question numbers read out in listening books ("3. 王阿姨…", "四。小王…", "…意思 6?") are not part of the sentence
+function enumRest(t){
+  let x=String(t||'').trim();
+  for(let k=0;k<2;k++) x=x.replace(/^(?:[（(]?\d{1,3}[)）]?\s*[.．、。:：?？](?!\d)|[一二三四五六七八九十]{1,3}\s*[、。．.]|第[一二三四五六七八九十\d]{1,3}[题題][.．、。:：]?)\s*/,'').trim();
+  x=x.replace(/(^|[\s\u4e00-\u9fff])\d{1,2}\s*([?？])\s*$/,'$1$2').replace(/\s+([?？。！!，,、；])/g,'$1').replace(/([，,、；])\s*[.．]\s*/g,'$1').trim();
+  return x;
+}
+function stripEnum(t){ const x=enumRest(t); return cjkCount(x)?x:String(t||'').trim(); }
+// where to cut: after 。！？ (when what follows is a real sentence) and before a question number
+function cutsOf(t){
+  const cuts=new Set(); let m;
+  const re1=/[。！？!?]+[”」』"’]?\s*/g; while((m=re1.exec(t))){ const e=m.index+m[0].length; if(e<t.length) cuts.add(e); }
+  const re2=/[\s，,；;]((?:\d{1,3}\s*[.．、](?!\d))|(?:[一二三四五六七八九十]{1,3}[、]))/g; while((m=re2.exec(t))){ cuts.add(m.index+1); }
+  return [...cuts].sort((a,b)=>a-b);
+}
+// time of each spoken character: from the words when they match, else spread evenly over the line
+function charTimes(t,s,e,ws){
+  const idx=[]; [...t].forEach((c,i)=>{ if(isTok(c)) idx.push(i); });
+  const n=idx.length, T=new Map();
+  if(ws&&ws.length){ const per=[]; ws.forEach(w=>{ const cs=[...w.w].filter(isTok); cs.forEach((c,k)=>per.push([w.s+(w.e-w.s)*k/cs.length,w.s+(w.e-w.s)*(k+1)/cs.length])); });
+    if(per.length===n){ idx.forEach((ci,k)=>T.set(ci,per[k])); return {idx,T}; } }
+  idx.forEach((ci,k)=>T.set(ci,[s+(e-s)*k/Math.max(1,n),s+(e-s)*(k+1)/Math.max(1,n)]));
+  return {idx,T,even:true};
+}
+function splitTimed(l,ws){
+  const t=String(l.zh||''), chars=[...t], cuts=cutsOf(chars.join(''));
+  const one=()=>{ const z=stripEnum(t); return [z===t?l:{...l,zh:z,vi:fixVi(l.vi||'')}]; };
+  if(!cuts.length||l.s==null) return one();
+  // pieces in code-point positions
+  const str=chars.join(''), pos=[0]; cuts.forEach(c=>pos.push([...str.slice(0,c)].length)); pos.push(chars.length);
+  let pcs=[]; for(let k=0;k<pos.length-1;k++){ const a=pos[k],b=pos[k+1]; if(b>a) pcs.push([a,b]); }
+  // pure question numbers ("6?", "3.", "四。") go away; tiny real bits ("好！") stay with their neighbour
+  const txt=p=>chars.slice(p[0],p[1]).join('');
+  pcs=pcs.filter(p=>cjkCount(enumRest(txt(p))));
+  for(let k=0;k<pcs.length&&pcs.length>1;k++){ if(cjkCount(enumRest(txt(pcs[k])))<4){ if(k>0) pcs[k-1][1]=pcs[k][1]; else pcs[1][0]=pcs[0][0]; pcs.splice(k,1); k--; } }
+  const {T}=charTimes(t,l.s,l.e,ws);
+  const out=[];
+  for(const [a,b] of pcs){
+    const raw=chars.slice(a,b).join(''), z=stripEnum(raw); if(!cjkCount(z)) continue;
+    // times of the first/last character that is still in the sentence (numbers stripped)
+    let s0=null,e0=null;
+    for(let i=a;i<b;i++){ const tt=T.get(i); if(!tt) continue; if(isCJK(chars[i])&&s0==null) s0=tt[0]; if(isCJK(chars[i])) e0=tt[1]; }
+    if(s0==null) continue;
+    out.push({s:s0,e:Math.max(s0+0.3,e0),zh:z,vi:''});
+  }
+  if(out.length<=1) return one();
+  return out;
+}
+function splitAll(lines){ const out=[]; for(const l of lines){ if(l.s==null){ out.push(l); continue; } out.push(...splitTimed(l)); } return out; }
+function needsTidy(lines){ return lines.some(l=>l.s!=null&&(splitTimed(l).length>1||stripEnum(l.zh)!==l.zh)); }
 // Timed subtitles must run strictly by start time with no overlaps: captions from YouTube, Groq pieces or .srt files
 // can come out of order or overlap (rolling captions), which made the highlighted line jump back and forth.
 function normLines(lines){
@@ -2077,7 +2280,8 @@ function finishGen(lines){
   LES.lines=lines; if(!/^Video/.test(LES.title)||LES.title==='Video YouTube') LES.title=LES.title==='Video YouTube'?'Video · '+lines[0].zh.slice(0,16):LES.title;
   $('#topTitle').textContent=LES.title; saveLesson(); toast('Xong phụ đề! Chạm vào câu nào để nghe đoạn đó.',4000);
   setMode('shadow');
-  translateLines(LES.lines,l=>{const i=LES.lines.indexOf(l);$$(`[data-vi="${i}"]`).forEach(el=>{el.textContent=l.vi;el.classList.remove('wait');});}).then(()=>saveLesson());
+  const les=LES; if(groqKey()) les.tv=TRV; les.ver=3;
+  translateLines(LES.lines,l=>{ if(LES!==les) return; const i=LES.lines.indexOf(l);$$(`[data-vi="${i}"]`).forEach(el=>{el.textContent=l.vi;el.classList.remove('wait');});}).then(()=>{ if(LES===les) saveLesson(); });
 }
 const PROXIES=[u=>'https://corsproxy.io/?url='+encodeURIComponent(u),u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),u=>'https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(u)];
 async function viaProxy(u,asJson){
@@ -2233,10 +2437,10 @@ function setActive(i,scroll=true){
   }
 }
 function setPlayIcon(on){const b=$('#pPlay');if(b){b.innerHTML=(on?IC.pause:IC.play)+'<small>'+(on?'Dừng':'Phát')+'</small>';b.setAttribute('aria-label',on?'Tạm dừng':'Phát');}}
-async function runFrom(i){
+async function runFrom(i,at){
   if(needFile()){ newRun(); setPlayIcon(false); nudgeFile(); return; }
   const run=newRun(); PLAYING=run; setPlayIcon(true);
-  if(hasTime(Math.max(0,Math.min(LES.lines.length-1,i)))) await runMedia(i,run);
+  if(hasTime(Math.max(0,Math.min(LES.lines.length-1,i)))) await runMedia(i,run,at);
   else for(let k=i;k<LES.lines.length&&!run.dead;k++){
     setActive(k);
     const nx=LES.lines[k+1];
@@ -2252,20 +2456,20 @@ async function runFrom(i){
 }
 // Video/audio with timed subtitles: the media plays on its own and the highlighted line follows its clock,
 // so lines only move forward in order. Nói theo / Lặp stop or repeat at the end of each line.
-async function runMedia(i,run){
+async function runMedia(i,run,at){
   const Ls=LES.lines; let k=Math.max(0,Math.min(Ls.length-1,i)), lastGo=0, idle=0;
-  const go=async j=>{ k=j; setActive(k); P.rate(S.rate); await seekWait(Ls[k].s+S.offset,run); if(!run.dead){ P.play(); lastGo=performance.now(); idle=0; } };
-  await go(k);
+  const go=async(j,t0)=>{ k=j; setActive(k); P.rate(S.rate); await seekWait(t0!=null?t0:Ls[k].s+S.offset,run); if(!run.dead){ P.play(); lastGo=performance.now(); idle=0; } };
+  await go(k,at);
   while(!run.dead){
     await sleep(60); if(run.dead) break;
     const t=P.time()-S.offset, L=Ls[k];
     if(S.loop){
       if(t>=L.e-0.05||t<L.s-1.5){ await go(k); continue; }
     } else if(S.shadow){
-      if(t<L.s-1.5||t>L.e+2){ const j=lineAt(t); if(j>=0&&j!==k){ k=j; setActive(k); } }
+      if(t<L.s-1.5||t>L.e+2){ const j=lineAt(t-0.12); if(j>=0&&j!==k){ k=j; setActive(k); } }
       else if(t>=L.e-0.05){ P.pause(); await gapWait(k,run); if(run.dead||k+1>=Ls.length) break; await go(k+1); continue; }
     } else {
-      const j=lineAt(t); if(j>=0&&j!==k){ k=j; setActive(k); }
+      const j=lineAt(t-0.12); if(j>=0&&j!==k){ k=j; setActive(k); }
       if(k===Ls.length-1&&t>=Ls[k].e+0.3) break;
     }
     // paused with the player's own buttons, or the video ended
@@ -2317,7 +2521,11 @@ $('#panel').addEventListener('click',async e=>{
   }
   const v=e.target.closest('.vi.wait'); if(v){const i=+v.dataset.vi;v.textContent='Đang dịch…';try{LES.lines[i].vi=await trOne(LES.lines[i].zh);v.textContent=LES.lines[i].vi;v.classList.remove('wait');saveLesson();}catch(err){v.textContent='Chưa dịch được, chạm để thử lại.';}return;}
   const ln=e.target.closest('.line');
-  if(ln){ const i=+ln.dataset.i; if(i===CUR&&e.target.closest('.w')) return; stopRun(); setActive(i,false); if(!S.hz){ln.classList.add('peek');} const run=newRun(); await playSeg(i,run); }
+  if(ln){ const i=+ln.dataset.i; if(i===CUR&&e.target.closest('.w')) return;
+    // while the lesson is playing, tapping a sentence jumps there and keeps playing (no stop after one sentence)
+    const was=(PLAYING&&!PLAYING.dead)||(!SEG&&P&&P.media&&P.playing&&P.playing());
+    if(was&&hasTime(i)&&!needFile()){ if(!S.hz){ln.classList.add('peek');} runFrom(i); return; }
+    stopRun(); setActive(i,false); if(!S.hz){ln.classList.add('peek');} const run=newRun(); await playSeg(i,run); }
 });
 $('#panel').addEventListener('change',e=>{if(e.target.id==='rate'){S.rate=+e.target.value;saveS();}});
 setInterval(()=>{ // follow the video when it is played with its own controls

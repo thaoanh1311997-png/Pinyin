@@ -20,3 +20,5 @@ jobs:
           node video/tools/media-keep-test.cjs
           BT=webkit node video/tools/resume-test.cjs
           node video/tools/resume-test.cjs
+          BT=webkit node video/tools/player-test.cjs
+          node video/tools/player-test.cjs
