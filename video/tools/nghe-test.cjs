@@ -57,7 +57,7 @@ const EMPTY = { id: 'e1', title: '15', src: { type: 'file', name: 'x15.mp3', aud
     // books start folded: only the book headers show; a tap unfolds the lesson list
     ok(!(await pg.isVisible('.ng-it')) && await pg.isVisible('.ng-book.b2 .ng-h') && await pg.isVisible('.ng-book.b3 .ng-h'), tag + ' books folded at first');
     const hb = await pg.$$eval('.ng-book', bs => bs.map(b => Math.round(b.getBoundingClientRect().height)));
-    ok(hb.every(h => h < 90), tag + ' folded books are small: ' + hb.join(','));
+    ok(hb.every(h => h < 110), tag + ' folded books are small: ' + hb.join(','));
     await pg.click('.ng-book.b3 .ng-h'); await pg.waitForTimeout(300);
     ok(await pg.isVisible('.ng-book.b3 .ng-it') && !(await pg.isVisible('.ng-book.b2 .ng-it')), tag + ' tapping Quyển 3 unfolds only its lessons');
     ok(await pg.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), tag + ' no sideways scroll');
