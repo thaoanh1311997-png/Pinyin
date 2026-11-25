@@ -44,7 +44,7 @@ async function ctxFor(browserType, mobile, signed, mk) {
 }
 async function openLes(pg) {
   await pg.goto(URL0); await pg.waitForSelector('#lib .open', { state: 'attached', timeout: 15000 }); await pg.waitForTimeout(300);
-  if (!(await pg.isVisible('#vLesson'))) await pg.click('#lib .open[data-id="v1"]'); // a lesson left open reopens by itself
+  if (!(await pg.isVisible('#vLesson'))) await (async () => { if (!(await pg.isVisible('#vLib'))) await pg.click('[data-go=\"lib\"]'); await pg.click('#lib .open[data-id=\"v1\"]'); })(); // a lesson left open reopens by itself
   await pg.waitForSelector('#mediaBox .media', { timeout: 15000 });
   await pg.waitForTimeout(1200);
 }

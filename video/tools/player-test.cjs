@@ -50,7 +50,7 @@ function mockGroq(ctx, st) {
     await ctx.addInitScript((les) => { if (!localStorage.getItem('t.init')) { localStorage.setItem('t.init', '1'); localStorage.setItem('bb.lessons', JSON.stringify([les])); localStorage.setItem('bb.groq', 'gsk_test_key_0000000000000000000000'); } }, OLD);
     const pg = await ctx.newPage(); const errs = []; pg.on('pageerror', e => errs.push(String(e)));
     await pg.goto(URL0); await pg.waitForSelector('#lib .open', { state: 'attached' });
-    await pg.click('#lib .open[data-id="v9"]'); await pg.waitForSelector('#reMedia', { state: 'attached' });
+    await (async () => { if (!(await pg.isVisible('#vLib'))) await pg.click('[data-go=\"lib\"]'); await pg.click('#lib .open[data-id=\"v9\"]'); })(); await pg.waitForSelector('#reMedia', { state: 'attached' });
     await pg.setInputFiles('#reMedia', { name: '02.mp3', mimeType: 'audio/mpeg', buffer: fs.readFileSync(path.join(S, 'long.mp3')) });
     await pg.waitForSelector('#vid'); await pg.waitForTimeout(2500);
     const zh = await pg.evaluate(() => [...document.querySelectorAll('#lines .line .hz')].length ? [...document.querySelectorAll('#lines .line')].map(l => [...l.querySelectorAll('.hz')].map(x => x.textContent).join('')) : []);
@@ -93,7 +93,7 @@ function mockGroq(ctx, st) {
   // no AI key: old-style pronouns are still fixed
   { const b = await bt.launch(); const ctx = await b.newContext(); await ctx.route(/translate\.googleapis|mymemory|api\.groq/, r => r.fulfill({ status: 500, body: '' }));
     await ctx.addInitScript((les) => { if (!localStorage.getItem('t.init')) { localStorage.setItem('t.init', '1'); localStorage.setItem('bb.lessons', JSON.stringify([les])); } }, { ...OLD, lines: OLD.lines.slice(2, 4) });
-    const pg = await b.contexts()[0].newPage(); await pg.goto(URL0); await pg.waitForSelector('#lib .open', { state: 'attached' }); await pg.click('#lib .open[data-id="v9"]'); await pg.waitForTimeout(1500);
+    const pg = await b.contexts()[0].newPage(); await pg.goto(URL0); await pg.waitForSelector('#lib .open', { state: 'attached' }); await (async () => { if (!(await pg.isVisible('#vLib'))) await pg.click('[data-go=\"lib\"]'); await pg.click('#lib .open[data-id=\"v9\"]'); })(); await pg.waitForTimeout(1500);
     const vi = await pg.evaluate(() => JSON.parse(localStorage.getItem('bb.lessons')).find(x => x.id === 'v9').lines.map(l => l.vi));
     ok(/bạn đã giúp tôi/.test(vi[0]) && !/^Bốn/.test(vi[0]), `[${name}] no key: pronouns fixed → "${vi[0]}"`);
     await b.close(); }

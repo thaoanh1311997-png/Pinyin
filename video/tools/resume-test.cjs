@@ -15,14 +15,16 @@ const LES = { id: 'v1', title: '01 第一课', src: { type: 'file', name: '01 �
     await ctx.addInitScript((les) => { if (!localStorage.getItem('t.init')) { localStorage.setItem('t.init', '1'); localStorage.setItem('bb.lessons', JSON.stringify([les])); } }, LES);
     const pg = await ctx.newPage(); const errs = []; pg.on('pageerror', e => { if (/\/video\//.test(pg.url())) errs.push(String(e)); });
     await pg.goto(BASE + 'sach/'); // a page before, to see that back does not leave the lesson page
-    await pg.goto(BASE + 'video/'); await pg.waitForSelector('#lib .open');
+    await pg.goto(BASE + 'video/'); await pg.waitForSelector('#lib .open', { state: 'attached' });
     ok(!(await pg.$('#resumeCard .resume')), tag + ' no resume card before learning');
-    await pg.click('#lib .open[data-id="v1"]'); await pg.waitForSelector('#reMedia', { state: 'attached' });
+    await (async () => { if (!(await pg.isVisible('#vLib'))) await pg.click('[data-go=\"lib\"]'); await pg.click('#lib .open[data-id=\"v1\"]'); })(); await pg.waitForSelector('#reMedia', { state: 'attached' });
     await pg.setInputFiles('#reMedia', { name: '01 第一课.mp3', mimeType: 'audio/mpeg', buffer: fs.readFileSync(path.join(S, 'long.mp3')) });
     await pg.waitForSelector('#vid'); await pg.waitForTimeout(800);
     await pg.click('.line[data-i="6"]'); await pg.waitForTimeout(1500);
     const t1 = await pg.evaluate(() => document.querySelector('#vid').currentTime);
-    // A) phone back gesture / browser back → stays on the page, Home view
+    // A) phone back gesture / browser back → back to the "Bài đã học" list it was opened from, then Home; never leaves the page
+    await pg.goBack(); await pg.waitForTimeout(800);
+    ok(/\/video\/$/.test(pg.url()) && await pg.isVisible('#vLib'), tag + ' browser back returns to the lesson list, url ' + pg.url());
     await pg.goBack(); await pg.waitForTimeout(800);
     ok(/\/video\/$/.test(pg.url()) && await pg.isVisible('#vHome'), tag + ' browser back stays in Học video (home), url ' + pg.url());
     const rc = await pg.textContent('#resumeCard').catch(() => '');
@@ -49,7 +51,7 @@ const LES = { id: 'v1', title: '01 第一课', src: { type: 'file', name: '01 �
     await pg.goForward(); await pg.waitForSelector('#vHome'); await pg.waitForTimeout(800);
     ok(await pg.isVisible('#vHome') && !(await pg.isVisible('#vLesson')), tag + ' coming back after leaving on purpose stays on home');
     // D) sample lesson: no resume entry, no crash
-    await pg.click('[data-smp="0"]'); await pg.waitForTimeout(800); await pg.click('.line[data-i="2"]'); await pg.waitForTimeout(400);
+    await pg.click('[data-go="samples"]'); await pg.click('[data-smp="0"]'); await pg.waitForTimeout(800); await pg.click('.line[data-i="2"]'); await pg.waitForTimeout(400);
     ok(!(await pg.evaluate(() => JSON.parse(localStorage.getItem('bb.pos') || '{}')).s1), tag + ' sample lessons do not create resume entries');
     ok(!errs.length, tag + ' no page errors ' + errs.join(' | '));
     await b.close();
