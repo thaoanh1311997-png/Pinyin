@@ -1730,7 +1730,7 @@ $$('[data-go]').forEach(b=>b.onclick=()=>{const k=b.dataset.go; if(k==='video'){
 async function openLesson(les){
   newRun(); stopRec();
   LES={...les,lines:les.lines.map(l=>({...l}))}; const glued=!LES.pack&&LES.lines.length&&needsTidy(LES.lines);
-  if(LES.lines.length&&!LES.pack&&(glued||fragmented(LES.lines)||LES.lines.some(l=>cjkCount(l.zh)&&cleanZh(l.zh)!==l.zh))){ LES.lines=tidyLines(LES.lines); } else LES.lines=normLines(LES.lines); const pos=!LES.demo&&POS.get(LES.id); CUR=pos?Math.min(pos.i,Math.max(0,LES.lines.length-1)):0; if(!LES.lines.length) MODE='shadow'; RECS={}; PRON={}; DICTST={}; FILLST={}; PRAC=null;
+  if(LES.lines.length&&!LES.pack&&(glued||fragmented(LES.lines)||LES.lines.some(l=>cjkCount(l.zh)&&cleanZh(l.zh)!==l.zh))){ LES.lines=tidyLines(LES.lines); } else LES.lines=normLines(LES.lines,!!LES.pack); const pos=!LES.demo&&POS.get(LES.id); CUR=pos?Math.min(pos.i,Math.max(0,LES.lines.length-1)):0; if(!LES.lines.length) MODE='shadow'; RECS={}; PRON={}; DICTST={}; FILLST={}; PRAC=null;
   show('Lesson'); renderModes(); await mountMedia(); setMode(MODE);
   if(pos&&LES.lines.length&&(CUR>0||pos.t>3)){ restorePos(pos); }
   saveLesson();
@@ -2378,14 +2378,14 @@ function splitAll(lines){ const out=[]; for(const l of lines){ if(l.s==null){ ou
 function needsTidy(lines){ return lines.some(l=>l.s!=null&&(!cjkCount(enumRest(l.zh))||splitTimed(l).length>1||stripEnum(l.zh)!==l.zh)); }
 // Timed subtitles must run strictly by start time with no overlaps: captions from YouTube, Groq pieces or .srt files
 // can come out of order or overlap (rolling captions), which made the highlighted line jump back and forth.
-function normLines(lines){
+function normLines(lines,keepRep){ // keepRep: book recordings say some sentences twice on purpose
   lines=(lines||[]).filter(l=>l&&cjkCount(l.zh));
   if(!lines.length||lines.some(l=>l.s==null||!isFinite(+l.s))) return lines; // text-only lessons keep their order
   const srt=lines.map((l,i)=>({l,i,s:Math.max(0,+l.s)})).sort((a,b)=>a.s-b.s||a.i-b.i);
   const out=[];
   for(const x of srt){
     const l={...x.l,s:x.s,e:isFinite(+x.l.e)&&+x.l.e>x.s?+x.l.e:x.s+3}, p=out[out.length-1];
-    if(p&&p.zh===l.zh&&l.s-p.e<1.5){ p.e=Math.max(p.e,l.e); continue; } // the same caption repeated
+    if(!keepRep&&p&&p.zh===l.zh&&l.s-p.e<1.5){ p.e=Math.max(p.e,l.e); continue; } // the same caption repeated
     out.push(l);
   }
   out.forEach((l,k)=>{const n=out[k+1]; if(n&&l.e>n.s) l.e=n.s; if(l.e<l.s+0.3) l.e=l.s+0.3;});
