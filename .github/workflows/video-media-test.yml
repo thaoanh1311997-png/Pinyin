@@ -3,6 +3,7 @@ on: workflow_dispatch
 jobs:
   test:
     runs-on: macos-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with: {sparse-checkout: "shared\nvideo\nsach\ndict.txt\naudio/zh/index.bin", sparse-checkout-cone-mode: false}
@@ -16,9 +17,9 @@ jobs:
           mkdir -p /tmp/srv && ln -s "$PWD" /tmp/srv/Pinyin
           (cd /tmp/srv && python3 -m http.server 8765 >/dev/null 2>&1 &)
           sleep 2
-          BT=webkit node video/tools/media-keep-test.cjs
-          node video/tools/media-keep-test.cjs
-          BT=webkit node video/tools/resume-test.cjs
-          node video/tools/resume-test.cjs
-          BT=webkit node video/tools/player-test.cjs
-          node video/tools/player-test.cjs
+          perl -e 'alarm shift; exec @ARGV' 300 env BT=webkit node video/tools/media-keep-test.cjs || echo FAIL-EXIT media-keep-test webkit
+          perl -e 'alarm shift; exec @ARGV' 300 node video/tools/media-keep-test.cjs || echo FAIL-EXIT media-keep-test
+          perl -e 'alarm shift; exec @ARGV' 300 env BT=webkit node video/tools/resume-test.cjs || echo FAIL-EXIT resume-test webkit
+          perl -e 'alarm shift; exec @ARGV' 300 node video/tools/resume-test.cjs || echo FAIL-EXIT resume-test
+          perl -e 'alarm shift; exec @ARGV' 300 env BT=webkit node video/tools/player-test.cjs || echo FAIL-EXIT player-test webkit
+          perl -e 'alarm shift; exec @ARGV' 300 node video/tools/player-test.cjs || echo FAIL-EXIT player-test
