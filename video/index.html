@@ -3021,6 +3021,37 @@ function grabBox(){
 }
 document.addEventListener('click',async e=>{const c=e.target.closest('[data-bmcopy]');if(!c)return;e.preventDefault();try{await navigator.clipboard.writeText(BM_HREF);toast('Đã chép mã. Giờ dán vào địa chỉ của dấu trang nha.',4500);}catch(err){openSheet('<h2>Chép mã này</h2><textarea class="in" style="min-height:160px;font-size:12px" readonly>'+esc(BM_HREF)+'</textarea>');}});
 document.addEventListener('click',e=>{const a=e.target.closest('[data-bm]');if(a){e.preventDefault();toast('Đừng bấm ở đây nha. Hãy kéo nút này thả lên thanh dấu trang.',4500);}});
+// Corrected subtitles sent as a link (#bbfix=…): replaces the lines of the lesson made from the same file, on this device,
+// and the change syncs to the user's other devices like any other edit.
+async function unpackFix(b64){
+  const bin=Uint8Array.from(atob(b64.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0));
+  const st=new Blob([bin]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+  return JSON.parse(await new Response(st).text());
+}
+function applyFix(d){
+  const all=lessons(); const norm=x=>String(x||'').replace(/\.[a-z0-9]+$/i,'').trim();
+  const hit=all.filter(x=>x.src&&x.src.type==='file'&&(x.src.name===d.n||norm(x.src.name)===norm(d.n)||norm(x.title)===norm(d.n)));
+  if(!hit.length) return null;
+  const lines=d.l.map(r=>({s:r[0],e:r[1],zh:r[2],vi:r[3]||''}));
+  hit.forEach(x=>{ x.lines=lines.map(l=>({...l})); x.ver=3; x.tv=TRV; x.at=Date.now(); });
+  store.set('bb.lessons',all);
+  const p=POS.all(); hit.forEach(x=>{ if(p[x.id]){ const t=p[x.id].t; let i=0; if(t!=null) lines.forEach((l,k)=>{ if(l.s<=t+0.05) i=k; }); p[x.id]={...p[x.id],i}; } }); store.set('bb.pos',p);
+  return hit[0];
+}
+async function importFix(){
+  const h=location.hash; if(!/^#bbfix=/.test(h)) return false;
+  history.replaceState(null,'',location.pathname+location.search);
+  let ds; try{ ds=await unpackFix(h.slice(7)); }catch(e){ toast('Link sửa phụ đề bị lỗi, bạn bấm lại link nha.',4500); return false; }
+  if(!Array.isArray(ds)) ds=[ds];
+  const pend=store.get('bb.fix',{}); let first=null, done=[];
+  for(const d of ds){ const x=applyFix(d); if(x){ done.push(x.title+' ('+d.l.length+' câu)'); first=first||x; delete pend[d.n]; } else pend[d.n]=d; }
+  store.set('bb.fix',pend);
+  if(first){ renderLib(); renderResume(); await openLesson(lessons().find(x=>x.id===first.id)); toast('Đã thay phụ đề mới: '+done.join(', '),6000); return true; }
+  toast('Đã nhận phụ đề mới. Bài sẽ tự cập nhật khi máy này có bài đó.',5000); return false;
+}
+// a fix that arrived before its lesson (e.g. the lesson syncs in later)
+function pendingFixes(){ const pend=store.get('bb.fix',{}); let ch=false; for(const n in pend){ if(applyFix(pend[n])){ delete pend[n]; ch=true; } } if(ch){ store.set('bb.fix',pend); if(VIEW==='Home'){ renderLib(); renderResume(); } } }
+window.addEventListener('hashchange',()=>importFix());
 async function importGrab(){
   const h=location.hash; if(!/^#bbsub=/.test(h)) return false;
   history.replaceState(null,'',location.pathname+location.search);
@@ -3037,12 +3068,12 @@ window.addEventListener('hashchange',()=>importGrab());
 /* ======================= start ======================= */
 const OPEN0=(()=>{try{return JSON.parse(localStorage.getItem('bb.open')||'null');}catch(e){return null;}})();
 renderLib(); renderStats(); show('Home'); renderResume();
-(()=>{ try{ const o=OPEN0; if(!o||Date.now()-o.at>6*3600e3||/^#bbsub=/.test(location.hash)) return; const x=lessons().find(l=>l.id===o.id); if(x) openLesson(x); }catch(e){} })();
+(()=>{ try{ const o=OPEN0; if(!o||Date.now()-o.at>6*3600e3||/^#bb(sub|fix)=/.test(location.hash)) return; const x=lessons().find(l=>l.id===o.id); if(x) openLesson(x); }catch(e){} })();
 // lessons saved on another device arrive quietly: refresh the list without touching what is playing
-addEventListener('bm-sync',()=>{ try{ if(VIEW==='Home'){ renderLib(); renderStats(); renderResume(); } else if(VIEW==='Lesson'&&needFile()&&$('#needFile')){ MDB.get(LES.id).then(m=>{ if(m&&(m.blob||m.buf)&&needFile()&&$('#needFile')) mountMedia(); }); } }catch(e){} });
+addEventListener('bm-sync',()=>{ try{ pendingFixes(); if(VIEW==='Home'){ renderLib(); renderStats(); renderResume(); } else if(VIEW==='Lesson'&&needFile()&&$('#needFile')){ MDB.get(LES.id).then(m=>{ if(m&&(m.blob||m.buf)&&needFile()&&$('#needFile')) mountMedia(); }); } }catch(e){} });
 const hr=new Date().getHours(); $('#helloHi').textContent=hr<11?'Chào buổi sáng!':hr<14?'Chào buổi trưa!':hr<18?'Chào buổi chiều!':'Chào buổi tối!';
 setTimeout(()=>loadDict(),1500);
-importGrab();
+importGrab(); pendingFixes(); importFix();
 })();
 </script>
 </body>

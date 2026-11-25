@@ -99,8 +99,9 @@ async function openLes(pg) {
   }
   // 5b) pushRecs with a missing value marked as put → no delete pushed (fresh page reads drec)
   { const mk = mock(); const { b, ctx } = await ctxFor(chromium, false, true, mk); const pg = await ctx.newPage();
-    await pg.goto(URL0); await pg.evaluate(() => { localStorage.setItem('bm.sync.drec', JSON.stringify({ 'bb-media|f|"ghost"': 1, 'bb-media|f|"gone"': 'd' })); });
-    await pg.reload(); for (let k = 0; k < 40 && !mk.st.recPosts.some(r => r.id.includes('gone')); k++) await pg.waitForTimeout(250);
+    // marks written before any page code runs (writing them into a live page races with its own sync state)
+    await ctx.addInitScript(() => { if (!sessionStorage.getItem('drec')) { sessionStorage.setItem('drec', 1); localStorage.setItem('bm.sync.drec', JSON.stringify({ 'bb-media|f|"ghost"': 1, 'bb-media|f|"gone"': 'd' })); } });
+    await pg.goto(URL0); for (let k = 0; k < 40 && !mk.st.recPosts.some(r => r.id.includes('gone')); k++) await pg.waitForTimeout(250);
     ok(!mk.st.recPosts.some(r => r.id.includes('ghost')), 'failed write is NOT sent as a delete');
     ok(mk.st.recPosts.some(r => r.id.includes('gone') && r.del), 'real delete is still sent ' + JSON.stringify(mk.st.recPosts.map(r => r.id)) + ' ' + JSON.stringify(await pg.evaluate(() => [window.BM_SYNC && BM_SYNC.state(), localStorage.getItem('bm.sync.drec')])));
     await b.close(); }
