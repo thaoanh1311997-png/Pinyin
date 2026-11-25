@@ -21,7 +21,7 @@ function mock() {
         return json(Object.values(st.recs).filter(r => r.pullable));
       }
       if (p.startsWith('/storage/v1/object/authenticated/files/')) { const k = p.slice('/storage/v1/object/authenticated/files/'.length); const b = st.files[k]; return b ? route.fulfill({ status: 200, body: b }) : route.fulfill({ status: 404, body: '' }); }
-      if (p.startsWith('/storage/v1/object/files/')) { const k = p.slice('/storage/v1/object/files/'.length); const b = req.postDataBuffer(); if (b.length > 50 * 1024 * 1024) return route.fulfill({ status: 413, body: 'too big' }); st.files[k] = b; st.filePosts.push([k, b.length]); return json({}); }
+      if (p.startsWith('/storage/v1/object/files/')) { const k = p.slice('/storage/v1/object/files/'.length); const b = req.postDataBuffer() || Buffer.alloc(+(req.headers()['content-length'] || 0)); if (b.length > 50 * 1024 * 1024) return route.fulfill({ status: 413, body: 'too big' }); st.files[k] = b; st.filePosts.push([k, b.length]); return json({}); }
       return route.fulfill({ status: 404, body: '' });
     }
   };
