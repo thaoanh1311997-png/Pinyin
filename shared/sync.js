@@ -16,6 +16,8 @@
   var DOMAIN = '@banhmi-hoc.app';          // tên đăng nhập → email ảo (không gửi thư)
   var BUCKET = 'files';
   var MAX_FILE = 50 * 1024 * 1024;         // giới hạn mỗi file của gói miễn phí
+  var PART = 40 * 1024 * 1024;             // file lớn hơn → cắt thành nhiều phần 40MB rồi ghép lại khi tải về
+  var MAX_TOTAL = 400 * 1024 * 1024;       // trên mức này mới chỉ giữ trên máy
   var MAX_VAL = 1500000;                   // bỏ qua giá trị localStorage quá lớn
   // kho IndexedDB được đồng bộ (tên, cấu trúc để tạo khi máy chưa có)
   var DBS = {
@@ -65,9 +67,9 @@
     try { var dn = store.transaction.db.name; return DBS[dn] && (store.name in DBS[dn].stores) ? dn : null; } catch (e) { return null; }
   }
   function recId(db, st, key) { return db + '|' + st + '|' + JSON.stringify(key); }
-  function markRec(db, st, key) {
+  function markRec(db, st, key, del) {
     if (key == null || !ON || !auth) return;
-    var id = recId(db, st, key); times[id] = now(); dirtyRec[id] = 1; saveState(); schedulePush();
+    var id = recId(db, st, key); times[id] = now(); dirtyRec[id] = del ? 'd' : 1; saveState(); schedulePush();
   }
   if (P) {
     ['put', 'add'].forEach(function (m) {
@@ -80,7 +82,7 @@
           if (k === undefined && this.keyPath && val) k = val[this.keyPath];
           var st = this.name;
           if (k === undefined) req.addEventListener('success', function () { markRec(dn, st, req.result); });
-          else markRec(dn, st, k);
+          else req.addEventListener('success', function () { markRec(dn, st, k); }); // chỉ khi ghi xong thật
         }
         return req;
       };
@@ -89,7 +91,7 @@
     P['delete'] = function (key) {
       var req = odel.apply(this, arguments);
       var dn = !applying && watched(this);
-      if (dn && (typeof key !== 'object' || key === null || Array.isArray(key))) markRec(dn, this.name, key);
+      if (dn && (typeof key !== 'object' || key === null || Array.isArray(key))) markRec(dn, this.name, key, true);
       return req;
     };
   }
@@ -183,7 +185,15 @@
   // thay Blob/ArrayBuffer bằng tham chiếu file, trả về danh sách file cần gửi
   function pack(v, id, ups, sub) {
     sub = sub || 'v';
-    if (v instanceof Blob) { var p = blobPath(id, sub); ups.push({ path: p, blob: v }); return { __b: p, type: v.type || '', size: v.size, name: v.name || undefined }; }
+    if (v instanceof Blob) {
+      var p = blobPath(id, sub);
+      if (v.size > MAX_FILE && v.size <= MAX_TOTAL) { // file lớn: gửi từng phần
+        var parts = [];
+        for (var o = 0, i = 0; o < v.size; o += PART, i++) { var pp = i ? blobPath(id, sub + '#p' + i) : p; parts.push(pp); ups.push({ path: pp, blob: v.slice(o, o + PART) }); }
+        return { __b: p, parts: parts, type: v.type || '', size: v.size, name: v.name || undefined };
+      }
+      ups.push({ path: p, blob: v }); return { __b: p, type: v.type || '', size: v.size, name: v.name || undefined };
+    }
     if (v instanceof ArrayBuffer) { var pa = blobPath(id, sub + ':ab'); ups.push({ path: pa, blob: new Blob([v]) }); return { __b: pa, ab: 1, size: v.byteLength }; }
     if (ArrayBuffer.isView && ArrayBuffer.isView(v) && !(v instanceof DataView)) { var bb = new Blob([v]); ups.push({ path: blobPath(id, sub + ':u8'), blob: bb }); return { __b: blobPath(id, sub + ':u8'), u8: 1, size: bb.size }; }
     if (Array.isArray(v)) return v.map(function (x, i) { return pack(x, id, ups, sub + '.' + i); });
@@ -203,7 +213,7 @@
     return v;
   }
   function upload(u) {
-    if (u.blob.size > MAX_FILE) return Promise.reject(Object.assign(new Error('File quá lớn (trên 50MB)'), { big: 1 }));
+    if (u.blob.size > MAX_FILE) return Promise.reject(Object.assign(new Error('File quá lớn'), { big: 1 }));
     if (known[u.path] === u.blob.size) return Promise.resolve();
     return token().then(function () {
       return fetch(CFG.url + '/storage/v1/object/' + BUCKET + '/' + u.path, { method: 'POST', headers: hdr({ 'x-upsert': 'true', 'Content-Type': 'application/octet-stream' }), body: u.blob });
@@ -212,15 +222,21 @@
       known[u.path] = u.blob.size; sset('blobs', known);
     });
   }
-  function download(ref) {
+  function getPart(path) {
     return token().then(function () {
-      return fetch(CFG.url + '/storage/v1/object/authenticated/' + BUCKET + '/' + ref.__b, { headers: hdr({}) });
+      return fetch(CFG.url + '/storage/v1/object/authenticated/' + BUCKET + '/' + path, { headers: hdr({}) });
     }).then(function (r) {
       if (!r.ok) throw new Error('Tải file lỗi ' + r.status);
       return r.arrayBuffer();
-    }).then(function (ab) {
-      var b = new Blob([ab], { type: ref.type || '' }); b._ab = ab; known[ref.__b] = ab.byteLength; return b;
-    });
+    }).then(function (ab) { known[path] = ab.byteLength; return ab; });
+  }
+  function download(ref) {
+    if (ref.parts && ref.parts.length) { // file lớn được cắt phần → tải lần lượt rồi ghép
+      var bufs = [];
+      return ref.parts.reduce(function (a, p) { return a.then(function () { return getPart(p).then(function (ab) { bufs.push(ab); }); }); }, Promise.resolve())
+        .then(function () { return new Blob(bufs, { type: ref.type || '' }); });
+    }
+    return getPart(ref.__b).then(function (ab) { var b = new Blob([ab], { type: ref.type || '' }); b._ab = ab; return b; });
   }
 
   /* ================= GỬI LÊN ================= */
@@ -253,13 +269,15 @@
             var p = id.split('|'), st = p[1], key = JSON.parse(p.slice(2).join('|'));
             progress = '⬆ ' + (++n) + '/' + ids.length; ui();
             return idbReq(d, st, 'readonly', function (s) { return s.get(key); }).then(function (val) {
+              // không thấy trên máy mà cũng không phải do người dùng xoá (vd. ghi lỗi vì hết chỗ) → không báo xoá sang máy khác
+              if (val === undefined && dirtyRec[id] !== 'd') { delete dirtyRec[id]; saveState(); return; }
               var ups = [], data = val === undefined ? null : pack(val, id, ups);
               return ups.reduce(function (a, u) { return a.then(function () { return upload(u); }); }, Promise.resolve())
                 .then(function () {
                   return api('/rest/v1/rec?on_conflict=user_id,id', { method: 'POST', headers: { 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=minimal' }, body: JSON.stringify([{ user_id: auth.uid, id: id, db: dn, st: st, data: data, t: times[id] || now(), del: val === undefined }]) });
                 })
                 .then(function () { delete dirtyRec[id]; saveState(); })
-                .catch(function (e) { if (e.big) { delete dirtyRec[id]; saveState(); toast('Có 1 file trên 50MB nên chỉ lưu trên máy này'); } else throw e; });
+                .catch(function (e) { if (e.big) { delete dirtyRec[id]; saveState(); toast('Có 1 file quá lớn (trên 400MB) nên chỉ lưu trên máy này'); } else throw e; });
             });
           });
         });
@@ -337,6 +355,7 @@
         if (!DBS[r.db]) return;
         if ((times[r.id] || 0) >= r.t) return;
         if (dirtyRec[r.id] && (times[r.id] || 0) >= r.t) return;
+        if ((r.del || r.data == null) && keepMedia(r)) { times[r.id] = r.t; return; }
         todo.push(r);
       });
       var n = 0, chain = Promise.resolve();
@@ -364,6 +383,47 @@
       });
       return chain.then(function () { sset('known', null); sset('blobs', known); return last; });
     });
+  }
+
+  // file nghe của bài vẫn còn trong danh sách bài trên máy này → không xoá theo máy khác (giữ giọng gốc)
+  function keepMedia(r) {
+    if (r.db !== 'bb-media') return false;
+    try {
+      var key = JSON.parse(r.id.split('|').slice(2).join('|'));
+      var list = JSON.parse(rawGet.call(LS, 'bb.lessons') || '[]');
+      return list.some(function (x) { return x && x.id === key; });
+    } catch (e) { return false; }
+  }
+  // lấy ngay 1 bản ghi (vd. file nghe của bài đang mở) mà không chờ vòng đồng bộ
+  function fetchRec(db, st, key) {
+    if (!ON || !auth || !DBS[db]) return Promise.resolve(false);
+    var id = recId(db, st, key);
+    return api('/rest/v1/rec?select=id,db,st,data,t,del&id=eq.' + encodeURIComponent(id)).then(function (rows) {
+      var r = rows && rows[0];
+      if (!r || r.del || r.data == null) return false;
+      var files = {};
+      return refs(r.data, []).reduce(function (a, ref) { return a.then(function () { return download(ref).then(function (b) { files[ref.__b] = b; }); }); }, Promise.resolve())
+        .then(function () { return openDB(db); })
+        .then(function (d) {
+          applying++;
+          var pr;
+          try { pr = idbReq(d, st, 'readwrite', function (s) { var val = unpack(r.data, files); return DBS[db].stores[st] ? s.put(val) : s.put(val, key); }); } finally { applying--; }
+          return pr.then(function () { d.close(); if ((times[id] || 0) < r.t) times[id] = r.t; saveState(); return true; }, function (e) { d.close(); throw e; });
+        });
+    }).catch(function (e) { console.warn('[bm-sync] fetchRec', e); return false; });
+  }
+  // 1 lần: gửi lại các file nghe từng bị bỏ qua vì trên 50MB (giờ đã gửi được theo từng phần)
+  function reseedMedia() {
+    if (sget('media2', 0)) return Promise.resolve();
+    return dbExists('bb-media').then(function (ex) {
+      if (!ex) return;
+      return openDB('bb-media').then(function (d) {
+        return idbAll(d, 'f').then(function (rows) {
+          d.close();
+          rows.forEach(function (kv) { var v = kv[1], b = v && v.blob; if (b && b.size > MAX_FILE) { var id = recId('bb-media', 'f', kv[0]); dirtyRec[id] = 1; if (!times[id]) times[id] = now(); } });
+        });
+      });
+    }).then(function () { sset('media2', 1); saveState(); }, function () {});
   }
 
   // lần đầu đăng nhập trên máy này: đưa mọi thứ đang có lên (để không mất bài cũ)
@@ -410,6 +470,7 @@
     var cur = sget('cur', { kv: '1970-01-01T00:00:00Z', rec: '1970-01-01T00:00:00Z' });
     var p = Promise.resolve();
     if (firstRun) p = p.then(seedLocal);
+    p = p.then(reseedMedia);
     p = p.then(function () { return pullKV(cur.kv); }).then(function (l) { cur.kv = l; sset('cur', cur); })
       .then(function () { return pullRecs(cur.rec); }).then(function (l) { cur.rec = l; sset('cur', cur); })
       .then(pushKV).then(pushRecs)
@@ -639,5 +700,5 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();
   setTimeout(mount, 0); // nav.js chạy sau body mở
 
-  window.BM_SYNC = { run: run, login: login, logout: logout, open: openPanel, state: function () { return { on: ON, auth: !!auth, name: auth && auth.name, busy: busy, err: lastErr, last: lastOk, pending: Object.keys(dirtyKV).length + Object.keys(dirtyRec).length }; } };
+  window.BM_SYNC = { fetchRec: fetchRec, run: run, login: login, logout: logout, open: openPanel, state: function () { return { on: ON, auth: !!auth, name: auth && auth.name, busy: busy, err: lastErr, last: lastOk, pending: Object.keys(dirtyKV).length + Object.keys(dirtyRec).length }; } };
 })();
