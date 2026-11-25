@@ -183,6 +183,13 @@ textarea.in{min-height:140px;resize:vertical;font-family:var(--f-zh),var(--f-ui)
 .vgrid .vcard .bd b{font-size:13.5px}
 @media (min-width:700px){.vgrid{grid-template-columns:1fr 1fr 1fr}}
 @media (min-width:960px){.lib{grid-template-columns:1fr 1fr}}
+.resume{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;cursor:pointer;padding:12px 14px;margin:0 0 14px;border-radius:20px;background:linear-gradient(135deg,#22C17E,#0E9B62);color:#fff;box-shadow:var(--sh-1);font:inherit}
+.resume .ri{width:46px;height:46px;border-radius:50%;background:#ffffff33;display:grid;place-items:center;flex:none}
+.resume .ri .i{width:24px;height:24px}
+.resume b{display:block;font-weight:900;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.resume small{display:block;opacity:.92;font-weight:700;font-size:13px}
+.resume .tx{min-width:0;flex:1}
+.resume .go{background:#fff;color:#0E9B62;border-radius:999px;padding:8px 14px;font-weight:900;font-size:14px;flex:none}
 .lib-item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:18px;background:var(--card);box-shadow:var(--sh-1)}
 .lib-item .thumb{width:84px;height:56px;border-radius:12px;flex:none;background:var(--green-soft) center/cover no-repeat;display:grid;place-items:center;color:var(--green)}
 .lib-item .thumb .i{width:26px;height:26px}
@@ -539,6 +546,7 @@ body.v-Lesson .wrap{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))
     <div class="tx"><small id="helloHi">Chào bạn!</small><h1>Hôm nay mình học gì nào?</h1><p>Xem video, đọc giáo trình, nói theo và ôn từ cùng Bánh Mì.</p></div>
     <div class="art"><span class="bubble">你好！</span><span class="mascot-slot"></span></div>
   </div>
+  <div id="resumeCard"></div>
   <div class="card prog-card" id="statsCard"></div>
 
   <div class="sec-t"><h2>Bắt đầu học</h2></div>
@@ -1438,11 +1446,40 @@ $('#fxAmb').onclick=e=>{const b=e.target.closest('[data-amb]');if(!b)return;audi
 $('#todoForm').onsubmit=e=>{e.preventDefault();const v=$('#todoIn').value.trim();if(!v)return;const T=todos();T.push({t:v,done:false});store.set('bb.todo',T);$('#todoIn').value='';renderTodo();};
 $('#todoList').onclick=e=>{const c=e.target.closest('[data-td]'),d=e.target.closest('[data-tdel]');const T=todos();if(c){T[+c.dataset.td].done=c.checked;}else if(d){T.splice(+d.dataset.tdel,1);}else return;store.set('bb.todo',T);renderTodo();};
 
+/* ======================= resume where you left off ======================= */
+// each lesson remembers its sentence + playback time, so leaving by mistake never restarts it from the top
+const POS={
+  all(){return store.get('bb.pos',{});},
+  get(id){const p=this.all()[id];return p&&typeof p.i==='number'?p:null;},
+  set(id,i,t){ const a=this.all(), o=a[id]; if(o&&o.i===i&&Math.abs((o.t||0)-(t||0))<1.5) return;
+    a[id]={i,t:t==null?null:Math.round(t*10)/10,at:Date.now()};
+    const ks=Object.keys(a); if(ks.length>60) ks.sort((x,y)=>a[x].at-a[y].at).slice(0,ks.length-60).forEach(k=>delete a[k]);
+    store.set('bb.pos',a); }
+};
+function mediaNow(){try{return P&&P.media?P.time():null;}catch(e){return null;}}
+function savePos(){ if(VIEW!=='Lesson'||!LES||LES.demo||!LES.lines.length) return; POS.set(LES.id,CUR,mediaNow()); }
+setInterval(()=>{ if(VIEW==='Lesson'&&P&&P.media&&!(P.paused&&P.paused())) savePos(); },4000);
+addEventListener('pagehide',savePos);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')savePos();});
+function renderResume(){
+  const box=$('#resumeCard'); if(!box) return;
+  const all=lessons(), pos=POS.all();
+  const x=all.filter(l=>pos[l.id]&&l.lines&&l.lines.length&&(pos[l.id].i>0||pos[l.id].t>3)).sort((a,b)=>pos[b.id].at-pos[a.id].at)[0];
+  if(!x){box.innerHTML='';return;}
+  const p=pos[x.id], n=Math.min(p.i,x.lines.length-1)+1;
+  box.innerHTML=`<button class="resume" data-resume="${esc(x.id)}"><span class="ri">${IC.play}</span><span class="tx"><small>Đang học dở</small><b>${esc(x.title)}</b><small>Câu ${n}/${x.lines.length}${p.t!=null?' · '+fmtT(p.t):''}</small></span><span class="go">Nghe tiếp</span></button>`;
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-resume]');if(!b)return;const x=lessons().find(l=>l.id===b.dataset.resume);if(x)openLesson(x);});
+
 /* ======================= views ======================= */
 let VIEW='Home', BACKTO='Home';
 function show(v){
+  if(VIEW==='Lesson'&&v!=='Lesson') savePos();
   if(v!=='Lesson') BACKTO=v==='Home'?'Home':BACKTO;
   VIEW=v;
+  // phone back button / swipe-back returns to the page's home instead of leaving the site
+  try{ if(v!=='Home'&&!(history.state&&history.state.bb)) history.pushState({bb:1},''); }catch(e){}
+  try{ if(v==='Lesson'&&LES&&!LES.demo) localStorage.setItem('bb.open',JSON.stringify({id:LES.id,at:Date.now()})); else if(v!=='Lesson') localStorage.removeItem('bb.open'); }catch(e){}
   ['Home','New','Lesson','Words','Focus'].forEach(n=>$('#v'+n).hidden=n!==v);
   $('#topTitle').textContent=v==='Lesson'&&LES?LES.title:v==='Words'?'Sổ từ':v==='Focus'?'Phòng tập trung':v==='New'?'Học bài mới':'';
   $('#topSp').hidden=v!=='Home';
@@ -1455,23 +1492,36 @@ function show(v){
 }
 function go(v){
   newRun(); stopRec(); stopListen(); closeSheet();
-  if(v==='Home'){show('Home');renderLib();renderStats();renderYtLib();}
+  if(v==='Home'){show('Home');renderLib();renderStats();renderYtLib();renderResume();}
   else if(v==='Words'){renderWords();show('Words');}
   else if(v==='Focus'){openFocus();}
   else if(v==='New'){show('New');}
 }
-$('#goHome').onclick=()=>go('Home');
-$('#goBack').onclick=()=>go(VIEW==='Lesson'&&BACKTO!=='Home'?BACKTO:'Home');
+function goHome(){ if(history.state&&history.state.bb){ try{history.back();return;}catch(e){} } go('Home'); }
+addEventListener('popstate',()=>{
+  const sh=$('#sheet'); if(sh&&!sh.hidden&&VIEW!=='Home'){ closeSheet(); try{history.pushState({bb:1},'');}catch(e){} return; }
+  if(VIEW!=='Home') go('Home');
+});
+$('#goHome').onclick=goHome;
+$('#goBack').onclick=()=>{ if(VIEW==='Lesson'&&BACKTO!=='Home') go(BACKTO); else goHome(); };
 $$('[data-nav]').forEach(b=>b.onclick=()=>{BACKTO='Home';go(b.dataset.nav);});
 $$('[data-go]').forEach(b=>b.onclick=()=>{const k=b.dataset.go; if(k==='video'){go('New');$('#tabVideo').click();} else if(k==='file'){go('New');$('#tabFile').click();} else go(k==='words'?'Words':'Focus');});
 
 async function openLesson(les){
   newRun(); stopRec();
-  LES={...les,lines:les.lines.map(l=>({...l}))}; if(LES.lines.length&&(fragmented(LES.lines)||LES.lines.some(l=>cjkCount(l.zh)&&cleanZh(l.zh)!==l.zh))){ LES.lines=tidyLines(LES.lines); } else LES.lines=normLines(LES.lines); CUR=0; if(!LES.lines.length) MODE='shadow'; RECS={}; PRON={}; DICTST={}; FILLST={}; PRAC=null;
+  LES={...les,lines:les.lines.map(l=>({...l}))}; if(LES.lines.length&&(fragmented(LES.lines)||LES.lines.some(l=>cjkCount(l.zh)&&cleanZh(l.zh)!==l.zh))){ LES.lines=tidyLines(LES.lines); } else LES.lines=normLines(LES.lines); const pos=!LES.demo&&POS.get(LES.id); CUR=pos?Math.min(pos.i,Math.max(0,LES.lines.length-1)):0; if(!LES.lines.length) MODE='shadow'; RECS={}; PRON={}; DICTST={}; FILLST={}; PRAC=null;
   show('Lesson'); renderModes(); await mountMedia(); setMode(MODE);
+  if(pos&&LES.lines.length&&(CUR>0||pos.t>3)){ restorePos(pos); }
   saveLesson();
   translateLines(LES.lines,l=>{const i=LES.lines.indexOf(l);$$(`[data-vi="${i}"]`).forEach(el=>{el.textContent=l.vi;el.classList.remove('wait');});})
     .then(ok=>{saveLesson(); if(!ok) toast('Một số câu chưa dịch được (mạng yếu?). Bấm vào câu để thử lại.',4000);});
+}
+// put the player and the highlighted sentence back where the user stopped (no auto-play)
+function restorePos(pos){
+  const les=LES; setActive(CUR);
+  setTimeout(()=>{ if(LES===les&&VIEW==='Lesson') setActive(CUR); },350);
+  if(P&&P.media&&P.kind==='file'&&pos.t!=null){ const v=$('#vid'); const go=()=>{ if(LES===les&&v.isConnected&&v.currentTime<0.5){ try{v.currentTime=Math.max(0,pos.t-1);}catch(e){} } }; if(v.readyState>=1) go(); else v.addEventListener('loadedmetadata',go,{once:true}); }
+  toast('Nghe tiếp từ câu '+(CUR+1)+(pos.t!=null&&P&&P.media?' ('+fmtT(pos.t)+')':'')+'. Bấm Phát để nghe tiếp.',3500);
 }
 function renderModes(){
   const html=MODES.map(m=>`<button class="mode ${m.id===MODE?'on':''}" data-mode="${m.id}"><span class="mi">${m.icon}</span><span><b>${m.name}</b><small>${m.desc}</small></span></button>`).join('');
@@ -2172,7 +2222,7 @@ function refreshTools(i){const el=$(`.line[data-i="${i}"] .ln-t`);if(el)el.inner
 let USER_SCROLL=0; // while the user scrolls the list by hand, auto-scroll waits a little
 ['wheel','touchmove'].forEach(ev=>addEventListener(ev,()=>{USER_SCROLL=performance.now();},{passive:true}));
 function setActive(i,scroll=true){
-  CUR=Math.max(0,Math.min(LES.lines.length-1,i));
+  CUR=Math.max(0,Math.min(LES.lines.length-1,i)); if(LES&&!LES.demo) POS.set(LES.id,CUR,mediaNow());
   $$('#lines .line').forEach(el=>el.classList.toggle('act',+el.dataset.i===CUR));
   const el=$(`#lines .line[data-i="${CUR}"]`);
   if(el&&scroll&&performance.now()-USER_SCROLL>3000){ // keep the sentence just under the pinned video, not behind it
@@ -2742,9 +2792,11 @@ async function importGrab(){
 window.addEventListener('hashchange',()=>importGrab());
 
 /* ======================= start ======================= */
-renderLib(); renderStats(); show('Home');
+const OPEN0=(()=>{try{return JSON.parse(localStorage.getItem('bb.open')||'null');}catch(e){return null;}})();
+renderLib(); renderStats(); show('Home'); renderResume();
+(()=>{ try{ const o=OPEN0; if(!o||Date.now()-o.at>6*3600e3||/^#bbsub=/.test(location.hash)) return; const x=lessons().find(l=>l.id===o.id); if(x) openLesson(x); }catch(e){} })();
 // lessons saved on another device arrive quietly: refresh the list without touching what is playing
-addEventListener('bm-sync',()=>{ try{ if(VIEW==='Home'){ renderLib(); renderStats(); } else if(VIEW==='Lesson'&&needFile()&&$('#needFile')){ MDB.get(LES.id).then(m=>{ if(m&&(m.blob||m.buf)&&needFile()&&$('#needFile')) mountMedia(); }); } }catch(e){} });
+addEventListener('bm-sync',()=>{ try{ if(VIEW==='Home'){ renderLib(); renderStats(); renderResume(); } else if(VIEW==='Lesson'&&needFile()&&$('#needFile')){ MDB.get(LES.id).then(m=>{ if(m&&(m.blob||m.buf)&&needFile()&&$('#needFile')) mountMedia(); }); } }catch(e){} });
 const hr=new Date().getHours(); $('#helloHi').textContent=hr<11?'Chào buổi sáng!':hr<14?'Chào buổi trưa!':hr<18?'Chào buổi chiều!':'Chào buổi tối!';
 setTimeout(()=>loadDict(),1500);
 importGrab();

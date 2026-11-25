@@ -5,11 +5,12 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-        with: {sparse-checkout: "shared\nvideo\ndict.txt\naudio/zh/index.bin", sparse-checkout-cone-mode: false}
+        with: {sparse-checkout: "shared\nvideo\nsach\ndict.txt\naudio/zh/index.bin", sparse-checkout-cone-mode: false}
       - uses: actions/setup-node@v4
         with: {node-version: 20}
       - run: npm i --no-save playwright ffmpeg-static && npx playwright install webkit chromium
       - run: $(node -p "require('ffmpeg-static')") -v error -f lavfi -i "sine=frequency=440:duration=20" -b:a 64k small.mp3
+      - run: $(node -p "require('ffmpeg-static')") -v error -f lavfi -i "sine=frequency=330:duration=60" -b:a 64k long.mp3
       - name: Serve site and run tests
         run: |
           mkdir -p /tmp/srv && ln -s "$PWD" /tmp/srv/Pinyin
@@ -17,3 +18,5 @@ jobs:
           sleep 2
           BT=webkit node video/tools/media-keep-test.cjs
           node video/tools/media-keep-test.cjs
+          BT=webkit node video/tools/resume-test.cjs
+          node video/tools/resume-test.cjs
