@@ -162,24 +162,25 @@ textarea.in{min-height:140px;resize:vertical;font-family:var(--f-zh),var(--f-ui)
 .scard .body b{display:block;font-size:15.5px;font-weight:900;line-height:1.3}
 .scard .body span{display:block;font-size:13px;color:var(--muted);margin-top:4px;font-family:var(--f-zh);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lib{display:grid;gap:10px}
-.nghe{display:grid;gap:14px}
-.ng-book{border-radius:22px;padding:12px;background:var(--card);box-shadow:var(--sh-1);border-top:6px solid var(--ngc)}
+html,body{overflow-x:clip}
+.nghe{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+.ng-book{min-width:0;border-radius:22px;padding:12px;background:var(--card);box-shadow:var(--sh-1);border-top:6px solid var(--ngc)}
 .ng-book.b2{--ngc:#3B82F6;--ngbg:#E8F0FE;--ngtx:#1D4ED8}
 .ng-book.b3{--ngc:#F59E0B;--ngbg:#FFF3D6;--ngtx:#B45309}
 .ng-h{display:flex;align-items:center;gap:10px;margin:2px 4px 10px}
 .ng-tag{background:var(--ngc);color:#fff;font-weight:900;border-radius:999px;padding:5px 14px;font-size:15px}
 .ng-h small{color:var(--muted);font-weight:700;font-size:13px}
-.ng-list{display:grid;gap:8px}
+.ng-list{display:grid;gap:8px;grid-template-columns:minmax(0,1fr)}
 .ng-it{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;cursor:pointer;padding:10px 12px;border-radius:16px;background:var(--ngbg);font:inherit;color:inherit}
 .ng-it:active{transform:scale(.99)}
 .ng-no{flex:none;min-width:54px;height:46px;border-radius:14px;background:#fff;color:var(--ngtx);display:grid;place-items:center;font-weight:900;font-size:12px;line-height:1.1;text-align:center;padding:0 6px}
 .ng-no b{display:block;font-size:19px}
 .ng-it .tx{min-width:0;flex:1}
 .ng-it .tx b{display:block;font-size:17px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ng-it .tx small{display:block;color:var(--muted);font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ng-it .tx small{display:block;color:var(--muted);font-weight:700;font-size:13px;line-height:1.35;overflow-wrap:anywhere}
 .ng-it .tx small.on{color:var(--ngtx)}
 @media (prefers-color-scheme:dark){.ng-book.b2{--ngbg:#1b2a44;--ngtx:#93B4F8}.ng-book.b3{--ngbg:#3a2d14;--ngtx:#F8C66A}.ng-no{background:#00000033}}
-@media (min-width:960px){.nghe{grid-template-columns:1fr 1fr;align-items:start}}
+@media (min-width:960px){.nghe{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}}
 .yl-h{display:flex;align-items:center;justify-content:space-between;margin:16px 2px 8px}
 .yl-h h3{margin:0;font-size:19px;font-weight:900;display:flex;align-items:center;gap:8px}
 .yl-h h3:before{content:"";width:5px;height:20px;border-radius:3px;background:var(--lvc,var(--green,#12A66A))}
@@ -572,6 +573,8 @@ body.v-Lesson .wrap{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))
     <div class="art"><span class="bubble">你好！</span><span class="mascot-slot"></span></div>
   </div>
   <div id="resumeCard"></div>
+  <div id="ngheSec" hidden><div class="sec-t"><h2>Nghe giáo trình</h2><span class="muted" style="font-size:13px;font-weight:700">Có sẵn tiếng gốc, phụ đề, bản dịch</span></div>
+  <div class="nghe" id="nghe"></div></div>
   <div class="card prog-card" id="statsCard"></div>
 
   <div class="sec-t"><h2>Bắt đầu học</h2></div>
@@ -582,8 +585,7 @@ body.v-Lesson .wrap{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))
     <button class="tile" data-go="focus"><span class="ti o"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2.5h6"/></svg></span><span><b>Phòng tập trung</b><span>Hẹn giờ học 25 phút</span></span></button>
   </div>
 
-  <div id="ngheSec" hidden><div class="sec-t"><h2>Nghe giáo trình</h2><span class="muted" style="font-size:13px;font-weight:700">Có sẵn tiếng gốc, phụ đề, bản dịch</span></div>
-  <div class="nghe" id="nghe"></div></div>
+
 
   <div class="sec-t"><h2>Bài mẫu</h2><span class="muted" style="font-size:13px;font-weight:700">Có sẵn giọng đọc và bản dịch</span></div>
   <div class="hscroll" id="samples"></div>
