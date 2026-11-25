@@ -162,6 +162,24 @@ textarea.in{min-height:140px;resize:vertical;font-family:var(--f-zh),var(--f-ui)
 .scard .body b{display:block;font-size:15.5px;font-weight:900;line-height:1.3}
 .scard .body span{display:block;font-size:13px;color:var(--muted);margin-top:4px;font-family:var(--f-zh);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lib{display:grid;gap:10px}
+.nghe{display:grid;gap:14px}
+.ng-book{border-radius:22px;padding:12px;background:var(--card);box-shadow:var(--sh-1);border-top:6px solid var(--ngc)}
+.ng-book.b2{--ngc:#3B82F6;--ngbg:#E8F0FE;--ngtx:#1D4ED8}
+.ng-book.b3{--ngc:#F59E0B;--ngbg:#FFF3D6;--ngtx:#B45309}
+.ng-h{display:flex;align-items:center;gap:10px;margin:2px 4px 10px}
+.ng-tag{background:var(--ngc);color:#fff;font-weight:900;border-radius:999px;padding:5px 14px;font-size:15px}
+.ng-h small{color:var(--muted);font-weight:700;font-size:13px}
+.ng-list{display:grid;gap:8px}
+.ng-it{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;cursor:pointer;padding:10px 12px;border-radius:16px;background:var(--ngbg);font:inherit;color:inherit}
+.ng-it:active{transform:scale(.99)}
+.ng-no{flex:none;min-width:54px;height:46px;border-radius:14px;background:#fff;color:var(--ngtx);display:grid;place-items:center;font-weight:900;font-size:12px;line-height:1.1;text-align:center;padding:0 6px}
+.ng-no b{display:block;font-size:19px}
+.ng-it .tx{min-width:0;flex:1}
+.ng-it .tx b{display:block;font-size:17px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ng-it .tx small{display:block;color:var(--muted);font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ng-it .tx small.on{color:var(--ngtx)}
+@media (prefers-color-scheme:dark){.ng-book.b2{--ngbg:#1b2a44;--ngtx:#93B4F8}.ng-book.b3{--ngbg:#3a2d14;--ngtx:#F8C66A}.ng-no{background:#00000033}}
+@media (min-width:960px){.nghe{grid-template-columns:1fr 1fr;align-items:start}}
 .yl-h{display:flex;align-items:center;justify-content:space-between;margin:16px 2px 8px}
 .yl-h h3{margin:0;font-size:19px;font-weight:900;display:flex;align-items:center;gap:8px}
 .yl-h h3:before{content:"";width:5px;height:20px;border-radius:3px;background:var(--lvc,var(--green,#12A66A))}
@@ -563,6 +581,9 @@ body.v-Lesson .wrap{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))
     <button class="tile" data-go="words"><span class="ti g"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="6" width="14" height="14" rx="3"/><path d="M7 3h11a3 3 0 0 1 3 3v11"/></svg></span><span><b>Ôn thẻ từ</b><span id="tileDue">Sổ từ của bạn</span></span><span class="badge" id="dueBadge" hidden></span></button>
     <button class="tile" data-go="focus"><span class="ti o"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2.5h6"/></svg></span><span><b>Phòng tập trung</b><span>Hẹn giờ học 25 phút</span></span></button>
   </div>
+
+  <div id="ngheSec" hidden><div class="sec-t"><h2>Nghe giáo trình</h2><span class="muted" style="font-size:13px;font-weight:700">Có sẵn tiếng gốc, phụ đề, bản dịch</span></div>
+  <div class="nghe" id="nghe"></div></div>
 
   <div class="sec-t"><h2>Bài mẫu</h2><span class="muted" style="font-size:13px;font-weight:700">Có sẵn giọng đọc và bản dịch</span></div>
   <div class="hscroll" id="samples"></div>
@@ -1070,10 +1091,18 @@ async function mountMedia(){
           onError:e=>{toast('YouTube không cho phát video này ở web khác (mã '+e.data+'). Thử video khác nha.',5000);res();}}});
       setTimeout(res,12000);
     });
-  } else if(src.type==='file'){
+  } else if(src.type==='file'||src.type==='pack'){
     const les=LES;
+    if(src.type==='pack'&&!src.url){
+      const mb=Math.max(1,Math.round((les.pack&&les.pack.size||0)/1048576));
+      box.innerHTML=`<div class="media tts">${mascot()}<div style="flex:1;min-width:0"><b>Đang mở bài nghe…</b><small id="ngProg">Lần đầu tải file nghe (${mb} MB), lần sau mở ngay.</small></div></div>`;
+      const bl=await ngAudio(les,pc=>{ const e=$('#ngProg'); if(e) e.textContent='Đang tải file nghe… '+pc+'%'; });
+      if(LES!==les) return;
+      if(!bl){ box.innerHTML=`<div class="media tts need-file" id="needFile">${mascot()}<div style="flex:1;min-width:0"><b>Chưa tải được file nghe</b><small>Mạng đang yếu. Bấm thử lại nha.</small><div style="margin-top:8px"><button class="btn sm pri" id="ngRetry">Thử lại</button></div></div></div>`; $('#ngRetry').onclick=()=>mountMedia(); return; }
+      if(!src.url) src.url=URL.createObjectURL(bl);
+    }
     const fromDB=async()=>{ const m=await MDB.get(les.id); const bl=m&&(m.blob||(m.buf?new Blob([m.buf],{type:m.type||''}):null)); if(bl&&les.src===src&&!src.url){ src.file=new File([bl],m.name||src.name||'file',{type:bl.type}); src.url=URL.createObjectURL(bl); src.audio=m.audio!=null?m.audio:src.audio; SAVED_MEDIA.add(les.id); } return !!src.url; };
-    if(!src.url) await fromDB();
+    if(!src.url&&src.type==='file') await fromDB();
     // not on this device yet: fetch the original recording from the user's cloud copy (☁️) right away
     if(!src.url&&window.BM_SYNC&&BM_SYNC.fetchRec&&BM_SYNC.state().auth){
       box.innerHTML=`<div class="media tts">${mascot()}<div style="flex:1;min-width:0"><b>Đang lấy file gốc “${esc(src.name||'file')}”…</b><small>File nghe của bài này đang được tải từ kho ☁️ của bạn về máy này.</small></div></div>`;
@@ -1103,7 +1132,7 @@ function ttsBox(msg){
 }
 const hasTime=i=>P&&P.media&&LES.lines[i]&&LES.lines[i].s!=null;
 // file lesson whose recording is not on this device: do not read it with a machine voice instead
-const needFile=()=>LES&&LES.src&&LES.src.type==='file'&&!(P&&P.media);
+const needFile=()=>LES&&LES.src&&(LES.src.type==='file'||LES.src.type==='pack')&&!(P&&P.media);
 function nudgeFile(){ const b=$('#needFile'); toast(b?'Bài này cần file gốc để nghe đúng giọng. Bấm “Chọn file” ở trên nha.':'Đang mở file gốc, chờ chút nha.',4000); if(b){ b.scrollIntoView({behavior:'smooth',block:'center'}); b.classList.remove('pulse'); void b.offsetWidth; b.classList.add('pulse'); } }
 let SEG=0; // a single sentence is being played by the app
 const appBusy=()=>(PLAYING&&!PLAYING.dead)||SEG>0;
@@ -1174,8 +1203,76 @@ async function keepMedia(id,file){
     toast(/quota/i.test(((e&&e.name)||'')+((e&&e.message)||''))?'Máy hết chỗ nên chưa lưu được file nghe này. Xoá bớt bài cũ rồi chọn lại file nha.':'Chưa lưu được file nghe trên máy này, lần sau có thể phải chọn lại file.',5000); }
 }
 function lessons(){return store.get('bb.lessons',[]);}
+/* ---- Nghe giáo trình: the user's listening-book lessons, ready made (audio + checked subtitles + translation).
+   Stored encrypted in the site (the book's audio is not public); the key arrives once per device through a private
+   link (#nk=…) and then travels with ☁️ sync like the other settings. ---- */
+const NG={les:[],kh:'',loading:null};
+const ngKh=()=>{ const k=store.get('bb.nk',''); return /^[0-9a-f]{64}$/.test(k)?k:''; };
+async function ngHid(s,kh){ const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s+'|'+kh)); return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,20); }
+async function ngDec(buf,kh){ const k=await crypto.subtle.importKey('raw',new Uint8Array(kh.match(/../g).map(x=>parseInt(x,16))),'AES-GCM',false,['decrypt']); const u=new Uint8Array(buf); return crypto.subtle.decrypt({name:'AES-GCM',iv:u.slice(0,12)},k,u.slice(12)); }
+function ngLoad(){
+  const kh=ngKh(); if(!kh||!(window.crypto&&crypto.subtle)) return Promise.resolve([]);
+  if(NG.kh===kh&&NG.les.length) return Promise.resolve(NG.les);
+  if(NG.loading) return NG.loading;
+  NG.loading=(async()=>{ try{
+    const r=await fetch('data/nghe/'+(await ngHid('idx',kh))+'.bin',{cache:'no-cache'}); if(!r.ok) throw new Error('nghe '+r.status);
+    const j=JSON.parse(new TextDecoder().decode(await ngDec(await r.arrayBuffer(),kh)));
+    NG.kh=kh; NG.les=j.lessons.sort((a,b)=>a.book-b.book||a.no-b.no).map(x=>({id:'nghe-'+x.id,title:'Quyển '+x.book+' · Bài '+x.no+(x.zh?' · '+x.zh:''),pack:x,tv:TRV,ver:3,at:0,
+      src:{type:'pack',name:x.file,audio:true},lines:x.lines.map(l=>({s:l[0],e:l[1],zh:l[2],vi:l[3]}))}));
+    return NG.les;
+  }catch(e){ console.warn('nghe',e); return NG.les; } finally{ NG.loading=null; } })();
+  return NG.loading;
+}
+const findLes=id=>lessons().find(l=>l.id===id)||NG.les.find(l=>l.id===id);
+// the user's own copies of these book lessons (made earlier from the same files) are hidden so nothing is listed twice
+const ngHidden=x=>!!(NG.les.length&&x&&x.src&&x.src.type==='file'&&NG.les.some(n=>n.pack.book===3&&n.src.name===x.src.name));
+const NGDB={db:null,
+  open(){ if(this.db) return this.db; this.db=new Promise((res,rej)=>{try{const r=indexedDB.open('bb-nghe',1);r.onupgradeneeded=()=>r.result.createObjectStore('a');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);}catch(e){rej(e);}}); return this.db; },
+  async tx(mode,fn){ const db=await this.open(); return new Promise((res,rej)=>{const t=db.transaction('a',mode);const q=fn(t.objectStore('a'));t.oncomplete=()=>res(q&&q.result);t.onerror=t.onabort=()=>rej(t.error);}); },
+  get(k){return this.tx('readonly',o=>o.get(k)).catch(()=>null);},
+  put(k,v){return this.tx('readwrite',o=>o.put(v,k));}
+};
+// the lesson's recording: from this device if it was opened before, otherwise downloaded once and kept
+async function ngAudio(les,onProg){
+  const x=les.pack, kh=ngKh(); if(!x||!kh) return null;
+  try{ const m=await NGDB.get(x.a); const bl=m&&(m.blob||(m.buf?new Blob([m.buf],{type:'audio/mpeg'}):null)); if(bl&&bl.size) return bl; }catch(e){}
+  try{
+    const r=await fetch('data/nghe/'+x.a+'.bin'); if(!r.ok) throw new Error('audio '+r.status);
+    let buf;
+    const tot=+r.headers.get('content-length')||x.size||0;
+    if(r.body&&r.body.getReader&&tot){ const rd=r.body.getReader(), parts=[]; let got=0, last=-1;
+      for(;;){ const {done,value}=await rd.read(); if(done) break; parts.push(value); got+=value.length; const pc=Math.min(99,Math.floor(got*100/tot)); if(pc!==last){ last=pc; onProg&&onProg(pc); } }
+      const u=new Uint8Array(got); let o=0; for(const p of parts){ u.set(p,o); o+=p.length; } buf=u.buffer;
+    } else buf=await r.arrayBuffer();
+    const plain=await ngDec(buf,kh), bl=new Blob([plain],{type:'audio/mpeg'});
+    try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persist().catch(()=>{}); await NGDB.put(x.a,{blob:bl}); }
+    catch(e){ try{ await NGDB.put(x.a,{buf:plain}); }catch(e2){ console.warn('nghe keep',e2); } }
+    return bl;
+  }catch(e){ console.warn('nghe audio',e); return null; }
+}
+function renderNghe(){
+  const sec=$('#ngheSec'), box=$('#nghe'); if(!sec||!box) return;
+  if(!NG.les.length){ sec.hidden=true; return; }
+  sec.hidden=false; const pos=POS.all();
+  box.innerHTML=[...new Set(NG.les.map(x=>x.pack.book))].map(b=>{ const ls=NG.les.filter(x=>x.pack.book===b);
+    return `<div class="ng-book b${b}"><div class="ng-h"><span class="ng-tag">Quyển ${b}</span><small>${ls.length} bài nghe</small></div><div class="ng-list">${ls.map(x=>{ const p=pos[x.id], st=p&&(p.i>0||p.t>3);
+      return `<button class="ng-it" data-ng="${esc(x.id)}"><span class="ng-no">Bài<b>${x.pack.no}</b></span><span class="tx"><b>${esc(x.pack.zh||('第'+x.pack.no+'课'))}</b><small class="${st?'on':''}">${st?'Đang nghe câu '+(Math.min(p.i,x.lines.length-1)+1)+'/'+x.lines.length:esc(x.pack.vi||'')+(x.pack.vi?' · ':'')+x.lines.length+' câu · '+Math.round(x.pack.dur/60)+' phút'}</small></span></button>`; }).join('')}</div></div>`; }).join('');
+}
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-ng]'); if(!b) return; const x=NG.les.find(l=>l.id===b.dataset.ng); if(x) openLesson(x); });
+function ngRefresh(){ return ngLoad().then(()=>{ if(VIEW==='Home'){ renderNghe(); renderLib(); renderResume(); } }); }
+// private link: #nk=<key> unlocks the book lessons on this device (and, through ☁️, on the user's other devices)
+async function importNk(){
+  const m=/^#nk=([0-9a-f]{64})$/i.exec(location.hash); if(!m) return false;
+  history.replaceState(null,'',location.pathname+location.search);
+  store.set('bb.nk',m[1].toLowerCase()); NG.les=[]; NG.kh='';
+  await ngLoad();
+  if(NG.les.length){ if(VIEW!=='Home') go('Home'); renderNghe(); renderLib(); renderResume(); toast('Đã có '+NG.les.length+' bài nghe giáo trình. Bấm vào bài là học nha!',5000); setTimeout(()=>{ const s=$('#ngheSec'); if(s) s.scrollIntoView({behavior:'smooth',block:'start'}); },300); }
+  else toast('Link mở bài nghe bị lỗi hoặc mạng yếu, bạn bấm lại link nha.',5000);
+  return true;
+}
+window.addEventListener('hashchange',()=>importNk());
 function saveLesson(){
-  if(!LES||LES.demo) return;
+  if(!LES||LES.demo||LES.pack) return;
   const all=lessons().filter(x=>x.id!==LES.id);
   const copy={id:LES.id,title:LES.title,tv:LES.tv,ver:LES.ver,src:LES.src?{type:LES.src.type,id:LES.src.id,name:LES.src.name,audio:LES.src.audio,fk:LES.src.fk}:{type:'tts'},lines:LES.lines.map(l=>({s:l.s,e:l.e,zh:l.zh,vi:l.vi||''})),at:Date.now()};
   all.unshift(copy);
@@ -1184,7 +1281,7 @@ function saveLesson(){
   if(!store.set('bb.lessons',all)){ all.length=Math.max(1,all.length-10); store.set('bb.lessons',all); }
 }
 function renderLib(){
-  const all=lessons(), box=$('#lib');
+  const all=lessons().filter(x=>!ngHidden(x)), box=$('#lib');
   if(!all.length){box.innerHTML='<div class="empty empty-card">Chưa có bài nào. Bài bạn học sẽ được lưu ở đây để mở lại.</div>';return;}
   box.innerHTML=all.map(x=>{const yt=x.src&&x.src.type==='youtube'&&x.src.id;
     return `<div class="lib-item"><button class="open" data-id="${esc(x.id)}"><span class="thumb" ${yt?`style="background-image:url('https://i.ytimg.com/vi/${esc(x.src.id)}/mqdefault.jpg')"`:''}>${yt?'':(x.src&&x.src.type==='file'?IC.video:IC.file)}</span><span class="tx"><b>${esc(x.title)}</b><small>${x.lines.length} câu · ${new Date(x.at).toLocaleDateString('vi-VN')}</small></span></button><button class="del" data-del="${esc(x.id)}" aria-label="Xóa bài">${IC.x}</button></div>`;}).join('');
@@ -1586,13 +1683,13 @@ addEventListener('pagehide',savePos);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')savePos();});
 function renderResume(){
   const box=$('#resumeCard'); if(!box) return;
-  const all=lessons(), pos=POS.all();
+  const all=lessons().filter(x=>!ngHidden(x)).concat(NG.les), pos=POS.all();
   const x=all.filter(l=>pos[l.id]&&l.lines&&l.lines.length&&(pos[l.id].i>0||pos[l.id].t>3)).sort((a,b)=>pos[b.id].at-pos[a.id].at)[0];
   if(!x){box.innerHTML='';return;}
   const p=pos[x.id], n=Math.min(p.i,x.lines.length-1)+1;
   box.innerHTML=`<button class="resume" data-resume="${esc(x.id)}"><span class="ri">${IC.play}</span><span class="tx"><small>Đang học dở</small><b>${esc(x.title)}</b><small>Câu ${n}/${x.lines.length}${p.t!=null?' · '+fmtT(p.t):''}</small></span><span class="go">Nghe tiếp</span></button>`;
 }
-document.addEventListener('click',e=>{const b=e.target.closest('[data-resume]');if(!b)return;const x=lessons().find(l=>l.id===b.dataset.resume);if(x)openLesson(x);});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-resume]');if(!b)return;const x=findLes(b.dataset.resume);if(x)openLesson(x);});
 
 /* ======================= views ======================= */
 let VIEW='Home', BACKTO='Home';
@@ -1615,7 +1712,7 @@ function show(v){
 }
 function go(v){
   newRun(); stopRec(); stopListen(); closeSheet();
-  if(v==='Home'){show('Home');renderLib();renderStats();renderYtLib();renderResume();}
+  if(v==='Home'){show('Home');renderNghe();renderLib();renderStats();renderYtLib();renderResume();}
   else if(v==='Words'){renderWords();show('Words');}
   else if(v==='Focus'){openFocus();}
   else if(v==='New'){show('New');}
@@ -1632,13 +1729,14 @@ $$('[data-go]').forEach(b=>b.onclick=()=>{const k=b.dataset.go; if(k==='video'){
 
 async function openLesson(les){
   newRun(); stopRec();
-  LES={...les,lines:les.lines.map(l=>({...l}))}; const glued=LES.lines.length&&needsTidy(LES.lines);
-  if(LES.lines.length&&(glued||fragmented(LES.lines)||LES.lines.some(l=>cjkCount(l.zh)&&cleanZh(l.zh)!==l.zh))){ LES.lines=tidyLines(LES.lines); } else LES.lines=normLines(LES.lines); const pos=!LES.demo&&POS.get(LES.id); CUR=pos?Math.min(pos.i,Math.max(0,LES.lines.length-1)):0; if(!LES.lines.length) MODE='shadow'; RECS={}; PRON={}; DICTST={}; FILLST={}; PRAC=null;
+  LES={...les,lines:les.lines.map(l=>({...l}))}; const glued=!LES.pack&&LES.lines.length&&needsTidy(LES.lines);
+  if(LES.lines.length&&!LES.pack&&(glued||fragmented(LES.lines)||LES.lines.some(l=>cjkCount(l.zh)&&cleanZh(l.zh)!==l.zh))){ LES.lines=tidyLines(LES.lines); } else LES.lines=normLines(LES.lines); const pos=!LES.demo&&POS.get(LES.id); CUR=pos?Math.min(pos.i,Math.max(0,LES.lines.length-1)):0; if(!LES.lines.length) MODE='shadow'; RECS={}; PRON={}; DICTST={}; FILLST={}; PRAC=null;
   show('Lesson'); renderModes(); await mountMedia(); setMode(MODE);
   if(pos&&LES.lines.length&&(CUR>0||pos.t>3)){ restorePos(pos); }
   saveLesson();
   const L0=LES, show1=l=>{ if(LES!==L0) return; const i=L0.lines.indexOf(l); $$(`[data-vi="${i}"]`).forEach(el=>{el.textContent=l.vi;el.classList.remove('wait');}); };
-  if(!L0.demo&&L0.lines.length&&L0.tv!==TRV) retranslate(L0,show1);
+  if(L0.pack){}
+  else if(!L0.demo&&L0.lines.length&&L0.tv!==TRV) retranslate(L0,show1);
   else translateLines(L0.lines,show1).then(ok=>{ if(LES===L0) saveLesson(); if(!ok&&LES===L0) toast('Một số câu chưa dịch được (mạng yếu?). Bấm vào câu để thử lại.',4000);});
 }
 // lessons translated the old way (machine translation, "ta/ngươi"…): translate again with the AI, line by line in place
@@ -3068,12 +3166,13 @@ window.addEventListener('hashchange',()=>importGrab());
 /* ======================= start ======================= */
 const OPEN0=(()=>{try{return JSON.parse(localStorage.getItem('bb.open')||'null');}catch(e){return null;}})();
 renderLib(); renderStats(); show('Home'); renderResume();
-(()=>{ try{ const o=OPEN0; if(!o||Date.now()-o.at>6*3600e3||/^#bb(sub|fix)=/.test(location.hash)) return; const x=lessons().find(l=>l.id===o.id); if(x) openLesson(x); }catch(e){} })();
+(async()=>{ try{ const o=OPEN0; const nk=/^#nk=/.test(location.hash); if(!nk) await ngLoad(); if(VIEW==='Home'){ renderNghe(); renderLib(); renderResume(); }
+  if(nk||!o||Date.now()-o.at>6*3600e3||/^#bb(sub|fix)=/.test(location.hash)) return; const x=findLes(o.id); if(x&&VIEW==='Home') openLesson(x); }catch(e){} })();
 // lessons saved on another device arrive quietly: refresh the list without touching what is playing
-addEventListener('bm-sync',()=>{ try{ pendingFixes(); if(VIEW==='Home'){ renderLib(); renderStats(); renderResume(); } else if(VIEW==='Lesson'&&needFile()&&$('#needFile')){ MDB.get(LES.id).then(m=>{ if(m&&(m.blob||m.buf)&&needFile()&&$('#needFile')) mountMedia(); }); } }catch(e){} });
+addEventListener('bm-sync',()=>{ try{ pendingFixes(); if(ngKh()&&ngKh()!==NG.kh) ngRefresh(); if(VIEW==='Home'){ renderLib(); renderStats(); renderResume(); } else if(VIEW==='Lesson'&&needFile()&&$('#needFile')){ MDB.get(LES.id).then(m=>{ if(m&&(m.blob||m.buf)&&needFile()&&$('#needFile')) mountMedia(); }); } }catch(e){} });
 const hr=new Date().getHours(); $('#helloHi').textContent=hr<11?'Chào buổi sáng!':hr<14?'Chào buổi trưa!':hr<18?'Chào buổi chiều!':'Chào buổi tối!';
 setTimeout(()=>loadDict(),1500);
-importGrab(); pendingFixes(); importFix();
+importGrab(); pendingFixes(); importFix(); importNk();
 })();
 </script>
 </body>

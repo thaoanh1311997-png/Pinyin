@@ -6,7 +6,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-        with: {sparse-checkout: "shared\nvideo\nsach\ndict.txt\naudio/zh/index.bin", sparse-checkout-cone-mode: false}
+        with: {sparse-checkout: "shared\nvideo\nsach\ndict.txt\naudio/zh/index.bin\n!video/data/nghe/", sparse-checkout-cone-mode: false}
       - uses: actions/setup-node@v4
         with: {node-version: 20}
       - run: npm i --no-save playwright ffmpeg-static && npx playwright install webkit chromium
@@ -23,3 +23,5 @@ jobs:
           perl -e 'alarm shift; exec @ARGV' 300 node video/tools/resume-test.cjs || echo FAIL-EXIT resume-test
           perl -e 'alarm shift; exec @ARGV' 300 env BT=webkit node video/tools/player-test.cjs || echo FAIL-EXIT player-test webkit
           perl -e 'alarm shift; exec @ARGV' 300 node video/tools/player-test.cjs || echo FAIL-EXIT player-test
+          perl -e 'alarm shift; exec @ARGV' 300 env BT=webkit node video/tools/nghe-test.cjs || echo FAIL-EXIT nghe-test webkit
+          perl -e 'alarm shift; exec @ARGV' 300 node video/tools/nghe-test.cjs || echo FAIL-EXIT nghe-test
