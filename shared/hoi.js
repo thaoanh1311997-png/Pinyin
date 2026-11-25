@@ -53,7 +53,23 @@
     '#bm-hoi .sb{flex:none;padding:4px 12px 8px;position:relative}' +
     '#bm-hoi input.q,#bm-hoi textarea{width:100%;font:inherit;font-size:16px;color:var(--h-ink);background:var(--h-card);border:2px solid var(--h-line);border-radius:16px;padding:11px 40px 11px 14px;outline:none;transition:border-color .2s}' +
     '#bm-hoi input.q:focus,#bm-hoi textarea:focus{border-color:var(--h-acc)}' +
-    '#bm-hoi .clr{position:absolute;right:18px;top:9px;width:32px;height:32px;border:0;background:none;color:var(--h-mut);font-size:18px;cursor:pointer;display:none}' +
+    '#bm-hoi .clr{position:absolute;right:62px;top:9px;width:32px;height:32px;border:0;background:none;color:var(--h-mut);font-size:18px;cursor:pointer;display:none}' +
+    '#bm-hoi input.q{padding-right:100px}' +
+    '#bm-hoi .pen{position:absolute;right:17px;top:7px;height:36px;min-width:42px;border:0;border-radius:12px;background:var(--h-soft);font-size:19px;cursor:pointer;display:grid;place-items:center;padding:0 6px}' +
+    '#bm-hoi .pen.on{background:linear-gradient(135deg,var(--h-acc),#F5A443);box-shadow:0 2px 8px -3px rgba(200,90,10,.7)}' +
+    '#bm-hoi .hw{flex:none;display:none;padding:0 12px 8px}#bm-hoi .hw.on{display:block}' +
+    '#bm-hoi .hwc{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:3px 3px 8px;min-height:52px;align-items:center;scrollbar-width:none}#bm-hoi .hwc::-webkit-scrollbar{display:none}' +
+    '#bm-hoi .hwc button{flex:none;min-width:46px;height:46px;border:0;border-radius:14px;background:var(--h-card);box-shadow:0 0 0 1.5px var(--h-line);font-family:var(--h-zh);font-size:26px;cursor:pointer;padding:0 6px;line-height:1}' +
+    '#bm-hoi .hwc button:first-child{box-shadow:0 0 0 2px var(--h-acc)}' +
+    '#bm-hoi .hwc .hwn{font-size:13px;color:var(--h-mut);font-weight:700;padding:0 4px}' +
+    '#bm-hoi .hwb{display:flex;gap:8px;align-items:stretch}' +
+    '#bm-hoi .hwp{position:relative;flex:1;height:min(210px,30vh);min-height:150px;border-radius:18px;background:var(--h-card);box-shadow:inset 0 0 0 2px var(--h-line);overflow:hidden;touch-action:none}' +
+    '#bm-hoi .hwp canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}' +
+    '#bm-hoi .hwp .gd{position:absolute;inset:0;pointer-events:none;background:linear-gradient(var(--h-line),var(--h-line)) center/100% 1px no-repeat,linear-gradient(var(--h-line),var(--h-line)) center/1px 100% no-repeat;opacity:.8}' +
+    '#bm-hoi .hwp .ph{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;color:var(--h-mut);font-weight:800;font-size:14px;opacity:.75;text-align:center;padding:10px}' +
+    '#bm-hoi .hwk{flex:none;display:flex;flex-direction:column;gap:8px;width:54px}' +
+    '#bm-hoi .hwk button{flex:1;border:0;border-radius:14px;background:var(--h-soft);font-weight:900;font-size:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:var(--h-ink);line-height:1.1}' +
+    '#bm-hoi .hwk button b{font-size:18px}' +
     '#bm-hoi .sb.has .clr{display:block}' +
     '#bm-hoi .sc{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:2px 12px 14px}' +
     '#bm-hoi .st{font-size:12.5px;color:var(--h-mut);font-weight:700;padding:2px 4px 6px}' +
@@ -138,13 +154,16 @@
     '<div class="pn" role="dialog" aria-label="Tra từ và hỏi đáp">' +
       '<div class="hd"><img src="' + MASCOT + '" alt=""><div class="tabs" role="tablist"><button type="button" data-t="tra">🔍 Tra từ</button><button type="button" data-t="hoi">💬 Hỏi đáp</button></div><button class="x" type="button" aria-label="Đóng">×</button></div>' +
       '<div class="bd2">' +
-        '<div class="pg" data-p="tra"><div class="sb"><input class="q" type="text" enterkeyhint="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Chữ Hán, pinyin, Hán Việt hoặc tiếng Việt"><button class="clr" type="button" aria-label="Xoá">✕</button></div><div class="sc tra-sc"></div></div>' +
+        '<div class="pg" data-p="tra"><div class="sb"><input class="q" type="text" enterkeyhint="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Chữ Hán, pinyin, Hán Việt hoặc tiếng Việt"><button class="clr" type="button" aria-label="Xoá">✕</button><button class="pen" type="button" aria-label="Viết tay" title="Viết tay chữ Hán">✍️</button></div>' +
+          '<div class="hw"><div class="hwc"><span class="hwn">Viết 1 chữ vào ô bên dưới, rồi chạm chữ đúng ở đây</span></div><div class="hwb"><div class="hwp"><div class="gd"></div><div class="ph">✍️ Viết chữ Hán ở đây<br>(ngón tay, chuột hoặc bút)</div><canvas></canvas></div>' +
+          '<div class="hwk"><button type="button" class="hwu"><b>↶</b>Xoá nét</button><button type="button" class="hwx"><b>🗑</b>Viết lại</button><button type="button" class="hwd"><b>⌫</b>Xoá chữ</button></div></div></div>' +
+          '<div class="sc tra-sc"></div></div>' +
         '<div class="pg" data-p="hoi"><div class="tb"><button type="button" class="pyb">拼 Pinyin</button><button type="button" class="newc">🧹 Hỏi chuyện mới</button></div><div class="sc hoi-sc"><div class="ms"></div></div>' +
           '<div class="cb"><textarea rows="1" enterkeyhint="send" placeholder="Hỏi về ngữ pháp, từ vựng…"></textarea><button class="go" type="button" aria-label="Gửi">' + SEND + '</button></div></div>' +
       '</div>' +
     '</div>';
   shadow.appendChild(root); document.body.appendChild(host);
-  function syncTheme() { root.classList.toggle('dark', document.documentElement.getAttribute('data-theme') === 'dark'); }
+  function syncTheme() { root.classList.toggle('dark', document.documentElement.getAttribute('data-theme') === 'dark'); if (window.__bmHwRedraw) window.__bmHwRedraw(); }
   syncTheme(); addEventListener('bm-theme', function () { setTimeout(syncTheme, 0); });
   if (window.MutationObserver) new MutationObserver(syncTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   var fab = $('.hf'), tip = $('.tip'), pn = $('.pn'), bk = $('.bk'), qIn = $('input.q'), traSc = $('.tra-sc'), msBox = $('.ms'), hoiSc = $('.hoi-sc'), ta = $('.cb textarea'), goB = $('.go');
@@ -275,7 +294,7 @@
     root.classList.add('open'); pn.classList.toggle('l', pos.s === 'l');
     place(true); fit(); setTab(tab);
     if (!opened) { opened = true; }
-    if (tab === 'tra') { runSearch(); if (!phone() || !qIn.value) focusLater(qIn); }
+    if (tab === 'tra') { runSearch(); if (hwOn) hwShow(); else if (!phone() || !qIn.value) focusLater(qIn); }
     else { renderChat(); scrollChat(); if (!phone()) focusLater(ta); }
     loadData();
   }
@@ -294,7 +313,7 @@
     $$('.pg').forEach(function (p) { p.classList.toggle('on', p.dataset.p === t); });
   }
   $$('.tabs button').forEach(function (b) {
-    b.onclick = function () { setTab(b.dataset.t); if (b.dataset.t === 'hoi') { renderChat(); scrollChat(); if (!phone()) focusLater(ta); } else { runSearch(); if (!phone()) focusLater(qIn); } };
+    b.onclick = function () { setTab(b.dataset.t); if (b.dataset.t === 'hoi') { renderChat(); scrollChat(); if (!phone()) focusLater(ta); } else { runSearch(); if (hwOn) hwShow(); else if (!phone()) focusLater(qIn); } };
   });
   // đang mở khung trên máy tính: bôi đen chữ Hán trên trang → tự tra
   var selT = 0;
@@ -487,7 +506,7 @@
     var q = qIn.value.trim(), r = lastRes || { items: [] }, h = '';
     if (!q) {
       var rec = lg('bm.tra.recent', []);
-      h += '<div class="hint">Gõ <b>chữ Hán</b> (爱), <b>pinyin</b> (ai, ài, ai4), <b>Hán Việt</b> (ái) hoặc <b>tiếng Việt</b> (yêu). Dán cả câu tiếng Trung để tách từ.' + (phone() ? '' : ' Bôi đen chữ Hán trên trang cũng tự tra.') + '</div>';
+      h += '<div class="hint">Gõ <b>chữ Hán</b> (爱), <b>pinyin</b> (ai, ài, ai4), <b>Hán Việt</b> (ái) hoặc <b>tiếng Việt</b> (yêu). Dán cả câu tiếng Trung để tách từ. Không biết cách đọc thì bấm <b>✍️</b> để viết tay.' + (phone() ? '' : ' Bôi đen chữ Hán trên trang cũng tự tra.') + '</div>';
       if (rec.length) h += '<div class="gh">Vừa tra</div><div class="chips">' + rec.map(function (w) { return '<button type="button" class="chip zh" data-w="' + esc(w) + '">' + esc(w) + '</button>'; }).join('') + '</div>';
       else h += '<div class="gh">Thử tra</div><div class="chips">' + ['爱', 'xuexi', 'hạnh phúc', 'liǎojiě', '把'].map(function (w) { return '<button type="button" class="chip' + (HAN.test(w) ? ' zh' : '') + '" data-w="' + esc(w) + '">' + esc(w) + '</button>'; }).join('') + '</div>';
       traSc.innerHTML = h + (vocP || dictP ? '' : '');
@@ -532,6 +551,113 @@
     if (t.tagName === 'A') { remember(e2.w); return; }
     if (t.classList.contains('rh')) { row.classList.toggle('ex'); if (row.classList.contains('ex')) remember(e2.w); }
   });
+
+  /* ======================= viết tay ======================= */
+  // Nhận dạng: Google Input Tools (miễn phí, chính xác, không cần cài) + HanziLookupJS chạy ngay trên máy làm dự phòng
+  var hw = $('.hw'), penB = $('.pen'), cv = $('.hwp canvas'), hwc = $('.hwc'), ph = $('.hwp .ph');
+  var strokes = [], curS = null, c2 = null, hwOn = lg('bm.tra.hw', false) === true, hwT = 0, hwSeq = 0, hlP = null;
+  var HWHINT = '<span class="hwn">Viết 1 chữ vào ô bên dưới, rồi chạm chữ đúng ở đây</span>';
+  function hwSize() {
+    var r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1; if (!r.width) return;
+    var w = Math.round(r.width * d), h = Math.round(r.height * d);
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    c2 = cv.getContext('2d'); redraw();
+  }
+  function redraw() {
+    ph.style.display = strokes.length || curS ? 'none' : '';
+    if (!c2) return;
+    var d = window.devicePixelRatio || 1; c2.setTransform(d, 0, 0, d, 0, 0); c2.clearRect(0, 0, cv.width, cv.height);
+    c2.lineCap = 'round'; c2.lineJoin = 'round'; c2.lineWidth = 5.5; c2.strokeStyle = root.classList.contains('dark') ? '#F6E9DA' : '#3B2414';
+    strokes.concat(curS ? [curS] : []).forEach(function (st) {
+      c2.beginPath(); st.forEach(function (p, i) { if (i) c2.lineTo(p[0], p[1]); else c2.moveTo(p[0], p[1]); });
+      if (st.length === 1) c2.lineTo(st[0][0] + 0.1, st[0][1] + 0.1); c2.stroke();
+    });
+  }
+  window.__bmHwRedraw = redraw;
+  function pt(e) { var r = cv.getBoundingClientRect(); return [Math.round((e.clientX - r.left) * 10) / 10, Math.round((e.clientY - r.top) * 10) / 10, Date.now()]; }
+  cv.addEventListener('pointerdown', function (e) {
+    if (e.button) return; e.preventDefault();
+    try { cv.setPointerCapture(e.pointerId); } catch (x) {}
+    if (!c2 || !cv.width) hwSize();
+    clearTimeout(hwT); curS = [pt(e)]; redraw();
+  });
+  cv.addEventListener('pointermove', function (e) {
+    if (!curS) return; e.preventDefault();
+    var evs = e.getCoalescedEvents ? e.getCoalescedEvents() : null; if (!evs || !evs.length) evs = [e];
+    evs.forEach(function (x) { var p = pt(x), l = curS[curS.length - 1]; if (Math.abs(p[0] - l[0]) + Math.abs(p[1] - l[1]) >= 1.5) curS.push(p); });
+    redraw();
+  });
+  function penUp() { if (!curS) return; strokes.push(curS); curS = null; redraw(); recog(); }
+  cv.addEventListener('pointerup', penUp); cv.addEventListener('pointercancel', penUp); cv.addEventListener('lostpointercapture', penUp);
+  ['touchstart', 'touchmove'].forEach(function (t) { cv.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false }); });
+  function offlineLib() {
+    if (!hlP) hlP = loadScript(BASE + 'shared/hw/hanzilookup.min.js?v=1').then(function () {
+      return new Promise(function (ok) { window.HanziLookup.init('mmah', BASE + 'shared/hw/mmah.json?v=1', function (r) { ok(r ? window.HanziLookup : null); }); });
+    }).then(function (H) { if (!H) hlP = null; return H; }, function () { hlP = null; return null; });
+    return hlP;
+  }
+  function offline(sts) {
+    return offlineLib().then(function (H) {
+      if (!H) return [];
+      return new Promise(function (ok) {
+        try {
+          var ac = new H.AnalyzedCharacter(sts.map(function (s) { return s.map(function (p) { return [p[0], p[1]]; }); }));
+          new H.Matcher('mmah').match(ac, 14, function (m) { ok(common((m || []).map(function (x) { return x.character; }))); });
+        } catch (e) { ok([]); }
+      });
+    });
+  }
+  // chữ thông dụng (có trong HSK) lên trước trong 8 gợi ý đầu, chữ hiếm (囗, 冂…) lùi sau
+  function common(a) {
+    var head = a.slice(0, 8), lvOf = function (c) { var e = IDX.get(c); return e && e.lv ? 1 : 0; };
+    var h2 = head.filter(lvOf).concat(head.filter(function (c) { return !lvOf(c); }));
+    return h2.concat(a.slice(8));
+  }
+  function google(sts) {
+    var r = cv.getBoundingClientRect();
+    var ctl = window.AbortController ? new AbortController() : null, to = setTimeout(function () { if (ctl) ctl.abort(); }, 6000);
+    var body = { options: 'enable_pre_space', requests: [{ writing_guide: { writing_area_width: Math.round(r.width), writing_area_height: Math.round(r.height) }, ink: sts.map(function (s) { var t0 = sts[0][0][2]; return [s.map(function (p) { return p[0]; }), s.map(function (p) { return p[1]; }), s.map(function (p) { return p[2] - t0; })]; }), language: 'zh_CN' }] };
+    return fetch('https://inputtools.google.com/request?ime=handwriting&app=mobilesearch&cs=1&oe=UTF-8', { method: 'POST', headers: { 'Content-Type': 'application/json; charset=utf-8' }, body: JSON.stringify(body), signal: ctl ? ctl.signal : undefined })
+      .then(function (x) { clearTimeout(to); return x.json(); })
+      .then(function (j) { if (!j || j[0] !== 'SUCCESS') return null; return ((j[1] && j[1][0] && j[1][0][1]) || []).filter(function (c) { return /^[㐀-鿿]{1,4}$/.test(c); }); })
+      .catch(function () { clearTimeout(to); return null; });
+  }
+  var hwTapped = 0;
+  function showCands(list) {
+    if (!strokes.length) { hwc.innerHTML = HWHINT; return; }
+    hwc.innerHTML = list.length ? list.slice(0, 16).map(function (c) { return '<button type="button" data-c="' + esc(c) + '">' + esc(c) + '</button>'; }).join('') : '<span class="hwn">Chưa đoán ra, viết rõ thêm chút nha</span>';
+    hwc.scrollLeft = 0;
+  }
+  function merge(g, o) { var out = []; (g || []).concat(o || []).forEach(function (c) { if (out.indexOf(c) < 0) out.push(c); }); return out; }
+  function recog() {
+    clearTimeout(hwT);
+    if (!strokes.length) { showCands([]); return; }
+    hwT = setTimeout(function () {
+      var my = ++hwSeq, sts = strokes.slice(), g = null, o = null, gd = false, shownG = false, tap0 = hwTapped;
+      var draw = function () { if (my !== hwSeq || tap0 !== hwTapped) return; showCands(merge(g, o)); };
+      offline(sts).then(function (r) { o = r; if (gd || !g) setTimeout(draw, gd ? 0 : 700); });
+      google(sts).then(function (r) { gd = true; g = r; if (r && r.length) { shownG = true; draw(); } else if (o) draw(); });
+    }, 160);
+  }
+  hwc.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-c]'); if (!b) return;
+    hwTapped++; ++hwSeq;
+    qIn.value = (qIn.value.replace(/\s+$/, '') + b.dataset.c);
+    strokes = []; curS = null; redraw(); showCands([]);
+    clearTimeout(srT); runSearch();
+  });
+  $('.hwu').onclick = function () { strokes.pop(); redraw(); recog(); };
+  $('.hwx').onclick = function () { strokes = []; curS = null; ++hwSeq; redraw(); showCands([]); };
+  $('.hwd').onclick = function () { var a = Array.from(qIn.value); a.pop(); qIn.value = a.join(''); runSearch(); };
+  function hwShow() {
+    hw.classList.toggle('on', hwOn); penB.classList.toggle('on', hwOn);
+    if (!hwOn) return;
+    try { if (shadow.activeElement === qIn) qIn.blur(); } catch (e) {}
+    requestAnimationFrame(hwSize); offlineLib(); loadData();
+  }
+  penB.onclick = function () { hwOn = !hwOn; ls('bm.tra.hw', hwOn); hwShow(); if (!hwOn && !phone()) qIn.focus(); };
+  addEventListener('resize', function () { if (hwOn && root.classList.contains('open')) requestAnimationFrame(hwSize); });
+  hwShow();
 
   /* ======================= hỏi đáp (AI Groq) ======================= */
   var chat = lg('bm.hoi.chat', []); if (!Array.isArray(chat)) chat = [];

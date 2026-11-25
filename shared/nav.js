@@ -274,7 +274,7 @@
 /* ---------- nút góc: tra từ nhanh + hỏi đáp (shared/hoi.js) ---------- */
 (function () {
   var me = document.currentScript; if (!me || window.__BM_HOI) return;
-  function go() { var s = document.createElement('script'); s.src = new URL('hoi.js?v=1', me.src).href; s.async = true; document.head.appendChild(s); }
+  function go() { var s = document.createElement('script'); s.src = new URL('hoi.js?v=2', me.src).href; s.async = true; document.head.appendChild(s); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
 })();
 
