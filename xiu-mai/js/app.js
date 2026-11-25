@@ -353,6 +353,17 @@ const feeder = w => kindOf(w[0]) === 'give' ? pick(KIDS) : isFruit(w[0]) && Math
 addEventListener('wheel', e => { const g = e.target.closest && e.target.closest('.seg'); if (!g || Math.abs(e.deltaX) > Math.abs(e.deltaY) || g.scrollWidth <= g.clientWidth) return; e.preventDefault(); g.scrollLeft += e.deltaY; }, { passive: false });
 // keep the page from sliding sideways on phones
 addEventListener('scroll', () => { if (scrollX) scrollTo(0, scrollY); }, { passive: true });
+// iPhone (nhất là app ở màn hình chính): gõ phím xong, bàn phím đóng nhưng thanh dưới + nền vẫn kẹt ở giữa màn hình.
+// Khi bàn phím đóng / màn hình đổi cỡ → đẩy trang 1px rồi trả lại để Safari tính lại chỗ của các phần cố định.
+(() => {
+  let t = 0;
+  const fix = () => { clearTimeout(t); t = setTimeout(() => { if (document.querySelector('input:focus,textarea:focus')) return; const y = scrollY; scrollTo(0, y + 1); scrollTo(0, y); document.body.style.minHeight = innerHeight + 1 + 'px'; requestAnimationFrame(() => { document.body.style.minHeight = ''; }); }, 120); };
+  addEventListener('focusout', fix);
+  addEventListener('orientationchange', fix);
+  addEventListener('pageshow', fix);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') fix(); });
+  if (window.visualViewport) visualViewport.addEventListener('resize', fix);
+})();
 R.g_an = (k) => {
   setTabs(null);
   let n = 0;
@@ -674,6 +685,25 @@ R.journey = () => {
 };
 
 /* ---------- parent ---------- */
+/* ---------- ☁️ đồng bộ tài khoản (dùng chung kho với Bánh Mì, giao diện riêng Xíu Mại) ---------- */
+function syncInfo() {
+  const S = window.BM_SYNC && BM_SYNC.state(); if (!S || !S.on) return null;
+  if (!S.auth) return { on: false, t: 'Lưu trên mọi máy', d: 'Từ vựng, ảnh, sao của bé có trên mọi máy' };
+  const pend = S.pending ? ` · còn ${S.pending} mục chờ gửi` : '';
+  return { on: true, t: 'Đã đăng nhập: ' + S.name, d: S.busy ? 'Đang đồng bộ…' : S.err ? 'Chưa đồng bộ được, sẽ tự thử lại' : 'Đã lưu lên mây' + pend };
+}
+function syncRow() {
+  const i = syncInfo(); if (!i) return '';
+  return `<button type="button" class="prow mk xsync ${i.on ? 'in' : ''}" id="xmsync"><img src="${IMG('w/cloud')}" alt=""><div><b>${esc(i.t)}</b><small>${esc(i.d)}</small></div><span class="go">›</span></button>`;
+}
+function bindSync() { const b = $('#xmsync'); if (b) b.onclick = () => BM_SYNC.open(); }
+window.BM_SYNC_ON_UI = () => { const b = $('#xmsync'), i = syncInfo(); if (!b || !i) return; b.classList.toggle('in', i.on); b.querySelector('b').textContent = i.t; b.querySelector('small').textContent = i.d; };
+// dữ liệu từ máy khác vừa về: cập nhật ảnh tự chụp + vẽ lại trang (trừ khi bé đang chơi / ba mẹ đang gõ)
+window.addEventListener('bm-sync', async () => {
+  try { await phLoadAll(); } catch (e) {}
+  if (/^#\/(game|flash|video)\//.test(location.hash) || document.querySelector('input:focus,textarea:focus')) return;
+  route();
+});
 R.bame = () => {
   setTabs('parent', '#/bame');
   const row = (h, ic, t, d, x = '') => `<a class="prow mk ${x}" href="${h}"><img src="${IMG('w/' + ic)}" alt=""><div><b>${t}</b><small>${d}</small></div><span class="go">›</span></a>`;
@@ -688,9 +718,11 @@ R.bame = () => {
   ${row('#/bame/hoat-dong', 'spiral-notepad', 'Hoạt động theo chủ đề', 'Chơi mà học với đồ vật thật')}
   ${row('#/bame/tu-lop', 'pencil', 'Từ vựng con học trên lớp', 'Nhập từ, chụp ảnh thật cho bé học', 'wide')}
   <h3 class="psec">📊 Theo dõi & cài đặt</h3>
+  ${syncRow()}
   <div class="pminis">${mini('#/bame/so-tien-bo', 'trophy', 'Sổ tiến bộ')}${mini('#/bame/gio-xem', 'alarm-clock', 'Giờ xem')}${mini('#/bame/giong-doc', 'speaking-head', 'Giọng đọc')}</div>
   <a class="credit-link" href="#/bame/nguon-anh">📷 Nguồn ảnh flashcard</a></div>`);
   const d = $('#dsay'); if (d) d.onclick = () => say(XMX.todayPhrase()[0]);
+  bindSync();
 };
 R.design = () => {
   setTabs('parent', '');
@@ -837,12 +869,13 @@ R.lop = () => {
   }
   let blob = null;
   const pic = w => w.ph && PH[w.ph] ? PH[w.ph] : w.img ? IMG(w.img) : IMG('ui/xiumai');
-  view(bar('Từ vựng con học trên lớp', '#/bame') + `<div class="panel lopin"><div class="ph">✍️ Nhập các từ bé học</div>
+  view(bar('Từ vựng con học trên lớp', '#/bame') + `${(syncInfo() || { on: true }).on ? '' : syncRow()}<div class="panel lopin"><div class="ph">✍️ Nhập các từ bé học</div>
    <textarea id="words" rows="4" placeholder="Gõ liền nhiều từ, cách nhau bằng dấu phẩy hoặc xuống dòng.&#10;Ví dụ: cat, dog, bird, monkey, banana" autocapitalize="none" autocomplete="off" spellcheck="false"></textarea>
    <p class="muted lophint">Web tự tách từng từ, tự thêm nghĩa tiếng Việt, hình và câu mẫu. Muốn tự ghi nghĩa thì gõ: <b>dog - con chó</b></p>
    <button class="btn" id="add">✨ Tạo flashcard</button><div id="prog" class="lopprog" hidden></div></div>
    <div class="panel sec mylist"><div class="ph">📚 Đã nhập (${L.length} từ)</div>${L.length ? `<a class="btn" style="display:block;margin-bottom:12px;text-decoration:none" href="#/flash/lop">Cho bé học bằng Flashcard ▶</a><a class="btn prt" style="display:block;margin-bottom:12px;text-decoration:none" href="#/bame/in-to-mau">🖍️ In trang tô màu ôn từ</a>` + L.map((w, i) => `<div class="it lopit"><img src="${pic(w)}" alt=""><div class="lw"><b>${esc(w.en)}</b> <span class="muted">${esc(w.vi)}</span>${w.ex ? `<button class="lex" data-i="${i}">💬 ${esc(w.ex[0])}<small>${esc(w.ex[1] || '')}</small></button>` : ''}</div>
      <div class="lact">${!w.ph && !/^[pw]\//.test(w.img || '') ? `<button class="lsw" data-i="${i}" title="Đổi hình khác">🔄</button>` : ''}<label class="lcam" title="Chụp ảnh thật">📷<input type="file" accept="image/*" data-i="${i}" hidden></label><button class="x" data-i="${i}" aria-label="Xóa">🗑️</button></div></div>`).join('') : '<p class="muted" style="margin:0">Chưa có từ nào. Gõ các từ bé học trên lớp vào ô phía trên nhé.</p>'}</div>`);
+  bindSync();
   $('#add').onclick = async () => {
     const xs = splitWords($('#words').value); if (!xs.length) { toast('Gõ từ tiếng Anh vào ô trước nha'); return; }
     const have = new Set(custom().map(w => w.en.toLowerCase()));

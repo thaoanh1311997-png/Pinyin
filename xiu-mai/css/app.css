@@ -734,3 +734,14 @@ img[src*="img/p/"],img[src^="blob:"],img[src^="data:image"]{object-fit:contain!i
 .gimgs .gimg img[src*="img/p/"],.gimgs .gimg img[src^="blob:"],.gimgs .gimg img[src^="data:image"]{width:94%;height:94%;max-height:94%;aspect-ratio:auto;border-width:0;border-radius:18px}
 .gimgs .gimg{padding:0;overflow:hidden}
 .hearts .glv2{font-size:14px;font-weight:800;color:var(--ink2);background:rgba(255,255,255,.7);border-radius:999px;padding:1px 10px;margin-left:8px;vertical-align:middle}
+/* ☁️ đồng bộ tài khoản */
+button.prow.xsync{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(90deg,#fff,#EAF5FF)}
+button.prow.xsync.in{background:linear-gradient(90deg,#fff,#E8F8EE)}
+button.prow.xsync.in small{color:#1E8A55;font-weight:700}
+.view>button.prow.xsync{margin-bottom:12px}
+html #bm-acct,html #bm-acct input,html #bm-acct button,html #bm-stoast,html #bm-stoast button{font-family:'Baloo 2',system-ui,-apple-system,sans-serif}
+html #bm-acct .sa-hd .xm-masc{width:58px;height:58px;flex:none;object-fit:contain}
+html #bm-acct .sa-go{background:linear-gradient(140deg,#FF8FB1,#FF5C8A);box-shadow:0 8px 18px -8px #FF5C8A}
+
+/* iPhone: overflow-x:hidden làm body thành khung cuộn riêng → thanh dưới cố định bị kẹt giữa màn hình. clip giữ trang không trượt ngang mà không tạo khung cuộn */
+@supports (overflow:clip){html,body{overflow-x:clip}}

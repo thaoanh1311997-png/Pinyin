@@ -12,6 +12,7 @@
     url: 'https://jkycaykxxiqzwvcvzcme.supabase.co',
     key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpreWNheWt4eGlxend2Y3Z6Y21lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUxODA3NTUsImV4cCI6MjExMDc1Njc1NX0.TACnfcXWClp_pp2KDDHua636lDt5edIjwQdNW5GbMM4' // khoá công khai (anon), dữ liệu được bảo vệ theo từng tài khoản
   };
+  var TXT = window.BM_SYNC_TXT || {};      // trang khác (vd. Xíu Mại) có thể đổi chữ trên bảng đăng nhập
   var ON = !!(CFG.url && CFG.key) && /^https?:/.test(location.protocol);
   var DOMAIN = '@banhmi-hoc.app';          // tên đăng nhập → email ảo (không gửi thư)
   var BUCKET = 'files';
@@ -307,12 +308,19 @@
   /* ================= KÉO VỀ ================= */
   var changedHere = false;
   function isIdArr(a) { return Array.isArray(a) && a.length && a.every(function (x) { return x && typeof x === 'object' && x.id != null; }); }
+  function isEnArr(a) { return Array.isArray(a) && a.length && a.every(function (x) { return x && typeof x === 'object' && x.id == null && typeof x.en === 'string'; }); }
   function mergeVal(local, remote) { // hai máy cùng sửa một danh sách (vd. danh sách bài học) → gộp theo id
     try {
       var a = JSON.parse(local), b = JSON.parse(remote);
       if (Array.isArray(a) && Array.isArray(b) && a.concat(b).every(function (x) { return typeof x === 'string'; })) {
         var u = b.slice(); a.forEach(function (x) { if (u.indexOf(x) < 0) u.push(x); });
         return JSON.stringify(u);
+      }
+      if (Array.isArray(a) && Array.isArray(b) && (!a.length || !b.length)) return JSON.stringify(a.length ? a : b);
+      if (isEnArr(a) && isEnArr(b)) { // danh sách từ (Xíu Mại): gộp theo chữ tiếng Anh, không mất từ của máy nào
+        var seen = {}, out2 = [];
+        b.concat(a).forEach(function (x) { var k = String(x.en).trim().toLowerCase(); if (seen[k] == null) { seen[k] = out2.length; out2.push(x); } else if (x.ph && !out2[seen[k]].ph) out2[seen[k]] = x; });
+        return JSON.stringify(out2);
       }
       if (isIdArr(a) && isIdArr(b)) {
         var pos = {}, out = [];
@@ -507,7 +515,7 @@
     try { window.dispatchEvent(new CustomEvent('bm-sync', { detail: { changed: true } })); } catch (e) {}
     // chỉ tải lại khi trang vừa mở, chưa chạm/cuộn gì và không đang phát: người dùng không thấy gì bị đổi chỗ
     if (!mediaBusy() && !touched && now() - bootAt < 20000 && (window.scrollY || 0) < 5) { location.reload(); return; }
-    if (force) toast('Đã lấy bài từ máy khác về máy này');
+    if (force) toast(TXT.pulled || 'Đã lấy bài từ máy khác về máy này');
   }
   ['pointerdown', 'keydown', 'wheel', 'touchstart', 'scroll'].forEach(function (ev) { addEventListener(ev, function () { touched = true; }, { capture: true, passive: true }); });
 
@@ -609,7 +617,7 @@
   function mount() {
     if (!ON || btn) return;
     var bar = document.querySelector('#bm-nav .bm-in'); if (!bar) return;
-    var s = el('style', { id: 'bm-sync-css' }); s.textContent = css; document.head.appendChild(s);
+    ensureCss();
     btn = el('button', { type: 'button', 'class': 'bm-cloud', 'aria-label': 'Tài khoản & đồng bộ', title: 'Lưu bài học trên mọi máy' }, CLOUD + '<span class="bm-dot"></span>');
     var th = bar.querySelector('.bm-theme');
     bar.insertBefore(btn, th || null);
@@ -624,6 +632,7 @@
     var d = new Date(t); return d.getHours() + ':' + ('0' + d.getMinutes()).slice(-2) + ' ' + d.getDate() + '/' + (d.getMonth() + 1);
   }
   function ui() {
+    if (window.BM_SYNC_ON_UI) try { window.BM_SYNC_ON_UI(); } catch (e) {}
     if (!btn) return;
     var pend = Object.keys(dirtyKV).length + Object.keys(dirtyRec).length;
     var s = !auth ? 'off' : busy ? 'busy' : (lastErr ? 'err' : (pend ? 'busy' : 'ok'));
@@ -631,7 +640,9 @@
     btn.title = !auth ? 'Đăng nhập để thấy bài học trên mọi máy' : busy ? 'Đang đồng bộ ' + progress : lastErr ? 'Chưa đồng bộ được' : 'Đã đồng bộ ' + ago(lastOk);
     if (pan && pan.classList.contains('open') && auth) drawIn();
   }
+  function ensureCss() { if (!document.getElementById('bm-sync-css')) { var s0 = el('style', { id: 'bm-sync-css' }); s0.textContent = css; document.head.appendChild(s0); } }
   function buildPanel() {
+    ensureCss();
     pan = el('div', { id: 'bm-acct', role: 'dialog', 'aria-label': 'Tài khoản' }, '<div class="sa-bg"></div><div class="sa-pan"><div class="sa-grab"></div><div class="sa-body"></div></div>');
     document.body.appendChild(pan);
     pan.querySelector('.sa-bg').onclick = closePanel;
@@ -639,14 +650,14 @@
     p.addEventListener('touchstart', function (e) { y0 = e.touches[0].clientY; }, { passive: true });
     p.addEventListener('touchend', function (e) { if (y0 != null && e.changedTouches[0].clientY - y0 > 80 && e.target.tagName !== 'INPUT') closePanel(); y0 = null; }, { passive: true });
   }
-  function head(t, s) { return '<div class="sa-hd">' + (window.BM_MASCOT ? window.BM_MASCOT() : '') + '<div><b>' + t + '</b><small>' + s + '</small></div><button class="sa-x" type="button" aria-label="Đóng">✕</button></div>'; }
+  function head(t, s) { return '<div class="sa-hd">' + (TXT.mascot || (window.BM_MASCOT ? window.BM_MASCOT() : '')) + '<div><b>' + t + '</b><small>' + s + '</small></div><button class="sa-x" type="button" aria-label="Đóng">✕</button></div>'; }
   function drawOut() {
     var b = pan.querySelector('.sa-body');
-    b.innerHTML = head('Lưu bài học trên mọi máy', 'Đăng nhập 1 lần trên điện thoại, iPad, laptop là thấy y như nhau') +
+    b.innerHTML = head(TXT.outT || 'Lưu bài học trên mọi máy', TXT.outS || 'Đăng nhập 1 lần trên điện thoại, iPad, laptop là thấy y như nhau') +
       '<form autocomplete="on"><label for="bmu">Tên đăng nhập</label><input id="bmu" name="username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="vd. thaoanh" required>' +
       '<label for="bmp">Mật khẩu</label><input id="bmp" name="password" type="password" autocomplete="current-password" placeholder="ít nhất 6 ký tự" required>' +
-      '<button class="sa-go" type="submit">Vào học 🥖</button><div class="sa-msg" role="status"></div></form>' +
-      '<div class="sa-note">🔒 Chưa có tài khoản thì tự tạo luôn. Dùng đúng tên + mật khẩu này trên máy khác. Sách, file nghe của bạn chỉ mình bạn xem được.</div>';
+      '<button class="sa-go" type="submit">' + (TXT.go || 'Vào học 🥖') + '</button><div class="sa-msg" role="status"></div></form>' +
+      '<div class="sa-note">' + (TXT.outNote || '🔒 Chưa có tài khoản thì tự tạo luôn. Dùng đúng tên + mật khẩu này trên máy khác. Sách, file nghe của bạn chỉ mình bạn xem được.') + '</div>';
     b.querySelector('.sa-x').onclick = closePanel;
     var f = b.querySelector('form'), go = b.querySelector('.sa-go'), msg = b.querySelector('.sa-msg');
     f.onsubmit = function (e) {
@@ -656,7 +667,7 @@
         installLoops();
         ui(); drawIn(); run();
       }).catch(function (er) {
-        go.disabled = false; go.textContent = 'Vào học 🥖';
+        go.disabled = false; go.textContent = TXT.go || 'Vào học 🥖';
         msg.textContent = /fetch|network|Load failed/i.test(er.message) ? 'Không có mạng, thử lại sau nha' : er.message;
       });
     };
@@ -673,13 +684,13 @@
     var pend = Object.keys(dirtyKV).length + Object.keys(dirtyRec).length;
     var st = busy ? '<div class="sa-stat"><i>🔄</i><div>Đang đồng bộ… ' + progress + '<br><small>Cứ học tiếp, không cần chờ</small></div></div>'
       : lastErr ? '<div class="sa-stat err"><i>' + (lastErr === 'offline' ? '📴' : '⚠️') + '</i><div>' + (lastErr === 'offline' ? 'Đang mất mạng. Có mạng lại sẽ tự gửi.' : 'Chưa đồng bộ được, sẽ tự thử lại.') + '</div></div>'
-      : '<div class="sa-stat"><i>✅</i><div>Đã lưu lên mây ' + ago(lastOk) + (pend ? '<br><small>còn ' + pend + ' mục chờ gửi</small>' : '<br><small>Máy nào đăng nhập cũng thấy bài này</small>') + '</div></div>';
+      : (lastOk ? '<div class="sa-stat"><i>✅</i><div>Đã lưu lên mây ' + ago(lastOk) : '<div class="sa-stat"><i>🔄</i><div>Đang chuẩn bị đồng bộ…') + (pend ? '<br><small>còn ' + pend + ' mục chờ gửi</small>' : '<br><small>' + (TXT.inOk || 'Máy nào đăng nhập cũng thấy bài này') + '</small>') + '</div></div>';
     var keep = b.querySelector('.sa-stat');
     if (keep && b.getAttribute('data-in')) { keep.outerHTML = st; return; }
     b.setAttribute('data-in', 1);
-    b.innerHTML = head('Chào ' + (auth.name || 'bạn') + ' 👋', 'Bài đã học, file nghe, sách, vở viết… tự lưu và hiện trên mọi máy') + st +
+    b.innerHTML = head('Chào ' + (auth.name || 'bạn') + ' 👋', TXT.inS || 'Bài đã học, file nghe, sách, vở viết… tự lưu và hiện trên mọi máy') + st +
       '<div class="sa-row"><button class="sa-b1" type="button">🔄 Đồng bộ ngay</button><button class="sa-b2" type="button">Đăng xuất</button></div>' +
-      '<div class="sa-note">Mở web trên máy khác → bấm ☁️ → đăng nhập tên <b>' + (auth.name || '') + '</b> là xong.</div>';
+      '<div class="sa-note">' + (TXT.inNote || 'Mở web trên máy khác → bấm ☁️') + ' → đăng nhập tên <b>' + (auth.name || '') + '</b> là xong.</div>';
     b.querySelector('.sa-x').onclick = closePanel;
     b.querySelector('.sa-b1').onclick = function () { run(); };
     b.querySelector('.sa-b2').onclick = function () {
@@ -700,7 +711,7 @@
   var tEl = null, tT = null;
   function toast(m, act, fn) {
     if (!document.body) return;
-    if (!tEl) { tEl = el('div', { id: 'bm-stoast', role: 'status' }); var s0 = document.getElementById('bm-sync-css'); if (!s0) { s0 = el('style', { id: 'bm-sync-css' }); s0.textContent = css; document.head.appendChild(s0); } document.body.appendChild(tEl); }
+    if (!tEl) { tEl = el('div', { id: 'bm-stoast', role: 'status' }); ensureCss(); document.body.appendChild(tEl); }
     tEl.innerHTML = '<span>☁️ ' + m + '</span>' + (act ? '<button type="button">' + act + '</button>' : '');
     if (act) tEl.querySelector('button').onclick = function () { tEl.classList.remove('on'); fn(); };
     tEl.offsetWidth; tEl.classList.add('on');
