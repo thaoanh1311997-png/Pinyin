@@ -102,7 +102,7 @@ async function openLes(pg) {
     await pg.goto(URL0); await pg.evaluate(() => { localStorage.setItem('bm.sync.drec', JSON.stringify({ 'bb-media|f|"ghost"': 1, 'bb-media|f|"gone"': 'd' })); });
     await pg.reload(); for (let k = 0; k < 40 && !mk.st.recPosts.some(r => r.id.includes('gone')); k++) await pg.waitForTimeout(250);
     ok(!mk.st.recPosts.some(r => r.id.includes('ghost')), 'failed write is NOT sent as a delete');
-    ok(mk.st.recPosts.some(r => r.id.includes('gone') && r.del), 'real delete is still sent');
+    ok(mk.st.recPosts.some(r => r.id.includes('gone') && r.del), 'real delete is still sent ' + JSON.stringify(mk.st.recPosts.map(r => r.id)) + ' ' + JSON.stringify(await pg.evaluate(() => [window.BM_SYNC && BM_SYNC.state(), localStorage.getItem('bm.sync.drec')])));
     await b.close(); }
   console.log(fails ? fails + ' FAILED' : 'ALL PASS'); process.exit(fails ? 1 : 0);
 })();
