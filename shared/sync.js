@@ -145,6 +145,16 @@
     });
   }
 
+  // ghi 1 bản ghi kéo về; Safari riêng tư không lưu được Blob → file nghe lưu dạng dữ liệu thô (trang video đọc được cả hai)
+  function putVal(d, db, st, key, val) {
+    var hasKP = !!DBS[db].stores[st];
+    function once(v) { applying++; try { return idbReq(d, st, 'readwrite', function (s) { return hasKP ? s.put(v) : s.put(v, key); }); } finally { applying--; } }
+    return once(val).catch(function (e) {
+      if (/quota/i.test(((e && e.name) || '') + ((e && e.message) || '')) || db !== 'bb-media' || !val || !(val.blob instanceof Blob)) throw e;
+      return val.blob.arrayBuffer().then(function (buf) { var v2 = {}; for (var k in val) v2[k] = val[k]; v2.type = val.blob.type; v2.blob = null; v2.buf = buf; return once(v2); });
+    });
+  }
+
   /* ================= gọi máy chủ ================= */
   function hdr(extra) {
     var h = { apikey: CFG.key, Authorization: 'Bearer ' + (auth ? auth.at : CFG.key) };
@@ -374,16 +384,11 @@
             .then(function () { return openDB(r.db); })
             .then(function (d) {
               var key = JSON.parse(r.id.split('|').slice(2).join('|'));
-              var hasKP = !!(DBS[r.db].stores[r.st]);
-              applying++;
               var pr;
-              try {
-                pr = idbReq(d, r.st, 'readwrite', function (s) {
-                  if (r.del || r.data == null) return s['delete'](key);
-                  var val = unpack(r.data, files);
-                  return hasKP ? s.put(val) : s.put(val, key);
-                });
-              } finally { applying--; }
+              if (r.del || r.data == null) {
+                applying++;
+                try { pr = idbReq(d, r.st, 'readwrite', function (s) { return s['delete'](key); }); } finally { applying--; }
+              } else pr = putVal(d, r.db, r.st, key, unpack(r.data, files));
               return pr.then(function () { d.close(); times[r.id] = r.t; delete dirtyRec[r.id]; changedHere = true; saveState(); }, function (e) { d.close(); throw e; });
             });
         });
@@ -412,10 +417,7 @@
       return refs(r.data, []).reduce(function (a, ref) { return a.then(function () { return download(ref).then(function (b) { files[ref.__b] = b; }); }); }, Promise.resolve())
         .then(function () { return openDB(db); })
         .then(function (d) {
-          applying++;
-          var pr;
-          try { pr = idbReq(d, st, 'readwrite', function (s) { var val = unpack(r.data, files); return DBS[db].stores[st] ? s.put(val) : s.put(val, key); }); } finally { applying--; }
-          return pr.then(function () { d.close(); if ((times[id] || 0) < r.t) times[id] = r.t; saveState(); return true; }, function (e) { d.close(); throw e; });
+          return putVal(d, db, st, key, unpack(r.data, files)).then(function () { d.close(); if ((times[id] || 0) < r.t) times[id] = r.t; saveState(); return true; }, function (e) { d.close(); throw e; });
         });
     }).catch(function (e) { console.warn('[bm-sync] fetchRec', e); return false; });
   }
