@@ -25,6 +25,8 @@ function mockGroq(ctx, st) {
     }
     if (/audio\/transcriptions/.test(u)) {
       st.asr++;
+      const raw = (req.postDataBuffer() || Buffer.alloc(0)).toString('latin1');
+      if (/gap\.mp3/.test(raw)) { st.gap++; return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ text: '', segments: st.gap === 1 ? [{ start: 5, end: 8, text: '这是漏掉的一句话。', no_speech_prob: 0.01 }] : [{ start: 1, end: 2, text: '谢谢观看', no_speech_prob: 0.2 }], words: [] }) }); }
       const segs = [{ start: 0.5, end: 3, text: '第二课。' }, { start: 3.5, end: 12, text: '女的是什么意思？3. 王阿姨，您比我妈的身体可好多了。' }, { start: 15, end: 20, text: '小王，你帮了我这么大忙。' }];
       const words = [];
       [...'第二课'].forEach((c, i) => words.push({ word: c, start: 0.6 + i * 0.3, end: 0.9 + i * 0.3 }));
@@ -43,7 +45,7 @@ function mockGroq(ctx, st) {
     const tag = `[${name}${mobile ? ' phone' : ' desktop'}]`;
     const b = await bt.launch();
     const ctx = await b.newContext(mobile ? { ...devices[bt === webkit ? 'iPhone 13' : 'Pixel 7'] } : { viewport: { width: 1400, height: 900 } });
-    const st = { chat: 0, asr: 0 }; await mockGroq(ctx, st);
+    const st = { chat: 0, asr: 0, gap: 0 }; await mockGroq(ctx, st);
     await ctx.route(/translate\.googleapis|mymemory/, r => r.fulfill({ status: 500, body: '' }));
     await ctx.addInitScript((les) => { if (!localStorage.getItem('t.init')) { localStorage.setItem('t.init', '1'); localStorage.setItem('bb.lessons', JSON.stringify([les])); localStorage.setItem('bb.groq', 'gsk_test_key_0000000000000000000000'); } }, OLD);
     const pg = await ctx.newPage(); const errs = []; pg.on('pageerror', e => errs.push(String(e)));
@@ -79,10 +81,11 @@ function mockGroq(ctx, st) {
     ok(!p2.paused, tag + ` tapping a sentence while playing keeps playing (t=${p2.t.toFixed(1)})`);
     await pg.click('#pPlay').catch(() => {}); await pg.waitForTimeout(300);
     // redo subtitles with word timing
-    await pg.click('#redoSubs'); await pg.waitForFunction(() => { const l = JSON.parse(localStorage.getItem('bb.lessons')).find(x => x.id === 'v9'); return l && l.ver === 3; }, null, { timeout: 20000 }).catch(() => {});
+    await pg.click('#redoSubs'); await pg.waitForFunction(() => { const l = JSON.parse(localStorage.getItem('bb.lessons')).find(x => x.id === 'v9'); return l && l.ver === 3; }, null, { timeout: 40000 }).catch(() => {});
     await pg.waitForTimeout(1500);
     const red = await pg.evaluate(() => JSON.parse(localStorage.getItem('bb.lessons')).find(x => x.id === 'v9'));
-    ok(red.ver === 3 && red.lines.length === 4 && red.lines[1].zh === '女的是什么意思？' && Math.abs(red.lines[2].s - 8) < 0.3 && red.lines.every(l => l.vi), tag + ' redo: ' + red.lines.map(l => l.zh + '@' + l.s.toFixed(1)).join(' | '));
+    ok(red.lines.some(l => l.zh === '这是漏掉的一句话。' && l.s > 20 && l.s < 30) && !red.lines.some(l => /谢谢观看/.test(l.zh)), tag + ' skipped stretch filled in (gap calls ' + st.gap + ')');
+    ok(red.ver === 3 && red.lines.length === 5 && red.lines[1].zh === '女的是什么意思？' && Math.abs(red.lines[2].s - 8) < 0.3 && red.lines.every(l => l.vi), tag + ' redo: ' + red.lines.map(l => l.zh + '@' + l.s.toFixed(1)).join(' | '));
     ok(!(await pg.isVisible('#redoSubs')), tag + ' redo offer gone after redo');
     ok(!errs.length, tag + ' no page errors ' + errs.join(' | '));
     await b.close();

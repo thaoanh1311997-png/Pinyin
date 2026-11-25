@@ -914,6 +914,8 @@ function fixVi(v){
     .replace(/(^|[^\p{L}])(Ngươi|ngươi)(?=$|[^\p{L}])/gu,(m,a,b)=>a+(b[0]==='N'?'Bạn':'bạn'));
   x=x.replace(/(^|[^\p{L}])(chúng|người|bọn|mình|tụi)\s+ta(?=$|[^\p{L}])/giu,(m)=>m.replace(/ta$/,'\u0001'))
     .replace(/(^|[^\p{L}])(Ta|ta)(?=$|[^\p{L}])/gu,(m,a,b)=>a+(b==='Ta'?'Tôi':'tôi')).replace(/\u0001/g,'ta');
+  x=x.replace(/(^|[^\p{L}])(N|n)gười nữ(?=$|[^\p{L}])/gu,(m,a,b)=>a+b+'gười phụ nữ').replace(/(^|[^\p{L}])(N|n)gười nam(?=$|[^\p{L}])/gu,(m,a,b)=>a+b+'gười đàn ông')
+    .replace(/^(N|n)gười phụ nữ có ý gì\?$/,'Ý của người phụ nữ là gì?').replace(/^(N|n)gười đàn ông có ý gì\?$/,'Ý của người đàn ông là gì?');
   // exam numbers at the start ("Bốn. ", "3. ")
   x=x.replace(/^\s*(?:\d{1,3}|Một|Hai|Ba|Bốn|Năm|Sáu|Bảy|Tám|Chín|Mười)\s*[.、。:]\s+(?=\p{Lu})/u,'');
   return x.trim();
@@ -961,7 +963,7 @@ Yêu cầu:
 - Xưng hô theo ngữ cảnh đời thường: tôi/mình/bạn/cậu/anh/chị/em/cô/chú/cháu/con/bố/mẹ… Chọn theo quan hệ trong hội thoại (vd 小王 nói với 阿姨 → cháu/cô; bạn bè → mình/cậu). Giữ xưng hô nhất quán trong cùng một đoạn hội thoại.
 - TUYỆT ĐỐI KHÔNG dùng lối cổ trang/kiếm hiệp: ta, ngươi, các ngươi, huynh, muội, tại hạ, các hạ… (chỉ dùng khi chính văn bản là văn cổ).
 - Tên người: phiên âm Hán Việt (小王 → Tiểu Vương, 王阿姨 → cô Vương, 李老师 → thầy/cô Lý). Đơn vị, số, ngày giờ dịch đúng.
-- Câu hỏi trắc nghiệm trong bài nghe (男的是什么意思？…) dịch đúng dạng câu hỏi ("Ý của người nam là gì?").
+- 男的 / 女的 trong bài nghe = "người đàn ông" / "người phụ nữ" (không viết "người nam", "người nữ"). Câu hỏi trắc nghiệm dịch đúng dạng câu hỏi: 女的是什么意思？→ "Ý của người phụ nữ là gì?"; 男的是什么意思？→ "Ý của người đàn ông là gì?".
 - Không viết lại số thứ tự đề bài ở đầu câu.
 Trả về JSON {"vi":["…", …]} đúng số câu và đúng thứ tự.`;
 function badVi(v){ return !v||typeof v!=='string'||/[\u3400-\u9fff]/.test(v)||ARCHAIC.test(v)||hasTa(v); }
@@ -1642,6 +1644,7 @@ async function openLesson(les){
 // lessons translated the old way (machine translation, "ta/ngươi"…): translate again with the AI, line by line in place
 async function retranslate(les,show1){
   if(!groqKey()){ // no AI key on this device: at least fix the old-style pronouns
+    if(!store.get('bb.nokeyTip',0)){ store.set('bb.nokeyTip',1); toast('Máy này chưa có mã AI nên đang dùng dịch máy. Đăng nhập ☁️ (như máy kia) là Bánh Mì tự dịch lại kỹ bằng AI.',7000); }
     les.lines.forEach(l=>{ if(l.vi){ const v=fixVi(l.vi); if(v!==l.vi){ l.vi=v; show1(l); } } });
     if(LES===les) saveLesson();
     return translateLines(les.lines,show1).then(()=>{ if(LES===les) saveLesson(); });
@@ -2005,13 +2008,14 @@ async function groqSend(blob,name,off){
   return (d.segments||[]).map(x=>{
     let st=x.start, en=x.end; const ws=W.filter(w=>w.start>=x.start-0.05&&w.end<=x.end+0.3);
     if(ws.length){ const a=ws[0].start, b=ws[ws.length-1].end; if(a>st&&a<en) st=a; if(b>st+0.3&&b<en) en=b; }
-    return {s:off+st,e:off+en,t:x.text,ws:ws.map(w=>({w:String(w.word||''),s:off+w.start,e:off+w.end}))};
+    return {s:off+st,e:off+en,t:x.text,nsp:x.no_speech_prob||0,ws:ws.map(w=>({w:String(w.word||''),s:off+w.start,e:off+w.end}))};
   });
 }
 async function groqLines(res){
   const lines=[];
   for(const x of res){ const zh=(await toSimp(String(x.t||''))).trim(); if(!cjkCount(zh)) continue;
     // one Whisper segment can hold two sentences (or "6? 3. 王阿姨…"): cut it at sentence ends with the words' own times
+    if(!cjkCount(enumRest(zh))) continue;
     for(const l of splitTimed({s:x.s,e:Math.max(x.s+0.4,x.e),zh},x.ws)){ const prev=lines[lines.length-1]; if(prev&&prev.zh===l.zh) continue; lines.push(l); } }
   lines.forEach((l,k)=>{const n=lines[k+1];if(n&&n.s<l.e)l.e=Math.max(l.s+0.3,n.s);});
   return lines;
@@ -2034,6 +2038,37 @@ async function groqPieces(file,onProg){
   const lines=await groqLines(res);
   lines.dur=pcs[pcs.length-1].off+pcs[pcs.length-1].dur;
   return lines;
+}
+// Whisper sometimes skips a whole stretch of speech. Every quiet-looking hole of 4 s or more between sentences
+// is sent again on its own (MP3 is cut on frame boundaries, nothing is decoded) and what it finds is put back in place.
+const HALLU=/字幕|订阅|点赞|谢谢观看|感谢观看|打赏|明镜|独播|请不吝|中文字幕|Amara/;
+async function fillGaps(file,lines,job,les){
+  if(await fileKind(file)!=='mp3'||!lines.length) return lines;
+  const fine=await mp3Pieces(file,40*1024); if(!fine||!fine.length) return lines;
+  const total=fine[fine.length-1].off+fine[fine.length-1].dur;
+  const gaps=[]; let prev=0;
+  for(const l of lines){ if(l.s-prev>=4) gaps.push([prev,l.s]); prev=Math.max(prev,l.e); }
+  if(total-prev>=4) gaps.push([prev,total]);
+  if(!gaps.length) return lines;
+  const add=[]; let n=0;
+  for(const [a,b] of gaps.slice(0,90)){
+    if(job.stop||LES!==les) return lines;
+    genUI('Bánh Mì đang soát chỗ còn sót…','Nghe lại các khoảng lặng để không bỏ sót câu nào · '+(++n)+'/'+Math.min(90,gaps.length),n/Math.min(90,gaps.length));
+    const ps=fine.filter(p=>p.off+p.dur>a+0.1&&p.off<b-0.1); if(!ps.length) continue;
+    const t0=Date.now();
+    try{
+      const segs=await groqSend(new Blob(ps.map(p=>p.blob),{type:'audio/mpeg'}),'gap.mp3',ps[0].off);
+      for(const x of segs){ if(x.nsp>0.6||HALLU.test(x.t||'')) continue;
+        const zh=(await toSimp(String(x.t||''))).trim(); if(!cjkCount(zh)) continue;
+        for(const l of splitTimed({s:Math.max(a,x.s),e:Math.min(b,Math.max(x.s+0.4,x.e)),zh},x.ws)){
+          if(l.s>=b-0.2||l.e<=a+0.2) continue;
+          if(lines.some(o=>o.zh===l.zh&&Math.abs(o.s-l.s)<8)||add.some(o=>o.zh===l.zh)) continue;
+          add.push(l); } }
+    }catch(e){ console.warn('gap',a,b,e); }
+    const w=3100-(Date.now()-t0); if(w>0) await sleep(w); // stay within the free speech limit (20 a minute)
+  }
+  if(!add.length) return lines;
+  const out=lines.concat(add).sort((x,y)=>x.s-y.s); out.dur=lines.dur; return out;
 }
 async function groqTranscribe(audio,onProg){
   const key=groqKey(); if(!key) return null;
@@ -2116,7 +2151,7 @@ async function autoSubsFile(force){
           gl=await groqLines(await groqSend(blob,'audio.'+(kind==='mp4'?'mp4':kind),0)); gl.dur=P&&P.dur?P.dur():0; prog(1); }
         if(!gl) gErr='toobig';
         if(job.stop||LES!==les) return;
-        if(gl&&gl.length){ job.running=false; stretchT(gl,gl.dur); finishGen(gl); return; }
+        if(gl&&gl.length){ try{ const d0=gl.dur; gl=await fillGaps(blob,gl,job,les); gl.dur=d0; }catch(e){ console.warn('gaps',e); } if(job.stop||LES!==les) return; job.running=false; stretchT(gl,gl.dur); finishGen(gl); return; }
         if(gl){ job.running=false; noSubs('Bánh Mì không nghe ra câu tiếng Trung nào trong file này. Bạn thử file khác, hoặc dán phụ đề vào ô dưới nha.'); return; }
       }catch(e){ console.warn('groq',e); gErr=String(e&&e.message||e); }
       if(job.stop||LES!==les) return;
@@ -2241,8 +2276,8 @@ function splitTimed(l,ws){
   if(out.length<=1) return one();
   return out;
 }
-function splitAll(lines){ const out=[]; for(const l of lines){ if(l.s==null){ out.push(l); continue; } out.push(...splitTimed(l)); } return out; }
-function needsTidy(lines){ return lines.some(l=>l.s!=null&&(splitTimed(l).length>1||stripEnum(l.zh)!==l.zh)); }
+function splitAll(lines){ const out=[]; for(const l of lines){ if(l.s==null){ out.push(l); continue; } if(!cjkCount(enumRest(l.zh))) continue; out.push(...splitTimed(l)); } return out; }
+function needsTidy(lines){ return lines.some(l=>l.s!=null&&(!cjkCount(enumRest(l.zh))||splitTimed(l).length>1||stripEnum(l.zh)!==l.zh)); }
 // Timed subtitles must run strictly by start time with no overlaps: captions from YouTube, Groq pieces or .srt files
 // can come out of order or overlap (rolling captions), which made the highlighted line jump back and forth.
 function normLines(lines){
