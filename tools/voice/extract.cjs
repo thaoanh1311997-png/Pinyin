@@ -90,6 +90,8 @@ for (const f of ['hsk', 'life', 'talk', 'world', 'radicals']) {
 // ---- Video: bài mẫu
 { const h = fs.readFileSync(path.join(ROOT, 'video/index.html'), 'utf8');
   const m = h.match(/const SAMPLES=(\[[\s\S]*?\n\]);/); if (m) vm.runInNewContext(m[1]).forEach(x => x.L.forEach(l => add(l[0], 'n', null, 'video'))); }
+{ const sb = { window: {} }; vm.createContext(sb); vm.runInContext(fs.readFileSync(path.join(ROOT, 'video/samples.js'), 'utf8'), sb);
+  (sb.window.BB_SAMPLES || []).forEach(x => x.L.forEach(l => add(l[0], 'n', null, 'video'))); }
 
 // ---- Ôn thi: tài liệu có sẵn (từ vựng)
 { const sb = { window: {} }; sb.window.window = sb.window; vm.createContext(sb);

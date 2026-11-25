@@ -165,6 +165,34 @@ textarea.in{min-height:140px;resize:vertical;font-family:var(--f-zh),var(--f-ui)
 .sub-note{margin:2px 4px 14px;color:var(--muted);font-weight:700;font-size:14px}
 .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
 .sgrid>*{width:auto!important;min-width:0!important}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 2px 14px}
+.tpgrid{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:row dense}
+#smpLv{flex-wrap:nowrap;gap:6px}#smpLv .chip{padding:0 12px;min-height:38px;font-size:13.5px}
+@media (min-width:760px){.tpgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:1100px){.tpgrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.tp{min-width:0;border-radius:22px;background:var(--card);box-shadow:var(--sh-1);overflow:hidden;display:flex;flex-direction:column}
+.tp:not(.open) .tp-h{flex:1}
+.tp.open{grid-column:1/-1}
+.tp-h{display:flex;align-items:center;gap:10px;width:100%;border:0;font:inherit;color:inherit;text-align:left;cursor:pointer;padding:12px;background:linear-gradient(135deg,var(--tc),var(--tc2));color:#fff;min-height:76px}
+.tp-zh{flex:none;font:700 24px/1 var(--f-zh);background:rgba(255,255,255,.22);border-radius:14px;padding:10px 8px;min-width:52px;text-align:center}
+.tp-sub{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.tp-sub b{font-size:15.5px;font-weight:900;line-height:1.25;overflow-wrap:anywhere}
+.tp-sub small{font-size:12.5px;font-weight:800;opacity:.92}
+.tp .ng-chev{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.25);color:#fff;transition:transform .2s}
+.tp .ng-chev svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.tp:not(.open) .ng-chev{display:none}
+.tp.open .ng-chev{transform:rotate(180deg)}
+.tp:not(.open) .tp-list{display:none}
+.tp-list{display:grid;gap:8px;padding:6px 12px 14px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:760px){.tp-list{grid-template-columns:repeat(2,minmax(0,1fr))}.sp-lv{grid-column:1/-1}}
+.sp-lv{font-weight:900;font-size:13px;color:var(--tc2);margin:8px 2px 0;letter-spacing:.3px}
+.sp-it{display:flex;align-items:center;gap:12px;width:100%;min-width:0;text-align:left;border:0;cursor:pointer;padding:10px 12px;border-radius:16px;background:color-mix(in srgb,var(--tc) 12%,var(--card));font:inherit;color:inherit}
+.sp-it:active{transform:scale(.99)}
+.sp-no{flex:none;width:36px;height:36px;border-radius:12px;background:var(--tc);color:#fff;display:grid;place-items:center;font-weight:900}
+.sp-it .tx{min-width:0;flex:1}
+.sp-it .tx b{display:block;font-size:16px;font-weight:900;line-height:1.3}
+.sp-it .tx small{display:block;color:var(--muted);font-size:14px;font-family:var(--f-zh);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-ok{flex:none;width:26px;height:26px;border-radius:50%;background:var(--green,#22C17E);color:#fff;display:grid;place-items:center;font-weight:900;font-size:14px}
 html,body{overflow-x:clip}
 .nghe{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
 .ng-book{min-width:0;border-radius:22px;padding:12px;background:var(--card);box-shadow:var(--sh-1);border-top:6px solid var(--ngc)}
@@ -593,7 +621,7 @@ body.v-Lesson .wrap{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))
     <button class="tile" data-go="nghe" id="tileNghe" hidden><span class="ti p"><svg class="i" viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="5" height="7" rx="2"/><rect x="16" y="14" width="5" height="7" rx="2"/></svg></span><span><b>Nghe giáo trình</b><span id="tileNgheSub">Bài nghe có sẵn</span></span></button>
     <button class="tile" data-go="lib"><span class="ti t"><svg class="i" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h10"/></svg></span><span><b>Bài đã học</b><span id="tileLibSub">Mở lại bài cũ</span></span></button>
     <button class="tile" data-go="yt"><span class="ti r"><svg class="i" viewBox="0 0 24 24"><path d="M3 20h18M6 16V9M11 16V5M16 16v-5"/></svg></span><span><b>Video theo cấp HSK</b><span>HSK 1–6, bấm là học</span></span></button>
-    <button class="tile" data-go="samples"><span class="ti y"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/></svg></span><span><b>Bài mẫu</b><span>Có sẵn giọng đọc</span></span></button>
+    <button class="tile" data-go="samples"><span class="ti y"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/></svg></span><span><b>Bài mẫu</b><span id="tileSmpSub">Có sẵn giọng đọc</span></span></button>
     <button class="tile" data-go="words"><span class="ti g"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="6" width="14" height="14" rx="3"/><path d="M7 3h11a3 3 0 0 1 3 3v11"/></svg></span><span><b>Ôn thẻ từ</b><span id="tileDue">Sổ từ của bạn</span></span><span class="badge" id="dueBadge" hidden></span></button>
     <button class="tile" data-go="focus"><span class="ti o"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2.5h6"/></svg></span><span><b>Phòng tập trung</b><span>Hẹn giờ học 25 phút</span></span></button>
   </div>
@@ -607,7 +635,7 @@ body.v-Lesson .wrap{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))
 <section id="vNghe" hidden><p class="sub-note">Có sẵn tiếng gốc, phụ đề, bản dịch. Bấm vào quyển để xem bài.</p><div class="nghe" id="nghe"></div></section>
 <section id="vLib" hidden><div class="lib" id="lib"></div></section>
 <section id="vYt" hidden><div id="ytLib"></div></section>
-<section id="vSamples" hidden><p class="sub-note">Có sẵn giọng đọc và bản dịch</p><div class="sgrid" id="samples"></div></section>
+<section id="vSamples" hidden><p class="sub-note" id="smpNote">Có sẵn giọng đọc và bản dịch</p><div class="chips" id="smpLv"></div><div class="tpgrid" id="samples"></div></section>
 
 <!-- ============ NEW LESSON ============ -->
 <section id="vNew" hidden>
@@ -723,6 +751,7 @@ body.v-Lesson .wrap{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))
 <div class="toast" id="toast" role="status"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/pinyin-pro@3.26.0/dist/index.js"></script>
+<script src="samples.js?v=1"></script>
 <script>
 (()=>{
 'use strict';
@@ -879,7 +908,33 @@ function segment(chars){
   return out;
 }
 const TK=new Map();
-function pyAll(text){try{return window.pinyinPro?pinyinPro.pinyin(text,{type:'all'}):null}catch(e){return null}}
+// pinyin-pro misreads some polyphones; fix common words, and the particle 得 (dé → de / děi)
+let PYFIXED=false;
+const PYFIX={'看中文':'kàn zhōng wén','看中医':'kàn zhōng yī','看中国':'kàn zhōng guó','有空吗':'yǒu kòng ma','午有空':'wǔ yǒu kòng','一有空':'yì yǒu kòng','没空':'méi kòng','有空的时候':'yǒu kòng de shí hou',
+ '七天假':'qī tiān jià','一天假':'yì tiān jià','请假':'qǐng jià','暑假':'shǔ jià','寒假':'hán jià','休假':'xiū jià','假期':'jià qī','发通知了':'fā tōng zhī le',
+ '只需要':'zhǐ xū yào','只花':'zhǐ huā','只背':'zhǐ bèi','只会':'zhǐ huì','只剩':'zhǐ shèng','只带':'zhǐ dài','只读':'zhǐ dú','只比':'zhǐ bǐ','不少年':'bù shǎo nián',
+ '干完':'gàn wán','干活':'gàn huó','相同':'xiāng tóng','听着':'tīng zhe','种庄稼':'zhòng zhuāng jia','种树':'zhòng shù','种菜':'zhòng cài','种花':'zhòng huā',
+ '完整的觉':'wán zhěng de jiào','睡个好觉':'shuì gè hǎo jiào','一定都':'yí dìng dōu','很多重要':'hěn duō zhòng yào','词汇量':'cí huì liàng','适量':'shì liàng',
+ '还给':'huán gěi','还钱':'huán qián','还书':'huán shū','还你':'huán nǐ','着急':'zháo jí','长大':'zhǎng dà','长得':'zhǎng de','长高':'zhǎng gāo','长胖':'zhǎng pàng',
+ '舍不得':'shě bu de','倒水':'dào shuǐ','倒茶':'dào chá','提供':'tí gōng','背着':'bēi zhe','天得让':'tiān děi ràng','路得小心':'lù děi xiǎo xīn'};
+const DE_NEXT='到出分奖病知意罪以失了力', DE_PREV='获取难赢心', DEI_PREV='们我你他她都也就还必总可';
+function pyAll(text){
+  if(!window.pinyinPro) return null;
+  try{
+    if(!PYFIXED){PYFIXED=true;try{pinyinPro.customPinyin(PYFIX);}catch(e){}}
+    const r=pinyinPro.pinyin(text,{type:'all'});
+    for(let i=0;i<r.length;i++){ const x=r[i]; if(x.origin!=='得'||x.pinyin!=='dé') continue;
+      const pv=r[i-1]?r[i-1].origin:'', nx=r[i+1]?r[i+1].origin:'';
+      if(nx==='了'&&pv!=='不'&&r[i-1]&&r[i-1].isZh&&!DEI_PREV.includes(pv)&&(!r[i+2]||!r[i+2].isZh||'吗吧呢'.includes(r[i+2].origin))){ r[i]={...x,pinyin:'de',num:0}; r[i+1]={...r[i+1],pinyin:'liǎo',num:3}; continue; } // 受得了吗
+      if(DE_NEXT.includes(nx)&&nx) continue;
+      if(DE_PREV.includes(pv)&&pv) continue;
+      if(pv==='不'&&'不了已'.includes(nx)&&nx) continue;
+      if(!pv||!r[i-1].isZh||DEI_PREV.includes(pv)){ r[i]={...x,pinyin:'děi',num:3}; continue; }
+      r[i]={...x,pinyin:'de',num:0};
+    }
+    return r;
+  }catch(e){return null}
+}
 function toks(text){
   if(TK.has(text)) return TK.get(text);
   const chars=[...text]; let py=pyAll(text); if(py&&py.length!==chars.length) py=null;
@@ -1547,16 +1602,29 @@ $('#startVideo').onclick=async()=>{
   if((id||MEDIA_FILE)&&lines.length&&lines[0].s==null) toast('Phụ đề không có thời gian nên web sẽ đọc từng câu bằng giọng máy. Video vẫn xem được bình thường.',5000);
   openLesson({id:'v'+Date.now(),title,src,lines});
 };
-const SAMPLES=[
-  {id:'s1',lv:'HSK 1–2',title:'Chào hỏi làm quen',L:[['你好！我叫小明，你叫什么名字？','Chào bạn! Mình tên Tiểu Minh, bạn tên gì?'],['我叫阿兰，我是越南人。','Mình tên A Lan, mình là người Việt Nam.'],['认识你很高兴！你是学生吗？','Rất vui được làm quen với bạn! Bạn là học sinh à?'],['不是，我是妈妈，我有一个儿子。','Không, mình là mẹ, mình có một cậu con trai.'],['你儿子几岁了？','Con trai bạn mấy tuổi rồi?'],['他两岁了，很可爱。','Bé hai tuổi rồi, dễ thương lắm.']]},
-  {id:'s2',lv:'HSK 3',title:'Đi siêu thị mua sữa cho con',L:[['你好！你今天想去哪儿？','Chào bạn! Hôm nay bạn muốn đi đâu?'],['我想去超市给孩子买奶粉。','Mình muốn đi siêu thị mua sữa bột cho con.'],['听说这个周末超市有打折活动。','Nghe nói cuối tuần này siêu thị có chương trình giảm giá.'],['真的吗？那我们一起去吧！','Thật à? Vậy chúng mình cùng đi nhé!'],['好啊，我还想买一些水果和面包。','Được đó, mình còn muốn mua ít trái cây và bánh mì.'],['你最近学汉语学得怎么样？','Dạo này bạn học tiếng Trung thế nào rồi?'],['越来越有意思了，我每天都看中文视频。','Càng ngày càng thú vị, ngày nào mình cũng xem video tiếng Trung.'],['以后我想教我的孩子说汉语。','Sau này mình muốn dạy con mình nói tiếng Trung.']]},
-  {id:'s3',lv:'HSK 3–4',title:'Học tiếng Trung để tìm việc mới',L:[['我已经很久没有工作了。','Mình đã nghỉ làm lâu lắm rồi.'],['现在我每天学习汉语，想找一份更好的工作。','Giờ ngày nào mình cũng học tiếng Trung, muốn tìm một công việc tốt hơn.'],['很多公司都需要会说汉语的人。','Nhiều công ty đều cần người biết nói tiếng Trung.'],['你打算什么时候去面试？','Bạn định khi nào đi phỏng vấn?'],['等我考完试以后再说吧。','Đợi mình thi xong rồi tính nhé.'],['别担心，只要坚持下去，你一定会成功的。','Đừng lo, chỉ cần kiên trì, bạn nhất định sẽ thành công.']]},
-  {id:'s4',lv:'HSK 4',title:'Bốn mùa ở Bắc Kinh',L:[['北京的春天很短，常常刮风。','Mùa xuân ở Bắc Kinh rất ngắn, thường hay có gió.'],['夏天又热又闷，但是晚上比较凉快。','Mùa hè vừa nóng vừa oi, nhưng buổi tối khá mát mẻ.'],['秋天是北京最美的季节，天很蓝，叶子也红了。','Mùa thu là mùa đẹp nhất ở Bắc Kinh, trời rất xanh, lá cũng đỏ rồi.'],['冬天虽然很冷，可是屋子里都有暖气。','Mùa đông tuy rất lạnh nhưng trong nhà đều có lò sưởi.'],['如果你想去北京旅游，我建议你秋天去。','Nếu bạn muốn đi du lịch Bắc Kinh, mình khuyên bạn nên đi vào mùa thu.']]}
-];
+const SAMPLES=window.BB_SAMPLES||[], STOPICS=window.BB_SAMPLE_TOPICS||[], SLVS=['HSK 1–2','HSK 3–4','HSK 5'];
 function sampleLesson(x){return {id:x.id,demo:true,title:x.lv+' · '+x.title,src:{type:'tts'},lines:x.L.map(([zh,vi])=>({s:null,e:null,zh,vi}))};}
-const COVERS=[['#22C17E','#0E9B62','你好'],['#FF9E57','#F06A3E','超市'],['#5AA8F5','#2F6FD6','工作'],['#B07CF2','#7A4FD8','北京']];
-$('#samples').innerHTML=SAMPLES.map((x,k)=>`<button class="scard" data-smp="${k}"><span class="cover" style="background:linear-gradient(135deg,${COVERS[k][0]},${COVERS[k][1]})"><span class="lv">${x.lv}</span><span class="zhbig">${COVERS[k][2]}</span>${MASCOT.replace('class="mascot"','class="mascot" style="width:58px;height:54px;margin-right:-4px"').replace(/bbG/g,'bbG'+k)}</span><span class="body"><b>${esc(x.title)}</b><span>${esc(x.L[0][0])}</span></span></button>`).join('');
-$('#samples').addEventListener('click',e=>{const b=e.target.closest('[data-smp]');if(b)openLesson(sampleLesson(SAMPLES[+b.dataset.smp]));});
+const smpSeen=()=>{ const v=store.get('bb.smpSeen',[]); return Array.isArray(v)?v:[]; };
+function renderSamples(){
+  const box=$('#samples'); if(!box) return;
+  const lv=store.get('bb.smpLv','')||'', open=store.get('bb.smpOpen','')||'', seen=new Set(smpSeen());
+  const sub=$('#tileSmpSub'); if(sub) sub.textContent=SAMPLES.length+' bài · '+STOPICS.length+' chủ đề';
+  const note=$('#smpNote'); if(note) note.textContent=SAMPLES.length+' bài hội thoại, đoạn văn có giọng đọc và bản dịch';
+  $('#smpLv').innerHTML=['',...SLVS].map(l=>`<button class="chip${l===lv?' on':''}" data-slv="${l}" aria-pressed="${l===lv}">${l||'Tất cả'}</button>`).join('');
+  box.innerHTML=STOPICS.map(t=>{
+    const all=SAMPLES.filter(x=>x.t===t.k), ls=all.filter(x=>!lv||x.lv===lv), done=all.filter(x=>seen.has(x.id)).length, opn=open===t.k;
+    const groups=SLVS.filter(l=>!lv||l===lv).map(l=>{ const g=ls.filter(x=>x.lv===l); if(!g.length) return '';
+      return `<div class="sp-lv">${l}</div>`+g.map((x,i)=>`<button class="sp-it${seen.has(x.id)?' seen':''}" data-smp="${esc(x.id)}"><span class="sp-no">${i+1}</span><span class="tx"><b>${esc(x.title)}</b><small>${esc(x.L[0][0])}</small></span>${seen.has(x.id)?'<span class="sp-ok" aria-label="Đã học">✓</span>':''}</button>`).join(''); }).join('');
+    return `<div class="tp${opn?' open':''}" style="--tc:${t.c[0]};--tc2:${t.c[1]}"><button class="tp-h" type="button" data-stp="${t.k}" aria-expanded="${opn}"><span class="tp-zh">${esc(t.zh)}</span><span class="tp-sub"><b>${esc(t.n)}</b><small>${ls.length} bài${done?' · đã học '+done:''}</small></span><span class="ng-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></button><div class="tp-list">${groups}</div></div>`; }).join('');
+}
+document.addEventListener('click',e=>{
+  const c=e.target.closest('[data-slv]'); if(c){ store.set('bb.smpLv',c.dataset.slv); renderSamples(); return; }
+  const h=e.target.closest('[data-stp]'); if(h){ const k=h.dataset.stp; store.set('bb.smpOpen',store.get('bb.smpOpen','')===k?'':k); renderSamples(); const el=h.closest('.tp'); if(el&&el.classList.contains('open')) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),50); return; }
+  const b=e.target.closest('[data-smp]'); if(!b) return; const x=SAMPLES.find(s=>s.id===b.dataset.smp); if(!x) return;
+  const sn=smpSeen(); if(!sn.includes(x.id)) store.set('bb.smpSeen',[...sn,x.id]);
+  openLesson(sampleLesson(x));
+});
+renderSamples();
 
 /* ======================= YouTube library by HSK level ======================= */
 // Real videos found on YouTube (Nov 2026). Subtitles come from the YouTube captions when the video is opened.
@@ -1753,7 +1821,7 @@ function go(v){
   else if(v==='Nghe'){renderNghe();show('Nghe');}
   else if(v==='Lib'){renderLib();show('Lib');}
   else if(v==='Yt'){renderYtLib();show('Yt');}
-  else if(v==='Samples'){show('Samples');}
+  else if(v==='Samples'){renderSamples();show('Samples');}
 }
 function goHome(){ if(HDEP>0&&history.state&&history.state.bb){ try{ HOMEJUMP=true; const n=HDEP; HDEP=0; history.go(-n); return; }catch(e){ HOMEJUMP=false; } } HDEP=0; go('Home'); }
 addEventListener('popstate',()=>{

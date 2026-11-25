@@ -51,7 +51,7 @@ const LES = { id: 'v1', title: '01 第一课', src: { type: 'file', name: '01 �
     await pg.goForward(); await pg.waitForSelector('#vHome'); await pg.waitForTimeout(800);
     ok(await pg.isVisible('#vHome') && !(await pg.isVisible('#vLesson')), tag + ' coming back after leaving on purpose stays on home');
     // D) sample lesson: no resume entry, no crash
-    await pg.click('[data-go="samples"]'); await pg.click('[data-smp="0"]'); await pg.waitForTimeout(800); await pg.click('.line[data-i="2"]'); await pg.waitForTimeout(400);
+    await pg.click('[data-go="samples"]'); await pg.click('[data-stp="chao"]'); await pg.click('.tp.open .sp-it'); await pg.waitForTimeout(800); await pg.click('.line[data-i="2"]'); await pg.waitForTimeout(400);
     ok(!(await pg.evaluate(() => JSON.parse(localStorage.getItem('bb.pos') || '{}')).s1), tag + ' sample lessons do not create resume entries');
     ok(!errs.length, tag + ' no page errors ' + errs.join(' | '));
     await b.close();
