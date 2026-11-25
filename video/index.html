@@ -1268,7 +1268,9 @@ async function importNk(){
   history.replaceState(null,'',location.pathname+location.search);
   store.set('bb.nk',m[1].toLowerCase()); NG.les=[]; NG.kh='';
   await ngLoad();
-  if(NG.les.length){ if(VIEW!=='Home') go('Home'); renderNghe(); renderLib(); renderResume(); toast('Đã có '+NG.les.length+' bài nghe giáo trình. Bấm vào bài là học nha!',5000); setTimeout(()=>{ const s=$('#ngheSec'); if(s) s.scrollIntoView({behavior:'smooth',block:'start'}); },300); }
+  if(NG.les.length){ if(VIEW!=='Home') go('Home'); renderNghe(); renderLib(); renderResume(); const S=window.BM_SYNC, st=S&&S.state&&S.state();
+    if(st&&st.on&&!st.auth){ toast('Đã có '+NG.les.length+' bài nghe giáo trình. Đăng nhập ☁️ một lần ở đây là app trên điện thoại và mọi máy khác cũng tự có.',8000); setTimeout(()=>{ try{ S.open(); }catch(e){} },1200); }
+    else toast('Đã có '+NG.les.length+' bài nghe giáo trình. Bấm vào bài là học nha!'+(st&&st.auth?' Các máy đăng nhập ☁️ khác cũng tự có.':''),6000); setTimeout(()=>{ const s=$('#ngheSec'); if(s) s.scrollIntoView({behavior:'smooth',block:'start'}); },300); }
   else toast('Link mở bài nghe bị lỗi hoặc mạng yếu, bạn bấm lại link nha.',5000);
   return true;
 }

@@ -38,6 +38,11 @@ const OTHER = { id: 'v2', title: 'Bài riêng', src: { type: 'file', name: 'rien
     const books = await pg.$$eval('.ng-book', bs => bs.map(b => b.querySelector('.ng-tag').textContent + ':' + [...b.querySelectorAll('.ng-it')].map(x => x.textContent.replace(/\s+/g, ' ').trim()).join('|')));
     ok(books.length === 2 && /^Quyển 2:Bài5/.test(books[0]) && /^Quyển 3:Bài1迎来送往/.test(books[1]), tag + ' grouped per book: ' + books.join(' // '));
     ok(/Đã có 2 bài nghe giáo trình/.test(await pg.textContent('#toast')), tag + ' toast confirms');
+    // not signed in to ☁️ here → the login opens so the key reaches the account (and the user's other devices)
+    await pg.waitForSelector('#bm-acct.open', { timeout: 5000 }).catch(() => {});
+    ok(await pg.isVisible('#bm-acct.open'), tag + ' ☁️ login offered after unlocking on a signed-out device');
+    ok(/Đăng nhập ☁️/.test(await pg.textContent('#toast')), tag + ' toast explains the one-time login');
+    await pg.click('#bm-acct .sa-bg', { position: { x: 10, y: 10 } }); await pg.waitForTimeout(500);
     const lib = await pg.$$eval('#lib .open', l => l.map(x => x.dataset.id));
     ok(lib.length === 1 && lib[0] === 'v2', tag + ' old copy of 01 第一课 hidden, other lesson kept: ' + lib.join(','));
     ok(JSON.parse(await pg.evaluate(() => localStorage.getItem('bb.lessons'))).length === 2, tag + ' nothing deleted from the saved list');
