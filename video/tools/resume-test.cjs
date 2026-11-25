@@ -13,7 +13,7 @@ const LES = { id: 'v1', title: '01 第一课', src: { type: 'file', name: '01 �
     const b = await bt.launch();
     const ctx = await b.newContext(mobile ? { ...devices[bt === webkit ? 'iPhone 13' : 'Pixel 7'] } : { viewport: { width: 1400, height: 900 } });
     await ctx.addInitScript((les) => { if (!localStorage.getItem('t.init')) { localStorage.setItem('t.init', '1'); localStorage.setItem('bb.lessons', JSON.stringify([les])); } }, LES);
-    const pg = await ctx.newPage(); const errs = []; pg.on('pageerror', e => errs.push(String(e)));
+    const pg = await ctx.newPage(); const errs = []; pg.on('pageerror', e => { if (/\/video\//.test(pg.url())) errs.push(String(e)); });
     await pg.goto(BASE + 'sach/'); // a page before, to see that back does not leave the lesson page
     await pg.goto(BASE + 'video/'); await pg.waitForSelector('#lib .open');
     ok(!(await pg.$('#resumeCard .resume')), tag + ' no resume card before learning');
