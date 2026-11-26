@@ -119,6 +119,9 @@ function alignGiven(k, given) { // ghép pinyin cho sẵn (vd 'bàba') với t�
   }
   return g.replace(/[^a-z]/g, '') ? null : res;
 }
+// Câu riêng tư (hỏi đáp bài nghe giáo trình, nằm trong gói mã hoá): EXTRA=<file .json mảng chữ> → thu thêm, chỉ lưu mã băm vào keep-private.json
+const EXTRA = process.env.EXTRA ? JSON.parse(fs.readFileSync(process.env.EXTRA, 'utf8')) : null;
+if (EXTRA) EXTRA.forEach(t => add(t, 'n', null, 'private'));
 let gFail = 0;
 for (const it of out.values()) {
   const r = ctx.fixPy(PY.pinyin(it.k, { type: 'all', toneSandhi: false }));
@@ -130,5 +133,10 @@ for (const it of out.values()) {
 console.log('given pinyin not aligned:', gFail);
 const items = [...out.values()];
 fs.writeFileSync(path.join(__dirname, 'items.json'), JSON.stringify(items));
+if (EXTRA) {
+  const priv = items.filter(it => it.src === 'private');
+  fs.writeFileSync(path.join(__dirname, 'items-private.json'), JSON.stringify(priv)); // chỉ dùng trên máy thu giọng, không đưa lên web
+  fs.writeFileSync(path.join(__dirname, 'keep-private.json'), JSON.stringify(priv.map(it => [it.lo, it.hex])));
+}
 console.log(items.length, srcCount);
 if (process.env.DBG) { /* debug */ }

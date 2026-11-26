@@ -211,6 +211,86 @@ html,body{overflow-x:clip}
 .ng-it .tx small.on{color:var(--ngtx)}
 @media (prefers-color-scheme:dark){.ng-book.b2{--ngbg:#1b2a44;--ngtx:#93B4F8}.ng-book.b3{--ngbg:#3a2d14;--ngtx:#F8C66A}.ng-no{background:#00000033}}
 @media (min-width:960px){.nghe{align-items:start}}
+/* ---------- Nghe rồi trả lời (câu hỏi theo bài nghe giáo trình) ---------- */
+#ngSeg{max-width:520px;margin:0 0 14px}
+#ngSeg button{font-size:14.5px}
+.qa-due{display:flex;align-items:center;gap:12px;width:100%;border:0;text-align:left;cursor:pointer;font:inherit;color:inherit;background:var(--red-soft);border-radius:18px;padding:12px 14px;margin:0 0 14px}
+.qa-due .ic{flex:none;width:42px;height:42px;border-radius:14px;background:var(--red);color:#fff;display:grid;place-items:center;font-weight:900;font-size:17px}
+.qa-due b{display:block;font-size:16px}.qa-due small{display:block;color:var(--muted);font-weight:700;font-size:13px}
+.qa-due .go{margin-left:auto;flex:none;font-weight:900;color:var(--red)}
+.qa-note{margin:-4px 4px 14px;color:var(--muted);font-weight:700;font-size:14px;line-height:1.45}
+.qa-wrap{max-width:720px;margin:0 auto}
+.qa-head{display:flex;align-items:center;gap:10px;margin:2px 2px 12px}
+.qa-back{flex:none;width:38px;height:38px;border-radius:12px;border:0;background:var(--card);box-shadow:var(--sh-1);display:grid;place-items:center;color:var(--ink);cursor:pointer}.qa-back .i{width:20px;height:20px}
+.qa-head .tg{flex:none;background:#F59E0B;color:#fff;font-weight:900;border-radius:999px;padding:4px 12px;font-size:13px}
+.qa-head .tg.b2{background:#3B82F6}
+.qa-head b{font-size:18px;font-weight:900;font-family:var(--f-zh);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qa-texts{display:grid;gap:10px}
+.qa-t{display:flex;align-items:center;gap:12px;width:100%;border:0;text-align:left;cursor:pointer;font:inherit;color:inherit;background:var(--card);box-shadow:var(--sh-1);border-radius:18px;padding:12px 14px}
+.qa-t .n{flex:none;width:44px;height:44px;border-radius:14px;background:var(--orange-soft);color:var(--orange);display:grid;place-items:center;font-weight:900;font-size:18px}
+.qa-t .tx{flex:1;min-width:0}.qa-t .tx b{display:block;font-family:var(--f-zh);font-size:17px;font-weight:800}
+.qa-t .tx small{display:block;color:var(--muted);font-weight:700;font-size:13px;line-height:1.4}
+.qa-t .st{flex:none;font-weight:900;font-size:13px;border-radius:999px;padding:4px 10px;background:var(--soft);color:var(--muted)}
+.qa-t .st.ok{background:var(--green-soft);color:var(--green-text)}
+.qa-steps{display:flex;gap:6px;margin:0 0 14px}
+.qa-steps span{flex:1;min-width:0;text-align:center;font-size:12.5px;font-weight:800;color:var(--muted);padding:7px 2px;border-radius:12px;background:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qa-steps span.on{background:var(--green);color:var(--green-ink)}
+.qa-steps span.done{background:var(--green-soft);color:var(--green-text)}
+.qa-card{background:var(--card);border-radius:22px;box-shadow:var(--sh-1);padding:18px 16px;margin-bottom:12px}
+.qa-card h3{margin:0 0 6px;font-size:18px;font-weight:900}
+.qa-card p.m{margin:0 0 12px;color:var(--muted);font-weight:700;font-size:14.5px;line-height:1.5}
+.qa-play{display:flex;align-items:center;gap:14px}
+.qa-pbtn{flex:none;width:68px;height:68px;border-radius:50%;border:0;background:var(--green);color:#fff;display:grid;place-items:center;box-shadow:0 4px 0 var(--green-dark);cursor:pointer}
+.qa-pbtn .i{width:30px;height:30px}
+.qa-pbtn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--green-dark)}
+.qa-pinfo{flex:1;min-width:0}.qa-pinfo b{display:block;font-size:16.5px;font-weight:900}
+.qa-pinfo small{display:block;color:var(--muted);font-weight:700;font-size:13px;margin-top:2px}
+.qa-bar{height:8px;border-radius:99px;background:var(--soft-2);overflow:hidden;margin-top:8px}.qa-bar i{display:block;height:100%;width:0;background:var(--green);border-radius:99px;transition:width .25s linear}
+.qa-rounds{display:flex;gap:8px;margin:14px 0 0;flex-wrap:wrap}
+.qa-rounds span{font-size:13px;font-weight:800;border-radius:999px;padding:5px 12px;background:var(--soft);color:var(--muted)}
+.qa-rounds span.ok{background:var(--green-soft);color:var(--green-text)}
+.qa-speed{display:flex;gap:6px;margin-top:12px}
+.qa-speed .chip{min-height:36px;font-size:13.5px;padding:0 12px}
+.qa-q{display:flex;align-items:flex-start;gap:10px}
+.qa-q .zl{flex:1;min-width:0;--zh:24px}
+.qa-ib{flex:none;width:44px;height:44px;border-radius:14px;border:0;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;cursor:pointer}
+.qa-ib .i{width:22px;height:22px}
+.qa-ib.live{background:var(--red);color:#fff;animation:qaPulse 1.2s infinite}
+@keyframes qaPulse{50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--red) 25%,transparent)}}
+.qa-vi{margin:8px 0 0;color:var(--muted);font-weight:700;font-size:14.5px;line-height:1.45}
+.qa-link{border:0;background:none;color:var(--blue);font:inherit;font-weight:800;font-size:14px;padding:6px 0;cursor:pointer}
+.qa-ans{display:flex;gap:8px;align-items:stretch;margin-top:14px}
+.qa-ans textarea{flex:1;min-width:0;min-height:84px;resize:vertical;border-radius:16px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:10px 12px;font:500 18px/1.5 var(--f-zh)}
+.qa-ans textarea:focus{outline:0;border-color:var(--green)}
+.qa-mic{flex:none;width:58px;border-radius:16px;border:0;background:var(--green-soft);color:var(--green-text);display:grid;place-items:center;cursor:pointer}
+.qa-mic .i{width:26px;height:26px}
+.qa-mic.live{background:var(--red);color:#fff;animation:qaPulse 1.2s infinite}
+.qa-hint{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.qa-hint span{font-family:var(--f-zh);font-weight:700;font-size:15px;border-radius:10px;padding:4px 10px;background:var(--orange-soft);color:var(--orange)}
+.qa-hint span.hit{background:var(--green-soft);color:var(--green-text)}
+.qa-msg{margin-top:8px;color:var(--muted);font-weight:700;font-size:13px;min-height:1em}
+.qa-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.qa-row .btn{flex:1}
+.qa-sec{margin-top:14px;padding-top:12px;border-top:2px dashed var(--line)}
+.qa-sec>small{display:block;font-weight:900;font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:6px}
+.qa-mine{font:500 17px/1.5 var(--f-zh);color:var(--ink-2);white-space:pre-wrap;overflow-wrap:anywhere}
+.qa-mine.empty{font-family:inherit;font-size:14.5px;color:var(--muted);font-style:italic}
+.qa-model{display:flex;gap:10px;align-items:flex-start}.qa-model .zl{flex:1;min-width:0;--zh:22px}
+.qa-src{display:flex;gap:10px;align-items:flex-start;background:var(--soft);border-radius:14px;padding:10px 12px;margin-top:6px}
+.qa-src .t{flex:1;min-width:0;font:500 17px/1.6 var(--f-zh)}
+.qa-src .ib{flex:none;width:38px;height:38px;border-radius:12px;border:0;background:var(--card);color:var(--green-text);display:grid;place-items:center;cursor:pointer}
+.qa-src .ib .i{width:18px;height:18px}
+.qa-src mark{background:color-mix(in srgb,var(--yellow) 45%,transparent);color:inherit;border-radius:4px;padding:0 1px}
+.qa-mark{display:flex;gap:8px;margin-top:16px}.qa-mark+.qa-msg{margin-top:8px;text-align:center}
+.qa-mark .btn{flex:1;white-space:normal;line-height:1.2;padding:8px 10px}
+.btn.qa-ok{background:var(--green);color:#fff;box-shadow:0 4px 0 var(--green-dark)}
+.btn.qa-no{background:var(--red-soft);color:var(--red);box-shadow:0 3px 0 color-mix(in srgb,var(--red) 35%,transparent)}
+.qa-kw{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 2px}
+.qa-kw span{font:700 18px/1 var(--f-zh);border-radius:12px;padding:9px 12px;background:var(--blue-soft);color:var(--blue)}
+.qa-sum{text-align:center}
+.qa-sum .big{font-size:44px;font-weight:900;color:var(--green-text);line-height:1.1}
+.qa-sum p{margin:6px 0 0;color:var(--muted);font-weight:700}
+.qa-free{display:inline-block;font-size:12px;font-weight:900;border-radius:999px;padding:3px 9px;background:var(--blue-soft);color:var(--blue);margin-bottom:6px}
 .yl-h{display:flex;align-items:center;justify-content:space-between;margin:16px 2px 8px}
 .yl-h h3{margin:0;font-size:19px;font-weight:900;display:flex;align-items:center;gap:8px}
 .yl-h h3:before{content:"";width:5px;height:20px;border-radius:3px;background:var(--lvc,var(--green,#12A66A))}
@@ -623,7 +703,8 @@ body.v-Lesson .wrap{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))
 </section>
 
 <!-- ============ SUB PAGES (opened from the home tiles) ============ -->
-<section id="vNghe" hidden><p class="sub-note">Có sẵn tiếng gốc, phụ đề, bản dịch. Bấm vào quyển để xem bài.</p><div class="nghe" id="nghe"></div></section>
+<section id="vNghe" hidden><div class="seg" id="ngSeg" role="tablist"><button data-ngmode="sub" role="tab"><svg class="i" viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="5" height="7" rx="2"/><rect x="16" y="14" width="5" height="7" rx="2"/></svg>Nghe + phụ đề</button><button data-ngmode="qa" role="tab"><svg class="i" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M9 9h6M9 12h4"/></svg>Nghe rồi trả lời</button></div><div id="qaDue"></div><p class="sub-note" id="ngNote">Có sẵn tiếng gốc, phụ đề, bản dịch. Bấm vào quyển để xem bài.</p><div class="nghe" id="nghe"></div></section>
+<section id="vQa" hidden><div class="qa-wrap" id="qa"></div></section>
 <section id="vLib" hidden><div class="lib" id="lib"></div></section>
 <section id="vYt" hidden><div id="ytLib"></div></section>
 <section id="vSamples" hidden><p class="sub-note" id="smpNote">Có sẵn giọng đọc và bản dịch</p><div class="chips" id="smpLv"></div><div class="tpgrid" id="samples"></div></section>
@@ -907,7 +988,7 @@ const PYFIX={'看中文':'kàn zhōng wén','看中医':'kàn zhōng yī','看�
  '干完':'gàn wán','干活':'gàn huó','相同':'xiāng tóng','听着':'tīng zhe','种庄稼':'zhòng zhuāng jia','种树':'zhòng shù','种菜':'zhòng cài','种花':'zhòng huā',
  '完整的觉':'wán zhěng de jiào','睡个好觉':'shuì gè hǎo jiào','一定都':'yí dìng dōu','很多重要':'hěn duō zhòng yào','词汇量':'cí huì liàng','适量':'shì liàng',
  '还给':'huán gěi','还钱':'huán qián','还书':'huán shū','还你':'huán nǐ','着急':'zháo jí','长大':'zhǎng dà','长得':'zhǎng de','长高':'zhǎng gāo','长胖':'zhǎng pàng',
- '舍不得':'shě bu de','倒水':'dào shuǐ','倒茶':'dào chá','提供':'tí gōng','背着':'bēi zhe','天得让':'tiān děi ràng','路得小心':'lù děi xiǎo xīn'};
+ '舍不得':'shě bu de','倒水':'dào shuǐ','倒茶':'dào chá','提供':'tí gōng','背着':'bēi zhe','倒满':'dào mǎn','倒酒':'dào jiǔ','倒得':'dào de','倒大半杯':'dào dà bàn bēi','好学生':'hǎo xué sheng','节目的':'jié mù de','应该等':'yīng gāi děng','盛饭':'chéng fàn','盛得':'chéng de','只送':'zhǐ sòng','种着':'zhòng zhe','长着':'zhǎng zhe','夹着':'jiā zhe','天得让':'tiān děi ràng','路得小心':'lù děi xiǎo xīn'};
 const DE_NEXT='到出分奖病知意罪以失了力', DE_PREV='获取难赢心', DEI_PREV='们我你他她都也就还必总可';
 function pyAll(text){
   if(!window.pinyinPro) return null;
@@ -1312,16 +1393,27 @@ async function ngAudio(les,onProg){
 function renderNghe(){
   const tile=$('#tileNghe'), box=$('#nghe'); if(!box) return;
   if(tile) tile.hidden=!NG.les.length; if(!NG.les.length){ box.innerHTML=''; if(VIEW==='Nghe') go('Home'); return; }
-  const pos=POS.all(), books=[...new Set(NG.les.map(x=>x.pack.book))].sort((a,c)=>a-c);
-  const sub=$('#tileNgheSub'); if(sub) sub.textContent=books.map(b=>'Quyển '+b).join(', ');
-  box.innerHTML=books.map(b=>{ const ls=NG.les.filter(x=>x.pack.book===b);
+  const hasQa=NG.les.some(x=>qaTexts(x).length), QM=hasQa&&ngMode()==='qa';
+  $$('#ngSeg [data-ngmode]').forEach(b=>{ const on=b.dataset.ngmode===(QM?'qa':'sub'); b.classList.toggle('on',on); b.setAttribute('aria-selected',on); });
+  const sg=$('#ngSeg'); if(sg) sg.hidden=!hasQa;
+  const pos=POS.all(), qd=qaStore().d, all=QM?NG.les.filter(x=>qaTexts(x).length):NG.les, books=[...new Set(all.map(x=>x.pack.book))].sort((a,c)=>a-c);
+  const sub=$('#tileNgheSub'); if(sub) sub.textContent=[...new Set(NG.les.map(x=>x.pack.book))].sort((a,c)=>a-c).map(b=>'Quyển '+b).join(', ')+(hasQa?' · có hỏi đáp':'');
+  const due=QM?qaDue().length:0, db=$('#qaDue');
+  if(db) db.innerHTML=due?`<button class="qa-due" data-qadue><span class="ic">${due}</span><span><b>Ôn lại câu chưa trả lời được</b><small>${due} câu đến hạn hôm nay</small></span><span class="go">Ôn ngay ›</span></button>`:'';
+  const nt=$('#ngNote'); if(nt) nt.textContent=QM?'Nghe bài văn 2 lượt không nhìn chữ, trả lời câu hỏi như thầy hỏi trên lớp rồi kể lại. Bấm vào quyển để chọn bài.':'Có sẵn tiếng gốc, phụ đề, bản dịch. Bấm vào quyển để xem bài.';
+  box.innerHTML=books.map(b=>{ const ls=all.filter(x=>x.pack.book===b);
     const opn=ngOpen().includes(b), cur=ls.find(x=>{ const p=pos[x.id]; return p&&(p.i>0||p.t>3); }), last=cur&&[...ls].sort((a,c)=>((pos[c.id]||{}).at||0)-((pos[a.id]||{}).at||0))[0];
-    return `<div class="ng-book b${b}${opn?' open':''}"><button class="ng-h" type="button" data-ngb="${b}" aria-expanded="${opn}"><span class="ng-tag">Quyển ${b}</span><span class="ng-sub"><small>${ls.length} bài nghe</small>${last?`<small class="on">Đang nghe Bài ${last.pack.no}</small>`:''}</span><span class="ng-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></button><div class="ng-list">${ls.map(x=>{ const p=pos[x.id], st=p&&(p.i>0||p.t>3);
+    const tn=QM?ls.reduce((n,x)=>n+qaTexts(x).length,0):0, dn=QM?ls.reduce((n,x)=>n+qaTexts(x).filter((T,i)=>qd[x.pack.id+'|'+i]).length,0):0;
+    const info=QM?(dn?`<small class="on">Đã làm ${dn}/${tn} bài văn</small>`:''):last?`<small class="on">Đang nghe Bài ${last.pack.no}</small>`:'';
+    return `<div class="ng-book b${b}${opn?' open':''}"><button class="ng-h" type="button" data-ngb="${b}" aria-expanded="${opn}"><span class="ng-tag">Quyển ${b}</span><span class="ng-sub"><small>${ls.length} bài nghe${QM?' · '+tn+' bài văn':''}</small>${info}</span><span class="ng-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></button><div class="ng-list">${ls.map(x=>{
+      if(QM){ const T=qaTexts(x), d=T.filter((t,i)=>qd[x.pack.id+'|'+i]).length, nq=T.reduce((n,t)=>n+t.q.length,0);
+        return `<button class="ng-it" data-ng="${esc(x.id)}"><span class="ng-no">Bài<b>${x.pack.no}</b></span><span class="tx"><b>${esc(x.pack.zh||('第'+x.pack.no+'课'))}</b><small class="${d?'on':''}">${T.length} bài văn · ${nq} câu hỏi${d?' · đã làm '+d+'/'+T.length:''}</small></span></button>`; }
+      const p=pos[x.id], st=p&&(p.i>0||p.t>3);
       return `<button class="ng-it" data-ng="${esc(x.id)}"><span class="ng-no">Bài<b>${x.pack.no}</b></span><span class="tx"><b>${esc(x.pack.zh||('第'+x.pack.no+'课'))}</b><small class="${st?'on':''}">${st?'Đang nghe câu '+(Math.min(p.i,x.lines.length-1)+1)+'/'+x.lines.length:esc(x.pack.vi||'')+(x.pack.vi?' · ':'')+x.lines.length+' câu · '+Math.round(x.pack.dur/60)+' phút'}</small></span></button>`; }).join('')}</div></div>`; }).join('');
 }
 const ngOpen=()=>{ const v=store.get('bb.ngOpen',[]); return Array.isArray(v)?v:[]; };
 document.addEventListener('click',e=>{ const h=e.target.closest('[data-ngb]'); if(!h) return; const b=+h.dataset.ngb, o=ngOpen(); store.set('bb.ngOpen',o.includes(b)?o.filter(x=>x!==b):[...o,b]); renderNghe(); const bk=$('.ng-book.b'+b); if(bk&&bk.classList.contains('open')) setTimeout(()=>bk.scrollIntoView({behavior:'smooth',block:'nearest'}),50); });
-document.addEventListener('click',e=>{ const b=e.target.closest('[data-ng]'); if(!b) return; const x=NG.les.find(l=>l.id===b.dataset.ng); if(x) openLesson(x); });
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-ng]'); if(!b) return; const x=NG.les.find(l=>l.id===b.dataset.ng); if(!x) return; if(ngMode()==='qa'&&qaTexts(x).length) openQa(x); else openLesson(x); });
 function ngRefresh(){ return ngLoad().then(()=>{ if(VIEW==='Home'){ renderNghe(); renderLib(); renderResume(); } }); }
 // private link: #nk=<key> unlocks the book lessons on this device (and, through ☁️, on the user's other devices)
 async function importNk(){
@@ -1336,6 +1428,221 @@ async function importNk(){
   return true;
 }
 window.addEventListener('hashchange',()=>importNk());
+/* ---- Nghe rồi trả lời: mỗi bài văn trong bài nghe giáo trình (hội thoại chính, 短文) có câu hỏi soạn sẵn theo bài khóa.
+   4 bước: nghe 2 lượt không chữ → trả lời (nói/gõ) → so đáp án + đoạn gốc → kể lại theo từ khóa.
+   Câu chưa trả lời được lưu ở bb.qa (đồng bộ ☁️ như mọi cài đặt khác) để hôm sau hỏi lại. ---- */
+const QA={les:null,ti:-1,step:1,qi:0,phase:'ask',ans:{},res:{},heard:0,rate:1,review:null,ri:0,rres:[],retell:'',shown:false};
+const ngMode=()=>store.get('bb.ngMode','sub')==='qa'?'qa':'sub';
+const qaDay=(n=0)=>{ const d=new Date(); d.setDate(d.getDate()+n); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+function qaStore(){ const v=store.get('bb.qa',null); return v&&typeof v==='object'&&v.r&&typeof v.r==='object'?{r:v.r,d:v.d&&typeof v.d==='object'?v.d:{}}:{r:{},d:{}}; }
+const qaTexts=les=>(les&&les.pack&&Array.isArray(les.pack.qa))?les.pack.qa:[];
+function qaFind(k){ const [id,ti,qi]=String(k).split('|'); const les=NG.les.find(l=>l.pack.id===id); const T=qaTexts(les)[+ti]; const q=T&&T.q[+qi]; return q?{les,ti:+ti,qi:+qi,T,q}:null; }
+function qaDue(){ const s=qaStore(), t=qaDay(); return Object.keys(s.r).filter(k=>s.r[k]&&s.r[k].due<=t&&qaFind(k)).sort((a,b)=>(s.r[a].at||0)-(s.r[b].at||0)); }
+function qaMark(k,ok){ const s=qaStore(), r=s.r[k];
+  if(ok){ if(r){ r.ok=(r.ok||0)+1; if(r.ok>=2) delete s.r[k]; else r.due=qaDay(3); } }
+  else s.r[k]={n:((r&&r.n)||0)+1,ok:0,due:qaDay(1),at:Date.now()};
+  store.set('bb.qa',s); }
+function qaZh(text){ // chữ + pinyin như phụ đề bài học (không gắn tra từ)
+  const ts=toks(text), CLOSE=/^[\s，。！？、：；…”’）》」』,.!?:;)\]]+$/; let out='', k=0;
+  while(k<ts.length){ const t=ts[k]; if(!t.zh){ out+=punct(t.text); k++; continue; }
+    let h=`<span class="w h${hskLv(t.w)}">${charsHTML(t)}</span>`; k++;
+    while(ts[k]&&!ts[k].zh&&CLOSE.test(ts[k].text)){ h+=punct(ts[k].text); k++; }
+    out+=`<span class="grp">${h}</span>`; }
+  return `<div class="zl">${out}</div>`;
+}
+const qaNorm=s=>String(s||'').replace(/[\s，。！？、：；…“”‘’"'（）()《》,.!?:;]/g,'');
+function qaHit(ans,kw){ const a=qaNorm(ans), k=qaNorm(kw); if(!a||!k) return false; if(a.includes(k)) return true;
+  const cs=[...new Set([...k])]; return cs.length>=3&&cs.filter(c=>a.includes(c)).length/cs.length>=.75; }
+
+/* ---------- audio: the lesson recording, played by ranges (long silences between parts are skipped) ---------- */
+const QAA={el:null,les:null,url:'',stop:0,lines:null,onEnd:null,onProg:null,timer:0};
+function qaFree(){ qaPause(); if(QAA.el){ try{ QAA.el.removeAttribute('src'); QAA.el.load(); }catch(e){} } if(QAA.url) URL.revokeObjectURL(QAA.url); QAA.el=null; QAA.les=null; QAA.url=''; }
+async function qaPrep(les,onProg){
+  if(QAA.les===les&&QAA.el) return true;
+  const bl=await ngAudio(les,onProg); if(!bl) return false;
+  qaFree(); QAA.url=URL.createObjectURL(bl); const a=new Audio(); a.preload='auto'; a.src=QAA.url; QAA.el=a; QAA.les=les;
+  a.addEventListener('pause',()=>{ clearInterval(QAA.timer); qaPlayUI(); }); a.addEventListener('play',qaPlayUI);
+  return true;
+}
+function qaPlay(s,e,lines,onEnd,onProg){
+  const a=QAA.el; if(!a) return; stopAudio(); qaPause(); qaMicStop();
+  QAA.stop=e; QAA.lines=lines||null; QAA.onEnd=onEnd||null; QAA.onProg=onProg||null;
+  const seek=()=>{ try{ a.currentTime=Math.max(0,s); }catch(er){} };
+  if(a.readyState>=1) seek(); else a.addEventListener('loadedmetadata',seek,{once:true});
+  a.addEventListener('playing',()=>{ if(a.currentTime<s-1||a.currentTime>e) seek(); },{once:true});
+  a.playbackRate=QA.rate; a.defaultPlaybackRate=QA.rate;
+  const p=a.play(); if(p&&p.catch) p.catch(()=>{ toast('Máy chưa cho phát tiếng, bấm nút phát lần nữa nha.'); qaPlayUI(); });
+  clearInterval(QAA.timer); QAA.timer=setInterval(qaTick,120);
+}
+function qaTick(){ const a=QAA.el; if(!a||a.paused) return; const t=a.currentTime, L=QAA.lines;
+  if(L) for(let k=0;k<L.length-1;k++){ const x=L[k], y=L[k+1]; if(y.s-x.e>2.5&&t>x.e+.35&&t<y.s-.6){ try{ a.currentTime=y.s-.25; }catch(er){} break; } }
+  if(QAA.onProg) QAA.onProg(t);
+  if(t>=QAA.stop){ const f=QAA.onEnd; QAA.onEnd=null; qaPause(); if(f) f(); }
+}
+function qaPause(){ clearInterval(QAA.timer); if(QAA.el&&!QAA.el.paused) try{ QAA.el.pause(); }catch(e){} }
+function qaPlayUI(){ const b=$('#qaP'), on=!!(QAA.el&&!QAA.el.paused&&QAA.onEnd); if(b) b.innerHTML=on?IC.pause:IC.play; }
+const qaLines=(T,les)=>les.lines.slice(T.r[0],T.r[1]+1);
+function qaLen(T,les){ const L=qaLines(T,les); let d=0; for(let k=0;k<L.length;k++){ d+=L[k].e-L[k].s; if(k<L.length-1) d+=Math.min(1.2,Math.max(0,L[k+1].s-L[k].e)); } return d; }
+function qaPlaySrc(q,les){ const idx=(q.s||[]).filter(i=>les.lines[i]); if(!idx.length) return; const a=Math.min(...idx), b=Math.max(...idx);
+  const L=les.lines.slice(a,b+1); qaPlay(L[0].s-.1,L[L.length-1].e+.3,L); }
+
+/* ---------- speech: answer by voice (Chinese) ---------- */
+let QSR=null;
+function qaMicStop(){ if(QSR){ try{ QSR.stop(); }catch(e){} } }
+function qaMic(btn,ta,cont){
+  if(QSR){ qaMicStop(); return; }
+  const msg=t=>{ const m=$('#qaMsg'); if(m) m.textContent=t; };
+  if(!SR){ msg('Máy này chưa nghe giọng nói được. Bạn bấm vào ô trả lời rồi dùng nút 🎤 trên bàn phím để nói nha.'); ta.focus(); return; }
+  stopAudio(); qaPause();
+  let r; try{ r=new SR(); }catch(e){ msg('Máy này chưa nghe giọng nói được. Bạn dùng nút 🎤 trên bàn phím nha.'); return; }
+  r.lang='zh-CN'; r.interimResults=true; r.continuous=!!cont; r.maxAlternatives=1;
+  const base=ta.value.trim(); let fin='';
+  r.onresult=e=>{ let mid=''; for(let i=e.resultIndex;i<e.results.length;i++){ const t=e.results[i][0].transcript; if(e.results[i].isFinal) fin+=t; else mid+=t; } ta.value=(base?base+(cont?'':' '):'')+fin+mid; ta.dispatchEvent(new Event('input')); };
+  r.onerror=e=>{ msg(e.error==='not-allowed'||e.error==='service-not-allowed'?'Web chưa được dùng micro. Bấm “Cho phép” khi máy hỏi, hoặc dùng nút 🎤 trên bàn phím nha.':e.error==='no-speech'?'Chưa nghe thấy gì, bấm micro rồi nói to hơn nha.':'Micro đang lỗi ('+e.error+'). Bạn thử lại hoặc gõ câu trả lời nha.'); };
+  r.onend=()=>{ QSR=null; btn.classList.remove('live'); btn.innerHTML=IC.mic; if(fin||ta.value.trim()) msg(''); };
+  try{ r.start(); QSR=r; btn.classList.add('live'); btn.innerHTML=IC.stop; msg(cont?'Đang nghe… kể bằng tiếng Trung, xong bấm ■':'Đang nghe… nói câu trả lời bằng tiếng Trung'); }
+  catch(e){ msg('Micro chưa bật được, bạn thử lại hoặc gõ câu trả lời nha.'); }
+}
+
+/* ---------- screens ---------- */
+const qaBox=()=>$('#qa');
+function openQa(les){ QA.les=les; QA.ti=-1; QA.review=null; go('Qa'); qaList(); }
+function qaHead(les){ return `<div class="qa-head"><button class="qa-back" data-qaback aria-label="Quay lại">${IC.back}</button><span class="tg b${les.pack.book}">Quyển ${les.pack.book} · Bài ${les.pack.no}</span><b>${esc(les.pack.zh||('第'+les.pack.no+'课'))}</b></div>`; }
+function qaList(){
+  const les=QA.les, box=qaBox(); if(!les||!box) return; qaPause(); qaMicStop(); QA.ti=-1; QA.review=null;
+  const d=qaStore().d;
+  box.innerHTML=qaHead(les)+`<p class="qa-note">Chọn một bài văn. Nghe 2 lượt không nhìn chữ, rồi trả lời câu hỏi như thầy hỏi trên lớp, so đáp án, cuối cùng tự kể lại.</p><div class="qa-texts">${qaTexts(les).map((T,i)=>{ const r=d[les.pack.id+'|'+i];
+    return `<button class="qa-t" data-qt="${i}"><span class="n">${i+1}</span><span class="tx"><b>${esc(T.t)}</b><small>${esc(T.vi)} · ${T.q.length} câu hỏi · ~${Math.max(1,Math.round(qaLen(T,les)/60))} phút nghe</small></span><span class="st${r?' ok':''}">${r?'✓ '+r.ok+'/'+r.n:'Chưa làm'}</span></button>`; }).join('')}</div>`;
+  window.scrollTo(0,0);
+}
+function qaSteps(n){ const L=['Nghe','Trả lời','So đáp án','Kể lại']; return `<div class="qa-steps">${L.map((t,i)=>`<span class="${i+1===n?'on':i+1<n?'done':''}">${i+1}. ${t}</span>`).join('')}</div>`; }
+async function qaStart(ti){
+  const les=QA.les, T=qaTexts(les)[ti]; if(!T) return;
+  Object.assign(QA,{ti,step:1,qi:0,phase:'ask',ans:{},res:{},heard:0,retell:'',shown:false,review:null});
+  const box=qaBox();
+  if(!(QAA.les===les&&QAA.el)){
+    box.innerHTML=qaHead(les)+`<div class="qa-card"><div class="media tts">${mascot()}<div style="flex:1;min-width:0"><b>Đang mở bài nghe…</b><small id="qaProg">Lần đầu tải file nghe (${((les.pack.size||0)/1048576).toFixed(1)} MB), lần sau mở ngay.</small></div></div></div>`;
+    const ok=await qaPrep(les,pc=>{ const e=$('#qaProg'); if(e) e.textContent='Đang tải file nghe… '+pc+'%'; });
+    if(QA.ti!==ti||VIEW!=='Qa') return;
+    if(!ok){ box.innerHTML=qaHead(les)+`<div class="qa-card"><h3>Chưa tải được file nghe</h3><p class="m">Mạng đang yếu. Bấm thử lại nha.</p><button class="btn pri" id="qaRetry">Thử lại</button></div>`; $('#qaRetry').onclick=()=>qaStart(ti); return; }
+  }
+  qaListen();
+}
+function qaListen(){
+  const les=QA.les, T=qaTexts(les)[QA.ti], box=qaBox(); QA.step=1;
+  const dur=qaLen(T,les), mm=Math.floor(dur/60)+':'+String(Math.round(dur%60)).padStart(2,'0');
+  const rd=QA.heard>=2?'Nghe thêm lượt nữa':QA.heard===1?'Lượt 2 · nghe chi tiết':'Lượt 1 · nghe ý chính';
+  box.innerHTML=qaHead(les)+qaSteps(1)+`<div class="qa-card"><h3>${esc(T.t)}</h3><p class="m">Chưa nhìn chữ nha. <b>Lượt 1</b>: nghe ý chính (ai, ở đâu, chuyện gì). <b>Lượt 2</b>: nghe kỹ chi tiết (con số, lý do, kết quả ra sao).</p>
+    <div class="qa-play"><button class="qa-pbtn" id="qaP" aria-label="Phát">${IC.play}</button><div class="qa-pinfo"><b id="qaPt">${rd}</b><small id="qaPs">Dài khoảng ${mm}</small><div class="qa-bar"><i id="qaBar"></i></div></div></div>
+    <div class="qa-speed"><button class="chip${QA.rate===1?' on':''}" data-qrate="1">Tốc độ thường</button><button class="chip${QA.rate<1?' on':''}" data-qrate="0.8">Chậm hơn</button></div>
+    <div class="qa-rounds"><span class="${QA.heard>=1?'ok':''}">${QA.heard>=1?'✓ ':''}Lượt 1</span><span class="${QA.heard>=2?'ok':''}">${QA.heard>=2?'✓ ':''}Lượt 2</span></div></div>
+    <button class="btn ${QA.heard>=2?'pri':'out'} block" id="qaGoQ">${QA.heard>=2?'Trả lời câu hỏi →':'Nghe xong rồi, trả lời câu hỏi →'}</button>`;
+  const L=qaLines(T,les), s0=L[0].s-.15, e0=L[L.length-1].e+.4;
+  const prog=t=>{ const b=$('#qaBar'); if(!b) return; let done=0; for(const x of L){ if(t>=x.e) done+=x.e-x.s; else if(t>x.s) done+=t-x.s; } let tot=0; for(const x of L) tot+=x.e-x.s; b.style.width=Math.min(100,done*100/tot)+'%'; };
+  $('#qaP').onclick=()=>{
+    if(QAA.el&&!QAA.el.paused&&QAA.onEnd){ qaPause(); return; }
+    const a=QAA.el, cur=a?a.currentTime:0, resume=QA.playing&&cur>s0+1&&cur<e0-1;
+    QA.playing=true;
+    qaPlay(resume?cur:s0,e0,L,()=>{ QA.playing=false; QA.heard++; qaListen(); if(QA.heard===1) toast('Xong lượt 1. Nghe tiếp lượt 2 để bắt chi tiết nha.',3500); },prog);
+  };
+  $$('[data-qrate]').forEach(b=>b.onclick=()=>{ QA.rate=+b.dataset.qrate; $$('[data-qrate]').forEach(x=>x.classList.toggle('on',x===b)); if(QAA.el) QAA.el.playbackRate=QA.rate; });
+  $('#qaGoQ').onclick=()=>{ qaPause(); QA.playing=false; QA.qi=0; QA.phase='ask'; qaAsk(); };
+  qaPlayUI();
+}
+function qaCur(){ if(QA.review){ const f=qaFind(QA.review[QA.ri]); return f; } const T=qaTexts(QA.les)[QA.ti]; return {les:QA.les,ti:QA.ti,qi:QA.qi,T,q:T.q[QA.qi]}; }
+function qaAsk(){
+  const f=qaCur(); if(!f){ qaDone(); return; } const {les,T,q}=f, box=qaBox(); QA.phase='ask'; QA.step=2;
+  const key=les.pack.id+'|'+f.ti+'|'+f.qi, n=QA.review?QA.review.length:T.q.length, i=QA.review?QA.ri:QA.qi;
+  const prev=QA.ans[key]||'';
+  box.innerHTML=(QA.review?`<div class="qa-head"><button class="qa-back" data-qaback aria-label="Quay lại">${IC.back}</button><span class="tg b${les.pack.book}">Ôn câu sai</span><b>${esc(T.t)}</b></div>`:qaHead(les)+qaSteps(2))+`<div class="qa-card">
+    <div class="ln-h"><span class="no">${i+1}/${n}</span>${QA.review?'Quyển '+les.pack.book+' · Bài '+les.pack.no:'Câu hỏi'}</div>${q.f?'<span class="qa-free">Câu tự do · không chấm</span>':''}
+    <div class="qa-q">${qaZh(q.q)}<button class="qa-ib" data-qsay aria-label="Đọc câu hỏi">${IC.spk}</button></div>
+    <button class="qa-link" data-qvi>Xem nghĩa câu hỏi</button><div class="qa-vi" id="qaVi" hidden>${esc(q.qv)}</div>
+    <div class="qa-ans"><textarea id="qaIn" rows="3" placeholder="Trả lời bằng tiếng Trung (nói hoặc gõ)…" lang="zh-CN">${esc(prev)}</textarea><button class="qa-mic" id="qaMic" aria-label="Nói câu trả lời">${IC.mic}</button></div>
+    <div class="qa-msg" id="qaMsg"></div>
+    <div class="qa-hint" id="qaHint" hidden>${q.k.map(k=>`<span>${esc(k)}</span>`).join('')}</div>
+    <div class="qa-row">${q.k.length?`<button class="btn sm out" id="qaHintB">${IC.bulb} Gợi ý</button>`:''}<button class="btn sm out" id="qaRe">${IC.ear} ${QA.review?'Nghe lại đoạn này':'Nghe lại bài'}</button></div>
+    <button class="btn pri block" id="qaShow" style="margin-top:12px">Xem đáp án</button></div>`;
+  const ta=$('#qaIn'); ta.oninput=()=>{ QA.ans[key]=ta.value; };
+  $('[data-qsay]').onclick=()=>{ qaPause(); qaMicStop(); speakQ(q.q); };
+  $('[data-qvi]').onclick=e=>{ const v=$('#qaVi'); v.hidden=!v.hidden; e.target.textContent=v.hidden?'Xem nghĩa câu hỏi':'Ẩn nghĩa'; };
+  $('#qaMic').onclick=()=>qaMic($('#qaMic'),ta,false);
+  if($('#qaHintB')) $('#qaHintB').onclick=()=>{ const h=$('#qaHint'); h.hidden=!h.hidden; };
+  $('#qaRe').onclick=async()=>{ if(QAA.el&&!QAA.el.paused){ qaPause(); return; }
+    if(QA.review){ if(!(QAA.les===les&&QAA.el)){ toast('Đang mở file nghe…'); if(!await qaPrep(les)) { toast('Chưa tải được file nghe, mạng yếu.'); return; } } qaPlaySrc(q,les); }
+    else { const L=qaLines(T,les); qaPlay(L[0].s-.15,L[L.length-1].e+.4,L); } };
+  $('#qaShow').onclick=()=>{ qaMicStop(); qaPause(); QA.ans[key]=ta.value; qaCompare(); };
+  speakQ(q.q);
+}
+function speakQ(t){ try{ if(window.BMVoice) BMVoice.speak(t,{who:'n'}); }catch(e){} }
+function qaMarkSrc(text,kws){ let h=esc(text); for(const k of kws){ const e=esc(k); if(e.length>1&&h.includes(e)) h=h.split(e).join('<mark>'+e+'</mark>'); } return h; }
+function qaCompare(){
+  const f=qaCur(); const {les,T,q}=f, box=qaBox(); QA.phase='cmp'; QA.step=3;
+  const key=les.pack.id+'|'+f.ti+'|'+f.qi, mine=(QA.ans[key]||'').trim(), n=QA.review?QA.review.length:T.q.length, i=QA.review?QA.ri:QA.qi;
+  const hits=q.k.map(k=>qaHit(mine,k)), nh=hits.filter(Boolean).length;
+  const src=(q.s||[]).map(j=>les.lines[j]&&les.lines[j].zh).filter(Boolean).join('');
+  box.innerHTML=(QA.review?`<div class="qa-head"><button class="qa-back" data-qaback aria-label="Quay lại">${IC.back}</button><span class="tg b${les.pack.book}">Ôn câu sai</span><b>${esc(T.t)}</b></div>`:qaHead(les)+qaSteps(3))+`<div class="qa-card">
+    <div class="ln-h"><span class="no">${i+1}/${n}</span>${esc(q.q)}</div>
+    <div class="qa-sec" style="border:0;padding-top:4px;margin-top:6px"><small>Bạn trả lời</small><div class="qa-mine${mine?'':' empty'}">${mine?esc(mine):'Bạn chưa trả lời câu này.'}</div>
+      ${q.k.length&&!q.f?`<div class="qa-hint">${q.k.map((k,j)=>`<span class="${hits[j]?'hit':''}">${hits[j]?'✓ ':''}${esc(k)}</span>`).join('')}</div><div class="qa-msg">${mine?'Có '+nh+'/'+q.k.length+' ý chính trong câu trả lời của bạn.':'Ý chính cần có trong câu trả lời.'}</div>`:''}</div>
+    <div class="qa-sec"><small>${q.f?'Một cách trả lời mẫu':'Đáp án mẫu'}</small><div class="qa-model">${qaZh(q.a)}<button class="qa-ib" data-qsaya aria-label="Đọc đáp án">${IC.spk}</button></div><div class="qa-vi">${esc(q.av)}</div></div>
+    ${src?`<div class="qa-sec"><small>Trong bài nghe</small><div class="qa-src"><div class="t">${qaMarkSrc(src,q.k)}</div><button class="ib" data-qsrc aria-label="Nghe đoạn này">${IC.play}</button></div></div>`:''}
+    ${q.f?`<button class="btn pri block" data-qnext style="margin-top:16px">Câu tiếp →</button>`:`<div class="qa-mark"><button class="btn qa-ok" data-qok="1">✓ Trả lời được</button><button class="btn qa-no" data-qok="0">✗ Chưa được</button></div>`}</div>`;
+  $('[data-qsaya]').onclick=()=>{ qaPause(); speakQ(q.a); };
+  if($('[data-qsrc]')) $('[data-qsrc]').onclick=async()=>{ if(QAA.el&&!QAA.el.paused){ qaPause(); return; } if(!(QAA.les===les&&QAA.el)){ toast('Đang mở file nghe…'); if(!await qaPrep(les)){ toast('Chưa tải được file nghe, mạng yếu.'); return; } } qaPlaySrc(q,les); };
+  const next=ok=>{ stopAudio(); qaPause();
+    if(ok!=null){ qaMark(key,ok); if(QA.review) QA.rres.push(ok); else QA.res[key]=ok; }
+    if(QA.review){ QA.ri++; if(QA.ri>=QA.review.length) qaDone(); else qaAsk(); }
+    else { QA.qi++; if(QA.qi>=T.q.length) qaRetell(); else qaAsk(); } window.scrollTo(0,0); };
+  $$('[data-qok]').forEach(b=>b.onclick=()=>next(b.dataset.qok==='1'));
+  if($('[data-qnext]')) $('[data-qnext]').onclick=()=>next(null);
+  window.scrollTo(0,0);
+}
+function qaRetell(){
+  const les=QA.les, T=qaTexts(les)[QA.ti], box=qaBox(); QA.step=4; QA.phase='retell';
+  box.innerHTML=qaHead(les)+qaSteps(4)+`<div class="qa-card"><h3>Kể lại bài “${esc(T.t.replace(/^.*?：/,''))}”</h3><p class="m">Nhìn các từ khóa, tự kể lại nội dung bằng tiếng Trung khoảng 4–6 câu, như khi thầy bảo “你说说这段话的内容”. Bấm micro rồi kể, hoặc gõ.</p>
+    <div class="qa-kw">${T.kw.map(k=>`<span>${esc(k)}</span>`).join('')}</div>
+    <div class="qa-ans"><textarea id="qaIn" rows="5" placeholder="Kể lại bằng tiếng Trung…" lang="zh-CN">${esc(QA.retell)}</textarea><button class="qa-mic" id="qaMic" aria-label="Kể bằng giọng nói">${IC.mic}</button></div>
+    <div class="qa-msg" id="qaMsg"></div>
+    <div id="qaRt"></div>
+    <div class="qa-row"><button class="btn sm out" id="qaRtB">${IC.eye} Xem bài kể mẫu</button><button class="btn sm out" id="qaRe">${IC.ear} Nghe lại bài</button></div>
+    <button class="btn pri block" id="qaFin" style="margin-top:12px">Xong bài này</button></div>`;
+  const ta=$('#qaIn'); ta.oninput=()=>{ QA.retell=ta.value; };
+  $('#qaMic').onclick=()=>qaMic($('#qaMic'),ta,true);
+  const showRt=()=>{ const mine=ta.value, hits=T.kw.filter(k=>qaHit(mine,k)).length;
+    $('#qaRt').innerHTML=`<div class="qa-sec"><small>Bài kể mẫu</small><div class="qa-model">${qaZh(T.rt)}<button class="qa-ib" data-qsayr aria-label="Đọc bài kể mẫu">${IC.spk}</button></div><div class="qa-vi">${esc(T.rv)}</div>${mine.trim()?`<div class="qa-msg">Bạn đã dùng ${hits}/${T.kw.length} từ khóa.</div>`:''}</div>`;
+    $('[data-qsayr]').onclick=()=>{ qaPause(); speakQ(T.rt); }; $('#qaRtB').hidden=true; QA.shown=true; };
+  $('#qaRtB').onclick=()=>{ qaMicStop(); showRt(); };
+  if(QA.shown) showRt();
+  $('#qaRe').onclick=()=>{ if(QAA.el&&!QAA.el.paused){ qaPause(); return; } const L=qaLines(T,les); qaPlay(L[0].s-.15,L[L.length-1].e+.4,L); };
+  $('#qaFin').onclick=()=>{ qaMicStop(); stopAudio(); qaPause(); qaDone(); };
+  window.scrollTo(0,0);
+}
+function qaDone(){
+  const box=qaBox(); stopAudio(); qaPause(); qaMicStop();
+  if(QA.review){ const ok=QA.rres.filter(Boolean).length, n=QA.rres.length, left=qaDue().length;
+    box.innerHTML=`<div class="qa-card qa-sum">${mascot()}<div class="big">${ok}/${n}</div><p>${n-ok?'Câu chưa được sẽ hỏi lại vào ngày mai.':'Giỏi quá! Câu nào đúng 2 lần là Bánh Mì cho qua.'}${left?' Còn '+left+' câu đến hạn ôn.':''}</p><div class="qa-row"><button class="btn pri" id="qaBk">Về danh sách bài</button></div></div>`;
+    QA.review=null; $('#qaBk').onclick=()=>go('Nghe'); return; }
+  const les=QA.les, T=qaTexts(les)[QA.ti], qs=T.q.filter(q=>!q.f).length, ok=Object.values(QA.res).filter(Boolean).length;
+  const s=qaStore(); s.d[les.pack.id+'|'+QA.ti]={ok,n:qs,at:Date.now()}; store.set('bb.qa',s);
+  const wrong=qs-ok, nextT=qaTexts(les)[QA.ti+1];
+  box.innerHTML=qaHead(les)+`<div class="qa-card qa-sum">${mascot()}<div class="big">${ok}/${qs}</div><p>${wrong?`${wrong} câu chưa được đã lưu ☁️, ngày mai Bánh Mì hỏi lại (máy nào đăng nhập cũng có).`:'Trả lời được hết rồi, giỏi quá!'}</p>
+    <div class="qa-row">${nextT?`<button class="btn pri" id="qaNx">Bài tiếp: ${esc(nextT.t.replace(/：.*/,''))}</button>`:''}<button class="btn out" id="qaAgain">Làm lại bài này</button><button class="btn out" id="qaBk">Danh sách bài</button></div></div>`;
+  if($('#qaNx')) $('#qaNx').onclick=()=>qaStart(QA.ti+1);
+  $('#qaAgain').onclick=()=>qaStart(QA.ti);
+  $('#qaBk').onclick=()=>qaList();
+  window.scrollTo(0,0);
+}
+function qaStartReview(){ const due=qaDue(); if(!due.length){ toast('Chưa có câu nào cần ôn hôm nay.'); renderNghe(); return; }
+  Object.assign(QA,{review:due.slice(0,15),ri:0,rres:[],ans:{},ti:-1}); QA.les=qaFind(due[0]).les; go('Qa'); qaAsk(); }
+function qaBack(){ // nút ‹ trên đầu trang: đang trong một bài văn thì về danh sách bài văn
+  if(QA.review||QA.ti<0) return false; qaList(); return true; }
+window.BM_BUSY=()=>VIEW==='Qa'&&QA.ti>=0;
+window.BM_QA={QA,QAA,qaTexts,qaZh,get les(){return NG.les;}};
+document.addEventListener('click',e=>{ const t=e.target.closest('[data-qt]'); if(t) qaStart(+t.dataset.qt);
+  const m=e.target.closest('[data-ngmode]'); if(m){ store.set('bb.ngMode',m.dataset.ngmode); renderNghe(); }
+  if(e.target.closest('[data-qadue]')) qaStartReview();
+  if(e.target.closest('[data-qaback]')){ if(!qaBack()) go('Nghe'); } });
 function saveLesson(){
   if(!LES||LES.demo||LES.pack) return;
   const all=lessons().filter(x=>x.id!==LES.id);
@@ -1784,16 +2091,17 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-resume]');
 
 /* ======================= views ======================= */
 let VIEW='Home', BACKTO='Home', HDEP=(history.state&&history.state.bb)?1:0, HOMEJUMP=false;
-const SUBV=['Nghe','Lib','Yt','Samples'], SUBT={Nghe:'Nghe giáo trình',Lib:'Bài đã học',Yt:'Video theo cấp HSK',Samples:'Bài mẫu'};
+const SUBV=['Nghe','Lib','Yt','Samples'], SUBT={Qa:'Nghe rồi trả lời',Nghe:'Nghe giáo trình',Lib:'Bài đã học',Yt:'Video theo cấp HSK',Samples:'Bài mẫu'};
 function show(v){
   if(VIEW==='Lesson'&&v!=='Lesson') savePos();
   if(v!=='Lesson') BACKTO=v==='Home'?'Home':SUBV.includes(v)?v:BACKTO;
   const prev=VIEW; VIEW=v;
   // phone back button / swipe-back returns to the page's home instead of leaving the site
   // a lesson opened from a list page (Bài đã học, Nghe giáo trình…) gets its own step, so back returns to that list
-  try{ if(v!=='Home'&&(!HDEP||(v==='Lesson'&&SUBV.includes(prev)&&HDEP<2))){ history.pushState({bb:1},''); HDEP++; } }catch(e){}
+  try{ if(v!=='Home'&&(!HDEP||((v==='Lesson'&&SUBV.includes(prev)||v==='Qa'&&prev==='Nghe')&&HDEP<2))){ history.pushState({bb:1},''); HDEP++; } }catch(e){}
+  if(prev==='Qa'&&v!=='Qa'){ qaPause(); qaMicStop(); QA.ti=-1; QA.review=null; }
   try{ if(v==='Lesson'&&LES&&!LES.demo) localStorage.setItem('bb.open',JSON.stringify({id:LES.id,at:Date.now()})); else if(v!=='Lesson') localStorage.removeItem('bb.open'); }catch(e){}
-  ['Home','New','Lesson','Words','Focus',...SUBV].forEach(n=>$('#v'+n).hidden=n!==v);
+  ['Home','New','Lesson','Words','Focus','Qa',...SUBV].forEach(n=>$('#v'+n).hidden=n!==v);
   $('#topTitle').textContent=SUBT[v]||(v==='Lesson'&&LES?LES.title:v==='Words'?'Sổ từ':v==='Focus'?'Phòng tập trung':v==='New'?'Học bài mới':'');
   $('#topSp').hidden=v!=='Home';
   document.body.className=document.body.className.replace(/\bv-\w+/g,'').trim()+' v-'+v;
@@ -1810,6 +2118,7 @@ function go(v){
   else if(v==='Focus'){openFocus();}
   else if(v==='New'){show('New');}
   else if(v==='Nghe'){renderNghe();show('Nghe');}
+  else if(v==='Qa'){show('Qa');}
   else if(v==='Lib'){renderLib();show('Lib');}
   else if(v==='Yt'){renderYtLib();show('Yt');}
   else if(v==='Samples'){renderSamples();show('Samples');}
@@ -1819,11 +2128,12 @@ addEventListener('popstate',()=>{
   if(HOMEJUMP){ HOMEJUMP=false; HDEP=0; go('Home'); return; }
   HDEP=Math.max(0,HDEP-1);
   const sh=$('#sheet'); if(sh&&!sh.hidden&&VIEW!=='Home'){ closeSheet(); try{history.pushState({bb:1},''); HDEP++;}catch(e){} return; }
-  if(VIEW==='Lesson'&&SUBV.includes(BACKTO)&&HDEP>0) go(BACKTO);
+  if(VIEW==='Qa'&&HDEP>0) go('Nghe');
+  else if(VIEW==='Lesson'&&SUBV.includes(BACKTO)&&HDEP>0) go(BACKTO);
   else if(VIEW!=='Home'){ HDEP=0; go('Home'); }
 });
 $('#goHome').onclick=goHome;
-$('#goBack').onclick=()=>{ if(VIEW==='Lesson'&&SUBV.includes(BACKTO)&&HDEP>=2){ try{history.back();return;}catch(e){} } if(VIEW==='Lesson'&&BACKTO!=='Home') go(BACKTO); else goHome(); };
+$('#goBack').onclick=()=>{ if(VIEW==='Qa'){ if(qaBack()) return; if(HDEP>=2){ try{history.back();return;}catch(e){} } go('Nghe'); return; } if(VIEW==='Lesson'&&SUBV.includes(BACKTO)&&HDEP>=2){ try{history.back();return;}catch(e){} } if(VIEW==='Lesson'&&BACKTO!=='Home') go(BACKTO); else goHome(); };
 $$('[data-nav]').forEach(b=>b.onclick=()=>{BACKTO='Home';go(b.dataset.nav);});
 $$('[data-go]').forEach(b=>b.onclick=()=>{const k=b.dataset.go; if(k==='video'){go('New');$('#tabVideo').click();} else if(k==='file'){go('New');$('#tabFile').click();} else go({words:'Words',focus:'Focus',nghe:'Nghe',lib:'Lib',yt:'Yt',samples:'Samples'}[k]||'Focus');});
 

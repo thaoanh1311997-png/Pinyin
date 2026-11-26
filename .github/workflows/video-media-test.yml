@@ -25,3 +25,5 @@ jobs:
           perl -e 'alarm shift; exec @ARGV' 300 node video/tools/player-test.cjs || echo FAIL-EXIT player-test
           perl -e 'alarm shift; exec @ARGV' 300 env BT=webkit node video/tools/nghe-test.cjs || echo FAIL-EXIT nghe-test webkit
           perl -e 'alarm shift; exec @ARGV' 300 node video/tools/nghe-test.cjs || echo FAIL-EXIT nghe-test
+          perl -e 'alarm shift; exec @ARGV' 300 env BT=webkit node video/tools/qa-test.cjs || echo FAIL-EXIT qa-test webkit
+          perl -e 'alarm shift; exec @ARGV' 300 node video/tools/qa-test.cjs || echo FAIL-EXIT qa-test
