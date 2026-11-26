@@ -988,7 +988,8 @@ const PYFIX={'看中文':'kàn zhōng wén','看中医':'kàn zhōng yī','看�
  '干完':'gàn wán','干活':'gàn huó','相同':'xiāng tóng','听着':'tīng zhe','种庄稼':'zhòng zhuāng jia','种树':'zhòng shù','种菜':'zhòng cài','种花':'zhòng huā',
  '完整的觉':'wán zhěng de jiào','睡个好觉':'shuì gè hǎo jiào','一定都':'yí dìng dōu','很多重要':'hěn duō zhòng yào','词汇量':'cí huì liàng','适量':'shì liàng',
  '还给':'huán gěi','还钱':'huán qián','还书':'huán shū','还你':'huán nǐ','着急':'zháo jí','长大':'zhǎng dà','长得':'zhǎng de','长高':'zhǎng gāo','长胖':'zhǎng pàng',
- '舍不得':'shě bu de','倒水':'dào shuǐ','倒茶':'dào chá','提供':'tí gōng','背着':'bēi zhe','倒满':'dào mǎn','倒酒':'dào jiǔ','倒得':'dào de','倒大半杯':'dào dà bàn bēi','好学生':'hǎo xué sheng','节目的':'jié mù de','应该等':'yīng gāi děng','盛饭':'chéng fàn','盛得':'chéng de','只送':'zhǐ sòng','种着':'zhòng zhe','长着':'zhǎng zhe','夹着':'jiā zhe','天得让':'tiān děi ràng','路得小心':'lù děi xiǎo xīn'};
+ '舍不得':'shě bu de','倒水':'dào shuǐ','倒茶':'dào chá','提供':'tí gōng','背着':'bēi zhe','倒满':'dào mǎn','倒酒':'dào jiǔ','倒得':'dào de','倒大半杯':'dào dà bàn bēi','好学生':'hǎo xué sheng','节目的':'jié mù de','应该等':'yīng gāi děng','盛饭':'chéng fàn','盛得':'chéng de','只送':'zhǐ sòng','种着':'zhòng zhe','长着':'zhǎng zhe','夹着':'jiā zhe','天得让':'tiān děi ràng','好学校':'hǎo xué xiào','好中学':'hǎo zhōng xué','好高中':'hǎo gāo zhōng','好大学':'hǎo dà xué','高兴地':'gāo xìng de','认真地':'rèn zhēn de','仔细地':'zǐ xì de','努力地':'nǔ lì de','激动地':'jī dòng de','热情地':'rè qíng de','不停地':'bù tíng de','客气地':'kè qi de','大声地':'dà shēng de','小声地':'xiǎo shēng de','专心地':'zhuān xīn de','不好意思地':'bù hǎo yì si de','心平气和地':'xīn píng qì hé de','耐心地':'nài xīn de','愉快地':'yú kuài de','开心地':'kāi xīn de','生气地':'shēng qì de','紧张地':'jǐn zhāng de','着急地':'zháo jí de','奇怪地':'qí guài de','满意地':'mǎn yì de','逐渐地':'zhú jiàn de','不断地':'bú duàn de','头也不回地':'tóu yě bù huí de','习惯地':'xí guàn de','路得小心':'lù děi xiǎo xīn'};
+const ZHI_NUM='一二两三四五六七八九十几这那每半数百千万0123456789', DI_V='说笑问看走跑叫喊哭想回答摇站坐举抽喝吃写读听做跟把对向给离过去来告拿放接望流敲握留讲唱增变努睡等准帮抱跳拍介研解提让请叹冲推拉打扶摸亲微', DI_N='当土本外各此天草场陆盆田营驻原境内基耕林墓圣湿余空大目的高';
 const DE_NEXT='到出分奖病知意罪以失了力', DE_PREV='获取难赢心', DEI_PREV='们我你他她都也就还必总可';
 function pyAll(text){
   if(!window.pinyinPro) return null;
@@ -1003,6 +1004,13 @@ function pyAll(text){
       if(pv==='不'&&'不了已'.includes(nx)&&nx) continue;
       if(!pv||!r[i-1].isZh||DEI_PREV.includes(pv)){ r[i]={...x,pinyin:'děi',num:3}; continue; }
       r[i]={...x,pinyin:'de',num:0};
+    }
+    for(let i=0;i<r.length;i++){ const x=r[i], pv=r[i-1]?r[i-1].origin:'', p2=r[i-2]?r[i-2].origin:'', nx=r[i+1]?r[i+1].origin:'', n2=r[i+2]?r[i+2].origin:'';
+      if(x.origin==='只'&&x.pinyin!=='zhǐ'){ // 只 = chỉ (zhǐ), trừ khi là lượng từ sau số / 这 那 (一只猫)
+        if(pv==='船'||nx==='身') continue;
+        if(!pv||!ZHI_NUM.includes(pv)||('这那'.includes(pv)&&'是有能要好不'.includes(nx))) r[i]={...x,pinyin:'zhǐ',num:3}; continue; }
+      if(x.origin==='地'&&x.pinyin==='dì'&&pv){ // trợ từ 地: 慢慢地、高兴地说
+        if((pv===p2&&r[i-1].isZh)||(nx&&!DI_N.includes(pv)&&(DI_V.includes(nx)||(nx==='点'&&n2==='头')))) r[i]={...x,pinyin:'de',num:0}; }
     }
     return r;
   }catch(e){return null}
