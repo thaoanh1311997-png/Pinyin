@@ -56,13 +56,13 @@
       if (mode === 'pa') {
         panel.innerHTML = `${nav()}<div class="vcard"><div class="vline" id="pal">${words(l.t).length ? l.t.split(/\s+/).map(w => `<span class="pw">${esc(w)}</span>`).join(' ') : esc(l.t)}</div>${viOf(l)}
           <div class="vbtns"><button class="btn alt" id="pah">🔊 Nghe mẫu</button><button class="btn" id="pam">🎤 Bé đọc</button></div>
-          <div class="vres" id="par">${SR ? 'Bấm 🎤 rồi đọc to câu trên.' : 'Máy này chưa nghe được micro trên web. Ba mẹ nghe bé đọc rồi bấm 👍 nhé.'}</div>
+          <div class="vres" id="par">${window.XMCanHear ? 'Bấm 🎤 rồi đọc to câu trên.' : 'Máy này chưa nghe được micro trên web. Ba mẹ nghe bé đọc rồi bấm 👍 nhé.'}</div>
           <button class="btn yes" id="paok">👍 Bé nói được rồi</button></div>`;
         bindNav();
         panel.querySelector('#pah').onclick = () => playLine(idx);
         panel.querySelector('#paok').onclick = () => { cheer('Great talking!', true); };
         const mic = panel.querySelector('#pam');
-        if (!SR) mic.disabled = true; else mic.onclick = () => listen(l, mic);
+        if (!window.XMCanHear) mic.disabled = true; else mic.onclick = () => listen(l, mic);
       } else if (mode === 'ln') {
         panel.innerHTML = `${nav()}<div class="vcard"><div class="vbtns"><button class="btn" id="lnh">🔊 Nghe câu</button><button class="btn alt" id="lns">🐢 Đọc chậm</button></div>
           <textarea id="lni" rows="2" placeholder="Gõ lại câu vừa nghe…" autocapitalize="off" autocomplete="off" spellcheck="false"></textarea>
@@ -116,21 +116,21 @@
         else { b.classList.add('bad'); say('Try again!'); }
       });
     }
-    function listen(l, btn) {
-      const out = panel.querySelector('#par'); const r = new SR(); r.lang = 'en-US'; r.interimResults = false; r.maxAlternatives = 3;
-      btn.disabled = true; btn.textContent = '👂 Đang nghe…'; out.textContent = 'Đọc to nào!';
+    const hst = {};
+    async function listen(l, btn) {
+      const out = panel.querySelector('#par');
+      btn.disabled = true; btn.textContent = '👂 Đang nghe…'; out.textContent = '👂 Đọc to nào!';
       try { P.pause(); } catch (e) {}
-      r.onresult = e => {
-        const heard = new Set(); [...e.results[0]].forEach(a => words(a.transcript).forEach(w => heard.add(w)));
-        const spans = panel.querySelectorAll('#pal .pw'); let ok = 0, n = 0;
-        spans.forEach(s => { const w = norm(s.textContent); if (!w) return; n++; const g = heard.has(w); if (g) ok++; s.classList.toggle('good', g); s.classList.toggle('bad', !g); });
-        const pc = n ? Math.round(ok / n * 100) : 0;
-        out.innerHTML = `Web nghe được: “${esc(e.results[0][0].transcript)}”<br><b>${pc}%</b> ${pc >= 80 ? '🌟 Giỏi quá!' : pc >= 50 ? '👍 Gần đúng rồi!' : '💪 Thử lại nhé!'}`;
-        if (pc >= 50) cheer(pc >= 80 ? 'Excellent!' : 'Good try!', pc >= 80);
-      };
-      r.onerror = e => { out.textContent = e.error === 'not-allowed' ? 'Hãy cho phép web dùng micro (Cài đặt › Safari › Micro).' : 'Chưa nghe rõ, thử lại nhé.'; };
-      r.onend = () => { btn.disabled = false; btn.textContent = '🎤 Bé đọc'; };
-      try { r.start(); } catch (e) { r.onend(); }
+      const h = await XMHear(l.t);
+      if (!document.body.contains(btn)) return; btn.disabled = false; btn.textContent = '🎤 Bé đọc';
+      const spans = panel.querySelectorAll('#pal .pw'); let ok = 0, n = 0;
+      if (h.heard) { const heard = new Set(words(h.heard));
+        spans.forEach(s => { const w = norm(s.textContent); if (!w) return; n++; const g = heard.has(w); if (g) ok++; s.classList.toggle('good', g); s.classList.toggle('bad', !g); }); }
+      const r = XMHearPass(h, hst);
+      if (r) { const pc = n ? Math.round(ok / n * 100) : 0;
+        out.innerHTML = (h.heard ? `Xíu Mại nghe: “${esc(h.heard)}”<br>` : '') + (r === 'good' ? '🌟 Giỏi quá!' : '💪 Bé cố gắng giỏi lắm!');
+        cheer(r === 'good' && (!n || pc >= 50) ? 'Excellent!' : 'Good try!', true); return; }
+      out.innerHTML = XMHearMsg(h);
     }
     tabs.querySelectorAll('button').forEach(b => b.onclick = () => { if (mode === 'sh' && b.dataset.m !== 'sh') idx = curLine(); mode = b.dataset.m; render(); });
     render();

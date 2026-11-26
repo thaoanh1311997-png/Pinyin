@@ -100,11 +100,13 @@
       if (b.dataset.a === 'n') return say(p[0], { rate: 0.9 });
       if (b.dataset.a === 's') return say(p[0], { rate: 0.6 });
       const r = new SR(); r.lang = 'en-US'; r.maxAlternatives = 3; b.disabled = true; b.textContent = '👂…';
-      r.onresult = e => { const heard = new Set(); [...e.results[0]].forEach(a => norm(a.transcript).split(' ').forEach(w => heard.add(w)));
+      r.onresult = e => { if (!$('#pl' + k) || !$('#pr' + k)) return; const heard = new Set(); [...e.results[0]].forEach(a => norm(a.transcript).split(' ').forEach(w => heard.add(w)));
         let ok = 0, tot = 0; $('#pl' + k).querySelectorAll('.pw').forEach(sp => { const w = norm(sp.textContent); if (!w) return; tot++; const g = heard.has(w); ok += g; sp.classList.toggle('good', g); sp.classList.toggle('bad', !g); });
         const pc = tot ? Math.round(ok / tot * 100) : 0; $('#pr' + k).textContent = pc + '% ' + (pc >= 80 ? '🌟' : pc >= 50 ? '👍' : '💪'); };
-      r.onerror = () => { $('#pr' + k).textContent = 'Chưa nghe rõ'; };
-      r.onend = () => { b.disabled = false; b.textContent = '🎤 Đọc thử'; };
+      let got = false; const tm = setTimeout(() => { try { r.abort(); } catch (e) {} r.onend(); }, 9000);
+      const r0 = r.onresult; r.onresult = e => { got = true; r0(e); };
+      r.onerror = e => { got = true; const o = $('#pr' + k); if (o) o.innerHTML = /not-allowed|service-not-allowed|audio-capture/.test(e.error) ? 'Máy chưa cho nhận giọng ở đây. Mở trang bằng <b>Safari</b>/<b>Chrome</b> và cho phép micro nhé.' : 'Chưa nghe rõ, đọc lại nhé'; };
+      r.onend = () => { clearTimeout(tm); if (!b.disabled) return; b.disabled = false; b.textContent = '🎤 Đọc thử'; const o = $('#pr' + k); if (!got && o) o.textContent = 'Chưa nghe rõ, đọc lại nhé'; };
       try { r.start(); } catch (e) { r.onend(); }
     });
     app.querySelectorAll('.ppc input').forEach(c => c.onchange = () => { const G = LS.get('gtp', {}); const a = new Set(G[i] || []); c.checked ? a.add(+c.dataset.k) : a.delete(+c.dataset.k); G[i] = [...a]; LS.set('gtp', G); if (c.checked) toast('Tuyệt vời! 💛'); });
@@ -129,20 +131,20 @@
         frame(`<div class="gtq"><div class="gtword">${esc(p[3])}</div><b>Bé đọc chữ rồi chọn hình</b><button class="gtsm" id="h">🔊 Gợi ý</button></div>${pics(p)}`);
         $('#h').onclick = () => say(p[3]); bindPics(p);
       } else {
-        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const SR = window.XMCanHear;
         frame(`<div class="gtspk"><img src="${W(p[2])}" alt=""><div class="gtline">${esc(p[0])}</div><div class="muted">${esc(p[1])}</div>
           <div class="vbtns"><button class="btn alt" id="h">🔊 Nghe</button>${SR ? '<button class="btn" id="m">🎤 Bé nói</button>' : ''}</div>
           <div class="vres" id="o">${SR ? 'Nghe Xíu Mại nói, rồi bấm 🎤 cho bé nói theo.' : 'Bé nói theo, ba mẹ bấm 👍 khi bé nói được.'}</div>
           <button class="btn yes" id="y">👍 Bé nói được rồi</button></div>`);
         const h = () => say(p[0]); $('#h').onclick = h; setTimeout(h, 350);
         $('#y').onclick = () => { say('Good job!'); next(); };
-        let tries = 0;
+        const st = {};
         if (SR) $('#m').onclick = async () => {
-          const m = $('#m'); if (m.disabled) return; m.disabled = true; m.textContent = '👂 Đang nghe…';
-          const h = await XMHear(p[0]); const m2 = $('#m'); if (!m2) return; m2.disabled = false; m2.textContent = '🎤 Bé nói';
-          if (h.err !== 'deny') tries++;
-          if (h.good || (h.heard && tries >= 3)) { $('#o').innerHTML = h.good ? `Xíu Mại nghe: “${esc(h.heard)}” 🌟` : '💪 Bé cố gắng giỏi lắm!'; say('Great!'); setTimeout(next, 900); return; }
-          $('#o').innerHTML = XMHearMsg(h, tries);
+          const m = $('#m'); if (m.disabled) return; m.disabled = true; m.textContent = '👂 Đang nghe…'; $('#o').textContent = '👂 Xíu Mại đang nghe bé nói…';
+          const h = await XMHear(p[0]); const m2 = $('#m'); if (!m2 || m2 !== m) return; m2.disabled = false; m2.textContent = '🎤 Bé nói';
+          const r = XMHearPass(h, st);
+          if (r) { m2.disabled = true; $('#o').innerHTML = r === 'good' ? (h.heard ? `Xíu Mại nghe: “${esc(h.heard)}” 🌟` : '🌟 Xíu Mại nghe thấy bé rồi! Giỏi quá!') : '💪 Bé cố gắng giỏi lắm!'; say('Great!'); setTimeout(next, 900); return; }
+          $('#o').innerHTML = XMHearMsg(h);
         };
       }
     }

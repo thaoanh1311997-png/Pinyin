@@ -153,7 +153,7 @@
         $('#h').onclick = () => say(it[0]);
         choose(opts, it[1], () => { say(it[0]).then(() => setTimeout(next, 250)); });
       } else {
-        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const SR = window.XMCanHear;
         const prev = t.a[t.a.indexOf(it) - 1];
         frame(`<div class="gtspk">${prev ? `<div class="aprev"><span>${sp(prev[0])[0]}</span><span><b>${esc(prev[1])}</b><small>${esc(prev[2])}</small></span></div>` : ''}
           <div class="gtline">🧒 ${esc(it[1])}</div><div class="muted">${esc(it[2])}</div>
@@ -163,13 +163,13 @@
         const h = () => (prev ? sayAs(prev[0], prev[1]).then(() => new Promise(r => setTimeout(r, 300))) : Promise.resolve()).then(() => sayAs('K', it[1]));
         $('#h').onclick = h; setTimeout(h, 350);
         $('#y').onclick = () => { say('Good job!'); next(); };
-        let tries = 0;
+        const st = {};
         if (SR) $('#m').onclick = async () => {
-          const m = $('#m'); if (m.disabled) return; m.disabled = true; m.textContent = '👂 Đang nghe…';
-          const h = await XMHear(it[1]); const m2 = $('#m'); if (!m2) return; m2.disabled = false; m2.textContent = '🎤 Bé nói';
-          if (h.err !== 'deny') tries++;
-          if (h.good || (h.heard && tries >= 3)) { $('#o').innerHTML = h.good ? `Xíu Mại nghe: “${esc(h.heard)}” 🌟` : '💪 Bé cố gắng giỏi lắm!'; say('Great!'); setTimeout(next, 900); return; }
-          $('#o').innerHTML = XMHearMsg(h, tries);
+          const m = $('#m'); if (m.disabled) return; m.disabled = true; m.textContent = '👂 Đang nghe…'; $('#o').textContent = '👂 Xíu Mại đang nghe bé nói…';
+          const h = await XMHear(it[1]); const m2 = $('#m'); if (!m2 || m2 !== m) return; m2.disabled = false; m2.textContent = '🎤 Bé nói';
+          const r = XMHearPass(h, st);
+          if (r) { m2.disabled = true; $('#o').innerHTML = r === 'good' ? (h.heard ? `Xíu Mại nghe: “${esc(h.heard)}” 🌟` : '🌟 Xíu Mại nghe thấy bé rồi! Giỏi quá!') : '💪 Bé cố gắng giỏi lắm!'; say('Great!'); setTimeout(next, 900); return; }
+          $('#o').innerHTML = XMHearMsg(h);
         };
       }
     }

@@ -277,49 +277,127 @@ R.g_doan = (k) => {
   play();
 };
 const lev = (a, b) => { const m = a.length, n = b.length, d = [...Array(n + 1).keys()]; for (let i = 1; i <= m; i++) { let p = d[0]; d[0] = i; for (let j = 1; j <= n; j++) { const t = d[j]; d[j] = Math.min(d[j] + 1, d[j - 1] + 1, p + (a[i - 1] === b[j - 1] ? 0 : 1)); p = t; } } return d[n]; };
-// shared, forgiving speech check for little kids: listens while they talk, accepts close-sounding words
-window.XMHear = target => new Promise(res => {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR) return res({ err: 'none' });
+// shared, forgiving speech check for little kids.
+// 1) SpeechRecognition (word check) when the device really supports it;
+// 2) otherwise / when it fails (iPhone home-screen app, Firefox, Siri off, hangs): plain microphone that
+//    listens for the child's voice, so the child is never stuck.
+const XM_SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const XM_GUM = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+window.XMCanHear = !!(XM_SR || XM_GUM);
+const xmSS = { get: k => { try { return sessionStorage.getItem('xm.' + k); } catch (e) { return null; } }, set: (k, v) => { try { sessionStorage.setItem('xm.' + k, v); } catch (e) {} } };
+const xmStandalone = () => !!(navigator.standalone || (window.matchMedia && matchMedia('(display-mode: standalone)').matches));
+let xmAC = null;
+function xmAudioCtx() { // must be created/resumed inside the tap (iOS)
+  try { const A = window.AudioContext || window.webkitAudioContext; if (!A) return null; if (!xmAC || xmAC.state === 'closed') xmAC = new A(); if (xmAC.state !== 'running') xmAC.resume().catch(() => {}); return xmAC; } catch (e) { return null; }
+}
+// listen with the raw microphone: good = the child made a voice sound (≈0.25s) — no words needed
+function xmVoice(ac, maxMs = 6500) {
+  return new Promise(res => {
+    if (!XM_GUM) return res({ err: 'none' });
+    let stream = null, done = false, timer = 0, raf = 0;
+    const fin = (o) => { if (done) return; done = true; clearTimeout(timer); cancelAnimationFrame(raf); clearInterval(raf); try { stream && stream.getTracks().forEach(t => t.stop()); } catch (e) {} res(Object.assign({ good: false, heard: '', mode: 'mic' }, o)); };
+    navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } }).then(s => {
+      if (done) { s.getTracks().forEach(t => t.stop()); return; }
+      stream = s; ac = ac || xmAudioCtx(); if (!ac) return fin({ good: true, voice: true });
+      try { ac.resume(); } catch (e) {}
+      const src = ac.createMediaStreamSource(s), an = ac.createAnalyser(); an.fftSize = 1024; src.connect(an);
+      const buf = new Float32Array(an.fftSize); const t0 = performance.now();
+      let floor = 0, nf = 0, voiced = 0, last = t0, lastVoice = 0, peak = 0;
+      const tick = () => {
+        if (done) return; const now = performance.now(), dt = Math.min(80, now - last); last = now;
+        an.getFloatTimeDomainData(buf); let s2 = 0; for (let i = 0; i < buf.length; i++) s2 += buf[i] * buf[i]; const rms = Math.sqrt(s2 / buf.length);
+        if (now - t0 < 300) { floor += rms; nf++; return; }
+        const base = nf ? floor / nf : 0.005, th = Math.max(0.01, Math.min(0.05, base * 2.6));
+        if (rms > th) { voiced += dt; lastVoice = now; peak = Math.max(peak, rms); }
+        if (voiced >= 1200 || (voiced >= 250 && now - lastVoice > 700)) return fin({ good: true, voice: true });
+        if (now - t0 > maxMs) fin({ good: voiced >= 250, voice: voiced >= 120 });
+      };
+      raf = setInterval(tick, 40); // interval keeps running even when rAF is throttled
+      timer = setTimeout(() => fin({ good: voiced >= 250, voice: voiced >= 120 }), maxMs + 400);
+    }).catch(e => fin({ err: e && /NotAllowed|Security|Permission/i.test(e.name) ? 'deny' : 'mic' }));
+  });
+}
+// word check with SpeechRecognition; resolves {good, heard, voice, err} — err 'dead' means the service is not usable here
+function xmSR(target, ac) {
+  return new Promise(res => {
+    const r = new XM_SR(); r.lang = 'en-US'; r.maxAlternatives = 5; r.interimResults = true; r.continuous = false;
+    const T = String(target).toLowerCase().replace(/[’]/g, "'").replace(/[^a-z' ]/g, ' ').replace(/\s+/g, ' ').trim();
+    const words = T.split(' ').filter(w => w.length > 1); let heard = '', done = false, voice = false, audio = false, idle = 0;
+    const sk = x => x.replace(/[aeiouy']/g, '').replace(/(.)\1+/g, '$1');
+    const wclose = (x, t) => x === t || lev(x, t) <= Math.max(1, Math.floor(t.length * .45)) || (x[0] === t[0] && sk(x) === sk(t)) || (x.length > 1 && t.length <= 7 && t.startsWith(x.slice(0, 2)));
+    const ok = a => { if (!a) return false; if (a.includes(T)) return true; const hw = a.split(' ').filter(Boolean);
+      if (words.length <= 1) return hw.some(x => wclose(x, T.replace(/ /g, ''))) || wclose(a.replace(/ /g, ''), T.replace(/ /g, ''));
+      const hit = words.filter(t => hw.some(x => wclose(x, t))).length; return hit >= Math.max(1, Math.ceil(words.length * .4)); };
+    const fin = (good, err) => { if (done) return; done = true; clearTimeout(t1); clearTimeout(t2); clearTimeout(idle); try { r.abort ? r.abort() : r.stop(); } catch (e) {} res({ good, heard, err, voice: voice || !!heard, mode: 'sr' }); };
+    // iOS sometimes never ends (or never starts): hard limits
+    const t1 = setTimeout(() => { if (!audio && !heard) fin(false, 'dead'); }, 3000);
+    const t2 = setTimeout(() => fin(false), 8000);
+    r.onaudiostart = () => { audio = true; };
+    r.onspeechstart = r.onsoundstart = () => { audio = true; voice = true; };
+    r.onresult = e => {
+      audio = true; voice = true;
+      for (let i = e.resultIndex || 0; i < e.results.length; i++) {
+        const al = [...e.results[i]].map(x => x.transcript.toLowerCase().replace(/[’]/g, "'").replace(/[^a-z' ]/g, ' ').replace(/\s+/g, ' ').trim()).filter(Boolean);
+        if (al[0]) heard = al[0]; if (al.some(ok)) return fin(true); if (e.results[i].isFinal) return fin(false);
+      }
+      clearTimeout(idle); idle = setTimeout(() => fin(false), 1600); // iOS: interim results but no final
+    };
+    r.onerror = ev => { const er = ev.error || '';
+      if (/not-allowed|service-not-allowed|audio-capture|network|language-not-supported|bad-grammar/.test(er)) fin(false, 'dead');
+      else if (er !== 'no-speech' && er !== 'aborted') fin(false); };
+    r.onend = () => fin(false);
+    try { r.start(); } catch (e) { fin(false, 'dead'); }
+  });
+}
+window.XMHear = async target => {
   try { speechSynthesis.cancel(); } catch (e) {}
-  const r = new SR(); r.lang = 'en-US'; r.maxAlternatives = 5; r.interimResults = true; r.continuous = false;
-  const T = String(target).toLowerCase().replace(/[’]/g, "'").replace(/[^a-z' ]/g, ' ').replace(/\s+/g, ' ').trim();
-  const words = T.split(' ').filter(w => w.length > 1); let heard = '', done = false;
-  const sk = x => x.replace(/[aeiouy']/g, '').replace(/(.)\1+/g, '$1');
-  const wclose = (x, t) => x === t || lev(x, t) <= Math.max(1, Math.floor(t.length * .45)) || (x[0] === t[0] && sk(x) === sk(t)) || (x.length > 1 && t.length <= 7 && t.startsWith(x.slice(0, 2)));
-  const ok = a => { if (!a) return false; if (a.includes(T)) return true; const hw = a.split(' ').filter(Boolean);
-    if (words.length <= 1) return hw.some(x => wclose(x, T.replace(/ /g, ''))) || wclose(a.replace(/ /g, ''), T.replace(/ /g, ''));
-    const hit = words.filter(t => hw.some(x => wclose(x, t))).length; return hit >= Math.max(1, Math.ceil(words.length * .4)); };
-  const fin = (good, err) => { if (done) return; done = true; try { r.stop(); } catch (e) {} res({ good, heard, err }); };
-  r.onresult = e => { for (let i = e.resultIndex || 0; i < e.results.length; i++) { const al = [...e.results[i]].map(x => x.transcript.toLowerCase().replace(/[’]/g, "'").replace(/[^a-z' ]/g, ' ').replace(/\s+/g, ' ').trim()).filter(Boolean); if (al[0]) heard = al[0]; if (al.some(ok)) return fin(true); if (e.results[i].isFinal) return fin(false); } };
-  r.onerror = ev => { if (/not-allowed|service-not-allowed/.test(ev.error)) fin(false, 'deny'); };
-  r.onend = () => fin(false);
-  try { r.start(); } catch (e) { fin(false, 'start'); }
-});
-window.XMHearMsg = (h, tries) => h.err === 'deny' ? 'Máy chưa cho dùng micro. Vào <b>Cài đặt › Safari › Micro</b> chọn <b>Cho phép</b>, rồi thử lại. (Ba mẹ có thể bấm 👍)'
-  : h.heard ? `Máy nghe là “${esc(h.heard)}”. Nói lại to và rõ hơn nha! 💪` : 'Chưa nghe thấy bé, để micro gần miệng bé rồi nói lại nha.';
+  const ac = xmAudioCtx(); // unlock audio inside the tap
+  const useSR = XM_SR && xmSS.get('hear') !== 'mic';
+  if (useSR) {
+    const h = await xmSR(target, ac);
+    if (h.err !== 'dead') {
+      if (!h.voice) { const n = +(xmSS.get('srmiss') || 0) + 1; xmSS.set('srmiss', n); if (n >= 2 && XM_GUM) xmSS.set('hear', 'mic'); } else xmSS.set('srmiss', 0);
+      return h;
+    }
+    if (!XM_GUM) return { good: false, heard: '', err: 'deny' };
+    xmSS.set('hear', 'mic'); // recognition is not usable on this device/app: switch to plain mic right away
+  }
+  return xmVoice(ac);
+};
+window.XMHearMsg = (h, tries) => {
+  if (h.err === 'deny') {
+    const ios = /iP(hone|ad|od)|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document;
+    return 'Máy chưa cho dùng micro. ' + (ios ? 'Vào <b>Cài đặt › Safari › Micro</b> chọn <b>Hỏi</b> hoặc <b>Cho phép</b>, rồi bấm 🎤 lại và chọn <b>Cho phép</b>.' : 'Bấm 🔒 cạnh địa chỉ web › <b>Micro</b> › <b>Cho phép</b>, rồi bấm 🎤 lại.') + ' (Ba mẹ có thể bấm 👍)';
+  }
+  if (h.err === 'mic') return 'Không mở được micro. Thử đóng app khác đang dùng micro rồi bấm 🎤 lại nha. (Ba mẹ có thể bấm 👍)';
+  return h.heard ? `Xíu Mại nghe là “${esc(h.heard)}”. Nói lại to và rõ hơn nha! 💪` : 'Xíu Mại chưa nghe thấy bé. Để máy gần miệng bé, bấm 🎤 rồi nói to lên nha!';
+};
+// one rule for every speaking spot: right word → win; tried and made a voice twice → praise anyway
+window.XMHearPass = (h, st) => { if (h.good) return 'good'; if (h.err === 'deny' || h.err === 'mic') return ''; st.tries = (st.tries || 0) + 1; if (h.voice && st.tries >= 2) { st.tries = 0; return 'try'; } return ''; };
 R.g_noi = (k) => {
   setTabs(null);
   let n = 0;
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const CAN = window.XMCanHear;
   const play = () => {
     const t = gameTopic(k); const w = pick(t.w);
     view(bar('Nói theo', '#/game', starPill()) + topicSel('noi', k) + `<div class="hearts">${'⭐'.repeat(n)}${'<span style="opacity:.25">⭐</span>'.repeat(5 - n)}</div>
      <img class="gpic noip" src="${wsrc(w)}" alt=""><div class="noiw">${esc(w[0])}</div><div class="noiv">${esc(w[1] || '')}</div>
-     <div class="noib"><button class="noil" id="rep">🔊<small>Nghe</small></button>${SR ? `<button class="noim" id="mic"><img src="${IMG('w/microphone')}" alt=""><small>Bé nói</small></button>` : ''}<button class="noil" id="ok">👍<small>Ba mẹ khen</small></button></div>
-     <div class="noir" id="res">${SR ? 'Nghe mẫu rồi bấm micro, bé nói theo nhé!' : 'Nghe mẫu, bé nói theo. Ba mẹ bấm 👍 khi bé nói được.'}</div>`);
+     <div class="noib"><button class="noil" id="rep">🔊<small>Nghe</small></button>${CAN ? `<button class="noim" id="mic"><img src="${IMG('w/microphone')}" alt=""><small>Bé nói</small></button>` : ''}<button class="noil" id="ok">👍<small>Ba mẹ khen</small></button></div>
+     <div class="noir" id="res">${CAN ? 'Nghe mẫu rồi bấm micro, bé nói theo nhé!' : 'Nghe mẫu, bé nói theo. Ba mẹ bấm 👍 khi bé nói được.'}</div>`);
     bindSel('noi');
     const ex = 'Say: ' + w[0] + '!';
-    setTimeout(() => say(ex), 300); $('#rep').onclick = () => say(w[0], { rate: 0.8 });
-    const win = async () => { n++; $('#res').innerHTML = '🌟 Giỏi quá!'; await say('Yes! ' + w[0] + '! Great job!'); if (n >= 5) { await roundDone(); n = 0; } if (location.hash.startsWith('#/game/noi')) play(); };
-    $('#ok').onclick = win;
-    let tries = 0;
-    if (SR) $('#mic').onclick = async () => {
-      const b = $('#mic'); if (b.classList.contains('on')) return; b.classList.add('on'); $('#res').textContent = '👂 Đang nghe bé nói…';
-      const h = await XMHear(w[0]); if (!location.hash.startsWith('#/game/noi')) return; b.classList.remove('on');
-      if (h.good) return win();
-      if (h.err !== 'deny') tries++;
-      if (h.heard && tries >= 3) { tries = 0; $('#res').innerHTML = '💪 Bé cố gắng giỏi lắm!'; return win(); }
-      $('#res').innerHTML = XMHearMsg(h, tries); if (h.err !== 'deny') say(w[0], { rate: 0.8 });
+    setTimeout(() => { if (!busy) say(ex); }, 300); $('#rep').onclick = () => say(w[0], { rate: 0.8 });
+    let busy = false;
+    const win = async (msg) => { if (win.d) return; win.d = true; n++; $('#res').innerHTML = msg || '🌟 Giỏi quá!'; await say('Yes! ' + w[0] + '! Great job!'); if (n >= 5) { await roundDone(); n = 0; } if (location.hash.startsWith('#/game/noi')) play(); };
+    $('#ok').onclick = () => win();
+    const st = {};
+    if (CAN) $('#mic').onclick = async () => {
+      const b = $('#mic'); if (busy) return; busy = true; b.classList.add('on'); $('#res').textContent = '👂 Xíu Mại đang nghe bé nói…';
+      const h = await XMHear(w[0]); busy = false; if (!location.hash.startsWith('#/game/noi') || !document.body.contains(b)) return; b.classList.remove('on');
+      const r = XMHearPass(h, st);
+      if (r === 'good') return win(h.heard ? `🌟 Xíu Mại nghe: “${esc(h.heard)}”. Giỏi quá!` : '🌟 Xíu Mại nghe thấy bé rồi! Giỏi quá!');
+      if (r === 'try') return win('💪 Bé cố gắng giỏi lắm!');
+      $('#res').innerHTML = XMHearMsg(h); if (!h.err) say(w[0], { rate: 0.8 });
     };
   };
   play();
