@@ -21,3 +21,6 @@ Web mini: chọn môn → bấm "Ra đề mới" → làm bài → nộp để c
 Song ngữ 2 cột / Luyện dịch (chỉ tiếng Việt, ô viết lưu localStorage `tl.w.*`) / Ngữ pháp (bảng chung + từng bài), nút In (CSS print A4).
 Tài liệu có sẵn: `data/doc-<id>.js` → `window.ONTHI_DOCS.push({id,name,builtin:true,lessons:[{n,zh,vi,texts:[{zh,vi,phu,pairs:[[zh,vi]]}],grammar:[{title,f:[],note,ex:[[zh,vi]],warn:[]}]}]})`, khai báo trong `data/docs.js`.
 Tài liệu mới: đọc PDF (pdf.js, trang scan → Tesseract OCR), Word (mammoth), ảnh, .txt/dán chữ → chia bài theo 第X课/Bài N → Groq (key trong localStorage `bb.groq`, đặt qua `?gq=`) dịch + soạn ngữ pháp → lưu IndexedDB `ot-docs`. Không commit key.
+
+## Tổng hợp ngữ pháp (ngu-phap.html)
+Một trang in hết các bài: tab Tổng hợp ngữ pháp (bảng tóm tắt + từng điểm, lấy `grammar` của `data/doc-hn4-15-25.js`) và tab Câu trọng tâm (`data/cau-trong-tam-15-25.js`). Thẻ mở trang nằm ở trang chủ Ôn thi (chỉ bộ hn4-15-25). Câu ví dụ có giọng đọc thu sẵn (xem tools/voice).

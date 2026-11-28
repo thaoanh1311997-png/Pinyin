@@ -93,10 +93,18 @@ for (const f of ['hsk', 'life', 'talk', 'world', 'radicals']) {
 { const sb = { window: {} }; vm.createContext(sb); vm.runInContext(fs.readFileSync(path.join(ROOT, 'video/samples.js'), 'utf8'), sb);
   (sb.window.BB_SAMPLES || []).forEach(x => x.L.forEach(l => add(l[0], 'n', null, 'video'))); }
 
-// ---- Ôn thi: tài liệu có sẵn (từ vựng)
+// ---- Ôn thi: tài liệu có sẵn (từ vựng + ví dụ ngữ pháp)
 { const sb = { window: {} }; sb.window.window = sb.window; vm.createContext(sb);
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'on-thi/data/doc-hn4-15-25.js'), 'utf8'), sb);
-  sb.window.ONTHI_DOCS.forEach(d => d.lessons.forEach(l => (l.vocab || []).forEach(v => add(v[0], 'n', v[1], 'onthi')))); }
+  sb.window.ONTHI_DOCS.forEach(d => d.lessons.forEach(l => {
+    (l.vocab || []).forEach(v => add(v[0], 'n', v[1], 'onthi'));
+    (l.grammar || []).forEach(g => (g.ex || []).forEach(e => add(e[0], 'n', null, 'onthi-grammar'))); // trang Tổng hợp ngữ pháp
+  })); }
+
+// ---- Ôn thi: câu trọng tâm ngữ pháp (có pinyin chuẩn trong dữ liệu)
+{ const sb = { window: {} }; sb.window.window = sb.window; vm.createContext(sb);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'on-thi/data/cau-trong-tam-15-25.js'), 'utf8'), sb);
+  sb.window.OT_CTT.lessons.forEach(l => l.pts.forEach(p => p.ex.forEach(e => add(e.s.map(x => x[0]).join(''), 'n', e.py, 'onthi-ctt')))); }
 
 // pinyin từng chữ (dạng số, chưa biến điệu) để giọng AI đọc đúng như pinyin hiện trên web
 const TONE = { 'ā':'a1','á':'a2','ǎ':'a3','à':'a4','ē':'e1','é':'e2','ě':'e3','è':'e4','ī':'i1','í':'i2','ǐ':'i3','ì':'i4','ō':'o1','ó':'o2','ǒ':'o3','ò':'o4','ū':'u1','ú':'u2','ǔ':'u3','ù':'u4','ǖ':'v1','ǘ':'v2','ǚ':'v3','ǜ':'v4','ü':'v0' };

@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="../shared/nav-head.js?v=17"></script>
+<title>Tổng hợp ngữ pháp</title>
+<meta name="theme-color" content="#fff7ef">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff7ef; --card:#fff; --ink:#2b2622; --muted:#7a6f66; --line:#efe3d6;
+  --pri:#ff7a59; --soft:#fff0e8; --blue:#2f6fd0; --red:#c62828; --brown:#7a4a12; --cream:#fff6e5; --cream-line:#f1dcb5;
+  --r:18px; --shadow:0 2px 0 rgba(120,80,40,.06),0 6px 20px rgba(120,80,40,.07);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:"Be Vietnam Pro",system-ui,sans-serif;font-size:16px;line-height:1.55}
+.zh,.zh *{font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif}
+h1,h2,.baloo{font-family:"Baloo 2","Be Vietnam Pro",sans-serif;line-height:1.2;margin:0}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 80px}
+
+.bar{position:sticky;top:0;z-index:10;background:rgba(255,247,239,.95);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar .in{max-width:900px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.back{width:38px;height:38px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:18px;flex:none;display:grid;place-items:center;text-decoration:none;color:var(--ink)}
+.bar .t{font-weight:700;font-size:17px;line-height:1.2}
+.bar .s{font-size:12px;color:var(--muted)}
+.printbtn{margin-left:auto;background:var(--ink);color:#fff;border-radius:12px;padding:9px 14px;font-weight:700;font-size:14px;white-space:nowrap}
+
+.jump{display:flex;gap:6px;overflow-x:auto;padding:14px 0 10px;scrollbar-width:none}
+.jump::-webkit-scrollbar{display:none}
+.jump a{padding:6px 12px;border-radius:999px;background:var(--card);border:1.5px solid var(--line);font-size:14px;font-weight:600;white-space:nowrap;flex:none;text-decoration:none;color:var(--ink)}
+.jump a.sum-l{background:var(--pri);border-color:var(--pri);color:#fff}
+@media (min-width:760px){ .jump{flex-wrap:wrap;overflow:visible} }
+
+.paper{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);padding:22px 20px;margin-bottom:16px}
+.doc-title{text-align:center;margin-bottom:16px}
+.doc-title h1{font-size:26px;color:var(--red);letter-spacing:.02em}
+.doc-title p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.sec-t{color:var(--red);font-weight:700;font-size:16px;margin:0 0 8px;letter-spacing:.02em}
+.sum{width:100%;border-collapse:collapse;font-size:14.5px;margin-bottom:6px}
+.sum th{background:#c62828;color:#fff;text-align:left;padding:7px 8px;font-size:13px}
+.sum td{border-bottom:1px solid #f0e2d3;padding:7px 8px;vertical-align:top}
+.sum td.b{font-weight:700;color:var(--red);width:40px;text-align:center}
+.sum tr.first td{border-top:1.5px solid #e9cdb8}
+.sum tr.alt td{background:#fffaf5}
+.les-h{margin:30px 0 6px;padding-bottom:6px;border-bottom:2.5px solid var(--red);scroll-margin-top:110px}
+.les-h .n{font-family:"Baloo 2";font-weight:800;color:var(--red);font-size:22px;line-height:1.25}
+.les-h .n .zh{font-weight:700;font-size:21px}
+.les-h .v{color:#8a5a50;font-style:italic;font-size:15px}
+.intro{background:#f3f7ff;border-left:4px solid var(--blue);border-radius:8px;padding:8px 12px;margin:10px 0 4px;font-size:15px}
+.gp{margin:16px 0 20px}
+.gp-h{color:var(--blue);font-weight:700;font-size:17px;margin-bottom:8px;line-height:1.4}
+.gp-h .no{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--blue);color:#fff;font-size:13px;margin-right:6px;vertical-align:2px}
+.fbox{background:var(--cream);border:1px solid var(--cream-line);border-radius:12px;padding:9px 12px;margin-bottom:8px}
+.fbox div{color:var(--brown);font-weight:700;font-size:15.5px;line-height:1.65}
+.fbox div::before{content:"▸ ";color:#c08a3e}
+.gp-l{font-weight:700;font-size:14px;margin:8px 0 2px}
+.gp p{margin:2px 0 6px;font-size:15.5px}
+.gex{margin:5px 0 8px 2px}
+.gex .z{font-size:17.5px;line-height:1.6}
+.gex .z b{color:var(--muted);font-weight:500;font-family:"Be Vietnam Pro";font-size:13px;margin-right:4px}
+.gex .v{font-style:italic;color:#6b5d51;font-size:14.5px;padding-left:22px}
+.say{border:0;background:var(--soft);border-radius:50%;width:30px;height:30px;font-size:14px;margin-left:6px;vertical-align:middle;cursor:pointer;line-height:30px;padding:0}
+.say.on{background:var(--pri);color:#fff}
+.warn{color:var(--red);font-size:15px;margin:4px 0}
+.warn b{font-weight:700}
+
+.vtabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#f3e6d8;border-radius:16px;padding:5px;margin:14px 0 4px}
+.vtab{padding:10px 4px;border-radius:12px;font-weight:700;font-size:15px;color:#6b5d51;line-height:1.2}
+.vtab small{display:block;font-weight:500;font-size:11.5px;opacity:.8}
+.vtab.on{background:#fff;color:var(--ink);box-shadow:0 2px 6px rgba(120,80,40,.12)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 4px}
+.tool{padding:7px 12px;border-radius:11px;background:var(--card);border:1.5px solid var(--line);font-size:13.5px;font-weight:600}
+.tool.on{background:#e3f6f3;border-color:#b8e5df;color:#127a72}
+.how{background:#fff8ec;border:1px solid #f6dfb5;border-radius:12px;padding:9px 12px;font-size:14px;margin:0 0 6px;color:#6b4a1e}
+.how p{margin:2px 0}
+.star{color:#e0912a}
+.cp-h{color:var(--blue);font-weight:700;font-size:16.5px;margin:18px 0 6px;line-height:1.4}
+.cf{background:var(--cream);border:1px solid var(--cream-line);border-radius:12px;padding:7px 12px;margin-bottom:8px;color:var(--brown);font-weight:700;font-size:15px}
+.cs{margin:8px 0 12px;position:relative;padding-left:32px}
+.cs .no{position:absolute;left:0;top:0;color:#1F4E79;font-weight:700;font-size:14px;padding-top:4px}
+.cs .z{font-size:18px;line-height:1.6}
+.cs .z .r{color:var(--red);font-weight:700}
+.cs .p{color:#c4502f;font-size:14.5px;line-height:1.45}
+.cs .v{font-style:italic;color:#6b5d51;font-size:14.5px}
+.phu{font-size:11px;font-weight:700;background:var(--soft);color:#c4502f;border-radius:999px;padding:1px 7px;margin-left:4px;vertical-align:2px;font-family:"Be Vietnam Pro"}
+.cover .cs .p,.cover .cs .v{filter:blur(5px);cursor:pointer;transition:filter .15s}
+.cover .cs.open .p,.cover .cs.open .v{filter:none}
+.rv h3{font-family:"Baloo 2";color:var(--red);font-size:18px;margin:16px 0 4px}
+.rv .rp{color:#8B4513;font-weight:600;font-size:14.5px;margin:8px 0 2px}
+.rv .rl{font-size:15px;margin:2px 0 2px 4px}
+.rv .rl b{color:#1F4E79;margin-right:4px}
+.rv-t{margin-top:34px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:50;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1}
+
+@media (max-width:560px){
+  .paper{padding:16px 12px;border-radius:14px}
+  .doc-title h1{font-size:22px}
+  .sum{font-size:13.5px}
+  .sum td{padding:6px 5px}
+  .sum td.b{width:30px}
+  .les-h .n{font-size:20px} .les-h .n .zh{font-size:19px}
+}
+
+@media print{
+  @page{size:A4;margin:11mm 11mm}
+  html,body{background:#fff}
+  body{font-size:10.5pt;line-height:1.45}
+  .bar,.jump,.noprint,.say,.toast,#bm-nav,.bm-nav{display:none!important}
+  .wrap{max-width:none;padding:0}
+  .paper{box-shadow:none;border-radius:0;padding:0;margin:0}
+  .doc-title{margin-bottom:8pt}
+  .doc-title h1{font-size:17pt}
+  .doc-title p{font-size:9.5pt}
+  .sum{font-size:9.5pt}
+  .sum th{font-size:9pt;padding:3pt 5pt}
+  .sum td{padding:2.5pt 5pt}
+  .sum tr{break-inside:avoid}
+  .les-h{break-after:avoid;margin:12pt 0 3pt;padding-bottom:2pt}
+  .les-h .n{font-size:14pt} .les-h .n .zh{font-size:13.5pt}
+  .les-h .v{font-size:10pt}
+  .intro{font-size:10pt;padding:3pt 8pt;margin:5pt 0 2pt;break-after:avoid}
+  .gp{margin:6pt 0 8pt}
+  .gp-h{font-size:11.5pt;margin-bottom:3pt;break-after:avoid}
+  .gp-h .no{width:16pt;height:16pt;font-size:9pt;border-radius:4pt}
+  .fbox{padding:3pt 8pt;margin-bottom:4pt;break-inside:avoid}
+  .fbox div{font-size:10.5pt;line-height:1.5}
+  .gp-l{font-size:9.5pt;margin:3pt 0 1pt;break-after:avoid}
+  .gp p{font-size:10.5pt;margin:1pt 0 3pt}
+  .gex{margin:2pt 0 3pt;break-inside:avoid}
+  .gex .z{font-size:11.5pt;line-height:1.45}
+  .gex .v{font-size:10pt}
+  .warn{font-size:10pt;margin:2pt 0;break-inside:avoid}
+  .cs{margin:3pt 0 5pt;padding-left:20pt;break-inside:avoid}
+  .cs .no{font-size:9.5pt;padding-top:1pt}
+  .cs .z{font-size:11.5pt;line-height:1.4}
+  .cs .p,.cs .v{font-size:9.5pt;line-height:1.35}
+  .cover .cs .p,.cover .cs .v{filter:none!important}
+  .cp-h{font-size:11pt;margin:7pt 0 3pt;break-after:avoid}
+  .cf{font-size:10pt;padding:2pt 8pt;margin-bottom:3pt;break-after:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .how{font-size:9.5pt;padding:3pt 8pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .phu{font-size:7.5pt;padding:0 4pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .vtabs,.tools{display:none!important}
+  .rv-t{break-before:page;margin-top:0}
+  .rv h3{font-size:12pt;margin:8pt 0 2pt;break-after:avoid}
+  .rv .rp{font-size:9.5pt;margin:4pt 0 1pt;break-after:avoid}
+  .rv .rl{font-size:10pt;margin:1pt 0 1pt 4pt;padding-bottom:9pt;border-bottom:1px dotted #bbb;break-inside:avoid}
+  .sum th,.sum tr.alt td,.fbox,.intro,.gp-h .no{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<script src="../shared/nav.js?v=17"></script>
+<script src="../shared/voice.js?v=1"></script>
+<div class="bar"><div class="in">
+  <a class="back" href="./" aria-label="Về trang Ôn thi">←</a>
+  <div><div class="t">Tổng hợp ngữ pháp</div><div class="s">Hán ngữ quyển 4 · Bài 15–25</div></div>
+  <button class="printbtn" id="printBtn">🖨 In tất cả</button>
+</div></div>
+
+<div class="wrap">
+  <div class="vtabs" id="vtabs">
+    <button class="vtab" data-v="th">📘 Tổng hợp ngữ pháp<small>công thức · giải thích · lưu ý</small></button>
+    <button class="vtab" data-v="ct">⭐ Câu trọng tâm<small>204 câu bài khóa · pinyin · nghĩa</small></button>
+  </div>
+  <nav class="jump" id="jump"></nav>
+  <div class="tools" id="tools"></div>
+  <div id="out"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>window.ONTHI_DOCS=window.ONTHI_DOCS||[];</script>
+<script src="data/doc-hn4-15-25.js?v=2"></script>
+<script src="data/cau-trong-tam-15-25.js?v=1"></script>
+<script>
+(function(){
+"use strict";
+var $=function(s){return document.querySelector(s)};
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function toast(m){var t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove("on")},2600)}
+
+/* Bảng tóm tắt nhanh + lời dẫn: giống file "Tổng hợp ngữ pháp bài 15-25" */
+var SUM=[["15","Động từ + 着 (trạng thái kéo dài)","Động từ + 着 (+ tân ngữ) · 没 + V + 着"],["","V1 + 着 + V2","V1着 chỉ cách thức làm V2 (笑着说)"],["16","Câu tồn hiện","Nơi chốn + V + 着/了/bổ ngữ xu hướng + số lượng + danh từ"],["","越来越… / 越A越B","越来越 + tính từ · 越 + V + 越 + tính từ"],["17","Câu chữ 把 (1)","S + 把 + O + V + 在/到/给/成 + …"],["18","Câu chữ 把 (2)","S + (不/没/能) + 把 + O xác định + V + thành phần khác"],["19","Câu bị động 被 / 叫 / 让","S + 被/叫/让 + (người) + V + thành phần khác"],["","又 nhấn mạnh phủ định · 可 + V","又 + 不/没… · 可气、可爱、可怕"],["20","Bổ ngữ khả năng (1)","V + 得/不 + kết quả/xu hướng · V得了/V不了 · V得下/V不下"],["","能 / 不能 và bổ ngữ khả năng","Cấm → 不能V · Không nổi → V不… · 能去 = 去得了"],["21","Bổ ngữ khả năng (2)","V得动/不动 · V得住/不住 · V得好/不好"],["","只要…就…","只要 + điều kiện, (S) + 就 + kết quả"],["","Khả năng vs trạng thái","演不好 / 演得不好 · 演得好演不好？/ 演得好不好？"],["22","Nghĩa mở rộng bổ ngữ xu hướng","V + 起来 (bắt đầu, nhớ ra) · 出来 (nhận ra, làm ra) · 下去 (làm tiếp) · 下来 (ghi lại, giữ lại, dừng lại)"],["","只有…才… · V不起","只有 + điều kiện duy nhất, 才 + kết quả · 买不起"],["23","Đại từ nghi vấn dùng linh hoạt","Bất cứ: 什么都… · Hô ứng: 哪儿…就…哪儿 · Phiếm chỉ: 听谁说过"],["","一边…一边… · 先…再…然后…最后…","Hai việc song song · Trình tự các việc"],["24","Câu ghép không từ nối","有困难找警察 (giả thiết) · 不小心把护照丢了 (nhân quả)"],["","Lặp số lượng từ","一步一步地 + V · 一幅一幅的 + N"],["","Bổ ngữ trạng thái (cụm)","V/Tính từ + 得 + cụm động từ (感动得不知道说什么好)"],["","看样子 · 像…一样","看样子 + phán đoán · 像 + N + 一样"],["25","连…也/都…","连 + thành phần nhấn mạnh + 也/都 + V"],["","Câu hỏi ngược","不是…吗？· 没V吗？· 怎么/哪儿/谁…？· 怎么能不…呢？"],["","Phủ định kép","没有不…的 · 不能不 + V"]];
+var INTRO={22:"Bổ ngữ xu hướng ngoài nghĩa chỉ hướng còn có nghĩa mở rộng. Bài 22 học 4 cái: 起来 · 出来 · 下去 · 下来",
+           23:"Đại từ nghi vấn (什么、谁、哪儿、怎么…) ngoài để hỏi còn có 3 cách dùng: bất cứ · hô ứng · phiếm chỉ"};
+
+var DOC=(window.ONTHI_DOCS||[]).filter(function(d){return d.id==="hn4-15-25"})[0];
+if(!DOC){ $("#out").innerHTML='<div class="paper"><p>Chưa tải được dữ liệu, bạn tải lại trang giúp mình nha.</p></div>'; return; }
+var SAY=[];
+function sayBtn(z){ SAY.push(z); return '<button class="say" type="button" data-say="'+(SAY.length-1)+'" aria-label="Nghe">🔊</button>'; }
+function point(g,no){
+  var h='<div class="gp"><div class="gp-h">'+(no?'<span class="no">'+no+'</span>':'')+esc(g.title)+'</div>';
+  if((g.f||[]).length) h+='<div class="fbox zh">'+g.f.map(function(x){return '<div>'+esc(x)+'</div>'}).join("")+'</div>';
+  if(g.note) h+='<div class="gp-l">Giải thích:</div><p>'+esc(g.note)+'</p>';
+  if((g.ex||[]).length) h+='<div class="gp-l">Ví dụ:</div>'+g.ex.map(function(e,i){return '<div class="gex"><div class="z zh"><b>('+(i+1)+')</b>'+esc(e[0])+sayBtn(e[0])+'</div>'+(e[1]?'<div class="v">→ '+esc(e[1])+'</div>':'')+'</div>'}).join("");
+  (g.warn||[]).forEach(function(w){ h+='<div class="warn"><b>⚠ Lưu ý:</b> '+esc(w)+'</div>'; });
+  return h+'</div>';
+}
+function ls(k,v){try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){return null}}
+function htmlTH(){
+  var DDD=null, h='<div class="paper">';
+  h+='<div class="doc-title"><h1>TỔNG HỢP NGỮ PHÁP BÀI 15 – 25</h1><p>Giáo trình Hán ngữ 汉语教程 (第3版) · 第二册 下 (bài 15–25) · Ôn thi Ngữ pháp TC1</p></div>';
+  h+='<div class="sec-t" id="tomtat">BẢNG TÓM TẮT NHANH</div><table class="sum"><thead><tr><th>Bài</th><th>Điểm ngữ pháp</th><th>Cấu trúc chính</th></tr></thead><tbody>';
+  var alt=true; SUM.forEach(function(r){ if(r[0]) alt=!alt; h+='<tr class="'+(r[0]?'first':'')+(alt?' alt':'')+'"><td class="b">'+esc(r[0])+'</td><td>'+esc(r[1])+'</td><td class="zh">'+esc(r[2])+'</td></tr>'; });
+  h+='</tbody></table>';
+  var J=['<a class="sum-l" href="#tomtat">Bảng tóm tắt</a>'];
+  DOC.lessons.forEach(function(l){
+    var G=(l.grammar||[]).filter(function(g){ if(/的 · 地 · 得/.test(g.title)){ DDD=g; return false; } return true; });
+    if(!G.length) return;
+    J.push('<a href="#bai'+l.n+'">Bài '+l.n+'</a>');
+    h+='<div class="les-h" id="bai'+l.n+'"><div class="n">BÀI '+l.n+'&nbsp; <span class="zh">'+esc(l.zh)+'</span></div><div class="v">'+esc(l.vi)+'</div></div>';
+    if(INTRO[l.n]) h+='<div class="intro">'+esc(INTRO[l.n])+'</div>';
+    G.forEach(function(g,i){ h+=point(g,i+1); });
+  });
+  if(DDD){ J.push('<a href="#dedide">的 · 地 · 得</a>'); h+='<div class="les-h" id="dedide"><div class="n">PHÂN BIỆT NHANH: <span class="zh">的 · 地 · 得</span></div></div>'+point({title:"",f:DDD.f,note:DDD.note,ex:DDD.ex,warn:DDD.warn},0).replace('<div class="gp-h"></div>',''); }
+  return {h:h+'</div>', j:J.join("")};
+}
+var CT=window.OT_CTT, COVER=false;
+function htmlCT(){
+  if(!CT) return {h:'<div class="paper"><p>Chưa tải được phần câu trọng tâm, bạn tải lại trang giúp mình nha.</p></div>',j:''};
+  var h='<div class="paper'+(COVER?' cover':'')+'">', J=[];
+  h+='<div class="doc-title"><h1>CÂU TRỌNG TÂM NGỮ PHÁP · BÀI 15 – 25</h1><p>'+esc(CT.intro[1]||'')+'</p></div>';
+  h+='<div class="how"><p>'+esc(CT.intro[2]||'').replace("Cuối file","Cuối trang")+'</p><p>'+esc(CT.intro[3]||'').replace('★','<span class="star">★</span>')+'</p></div>';
+  CT.lessons.forEach(function(l){
+    J.push('<a href="#c'+l.n+'">Bài '+l.n+(l.star?' ★':'')+'</a>');
+    h+='<div class="les-h" id="c'+l.n+'"><div class="n">BÀI '+l.n+(l.star?' <span class="star">★</span>':'')+'&nbsp; <span class="zh">'+esc(l.zh)+'</span></div><div class="v">'+esc(l.vi)+'</div></div>';
+    l.pts.forEach(function(p){
+      h+='<div class="cp-h">'+esc(p.h)+'</div>';
+      if(p.f.length) h+='<div class="cf zh">'+p.f.map(esc).join('<br>')+'</div>';
+      p.ex.forEach(function(e){ var z=e.s.map(function(x){return x[0]}).join("");
+        h+='<div class="cs"><div class="no">'+e.no+'.</div><div><div class="z zh">'+e.s.map(function(x){return x[1]?'<span class="r">'+esc(x[0])+'</span>':esc(x[0])}).join("")+(e.phu?'<span class="phu">phụ</span>':'')+sayBtn(z)+'</div><div class="p">'+esc(e.py)+'</div><div class="v">'+esc(e.vi)+'</div></div></div>'; });
+    });
+  });
+  J.push('<a class="sum-l" href="#rv">Tự dịch ngược</a>');
+  h+='<div class="rv"><div class="les-h rv-t" id="rv"><div class="n">TỰ DỊCH NGƯỢC (Việt → Trung)</div><div class="v">Viết chữ Hán ra vở, xong dò lại theo số câu ở phần trên.</div></div>';
+  CT.lessons.forEach(function(l){ h+='<h3>BÀI '+l.n+'</h3>'; l.pts.forEach(function(p){ h+='<div class="rp">'+esc(p.h)+'</div>'+p.ex.map(function(e){return '<div class="rl"><b>'+e.no+'.</b>'+esc(e.vi.replace(/\s*\(=.*?\)\s*$/,""))+'</div>'}).join(""); }); });
+  h+='</div>';
+  return {h:h+'</div>', j:J.join("")};
+}
+var VIEW=ls("np.view")==="ct"?"ct":"th";
+function draw(){
+  SAY=[]; if(window.BMVoice) try{BMVoice.stop()}catch(e){} playing=null;
+  var r=VIEW==="ct"?htmlCT():htmlTH();
+  $("#out").innerHTML=r.h; $("#jump").innerHTML=r.j;
+  document.querySelectorAll(".vtab").forEach(function(b){b.classList.toggle("on",b.dataset.v===VIEW)});
+  $("#tools").innerHTML=VIEW==="ct"?'<button class="tool'+(COVER?' on':'')+'" id="coverBtn">'+(COVER?'👁 Hiện lại pinyin + nghĩa':'🙈 Che pinyin + nghĩa để tự đọc')+'</button>':'';
+  $("#printBtn").textContent="🖨 In hết";
+  document.title=VIEW==="ct"?"Câu trọng tâm ngữ pháp":"Tổng hợp ngữ pháp";
+}
+$("#vtabs").addEventListener("click",function(e){ var b=e.target.closest(".vtab"); if(!b||b.dataset.v===VIEW) return; VIEW=b.dataset.v; ls("np.view",VIEW); draw(); window.scrollTo(0,0); });
+$("#tools").addEventListener("click",function(e){ if(!e.target.closest("#coverBtn")) return; COVER=!COVER; draw(); });
+var playing=null;
+draw();
+$("#out").addEventListener("click",function(e){
+  var cs=e.target.closest(".cover .cs"); if(cs&&!e.target.closest("[data-say]")){ cs.classList.toggle("open"); return; }
+  var b=e.target.closest("[data-say]"); if(!b) return;
+  if(!window.BMVoice||!BMVoice.available()){ toast("Máy này chưa đọc được tiếng Trung"); return; }
+  if(playing===b){ BMVoice.stop(); b.classList.remove("on"); playing=null; return; }
+  if(playing) playing.classList.remove("on");
+  playing=b; b.classList.add("on");
+  Promise.resolve(BMVoice.speak(SAY[+b.dataset.say].replace(/……/g,""),{rate:0.8})).then(function(){ if(playing===b){ b.classList.remove("on"); playing=null; } },function(){ b.classList.remove("on"); playing=null; });
+});
+$("#jump").addEventListener("click",function(e){ var a=e.target.closest("a"); if(!a) return; e.preventDefault(); var t=document.getElementById(a.getAttribute("href").slice(1)); if(t) t.scrollIntoView({behavior:"smooth",block:"start"}); });
+$("#printBtn").onclick=function(){ window.print(); };
+})();
+</script>
+</body>
+</html>
