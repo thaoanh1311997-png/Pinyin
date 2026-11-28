@@ -29,7 +29,7 @@
   };
   // khoá chỉ dùng trên từng máy, không đồng bộ
   function skipKey(k) {
-    return !k || k.indexOf('bm.sync.') === 0 || k.indexOf('sb-') === 0 || k === 'bm.fx' || k === 'bm.sach.zoom' || k === 'bb.srv' || k === 'bm.today' || k.indexOf('bm.fab.') === 0;
+    return !k || k.indexOf('bm.sync.') === 0 || k.indexOf('sb-') === 0 || k.indexOf('kt.') === 0 || k.indexOf('kt-') === 0 || k === 'bm.fx' || k === 'bm.sach.zoom' || k === 'bb.srv' || k === 'bm.today' || k.indexOf('bm.fab.') === 0;
   }
 
   /* ================= lưu trạng thái đồng bộ ================= */

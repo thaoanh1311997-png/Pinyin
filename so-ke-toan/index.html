@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0F8A63">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sổ Kế Toán">
+<title>Sổ Kế Toán</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Be+Vietnam+Pro:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css?v=2">
+<link rel="stylesheet" href="css/skin.css?v=2">
+</head>
+<body>
+<div id="boot" class="boot"><div class="logo-big">SK</div></div>
+
+<section id="login" class="login hide">
+  <div class="floaty" aria-hidden="true"><span style="left:6%;top:14%">₫</span><span style="left:86%;top:20%;animation-delay:-4s">%</span><span style="left:12%;top:72%;animation-delay:-7s">∑</span><span style="left:80%;top:78%;animation-delay:-2s">＋</span></div>
+  <div class="l-wrap">
+    <div class="l-hero"><div class="buddy"><i data-mascot></i><span class="bubble">Xin chào!</span></div>
+      <h1>Sổ <em>Kế Toán</em></h1><p>Khách hàng, hạn nộp, công việc gọn một chỗ.</p></div>
+    <div class="login-card">
+      <div class="tabs2"><button data-lt="in" class="on">Đăng nhập</button><button data-lt="up">Có mã mời</button></div>
+      <form id="f-in" autocomplete="on">
+        <label>Tên đăng nhập<input name="u" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
+        <label>Mật khẩu<input name="p" type="password" autocomplete="current-password" required></label>
+        <button class="btn pri wide" type="submit">Đăng nhập</button>
+      </form>
+      <form id="f-up" class="hide" autocomplete="off">
+        <label>Mã mời<input name="i" autocapitalize="characters" spellcheck="false" required></label>
+        <label>Họ và tên<input name="n" required></label>
+        <label>Tên đăng nhập<input name="u" autocapitalize="none" spellcheck="false" required></label>
+        <label>Mật khẩu (ít nhất 8 ký tự)<input name="p" type="password" autocomplete="new-password" minlength="8" required></label>
+        <button class="btn pri wide" type="submit">Tạo tài khoản</button>
+      </form>
+      <p id="login-msg" class="msg"></p>
+      <div class="demo" id="demo-box"><p>👇 Bấm để vào thử</p><div class="row">
+        <button data-demo="quanly" type="button"><span class="em">👩‍💼</span><b>Hương Giang</b><span>Quản lý</span></button><button data-demo="lan" type="button"><span class="em">👩</span><b>Lan</b><span>Nhân viên</span></button><button data-demo="minh" type="button"><span class="em">👨</span><b>Minh</b><span>Nhân viên</span></button></div></div>
+    </div>
+  </div>
+  <button class="theme-t" type="button" data-theme-t aria-label="Sáng / tối">🌙</button>
+</section>
+
+<div id="app" class="hide">
+  <aside class="side">
+    <div class="brand sm"><i data-mascot class="m-sm"></i><b>Sổ <em>Kế Toán</em></b><button class="theme-t sm" type="button" data-theme-t aria-label="Sáng / tối">🌙</button></div>
+    <nav id="nav"></nav>
+    <div class="me" id="me-box"></div>
+  </aside>
+  <header class="top">
+    <i data-mascot class="m-sm"></i><b id="top-title">Tổng quan</b>
+    <button class="theme-t sm" type="button" data-theme-t aria-label="Sáng / tối">🌙</button>
+    <button class="bell" id="bell" aria-label="Nhắc việc"><span>🔔</span><i id="bell-n"></i></button>
+  </header>
+  <main id="view"></main>
+  <nav class="tabbar" id="tabbar"></nav>
+</div>
+
+<div id="modal" class="modal hide"><div class="sheet"><button class="x" data-close aria-label="Đóng">✕</button><div id="modal-body"></div></div></div>
+<div id="toast" class="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="js/mascot.js?v=2"></script>
+<script src="js/deadlines.js?v=2"></script>
+<script src="js/luat.js?v=2"></script>
+<script src="js/demo.js?v=2"></script>
+<script src="js/app.js?v=2"></script>
+<script src="js/tools.js?v=2"></script>
+<script src="js/convert.js?v=2"></script>
+</body>
+</html>
