@@ -79,17 +79,22 @@
 
   /* ---------- nav ---------- */
   const NAV = [
-    ['tong-quan', 'Tổng quan', '🏠'],
+    ['trang-chu', 'Trang chủ', '🏠'],
+    ['tong-quan', 'Tổng quan', '📊'],
     ['sep', 'Việc hằng ngày'], ['cong-viec', 'Công việc', '📋'], ['lich', 'Lịch hạn nộp', '📅'], ['khach-hang', 'Khách hàng', '🏢'], ['chung-tu', 'Chứng từ', '📂'], ['phi-dich-vu', 'Phí dịch vụ', '💰'],
     ['sep', 'Công cụ'], ['doc-chung-tu', 'Đọc chứng từ AI', '✨'], ['soan-mail', 'Soạn mail', '✉️'], ['tinh-nhanh', 'Tính nhanh', '🧮'], ['mau-bieu', 'Mẫu biểu', '📝'], ['chuyen-file', 'Chuyển đổi file', '🔄'],
     ['sep', 'Tra cứu'], ['luat-phap', 'Luật pháp', '⚖️'], ['van-ban-moi', 'Văn bản mới', '🆕'], ['hoi-dap', 'Hỏi đáp thuế', '💬'], ['tra-mst', 'Tra cứu MST', '🔍'],
     ['sep', 'Hệ thống'], ['nhan-su', 'Nhân sự', '👥', 'mgr'], ['tai-khoan', 'Tài khoản', '⚙️']
   ];
-  const COL = { 'tong-quan': ['#12A574', '#3CCB95'], 'cong-viec': ['#2F7BEA', '#5AA2FF'], lich: ['#EE7F1B', '#FFB255'], 'khach-hang': ['#5B5BD6', '#8A84F0'], 'chung-tu': ['#D9890B', '#F2B53A'], 'phi-dich-vu': ['#1E9E5A', '#5CCB86'],
+  const COL = { 'trang-chu': ['#12A574', '#3CCB95'], 'tong-quan': ['#0F9488', '#3FC9B9'], 'cong-viec': ['#2F7BEA', '#5AA2FF'], lich: ['#EE7F1B', '#FFB255'], 'khach-hang': ['#5B5BD6', '#8A84F0'], 'chung-tu': ['#D9890B', '#F2B53A'], 'phi-dich-vu': ['#1E9E5A', '#5CCB86'],
     'doc-chung-tu': ['#8B5CF6', '#B794F6'], 'soan-mail': ['#E8577E', '#FF8FAB'], 'tinh-nhanh': ['#0EA5B7', '#3FD0D9'], 'mau-bieu': ['#D9622B', '#F59160'], 'chuyen-file': ['#0F9488', '#38C2B4'],
     'luat-phap': ['#3456A8', '#5B7FD6'], 'van-ban-moi': ['#E0457B', '#F77FA6'], 'hoi-dap': ['#7C4DCC', '#A47DF0'], 'tra-mst': ['#1E88D6', '#58B4F2'], 'nhan-su': ['#0F7A5C', '#2BAE84'], 'tai-khoan': ['#5B6B7A', '#8A9AA8'] };
+  const GR = { 'Việc hằng ngày': ['nhom-viec', '📋', 'Việc, lịch, khách, chứng từ, phí'], 'Công cụ': ['nhom-cong-cu', '🧰', 'AI đọc chứng từ, mail, tính nhanh, file'], 'Tra cứu': ['nhom-tra-cuu', '📚', 'Luật, văn bản mới, hỏi đáp, MST'], 'Hệ thống': ['nhom-he-thong', '⚙️', 'Nhân sự, tài khoản'] };
+  Object.assign(COL, { 'nhom-viec': ['#2F7BEA', '#5AA2FF'], 'nhom-cong-cu': ['#8B5CF6', '#B794F6'], 'nhom-tra-cuu': ['#3456A8', '#5B7FD6'], 'nhom-he-thong': ['#5B6B7A', '#8A9AA8'] });
+  const groupsOf = () => { const g = []; NAV.forEach(x => { if (x[0] === 'sep') g.push({ t: x[1], k: GR[x[1]][0], e: GR[x[1]][1], d: GR[x[1]][2], it: [] }); else if (g.length && !(x[3] === 'mgr' && !S.mgr)) g[g.length - 1].it.push(x); }); return g.filter(x => x.it.length); };
+  const groupOf = h => groupsOf().find(g => g.it.some(x => x[0] === h));
   const cv = k => { const c = COL[k] || COL['tong-quan']; return `--c:${c[0]};--c2:${c[1]}`; };
-  const TABS = [['tong-quan', 'Tổng quan', '🏠'], ['cong-viec', 'Việc', '📋'], ['lich', 'Lịch', '📅'], ['khach-hang', 'Khách', '🏢'], ['them', 'Thêm', '🧩']];
+  const TABS = [['trang-chu', 'Trang chủ', '🏠'], ['cong-viec', 'Việc', '📋'], ['lich', 'Lịch', '📅'], ['khach-hang', 'Khách', '🏢'], ['them', 'Thêm', '🧩']];
   function renderNav(cur) {
     const n = alerts().filter(t => tState(t) === 'over').length;
     $('#nav').innerHTML = NAV.filter(x => !(x[3] === 'mgr' && !S.mgr)).map(x => x[0] === 'sep' ? `<div class="sep">${x[1]}</div>` :
@@ -98,11 +103,13 @@
     $('#tabbar').innerHTML = TABS.map(x => `<a href="#${x[0]}" data-tab="${x[0]}" class="${cur === x[0] || (x[0] === 'them' && more) ? 'on' : ''}"><i>${x[2]}</i>${x[1]}${x[0] === 'cong-viec' && n ? `<span class="cnt">${n}</span>` : ''}</a>`).join('');
     $('#me-box').innerHTML = `<b>${esc(S.me.full_name)}</b><small>${S.mgr ? 'Quản lý' : 'Nhân viên · ' + S.data.clients.length + ' khách'}</small>${DB.demo ? '<div class="demo-tag">Bản dùng thử</div>' : ''}`;
     const a = alerts().length; $('#bell-n').textContent = a ? a : '';
-    const it = NAV.find(x => x[0] === cur); $('#top-title').textContent = it ? it[1] : 'Sổ Kế Toán';
+    const it = NAV.find(x => x[0] === cur); const gg = groupsOf().find(g => g.k === cur); $('#top-title').textContent = gg ? gg.t : it && cur !== 'trang-chu' ? it[1] : 'Sổ Kế Toán';
+    const av = $('#t-me'); if (av) { av.textContent = (S.me.full_name.split(' ').slice(-1)[0] || '?')[0]; av.title = S.me.full_name; av.style.setProperty('--h', (S.me.full_name.length * 47) % 360); }
   }
   $('#tabbar').addEventListener('click', e => { const a = e.target.closest('[data-tab="them"]'); if (a) { e.preventDefault(); moreMenu(); } });
+  const tm = $('#t-menu'); if (tm) tm.addEventListener('click', () => moreMenu());
   function moreMenu() {
-    modal(`<h2>Mục khác</h2><div class="more">${NAV.filter(x => x[0] !== 'sep' && !TABS.some(t => t[0] === x[0]) && !(x[3] === 'mgr' && !S.mgr)).map(x => `<a href="#${x[0]}" data-close style="${cv(x[0])}"><i>${x[2]}</i><b>${x[1]}</b></a>`).join('')}</div>`);
+    modal(`<h2>Các mục</h2>${NAV.filter(x => x[0] !== 'trang-chu' && !(x[3] === 'mgr' && !S.mgr)).map(x => x[0] === 'sep' ? `<div class="m-sep">${x[1]}</div>` : `<a class="m-it" href="#${x[0]}" data-close style="${cv(x[0])}"><i>${x[2]}</i><b>${x[1]}</b></a>`).join('').replace(/(<div class="m-sep">[^<]*<\/div>)((?:<a [^]*?<\/a>)+)/g, '$1<div class="more">$2</div>')}`);
   }
   $('#bell').addEventListener('click', () => showAlerts());
   function showAlerts() {
@@ -113,16 +120,16 @@
   /* ---------- router ---------- */
   const ROUTES = {};
   function go() {
-    let h = (location.hash || '').slice(1); if (!ROUTES[h] || (h === 'nhan-su' && !S.mgr)) h = 'tong-quan';
+    let h = (location.hash || '').slice(1); if (!ROUTES[h] || (h === 'nhan-su' && !S.mgr)) h = 'trang-chu';
     renderNav(h); closeModal();
     const v = $('#view'); v.innerHTML = ''; v.className = 'v-' + h; ROUTES[h](v); deco(v, h); window.scrollTo(0, 0);
     ls.set('kt.last', h);
   }
   window.addEventListener('hashchange', () => S.me && go());
-  const rerender = () => { const h = (location.hash || '').slice(1) || 'tong-quan'; renderNav(h); const v = $('#view'); const y = window.scrollY; v.innerHTML = ''; (ROUTES[h] || ROUTES['tong-quan'])(v); deco(v, ROUTES[h] ? h : 'tong-quan'); window.scrollTo(0, y); };
+  const rerender = () => { const h = (location.hash || '').slice(1) || 'trang-chu'; renderNav(h); const v = $('#view'); const y = window.scrollY; v.innerHTML = ''; (ROUTES[h] || ROUTES['trang-chu'])(v); deco(v, ROUTES[h] ? h : 'trang-chu'); window.scrollTo(0, y); };
   function deco(v, h) {
-    const hd = v.querySelector(':scope > .head'); const it = NAV.find(x => x[0] === h);
-    if (hd && it) { hd.classList.add('ban'); hd.setAttribute('style', cv(h)); hd.insertAdjacentHTML('afterbegin', `<span class="b-ic">${it[2]}</span>`); }
+    const hd = v.querySelector(':scope > .head'); const g0 = groupsOf().find(g => g.k === h); const it = NAV.find(x => x[0] === h) || (g0 && [g0.k, g0.t, g0.e]);
+    if (hd && it) { hd.classList.add('ban'); hd.setAttribute('style', cv(h)); hd.insertAdjacentHTML('afterbegin', `<a class="b-back" href="#${(groupOf(h) || {}).k || 'trang-chu'}" aria-label="Quay lại">‹</a><span class="b-ic">${it[2]}</span>`); }
     $$(':scope > .grid, :scope > .card, :scope > .tiles', v).forEach((el, i) => { el.classList.add('in'); el.style.animationDelay = (i * 60) + 'ms'; });
     $$('[data-count]', v).forEach(el => { const n = +el.dataset.count, t0 = performance.now(); const f = now => { const k = Math.min(1, (now - t0) / 700); el.textContent = Math.round(n * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(f); }; requestAnimationFrame(f); });
   }
@@ -193,6 +200,37 @@
   }
 
   /* ---------- views ---------- */
+  ROUTES['trang-chu'] = v => {
+    const cm = cMap(), ts = visTasks(), t0 = TODAY(); const hour = new Date().getHours();
+    const over = ts.filter(t => tState(t) === 'over').length, soon = ts.filter(t => tState(t) === 'soon').length;
+    const ym = t0.slice(0, 7); const monthT = ts.filter(t => t.han.slice(0, 7) === ym); const pct = monthT.length ? Math.round(monthT.filter(t => t.trang_thai === 'da_nop').length / monthT.length * 100) : 100;
+    const wait = S.data.docs.filter(d => d.trang_thai === 'cho' && cm[d.client_id]).length;
+    const debt = S.data.fees.filter(f => cm[f.client_id]).reduce((x, f) => x + Math.max(0, f.so_tien - f.da_thu), 0);
+    const nxt = ts.filter(t => t.han >= t0 && t.trang_thai !== 'da_nop').sort((a, b) => a.han.localeCompare(b.han))[0];
+    const sm = n => n >= 1e6 ? (Math.round(n / 1e5) / 10).toLocaleString('vi-VN') + ' tr' : money(n);
+    const ST2 = { 'tong-quan': `${pct}% xong tháng này`, 'cong-viec': over ? `🔥 ${over} trễ hạn` : `${soon} sắp tới hạn`, lich: nxt ? `Gần nhất ${fmtDs(nxt.han)}` : 'Không có hạn gần', 'khach-hang': `${S.data.clients.filter(c => c.active !== false).length} khách`, 'chung-tu': `${wait} đang chờ`, 'phi-dich-vu': debt ? `Còn nợ ${sm(debt)}` : 'Đã thu đủ',
+      'doc-chung-tu': 'Hoá đơn, sao kê', 'soan-mail': 'Mail gửi khách', 'tinh-nhanh': 'Lương, BHXH, phạt', 'mau-bieu': 'Hợp đồng, biên bản', 'chuyen-file': 'PDF ⇄ Excel',
+      'luat-phap': `${LUAT.DOCS.length} văn bản`, 'van-ban-moi': 'Sắp có hiệu lực', 'hoi-dap': 'Có trích điều luật', 'tra-mst': 'Công ty, cá nhân', 'nhan-su': `${S.data.profiles.filter(p => p.role === 'staff').length} nhân viên`, 'tai-khoan': 'Mật khẩu, đăng xuất' };
+    const groups = groupsOf(); K_ST2 = ST2;
+    v.innerHTML = `<div class="hero2"><div class="h-tx"><span class="hi">${hour < 11 ? '☀️' : hour < 18 ? '🌤️' : '🌙'} Chào ${S.mgr ? 'chị ' : ''}${esc(S.me.full_name.split(' ').slice(S.mgr ? -2 : -1).join(' '))}</span>
+        <h1>Hôm nay làm gì <em>nè?</em></h1>
+        <div class="chips">${over ? `<a class="chip" href="#cong-viec" data-f="over">🔥 <b>${over}</b> việc trễ hạn</a>` : '<span class="chip">🎉 Không trễ hạn</span>'}<a class="chip" href="#cong-viec" data-f="soon">⏰ <b>${soon}</b> sắp tới hạn</a></div></div>
+        <div class="buddy" id="buddy"><i data-mascot>${window.KT_MASCOT || ''}</i><span class="bubble">${over ? 'Làm thôi!' : 'Giỏi quá!'}</span></div></div>
+      <div class="apps big">
+        <a class="app" href="#tong-quan" style="${cv('tong-quan')}"><span class="ico">📊</span><span class="tx"><b>Tổng quan</b><small>${ST2['tong-quan']}</small></span><span class="go">›</span></a>
+        ${groups.map(g => `<a class="app" href="#${g.k}" style="${cv(g.k)}"><span class="ico">${g.e}</span><span class="tx"><b>${g.t}</b><small>${g.k === 'nhom-viec' ? (over ? `🔥 ${over} việc trễ hạn` : `${soon} việc sắp tới hạn`) : g.d}</small></span><span class="go">›</span></a>`).join('')}
+      </div>`;
+    $$('[data-f]', v).forEach(a => a.addEventListener('click', () => { V.task = Object.assign(V.task || {}, { due: a.dataset.f }); }));
+    $('#buddy', v).onclick = e => { const b = e.currentTarget; b.classList.remove('jump'); void b.offsetWidth; b.classList.add('jump'); };
+  };
+  let K_ST2 = {};
+  ['nhom-viec', 'nhom-cong-cu', 'nhom-tra-cuu', 'nhom-he-thong'].forEach(k => {
+    ROUTES[k] = v => {
+      if (!Object.keys(K_ST2).length) { const t = document.createElement('div'); ROUTES['trang-chu'](t); }
+      const g = groupsOf().find(x => x.k === k); if (!g) { location.hash = 'trang-chu'; return; }
+      v.innerHTML = `<div class="head"><div><h1>${g.t}</h1></div></div><div class="apps">${g.it.map(x => `<a class="app" href="#${x[0]}" style="${cv(x[0])}"><span class="ico">${x[2]}</span><span class="tx"><b>${x[1]}</b><small>${K_ST2[x[0]] || ''}</small></span></a>`).join('')}</div>`;
+    };
+  });
   ROUTES['tong-quan'] = v => {
     const cm = cMap(), ts = visTasks(), t0 = TODAY();
     const ym = t0.slice(0, 7);
@@ -213,10 +251,7 @@
     });
     const mName = 'tháng ' + (+ym.slice(5)) + '/' + ym.slice(0, 4);
     v.innerHTML = `
-      <div class="hero2"><div class="h-tx"><span class="hi">${hour < 11 ? '☀️' : hour < 18 ? '🌤️' : '🌙'} Chào ${S.mgr ? 'chị ' : ''}${esc(S.me.full_name.split(' ').slice(S.mgr ? -2 : -1).join(' '))}</span>
-        <h1>${over.length ? `Có <em>${over.length} việc</em> trễ hạn` : 'Hôm nay <em>ổn áp</em> nè!'}</h1>
-        <div class="chips"><a class="chip" href="#cong-viec" data-f="soon">⏰ <b>${soon.length}</b> việc sắp tới hạn</a><button class="chip" id="q-new" type="button">➕ Thêm việc</button></div></div>
-        <div class="buddy" id="buddy"><i data-mascot>${window.KT_MASCOT || ''}</i><span class="bubble">${over.length ? 'Làm thôi!' : 'Giỏi quá!'}</span></div></div>
+      <div class="head"><div><h1>Tổng quan ${esc(mName)}</h1></div><div class="acts"><button class="btn pri" id="q-new">➕ Thêm việc</button></div></div>
       <div class="tiles">
         <a class="tile" style="--c:#E5484D;--c2:#FF7E7E" href="#cong-viec" data-f="over"><span class="t-ic">🔥</span><b data-count="${over.length}">${over.length}</b><small>Quá hạn</small></a>
         <a class="tile" style="--c:#EE7F1B;--c2:#FFB255" href="#cong-viec" data-f="soon"><span class="t-ic">⏰</span><b data-count="${soon.length}">${soon.length}</b><small>Sắp tới hạn</small></a>
@@ -236,7 +271,7 @@
         <div class="card"><div class="ch"><h3>📅 Hạn sắp tới</h3><a href="#lich" class="lnk">Mở lịch →</a></div>${upcomingDates(ts)}</div>
       </div>`;
     bindTaskRows(v);
-    $('#q-new', v).onclick = () => newTask(); $('#buddy', v).onclick = e => { const b = e.currentTarget; b.classList.remove('jump'); void b.offsetWidth; b.classList.add('jump'); };
+    $('#q-new', v).onclick = () => newTask();
     $$('[data-f]', v).forEach(a => a.addEventListener('click', () => { V.task = Object.assign(V.task || {}, { due: a.dataset.f }); }));
   };
   function upcomingDates(ts) {
@@ -663,7 +698,6 @@
     try { S.data = await DB.loadAll(S.mgr); } catch (e) { return showLogin(e.message); }
     await syncTasks();
     $('#boot').classList.add('hide'); $('#login').classList.add('hide'); $('#app').classList.remove('hide');
-    if (!location.hash) { const l = ls.get('kt.last'); if (l && ROUTES[l]) { history.replaceState(null, '', '#' + l); } }
     go();
   }
   window.KT = { get S() { return S; }, V, ROUTES, $, $$, esc, money, vnd, fmtD, fmtDs, TODAY, days, fold, toast, modal, closeModal, confirmBox, cMap, pname, tname, exportXlsx, rerender, editDoc, remindClient, openClient, LH, answer, docById, dl };
