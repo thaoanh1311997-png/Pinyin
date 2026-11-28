@@ -2,32 +2,38 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: sticky top bar with module tabs; each module is a work surface (lab = canvas + inspector + console). */
 :root{
-  --bg:#f3f5f8; --surface:#ffffff; --surface-2:#eceff3; --surface-3:#e2e7ed; --line:#d5dce4; --line-strong:#b9c3ce;
-  --fg:#15202b; --muted:#566373; --faint:#8794a3;
-  --accent:#1b62d1; --accent-weak:#e3ecfb; --accent-fg:#ffffff;
-  --ok:#17804a; --ok-weak:#e2f4ea; --warn:#a86300; --warn-weak:#fbf0dc; --bad:#c42b2b; --bad-weak:#fbe5e5; --info:#0a6f80;
-  --grid:#e1e6ec; --term-bg:#0f1720; --term-fg:#d6e2ee; --term-dim:#7f93a8; --term-ok:#6fd49a; --term-bad:#ff8a80; --term-warn:#f2c46d;
-  --shadow:0 1px 2px rgba(18,30,45,.06),0 4px 14px rgba(18,30,45,.06);
-  --font-ui:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;
-  --font-mono:"JetBrains Mono",ui-monospace,"Cascadia Mono","SF Mono",Menlo,Consolas,"Noto Sans Mono","DejaVu Sans Mono","Liberation Mono",monospace;
-  --r:8px;
+  --bg:#f3ede3; --surface:#fcf9f4; --surface-2:#f4eee4; --surface-3:#ebe3d6; --line:#e2d8c8; --line-strong:#cdbfab;
+  --ink:#2b2621; --shade:#2b2621; --fg:#2b2621; --muted:#6f675c; --faint:#9d9386;
+  --accent:#3d6b30; --accent-weak:#dcebd1; --accent-fg:#2b2621;
+  --ok:#3d7a2e; --ok-weak:#dcefd3; --warn:#a2560f; --warn-weak:#f8e3cb; --bad:#b8382f; --bad-weak:#f7dcd7; --info:#3e6ea8;
+  --p-green:#cfe6c1; --p-purple:#e3daf7; --p-orange:#f7d8b8; --p-blue:#d3e4f6; --p-pink:#f4d2dc; --p-yellow:#f4e6b3; --p-teal:#c9e8e0; --p-cream:#f5eee2; --p-red:#f6cfc9;
+  --plat:#f8f3ea; --pill:#fffdf9; --pkt-req:#e8913a; --pkt-rep:#5fa04b; --pkt-arp:#8b6fd6;
+  --grid:#e7ddcd; --term-bg:#25211c; --term-fg:#efe6d6; --term-dim:#9c917f; --term-ok:#a7d98f; --term-bad:#ff9b8f; --term-warn:#f2c46d;
+  --shadow:0 1px 0 rgba(43,38,33,.05),0 8px 24px rgba(60,45,25,.07);
+  --font-ui:"JetBrains Mono",ui-monospace,"Cascadia Mono","SF Mono",Menlo,Consolas,"Noto Sans Mono","DejaVu Sans Mono",monospace;
+  --font-mono:"JetBrains Mono",ui-monospace,"Cascadia Mono","SF Mono",Menlo,Consolas,"Noto Sans Mono","DejaVu Sans Mono",monospace;
+  --r:14px;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0e1319; --surface:#151c24; --surface-2:#1b242e; --surface-3:#232e3a; --line:#283542; --line-strong:#3a4a5b;
-  --fg:#e2e9f0; --muted:#97a5b4; --faint:#6b7b8c;
-  --accent:#5a9bff; --accent-weak:#1a2c47; --accent-fg:#0b1220;
-  --ok:#4cc382; --ok-weak:#16301f; --warn:#e5a63d; --warn-weak:#33270f; --bad:#ff6f6f; --bad-weak:#3a1a1c; --info:#41b8cc;
-  --grid:#1c252f; --term-bg:#0a0f14; --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25); color-scheme:dark}}
+  --bg:#181613; --surface:#211e1a; --surface-2:#29251f; --surface-3:#322d26; --line:#38322a; --line-strong:#4c443a;
+  --ink:#e9e1d3; --shade:#000; --fg:#ece5d8; --muted:#a99f90; --faint:#7c7367;
+  --accent:#a9d797; --accent-weak:#2c3b26; --accent-fg:#16140f;
+  --ok:#99d184; --ok-weak:#24331f; --warn:#f0b36d; --warn-weak:#3b2c1a; --bad:#f39385; --bad-weak:#3e2420; --info:#91b9e8;
+  --p-green:#43593a; --p-purple:#4a4066; --p-orange:#644a2f; --p-blue:#33496a; --p-pink:#5c3747; --p-yellow:#5a4f27; --p-teal:#2f524a; --p-cream:#3b352c; --p-red:#663630;
+  --plat:#2c2822; --pill:#26221d; --pkt-req:#f0a04e; --pkt-rep:#86c36f; --pkt-arp:#a993ea;
+  --grid:#2a2620; --term-bg:#100e0c; --shadow:0 1px 0 rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.3); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0e1319; --surface:#151c24; --surface-2:#1b242e; --surface-3:#232e3a; --line:#283542; --line-strong:#3a4a5b;
-  --fg:#e2e9f0; --muted:#97a5b4; --faint:#6b7b8c;
-  --accent:#5a9bff; --accent-weak:#1a2c47; --accent-fg:#0b1220;
-  --ok:#4cc382; --ok-weak:#16301f; --warn:#e5a63d; --warn-weak:#33270f; --bad:#ff6f6f; --bad-weak:#3a1a1c; --info:#41b8cc;
-  --grid:#1c252f; --term-bg:#0a0f14; --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25); color-scheme:dark}
+  --bg:#181613; --surface:#211e1a; --surface-2:#29251f; --surface-3:#322d26; --line:#38322a; --line-strong:#4c443a;
+  --ink:#e9e1d3; --shade:#000; --fg:#ece5d8; --muted:#a99f90; --faint:#7c7367;
+  --accent:#a9d797; --accent-weak:#2c3b26; --accent-fg:#16140f;
+  --ok:#99d184; --ok-weak:#24331f; --warn:#f0b36d; --warn-weak:#3b2c1a; --bad:#f39385; --bad-weak:#3e2420; --info:#91b9e8;
+  --p-green:#43593a; --p-purple:#4a4066; --p-orange:#644a2f; --p-blue:#33496a; --p-pink:#5c3747; --p-yellow:#5a4f27; --p-teal:#2f524a; --p-cream:#3b352c; --p-red:#663630;
+  --plat:#2c2822; --pill:#26221d; --pkt-req:#f0a04e; --pkt-rep:#86c36f; --pkt-arp:#a993ea;
+  --grid:#2a2620; --term-bg:#100e0c; --shadow:0 1px 0 rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.3); color-scheme:dark}
 *{box-sizing:border-box}
 html,body{background:var(--bg);color:var(--fg)}
 body{font-family:var(--font-ui);font-size:14px;line-height:1.5;-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility}
@@ -280,9 +286,9 @@ details.box>summary{cursor:pointer;padding:8px 10px;font-weight:600;font-size:13
 details.box>div{padding:0 10px 10px}
 
 /* ===== module colors & lively layer ===== */
-:root{--c-home:#1b62d1;--c-lab:#2563eb;--c-playbook:#7c3aed;--c-inventory:#0d9488;--c-log:#e0482f;--c-renew:#d97706;--c-tools:#16a34a;--hero-a:#0f2a52;--hero-b:#1b4f9c;--hero-fg:#ffffff;--hero-dim:#b9cdea}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--c-home:#5a9bff;--c-lab:#6ea0ff;--c-playbook:#a78bfa;--c-inventory:#2dd4bf;--c-log:#ff7a5c;--c-renew:#fbbf24;--c-tools:#4ade80;--hero-a:#0d1a2e;--hero-b:#163763;--hero-fg:#eef4ff;--hero-dim:#9fb6d8}}
-:root[data-theme="dark"]{--c-home:#5a9bff;--c-lab:#6ea0ff;--c-playbook:#a78bfa;--c-inventory:#2dd4bf;--c-log:#ff7a5c;--c-renew:#fbbf24;--c-tools:#4ade80;--hero-a:#0d1a2e;--hero-b:#163763;--hero-fg:#eef4ff;--hero-dim:#9fb6d8}
+:root{--c-home:var(--ink);--c-lab:#3e6ea8;--c-playbook:#6a52b8;--c-inventory:#2f8a78;--c-log:#c0503c;--c-renew:#b06a17;--c-tools:#4f7f3a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--c-lab:#91b9e8;--c-playbook:#b8a5f2;--c-inventory:#7fd0be;--c-log:#f39a85;--c-renew:#f0b36d;--c-tools:#a9d797}}
+:root[data-theme="dark"]{--c-lab:#91b9e8;--c-playbook:#b8a5f2;--c-inventory:#7fd0be;--c-log:#f39a85;--c-renew:#f0b36d;--c-tools:#a9d797}
 .tab{display:inline-flex;align-items:center;gap:6px}
 .tab svg{width:16px;height:16px;flex:none;color:var(--mc,var(--muted))}
 .tab[aria-current="page"]{background:color-mix(in srgb,var(--mc) 14%,transparent);color:var(--mc)}
@@ -327,13 +333,293 @@ details.box>div{padding:0 10px 10px}
 .view{animation:vin .22s ease-out}
 @keyframes vin{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}
 .theme-btn{gap:6px}
+/* ================= SKIN: cream paper, ink outlines, pastel accents ================= */
+body{font-size:13.5px;font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0;letter-spacing:-.005em}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.01em}
+::selection{background:var(--p-green)}
+.iso-bg{background-color:var(--surface);background-image:repeating-linear-gradient(30deg,transparent 0 31px,var(--grid) 31px 32px),repeating-linear-gradient(150deg,transparent 0 31px,var(--grid) 31px 32px)}
+/* top bar */
+.topbar{background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+body::before{background:var(--bg)}
+.topbar-in{padding-block:9px;max-width:1600px;margin:0 auto}
+.brand{font-size:16px;font-weight:800;letter-spacing:-.02em}
+.brand-mark{width:30px;height:30px;border-radius:9px;background:var(--p-green);color:var(--ink);border:1.5px solid var(--ink);box-shadow:0 2px 0 var(--ink)}
+.brand>span:last-child{display:flex;align-items:baseline;gap:8px}
+.brand small{font-weight:500;font-size:11.5px}
+.brand b{background:var(--p-green);padding:0 4px;border-radius:4px}
+.tabs{gap:6px;justify-content:center}
+.tab{font-size:13px;font-weight:600;color:var(--muted);border:1.5px solid transparent;border-radius:10px;padding:6px 12px}
+.tab:hover{background:var(--surface-2);color:var(--fg)}
+.tab[aria-current="page"]{background:var(--p-green);color:var(--ink);border-color:var(--ink);box-shadow:0 2px 0 var(--ink)}
+.tab svg{color:currentColor}
+.tab[aria-current="page"] svg{color:var(--ink)}
+.sync{border:1.5px solid var(--line-strong);background:var(--surface);font-size:11.5px;padding:5px 10px;border-radius:10px}
+.theme-btn{border:1.5px solid var(--ink)!important;background:var(--surface)!important;border-radius:10px;box-shadow:0 2px 0 var(--ink);min-height:32px;padding:4px 9px}
+main{max-width:1600px;padding-top:20px}
+/* headings */
+.view-head{align-items:center;margin-bottom:16px}
+.view-head h1{font-size:24px;letter-spacing:-.02em}
+.view-head p{font-size:12.5px;margin-top:4px}
+.vh-ico{width:44px;height:44px;border-radius:12px;background:var(--pc,var(--p-cream));color:var(--ink);border:1.5px solid var(--ink);box-shadow:0 2px 0 var(--ink)}
+.label{font-size:11px;letter-spacing:.09em;font-weight:700}
+/* panels */
+.panel{border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.panel-h{padding:12px 14px;border-bottom:1px dashed var(--line)}
+.panel-h h2,.panel-h h3{font-size:13.5px}
+.panel-h h2 .pi{width:26px;height:26px;border-radius:8px;background:var(--pc,var(--p-cream));color:var(--ink);border:1.5px solid var(--ink)}
+.panel-b{padding:14px}
+/* controls */
+.btn{border:1.5px solid var(--ink);background:var(--surface);color:var(--ink);border-radius:10px;font-weight:600;font-size:12.5px;box-shadow:0 2px 0 var(--ink);min-height:34px;padding:6px 12px;transition:transform .08s,box-shadow .08s,background .15s}
+.btn:hover{background:var(--surface-2);transform:translateY(-1px);box-shadow:0 3px 0 var(--ink)}
+.btn:active{transform:translateY(2px);box-shadow:0 0 0 var(--ink)}
+.btn.primary{background:var(--p-green);border-color:var(--ink);color:var(--ink)}
+.btn.primary:hover{filter:none;background:color-mix(in srgb,var(--p-green) 85%,var(--ink))}
+.btn.ghost{border-color:transparent;background:transparent;box-shadow:none}
+.btn.ghost:hover{background:var(--surface-2);box-shadow:none;transform:none}
+.btn.danger{color:var(--bad);border-color:var(--bad);box-shadow:0 2px 0 var(--bad)}
+.btn.sm{min-height:28px;padding:3px 9px;font-size:11.5px;border-radius:8px;box-shadow:0 1.5px 0 var(--ink)}
+.btn[aria-pressed="true"]{background:var(--p-green);color:var(--ink);border-color:var(--ink)}
+.btn:disabled{opacity:.45;box-shadow:none;transform:none}
+.inp,select.inp,textarea.inp{border:1.5px solid var(--line-strong);background:var(--pill);border-radius:10px;min-height:34px;padding:6px 10px;font-size:13px}
+.inp:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px var(--p-green)}
+.field>span{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.seg{border:1.5px solid var(--ink);border-radius:10px;box-shadow:0 2px 0 var(--ink);background:var(--surface)}
+.seg button{font-size:12px;font-weight:600;border-right:1.5px solid var(--line);padding:6px 11px;background:transparent;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--p-green);color:var(--ink)}
+.chip{border:1.5px solid var(--ink);background:var(--surface);color:var(--ink);font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px}
+.chip.ok,.chip.c-green{background:var(--p-green);color:var(--ink);border-color:var(--ink)}
+.chip.warn,.chip.c-orange,.chip.c-yellow{background:var(--p-orange);color:var(--ink);border-color:var(--ink)}
+.chip.c-yellow{background:var(--p-yellow)}
+.chip.bad,.chip.c-red{background:var(--p-red);color:var(--ink);border-color:var(--ink)}
+.chip.acc,.chip.c-purple{background:var(--p-purple);color:var(--ink);border-color:var(--ink)}
+.chip.c-blue{background:var(--p-blue);color:var(--ink);border-color:var(--ink)}
+kbd{font-family:var(--font-mono);font-size:10.5px;border:1.2px solid var(--line-strong);border-bottom-width:2px;border-radius:5px;padding:0 5px;background:var(--surface);color:var(--muted)}
+/* tables, code */
+.tbl th{background:var(--surface-2);font-size:10.5px;letter-spacing:.08em}
+.tbl td{border-bottom:1px dashed var(--line)}
+pre.code,.term{border-radius:12px;border:1.5px solid var(--ink)}
+.cmd{border:1.5px solid var(--line);border-radius:10px;background:var(--surface);transition:border-color .15s,transform .1s}
+.cmd:hover{border-color:var(--ink)}
+.vtag{background:var(--p-blue);color:var(--ink);border:1.2px solid var(--ink);border-radius:6px}
+.steps>li::before{background:var(--p-green);color:var(--ink);border:1.5px solid var(--ink)}
+.side-list button{border-radius:9px;font-size:12.5px;border:1.5px solid transparent}
+.side-list button[aria-current="true"]{background:var(--p-green);color:var(--ink);border-color:var(--ink);box-shadow:0 2px 0 var(--ink)}
+.kpi{border:1px solid var(--line);border-left:5px solid var(--line-strong);border-radius:12px;box-shadow:var(--shadow)}
+.kpi b{font-size:24px;font-weight:800}
+.kpi.bad{background:color-mix(in srgb,var(--p-red) 45%,var(--surface))}.kpi.warn{background:color-mix(in srgb,var(--p-orange) 45%,var(--surface))}.kpi.ok{background:color-mix(in srgb,var(--p-green) 45%,var(--surface))}
+.banner{border:1.5px dashed var(--warn);background:color-mix(in srgb,var(--p-orange) 40%,var(--surface));border-radius:12px}
+.modal{border:1.5px solid var(--ink);border-radius:16px;box-shadow:0 6px 0 var(--ink),0 20px 60px rgba(0,0,0,.25)}
+.modal-back{background:rgba(30,24,18,.45)}
+#toast{border-radius:10px;border:1.5px solid var(--ink);background:var(--p-green);color:var(--ink);font-weight:600;box-shadow:0 3px 0 var(--ink)}
+details.box{border-radius:10px}
+/* home */
+.hero{background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:26px 28px;min-height:220px}
+.hero.iso-bg{background-color:var(--surface)}
+.hero h1{color:var(--fg);font-size:26px;letter-spacing:-.02em;max-width:22ch}
+.hero-eyebrow{color:var(--muted);font-weight:600}
+.hero-sub{color:var(--muted);margin:8px 0 14px;max-width:46ch;font-size:13px}
+.hero-cta{display:flex;gap:8px;flex-wrap:wrap}
+.hero-art{width:420px;max-width:50%}
+@media (max-width:700px){.hero{padding:20px}.hero-art{max-width:100%;width:100%}.hero h1{font-size:21px}}
+.stat{border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);background:var(--surface);transition:transform .12s}
+.stat:hover{transform:translateY(-2px)}
+.stat .si{background:var(--pc,var(--p-cream));color:var(--ink);border:1.5px solid var(--ink);box-shadow:0 2px 0 var(--ink)}
+.stat b{font-size:24px;font-weight:800}
+.tile{border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px;background:var(--surface)}
+.tile:hover{border-color:var(--ink);box-shadow:0 3px 0 var(--ink);transform:translateY(-2px)}
+.tile::after{display:none}
+.tile .ti{background:var(--pc,var(--p-cream));color:var(--ink);border:1.5px solid var(--ink);box-shadow:0 2px 0 var(--ink);border-radius:12px}
+.tile h3{font-size:15px}
+.tile .tags span{border:1px solid var(--line-strong);background:transparent;font-size:11px}
+.tile .go{margin-top:auto;font-size:12px;font-weight:700;color:var(--muted)}
+.tile:hover .go{color:var(--ink)}
+/* ================= LAB canvas (design) ================= */
+.canvas-wrap{border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);background:var(--surface)}
+.palette{border:1.5px solid var(--ink);border-radius:12px;box-shadow:0 3px 0 var(--ink);background:var(--surface);padding:5px}
+.palette button{font-size:10px;font-weight:600;border-radius:8px}
+.palette button[aria-pressed="true"]{background:var(--p-green);color:var(--ink)}
+.zoom .btn{background:var(--surface)}
+.canvas-hint{background:var(--ink);color:var(--bg);border-radius:10px;font-weight:600}
+.demo-run{background:var(--p-green);color:var(--ink);border:1.5px solid var(--ink);box-shadow:0 2px 0 var(--ink);border-radius:10px;font-size:12.5px}
+.demo-run:hover{filter:none;transform:translateY(-1px)}
+.stepper{border:1.5px solid var(--ink);border-radius:14px;box-shadow:0 3px 0 var(--ink);border-left-width:1.5px}
+.st-tag{border:1.5px solid var(--ink);background:var(--p-purple);color:var(--ink)}
+.st-tag.ok{background:var(--p-green);color:var(--ink)}.st-tag.bad{background:var(--p-red);color:var(--ink)}.st-tag.warn{background:var(--p-orange);color:var(--ink)}
+.st-b{border:1.5px solid var(--ink);background:var(--surface);color:var(--ink);box-shadow:0 2px 0 var(--ink)}
+.st-b.main{background:var(--p-green);border-color:var(--ink);color:var(--ink)}
+.st-dot.done{background:var(--ink);opacity:.35}.st-dot.on{background:var(--ink)}
+/* iso nodes */
+.node .f-t,.node .f-l,.node .f-r,.node .f-kb,.node .f-scr,.node .f-disp{stroke:var(--ink);stroke-width:1.4;stroke-linejoin:round}
+.iso-plat .f-t{fill:var(--plat)}
+.iso-plat .f-l{fill:color-mix(in srgb,var(--plat) 80%,var(--shade))}
+.iso-plat .f-r{fill:color-mix(in srgb,var(--plat) 90%,var(--shade))}
+.iso-dev .f-t{fill:var(--pc)}
+.iso-dev .f-l{fill:color-mix(in srgb,var(--pc) 74%,var(--shade))}
+.iso-dev .f-r{fill:color-mix(in srgb,var(--pc) 87%,var(--shade))}
+.c-blue{--pc:var(--p-blue)}.c-green{--pc:var(--p-green)}.c-orange{--pc:var(--p-orange)}.c-purple{--pc:var(--p-purple)}.c-cream{--pc:var(--p-cream)}.c-pink{--pc:var(--p-pink)}.c-teal{--pc:var(--p-teal)}.c-yellow{--pc:var(--p-yellow)}
+.node .f-ln{stroke:var(--ink);stroke-width:1;fill:none;opacity:.55}
+.node .f-led{fill:var(--ink);opacity:.5}.node .f-led.on{fill:#5fa04b;opacity:1}
+.node .f-kb{fill:var(--surface-2);stroke-width:.9}
+.node .f-scr{fill:#2b2621}
+.node .f-disp{fill:var(--p-purple);stroke:none}
+.node .f-gl{color:var(--ink)}
+.n-pill{fill:var(--pill);stroke:var(--ink);stroke-width:1.6}
+.n-label{font-family:var(--font-mono);font-size:12px;font-weight:700;fill:var(--ink);stroke:none}
+.n-sub{font-family:var(--font-mono);font-size:10.5px;fill:var(--muted);paint-order:stroke;stroke:var(--surface);stroke-width:3px}
+.p-label{font-size:9.5px;fill:var(--muted);stroke:var(--surface)}
+.p-label.down-t{fill:var(--bad);font-weight:700}
+.node{transition:opacity .25s}
+.node.sel .iso-plat .f-t{fill:var(--p-green);stroke-width:2.4}
+.node.sel .n-pill{fill:var(--p-green)}
+.node.pick .iso-plat .f-t{fill:var(--p-orange);stroke-dasharray:4 3}
+.node.off{opacity:.4}
+.link{stroke:var(--ink);stroke-width:1.6;opacity:.5}
+.link.trunk{stroke:var(--ink);stroke-width:3.2;opacity:.6}
+.link.down{stroke:var(--bad);stroke-dasharray:6 5;opacity:.9}
+.link.sel{stroke:var(--accent);opacity:1;stroke-width:4}
+svg.walking .node{opacity:.35}
+svg.walking .node.onpath{opacity:1}
+svg.walking .link{opacity:.22}
+.trail{stroke:var(--pkt-req);stroke-width:5;stroke-linecap:round;opacity:.5}
+.trail.back{stroke:var(--pkt-rep)}
+.trail.cur{opacity:1;stroke-dasharray:9 8;animation:dash .9s linear infinite}
+.focus-ring{fill:none;stroke:var(--ink);stroke-width:2;stroke-dasharray:5 4;opacity:.9;animation:spinring 6s linear infinite}
+.focus-ring.ok{stroke:var(--ok)}.focus-ring.bad{stroke:var(--bad);stroke-width:2.6}.focus-ring.warn{stroke:var(--warn)}
+.focus-ring.soft{opacity:.45}
+@keyframes spinring{to{stroke-dashoffset:-90}}
+.pkt-dot{stroke:var(--ink);stroke-width:1.6}
+.pkt-tag{stroke:var(--ink);stroke-width:1.5}
+.pkt-txt{font-family:var(--font-mono);font-size:10.5px;font-weight:800;fill:#2b2621}
+.k-req .pkt-dot,.k-req .pkt-tag{fill:var(--pkt-req)}
+.k-rep .pkt-dot,.k-rep .pkt-tag,.k-ok .pkt-dot,.k-ok .pkt-tag{fill:var(--pkt-rep)}
+.k-arp .pkt-dot,.k-arp .pkt-tag{fill:var(--pkt-arp)}
+.k-bad .pkt-dot,.k-bad .pkt-tag{fill:#e8685a}
+.k-arp .pkt-txt{fill:#fff}
+/* ================= LAB present mode ================= */
+.lp-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.lp-head-l{min-width:0}
+.crumb{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px;white-space:pre}
+.lp-head h1{font-size:26px;letter-spacing:-.025em}
+.lp-head p{margin:6px 0 0;color:var(--muted);font-size:12.5px;max-width:70ch}
+.lp-head-r{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.lp-chips{display:flex;gap:6px;flex-wrap:wrap}
+.lp-grid{display:grid;grid-template-columns:250px minmax(0,1fr) 340px;gap:16px;align-items:start}
+.lp-tree,.lp-stage,.lp-steps,.lp-card,.lp-goals{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.lp-tree{position:sticky;top:76px;display:flex;flex-direction:column;max-height:calc(100dvh - 96px)}
+.lp-tree-h{display:flex;justify-content:space-between;align-items:center;padding:14px 14px 8px;gap:8px}
+.lp-th{display:flex;gap:8px;align-items:center;font-weight:800;font-size:14px}
+.lp-th svg{width:20px;height:17px;fill:var(--ink)}
+.lp-tree-b{overflow:auto;padding:4px 8px 10px;flex:1}
+.tr-folder{appearance:none;border:0;background:none;width:100%;display:grid;grid-template-columns:12px 22px minmax(0,1fr) auto;gap:6px;align-items:center;padding:7px 6px;border-radius:9px;cursor:pointer;text-align:left;color:var(--fg);font-weight:700;font-size:12.5px}
+.tr-folder:hover{background:var(--surface-2)}
+.tr-car{color:var(--muted);font-size:10px}
+.tr-name{overflow-wrap:anywhere;line-height:1.3}
+.tr-cnt{font-size:11px;color:var(--muted);font-weight:600}
+.fold{width:22px;height:18px;display:block}
+.fold path{fill:var(--pc);stroke:var(--ink);stroke-width:1.3}
+.tr-items{display:flex;flex-direction:column;gap:3px;margin:2px 0 8px 18px;padding-left:10px;border-left:1.5px dashed var(--line-strong)}
+.tr-item{appearance:none;border:1.5px solid transparent;background:none;text-align:left;display:grid;grid-template-columns:16px minmax(0,1fr);gap:7px;align-items:start;padding:6px 8px;border-radius:9px;cursor:pointer;color:var(--fg);font-size:12px;line-height:1.35}
+.tr-item:hover{background:var(--surface-2)}
+.tr-item.on{background:var(--p-green);border-color:var(--ink);box-shadow:0 2px 0 var(--ink);font-weight:700}
+.tr-item.done .tr-doc{color:var(--ok);font-weight:800}
+.tr-doc{width:14px;height:16px;display:grid;place-items:center;color:var(--muted);margin-top:1px}
+.tr-doc svg{width:14px;height:14px}
+.lp-prog{display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--line);padding:12px 14px;font-size:11px;letter-spacing:.08em;font-weight:700;color:var(--muted)}
+.lp-prog b{color:var(--fg);letter-spacing:0;font-size:12px}
+.lp-center{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0}
+.lp-pick{display:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.lp-stage{position:relative;height:min(64vh,600px);min-height:420px;overflow:hidden;background-color:var(--surface);background-image:repeating-linear-gradient(30deg,transparent 0 31px,var(--grid) 31px 32px),repeating-linear-gradient(150deg,transparent 0 31px,var(--grid) 31px 32px)}
+#stagesvg{position:absolute;inset:74px 14px 34px;width:calc(100% - 28px);height:calc(100% - 108px);display:block}
+.lp-stage-top{position:absolute;left:14px;right:14px;top:14px;display:flex;justify-content:space-between;gap:10px;align-items:flex-start;z-index:2}
+.lp-metrics{display:flex;gap:8px;flex-wrap:wrap}
+.met{background:var(--surface);border:1.5px solid var(--line-strong);border-radius:10px;padding:6px 10px;min-width:92px}
+.met span{display:block;font-size:9.5px;letter-spacing:.1em;font-weight:700;color:var(--muted)}
+.met b{display:block;font-size:15px;font-weight:800;margin-top:1px}
+.met.ok{background:var(--p-green);border-color:var(--ink)}.met.bad{background:var(--p-red);border-color:var(--ink)}
+.lp-ctl{display:flex;gap:8px;flex:none}
+.lp-legend{position:absolute;left:16px;bottom:12px;display:flex;gap:14px;font-size:11px;color:var(--muted);z-index:2}
+.lg{display:inline-block;width:9px;height:9px;border-radius:50%;border:1.3px solid var(--ink);margin-right:5px;vertical-align:-1px}
+.lg.req{background:var(--pkt-req)}.lg.rep{background:var(--pkt-rep)}.lg.arp{background:var(--pkt-arp)}
+.lp-empty{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:8px;text-align:center;padding:20px;background:color-mix(in srgb,var(--surface) 70%,transparent);z-index:3}
+.lp-empty[hidden]{display:none}
+.lp-empty span{color:var(--muted);font-size:12.5px;max-width:40ch}
+.lp-steps{padding:14px 16px 12px}
+.lp-steps-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.lp-track{display:flex;overflow-x:auto;scrollbar-width:thin;padding:2px 2px 6px;scroll-behavior:smooth}
+.trk{appearance:none;border:0;background:none;flex:1 0 76px;min-width:76px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;color:var(--muted);position:relative;padding:0 2px;font-size:11px}
+.trk::before{content:"";position:absolute;top:13px;left:-50%;right:50%;height:1.5px;background:var(--line-strong);z-index:0}
+.trk:first-child::before{display:none}
+.trk.done::before,.trk.on::before{background:var(--ink)}
+.trk-n{position:relative;z-index:1;width:27px;height:27px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--line-strong);background:var(--surface);font-weight:700;font-size:11.5px;color:var(--muted)}
+.trk.done .trk-n{border-color:var(--ink);color:var(--ink)}
+.trk.on .trk-n{background:var(--p-green);border-color:var(--ink);color:var(--ink);box-shadow:0 2px 0 var(--ink);transform:scale(1.08)}
+.trk.bad .trk-n{border-color:var(--bad)}.trk.bad.on .trk-n{background:var(--p-red)}
+.trk-l{text-align:center;line-height:1.25;white-space:nowrap}
+.trk.on .trk-l{color:var(--fg);font-weight:700}
+.lp-right{display:grid;gap:14px;position:sticky;top:76px}
+.lp-card{padding:18px;display:flex;flex-direction:column;gap:10px;min-height:420px}
+.lp-card-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.lp-card h2{font-size:18px;line-height:1.3;letter-spacing:-.02em}
+.lp-card p{margin:0;font-size:12.5px;line-height:1.65;color:color-mix(in srgb,var(--fg) 82%,var(--muted))}
+.lp-mono{font-size:11.5px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:6px 9px;overflow-wrap:anywhere;color:var(--muted)}
+.keybox{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;background:var(--p-purple);border:1.5px solid color-mix(in srgb,var(--ink) 30%,var(--p-purple));border-radius:12px;padding:12px}
+.keybox[hidden]{display:none}
+.kb-ico{width:28px;height:28px;border-radius:8px;border:1.5px solid var(--ink);display:grid;place-items:center;background:var(--surface)}
+.kb-ico svg{width:16px;height:16px;fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linejoin:round}
+.keybox p{margin-top:3px;color:var(--fg)}
+.lp-nav{display:grid;grid-template-columns:auto 1fr;gap:8px;margin-top:auto;padding-top:6px}
+#lpNext{justify-content:space-between}
+.kbd-hint{font-size:10.5px;color:var(--faint);display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.lp-goals{padding:16px 18px;display:grid;gap:10px}
+.lp-goals[hidden]{display:none}
+#lpGoals{display:grid;gap:8px}
+.goal{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;align-items:start;font-size:12px;line-height:1.45;cursor:pointer}
+.goal input{appearance:none;width:16px;height:16px;border:1.5px solid var(--ink);border-radius:4px;margin:1px 0 0;background:var(--surface);display:grid;place-items:center;cursor:pointer}
+.goal input:checked{background:var(--p-green)}
+.goal input:checked::after{content:"✓";font-size:11px;font-weight:800;color:var(--ink);line-height:1}
+.goal input:checked+span{color:var(--muted);text-decoration:line-through}
+.mode-seg button{padding:7px 12px}
+@media (max-width:1280px){.lp-grid{grid-template-columns:minmax(0,1fr) 320px}.lp-tree{display:none}.lp-pick{display:block}}
+@media (max-width:900px){
+  .lp-grid{grid-template-columns:minmax(0,1fr)}
+  .lp-right{position:static}
+  .lp-card{min-height:0}
+  .lp-stage{height:auto;min-height:0;display:flex;flex-direction:column}
+  .lp-stage-top{position:static;padding:12px 12px 0;flex-direction:column}
+  .lp-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;width:100%}
+  .met{min-width:0;padding:5px 6px}.met span{font-size:8.5px;letter-spacing:.04em}.met b{font-size:13px}
+  .lp-ctl{width:100%}.lp-ctl .btn{flex:1}
+  #stagesvg{position:static;width:100%;height:44vh;min-height:260px;margin:4px 0 22px}
+  .lp-head h1{font-size:21px}
+  .lp-head-r{width:100%;justify-content:space-between}
+}
+/* story editor */
+.story-panel{margin-top:14px}
+.sted-list{display:grid;gap:6px}
+.sted{border:1.5px solid var(--line);border-radius:12px;background:var(--surface)}
+.sted[open]{border-color:var(--ink)}
+.sted>summary{list-style:none;display:flex;gap:8px;align-items:center;padding:7px 10px;cursor:pointer}
+.sted>summary::-webkit-details-marker{display:none}
+.sted .trk-n{width:24px;height:24px;font-size:11px;flex:none;border-color:var(--ink);color:var(--ink)}
+.sted-t{flex:1;min-width:0;font-weight:600;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sted-tools{display:flex;gap:2px;flex:none}
+.sted-b{display:grid;gap:8px;padding:4px 12px 12px}
+.hero-link{stroke:var(--ink);stroke-width:1.6;opacity:.45}
+#stagesvg .p-label{display:none}
+a.btn{text-decoration:none}
+@media (max-width:900px){.crumb{white-space:normal}.kbd-hint{display:none}.lp-chips{display:none}.lp-head p{font-size:12px}}
+.tab{padding:6px 10px;font-size:12.5px}
+@media (max-width:1700px){.brand small{display:none}}
+@media (max-width:1500px){.sync .sync-t{display:none}.sync{padding:7px 9px}.theme-btn .tiny{display:none}}
+@media (max-width:1180px){.tab{padding:6px 8px}.tabs{justify-content:flex-start}}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style><script>window.BM_SYNC_TXT={mascot:"",outT:"Đồng bộ mọi máy",outS:"Đăng nhập 1 lần trên mỗi máy là thấy lab, inventory, nhật ký y như nhau",go:"Đăng nhập",outNote:"🔒 Chưa có tài khoản thì tự tạo luôn. Dữ liệu chỉ tài khoản này xem được.",inS:"Lab, inventory, nhật ký, gia hạn tự lưu lên tài khoản",inOk:"Máy nào đăng nhập cũng thấy y như vầy",inNote:"Máy khác: bấm nút đồng bộ góc trên",pulled:"Đã lấy dữ liệu mới từ máy khác"};</script><script src="../shared/sync.js?v=7"></script></head><body>
 <header class="topbar">
   <div class="topbar-in">
     <div class="brand">
       <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="5" cy="12" r="2.2"/><circle cx="19" cy="5" r="2.2"/><circle cx="19" cy="19" r="2.2"/><path d="M7 11l10-5M7 13l10 5"/></svg></span>
-      <span>NetOps Desk <small>bàn làm việc vận hành</small></span>
+      <span><b>NetOps</b>Desk <small>bàn làm việc vận hành</small></span>
     </div>
     <nav class="tabs" id="tabs" aria-label="Mục">
       <a class="tab" href="#home" data-view="home">Tổng quan</a>
@@ -356,9 +642,11 @@ details.box>div{padding:0 10px 10px}
 <main>
 <!-- ============ HOME ============ -->
 <section class="view" id="view-home" hidden>
-  <div class="hero">
-    <div class="hero-txt"><div class="hero-eyebrow mono" id="heroClock"></div><h1 id="heroHi">Chào anh, ca trực hôm nay thế nào?</h1></div>
-    <svg class="hero-art" viewBox="0 0 320 120" aria-hidden="true"><g fill="none" stroke-width="2"><path class="hl" d="M40 60H120M200 60H280M160 20V100M120 60L160 20M160 100L200 60M120 60L160 100M160 20L200 60"/></g><g class="hn"><circle cx="40" cy="60" r="12"/><circle cx="120" cy="60" r="14"/><circle cx="200" cy="60" r="14"/><circle cx="280" cy="60" r="12"/><circle cx="160" cy="20" r="11"/><circle cx="160" cy="100" r="11"/></g><circle class="hp" r="5"><animateMotion dur="3.2s" repeatCount="indefinite" path="M40 60H120L160 20L200 60H280"/></circle><circle class="hp hp2" r="5"><animateMotion dur="4s" repeatCount="indefinite" path="M280 60H200L160 100L120 60H40"/></circle></svg>
+  <div class="hero iso-bg">
+    <div class="hero-txt"><div class="hero-eyebrow" id="heroClock"></div><h1 id="heroHi">Chào anh, ca trực hôm nay thế nào?</h1>
+      <p class="hero-sub">Lab mạng trực quan, playbook lệnh, inventory và sổ ca trực trong một chỗ.</p>
+      <div class="hero-cta"><a class="btn primary" href="#lab">▶ Mở bài lab</a><a class="btn" href="#playbook">Playbook</a><a class="btn" href="#tools">Công cụ</a></div></div>
+    <svg class="hero-art" id="heroArt" viewBox="0 0 460 230" aria-hidden="true"></svg>
   </div>
   <div class="home-stats" id="homeStats"></div>
   <div class="home-grid" id="homeGrid"></div>
@@ -366,12 +654,50 @@ details.box>div{padding:0 10px 10px}
 
 <!-- ============ LAB ============ -->
 <section class="view" id="view-lab" hidden>
-  <div class="view-head">
-    <div>
-      <h1>Lab mạng ảo</h1>
-      <p>Kéo thả · nối dây · ping thử · xuất config</p>
+  <div class="lp-head">
+    <div class="lp-head-l">
+      <div class="crumb" id="lpCrumb"></div>
+      <h1 id="lpTitle">Lab mạng</h1>
+      <p id="lpDesc"></p>
+    </div>
+    <div class="lp-head-r">
+      <div class="lp-chips" id="lpChips"></div>
+      <div class="seg mode-seg" role="group" aria-label="Chế độ"><button type="button" id="modePresent" aria-pressed="true">▶ Trình chiếu</button><button type="button" id="modeDesign" aria-pressed="false">✎ Thiết kế</button></div>
     </div>
   </div>
+  <div id="labPresent" class="lp-grid">
+    <aside class="lp-tree">
+      <div class="lp-tree-h"><span class="lp-th"><svg viewBox="0 0 24 20" aria-hidden="true"><path d="M1.5 4.5a2 2 0 0 1 2-2h5l2 2.2h10a2 2 0 0 1 2 2V16a2 2 0 0 1-2 2h-17a2 2 0 0 1-2-2z"/></svg>Khóa lab</span><span class="tiny muted" id="lpCount"></span></div>
+      <div class="lp-tree-b" id="lpTree"></div>
+      <div class="lp-prog"><span>TIẾN ĐỘ</span><b id="lpProg">0 / 0</b></div>
+    </aside>
+    <div class="lp-center">
+      <label class="lp-pick"><span class="sr">Chọn bài</span><select class="inp" id="lpPick"></select></label>
+      <div class="lp-stage">
+        <div class="lp-stage-top"><div class="lp-metrics" id="lpMetrics"></div><div class="lp-ctl"><button class="btn" type="button" id="lpReplay">↻ Phát lại</button><button class="btn" type="button" id="lpPause">▶ Tự chạy</button></div></div>
+        <svg id="stagesvg" aria-label="Sơ đồ trình chiếu"></svg>
+        <div class="lp-legend"><span><i class="lg req"></i>yêu cầu</span><span><i class="lg rep"></i>phản hồi</span><span><i class="lg arp"></i>ARP</span></div>
+        <div class="lp-empty" id="lpEmpty" hidden><b>Lab này chưa có bài trình chiếu</b><span>Chuyển sang Thiết kế, chạy ping rồi bấm “＋ Lưu vào bài”.</span><button class="btn primary" type="button" id="lpToDesign">✎ Soạn bài</button></div>
+      </div>
+      <div class="lp-steps">
+        <div class="lp-steps-h"><span class="label">Trong bài này</span><span class="tiny muted" id="lpStepN"></span></div>
+        <div class="lp-track" id="lpTrack"></div>
+      </div>
+    </div>
+    <aside class="lp-right">
+      <div class="lp-card" id="lpBody">
+        <div class="lp-card-h"><span class="label" id="lpN">BƯỚC 1 / 1</span><span class="chip" id="lpTag"></span></div>
+        <h2 id="lpH"></h2>
+        <p id="lpText"></p>
+        <code class="lp-mono" id="lpMono" hidden></code>
+        <div class="keybox" id="lpKey" hidden><span class="kb-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/></svg></span><div><span class="label">Ý chính</span><p id="lpKeyT"></p></div></div>
+        <div class="lp-nav"><button class="btn" type="button" id="lpPrev">← Quay lại</button><button class="btn primary" type="button" id="lpNext">Tiếp →</button></div>
+        <div class="kbd-hint"><kbd>←</kbd><kbd>→</kbd> bước · <kbd>R</kbd> phát lại · <kbd>Space</kbd> tự chạy</div>
+      </div>
+      <div class="lp-goals" id="lpGoalsBox"><span class="label">Bạn sẽ học</span><div id="lpGoals"></div></div>
+    </aside>
+  </div>
+  <div id="labDesign" hidden>
   <div class="lab-bar">
     <label class="field" style="min-width:200px;flex:1;max-width:340px"><span>Lab đang mở</span>
       <select class="inp" id="labSelect"></select></label>
@@ -404,6 +730,7 @@ details.box>div{padding:0 10px 10px}
           <button class="st-b" type="button" id="stNext" aria-label="Bước sau">▶</button>
           <div class="st-dots" id="stDots"></div>
           <button class="btn sm" type="button" id="stAsk" hidden>Hỏi AI vì sao</button>
+          <button class="btn sm" type="button" id="stSave">＋ Lưu vào bài</button>
         </div>
       </div>
     </div>
@@ -434,6 +761,11 @@ details.box>div{padding:0 10px 10px}
         <div class="ai-out" id="aiOut"></div>
       </div>
     </div>
+  </div>
+  <div class="panel story-panel">
+    <div class="panel-h"><h2>Bài trình chiếu</h2><span class="hint">Soạn các bước để trình chiếu như một bài học</span></div>
+    <div class="panel-b" id="storyEd" style="display:grid;gap:10px"></div>
+  </div>
   </div>
   <input type="file" id="labFile" accept=".json,application/json" hidden>
 </section>
@@ -1099,7 +1431,7 @@ function lintLab(lab) {
 
 /* ================= SAMPLE LAB ================= */
 function sampleLab() {
-  const lab = { id: uid("lab"), name: "Lab mẫu – Chi nhánh HN (có 1 lỗi cố ý)", created: Date.now(), devices: [], links: [], notes: "Router-on-a-stick: R-Core.HN-01 làm gateway cho VLAN 10/20/30/40 qua trunk tới SW-Tầng3. FW-Biên chặn mặc định, chỉ cho mạng nội bộ 10.10.0.0/16 đi ra. Lab không có NAT nên ISP có route ngược về 10.10.0.0/16.\nLỗi cố ý: PC-Khách (VLAN 40) không ping được gateway. Thử ping rồi bấm \"Hỏi AI vì sao\"." };
+  const lab = { id: uid("lab"), sample: true, name: "Lab mẫu – Chi nhánh HN (có 1 lỗi cố ý)", created: Date.now(), devices: [], links: [], notes: "Router-on-a-stick: R-Core.HN-01 làm gateway cho VLAN 10/20/30/40 qua trunk tới SW-Tầng3. FW-Biên chặn mặc định, chỉ cho mạng nội bộ 10.10.0.0/16 đi ra. Lab không có NAT nên ISP có route ngược về 10.10.0.0/16.\nLỗi cố ý: PC-Khách (VLAN 40) không ping được gateway. Thử ping rồi bấm \"Hỏi AI vì sao\"." };
   const D = (type, name, x, y, f) => { const d = newDevice(type, x, y, name); if (f) f(d); lab.devices.push(d); return d; };
   const L = (A, ia, B, ib) => lab.links.push({ id: uid("l"), a: { dev: A.id, port: A.ports[ia].id }, b: { dev: B.id, port: B.ports[ib].id }, up: true });
   const isp = D("router", "ISP-GW", 100, 80, d => { d.ports[0].ip = "203.0.113.1/30"; d.ports[1].ip = "198.51.100.1/24"; d.routes = [{ dst: "10.10.0.0/16", via: "203.0.113.2" }]; d.ports.length = 2; });
@@ -1127,6 +1459,7 @@ function sampleLab() {
   const guest = D("pc", "PC-Khách", 900, 500, d => { d.ports[0].ip = "10.10.40.50/24"; d.gw = "10.10.40.1"; });
   L(isp, 0, fw, 0); L(isp, 1, dns, 0); L(fw, 1, r, 0); L(r, 1, sw, 7);
   L(sw, 0, pc1, 0); L(sw, 1, pc2, 0); L(sw, 2, web, 0); L(sw, 3, guest, 0);
+  lab.stories = sampleStories(lab);
   return lab;
 }
 function blankLab(name) { return { id: uid("lab"), name: name || "Lab mới", created: Date.now(), devices: [], links: [], notes: "" }; }
@@ -1409,13 +1742,13 @@ const labKey = l => "lab_" + l.id;
 
 function labsInit() {
   Lab.list = Store.keys("lab_").map(k => clone(Store.get(k))).filter(l => l && Array.isArray(l.devices)).sort((a, b) => (a.created || 0) - (b.created || 0));
-  if (!Lab.list.length) { const s = sampleLab(); s.demo = true; Lab.list.push(s); }
-  const meta = Store.get("meta") || {}; Lab.cur = Lab.list.find(l => l.id === meta.curLab) || Lab.list[0];
+  const meta = Store.get("meta") || {};
+  if (!Lab.list.length || (!meta.noSample && !Lab.list.some(l => l.sample))) { const s = sampleLab(); s.demo = true; Lab.list.unshift(s); } Lab.cur = Lab.list.find(l => l.id === meta.curLab) || Lab.list[0];
 }
 const saveLabNow = () => { const l = Lab.cur; if (!l) return; l.demo = false; l.updated = Date.now(); Store.put(labKey(l), clone(l)); };
 const saveLab = debounce(saveLabNow, 500);
 function setCurLab(l) { Lab.cur = l; Lab.sel = null; Lab.linking = null; Lab.lastSim = null; const m = Store.get("meta") || {}; if (m.curLab !== l.id && !l.demo) Store.put("meta", { ...m, curLab: l.id }); renderLabAll(); fitView(); }
-function changed(opts = {}) { if (Stepper.active) stopSteps(); saveLab(); renderCanvas(); renderLint(); if (opts.insp) renderInspector(); fillPingSelects(); }
+function changed(opts = {}) { if (Stepper.active) stopSteps(); saveLab(); renderLabHead(); renderCanvas(); renderLint(); if (opts.insp) renderInspector(); fillPingSelects(); }
 
 /* ---------- canvas ---------- */
 function screenToWorld(cx, cy) { const r = $("#labsvg").getBoundingClientRect(); return { x: (cx - r.left - Lab.view.x) / Lab.view.k, y: (cy - r.top - Lab.view.y) / Lab.view.k }; }
@@ -1423,7 +1756,7 @@ function applyView() { const g = $("#vp"); if (g) g.setAttribute("transform", `t
 function fitView() {
   const svg = $("#labsvg"); const r = svg.getBoundingClientRect(); const ds = Lab.cur.devices; if (!r.width) return;
   if (!ds.length) { Lab.view = { x: r.width / 2, y: r.height / 2, k: 1 }; applyView(); return; }
-  const xs = ds.map(d => d.x), ys = ds.map(d => d.y); const minX = Math.min(...xs) - 70, maxX = Math.max(...xs) + 70, minY = Math.min(...ys) - 50, maxY = Math.max(...ys) + 70;
+  const xs = ds.map(d => d.x), ys = ds.map(d => d.y); const minX = Math.min(...xs) - 70, maxX = Math.max(...xs) + 70, minY = Math.min(...ys) - 60, maxY = Math.max(...ys) + 90;
   const narrow = r.width < 760; const topPad = narrow ? 64 : 10, leftPad = narrow ? 10 : 70;
   const k = Math.max(0.35, Math.min(1.4, Math.min((r.width - leftPad - 10) / (maxX - minX), (r.height - topPad - 44) / (maxY - minY))));
   Lab.view = { k, x: leftPad + (r.width - leftPad - 10 - (maxX - minX) * k) / 2 - minX * k, y: topPad + (r.height - topPad - 44 - (maxY - minY) * k) / 2 - minY * k };
@@ -1434,21 +1767,9 @@ function primaryIP(d) { const a = d.type === "switch" ? (d.svis || []).map(s => 
 const short = (s, n = 24) => { const a = [...s]; return a.length > n ? a.slice(0, n - 1).join("") + "…" : s; };
 function renderCanvas() {
   const lab = Lab.cur, svg = $("#labsvg"); const linkSel = Lab.sel && Lab.sel.kind === "link" ? Lab.sel.id : null, devSel = Lab.sel && Lab.sel.kind === "dev" ? Lab.sel.id : null;
-  let s = `<defs><pattern id="gridp" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="var(--grid)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(#gridp)" data-bg="1"/><g id="vp">`;
-  for (const l of lab.links) {
-    const A = devById(lab, l.a.dev), B = devById(lab, l.b.dev); if (!A || !B) continue; const pa = portById(A, l.a.port), pb = portById(B, l.b.port);
-    const cls = "link" + (isTrunkLink(lab, l) ? " trunk" : "") + (l.up ? "" : " down") + (l.id === linkSel ? " sel" : "");
-    const dx = B.x - A.x, dy = B.y - A.y, len = Math.hypot(dx, dy) || 1, ux = dx / len, uy = dy / len, off = Math.min(58, len / 2 - 10);
-    s += `<g data-link="${l.id}"><line class="${cls}" x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}"/><line class="link-hit" x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}"><title>${esc(A.name + " " + pa.name + " ↔ " + B.name + " " + pb.name)}</title></line>`;
-    if (len > 150) s += `<text class="p-label" x="${A.x + ux * off}" y="${A.y + uy * off - 4}" text-anchor="middle">${esc(pa.name)}</text><text class="p-label" x="${B.x - ux * off}" y="${B.y - uy * off - 4}" text-anchor="middle">${esc(pb.name)}</text>`;
-    if (!l.up) s += `<text class="p-label" x="${(A.x + B.x) / 2}" y="${(A.y + B.y) / 2 + 3}" text-anchor="middle" style="fill:var(--bad);font-weight:700">✕ down</text>`;
-    s += `</g>`;
-  }
-  for (const d of lab.devices) {
-    const cls = "node" + (d.id === devSel ? " sel" : "") + (d.on ? "" : " off") + (Lab.linking && Lab.linking.from === d.id ? " pick" : "");
-    const ip = primaryIP(d);
-    s += `<g class="${cls}" data-dev="${d.id}" transform="translate(${d.x},${d.y})" style="color:var(--${d.type === "firewall" ? "bad" : d.type === "router" ? "accent" : d.type === "switch" ? "info" : "fg"})"><title>${esc(d.name)} · ${DEV_TYPES[d.type].label}${d.on ? "" : " (tắt)"}</title>${ICONS[d.type]}<text class="n-label" y="${d.type === "server" ? 39 : 37}" text-anchor="middle">${esc(short(d.name || "(chưa đặt tên)"))}</text>${ip ? `<text class="n-sub" y="${d.type === "server" ? 52 : 50}" text-anchor="middle">${esc(ip)}</text>` : ""}</g>`;
-  }
+  let s = `<defs><pattern id="gridp" width="56" height="32" patternUnits="userSpaceOnUse"><path d="M0 16L28 0L56 16L28 32Z" fill="none" stroke="var(--grid)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(#gridp)" data-bg="1"/><g id="vp">`;
+  s += linksSVG(lab, { sel: linkSel, hit: true });
+  for (const d of lab.devices) s += isoNodeSVG(d, (d.id === devSel ? "sel" : "") + (d.on ? "" : " off") + (Lab.linking && Lab.linking.from === d.id ? " pick" : ""));
   s += `<g id="pktLayer"></g></g>`;
   svg.innerHTML = s; applyView(); if (Stepper.active) drawStep(false);
   svg.classList.toggle("linking", !!Lab.linking);
@@ -1457,7 +1778,9 @@ function addDevice(type) {
   const r = $("#labsvg").getBoundingClientRect(); const c = screenToWorld(r.left + r.width / 2, r.top + r.height / 2);
   const n = Lab.cur.devices.filter(d => d.type === type).length + 1; const base = { router: "R", switch: "SW", firewall: "FW", server: "SRV", pc: "PC" }[type];
   let name = `${base}-${pad2(n)}`; while (Lab.cur.devices.some(d => d.name === name)) name = `${base}-${pad2(Math.floor(Math.random() * 90) + 10)}`;
-  const jitter = () => (Math.random() - .5) * 60; const d = newDevice(type, Math.round(c.x + jitter()), Math.round(c.y + jitter()), name);
+  let px = c.x, py = c.y; const free = (x, y) => Lab.cur.devices.every(o => Math.hypot(o.x - x, (o.y - y) * 1.4) > 150);
+  outer: for (let ring = 0; ring < 12; ring++) for (let k = 0; k < Math.max(1, ring * 8); k++) { const a = k / Math.max(1, ring * 8) * Math.PI * 2; const x = c.x + Math.cos(a) * ring * 90, y = c.y + Math.sin(a) * ring * 70; if (free(x, y)) { px = x; py = y; break outer; } }
+  const d = newDevice(type, Math.round(px), Math.round(py), name);
   Lab.cur.devices.push(d); Lab.sel = { kind: "dev", id: d.id }; changed({ insp: true }); hint(`Đã thêm ${name}. Kéo để di chuyển, bấm "Nối dây" để nối.`);
 }
 function startLinking() { Lab.linking = Lab.linking ? null : { from: null }; $("#palLink").setAttribute("aria-pressed", String(!!Lab.linking)); hint(Lab.linking ? "Chạm thiết bị đầu tiên, rồi thiết bị thứ hai để nối dây" : null, !!Lab.linking); renderCanvas(); }
@@ -1499,7 +1822,7 @@ function bindCanvas() {
   });
   const end = e => {
     ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch = null; if (!drag) return; const g = drag; drag = null; Lab.dragging = false;
-    if (g.kind === "dev") { if (g.moved && !Lab.linking) { saveLab(); return; } if (Lab.linking) { pickForLink(g.d.id); return; } Lab.sel = { kind: "dev", id: g.d.id }; renderCanvas(); renderInspector(); if (innerWidth < 1100) hint(`Đã chọn ${g.d.name}. Kéo xuống dưới để sửa thuộc tính.`); }
+    if (g.kind === "dev") { if (g.moved && !Lab.linking) { saveLab(); renderCanvas(); return; } if (Lab.linking) { pickForLink(g.d.id); return; } Lab.sel = { kind: "dev", id: g.d.id }; renderCanvas(); renderInspector(); if (innerWidth < 1100) hint(`Đã chọn ${g.d.name}. Kéo xuống dưới để sửa thuộc tính.`); }
     else if (g.kind === "link" && !g.moved) { if (Lab.linking) return; Lab.sel = { kind: "link", id: g.id }; renderCanvas(); renderInspector(); }
     else if (g.kind === "pan" && !g.moved && e.type === "pointerup") { if (Lab.linking) return; if (Lab.sel) { Lab.sel = null; renderCanvas(); renderInspector(); } }
   };
@@ -1520,7 +1843,7 @@ function bindCanvas() {
 function moveNode(d) {
   const g = $(`#labsvg [data-dev="${d.id}"]`); if (g) g.setAttribute("transform", `translate(${d.x},${d.y})`);
   for (const l of Lab.cur.links) { if (l.a.dev !== d.id && l.b.dev !== d.id) continue; const A = devById(Lab.cur, l.a.dev), B = devById(Lab.cur, l.b.dev); const gl = $(`#labsvg [data-link="${l.id}"]`); if (!gl) continue;
-    gl.querySelectorAll("line").forEach(ln => { ln.setAttribute("x1", A.x); ln.setAttribute("y1", A.y); ln.setAttribute("x2", B.x); ln.setAttribute("y2", B.y); });
+    gl.querySelectorAll("line").forEach(ln => { ln.setAttribute("x1", A.x); ln.setAttribute("y1", A.y + ISO_Y); ln.setAttribute("x2", B.x); ln.setAttribute("y2", B.y + ISO_Y); }); gl.querySelectorAll("text").forEach(t => t.remove());
     const t = gl.querySelectorAll("text"); const dx = B.x - A.x, dy = B.y - A.y, len = Math.hypot(dx, dy) || 1, ux = dx / len, uy = dy / len, off = Math.min(58, len / 2 - 10);
     if (t.length >= 2) { t[0].setAttribute("x", A.x + ux * off); t[0].setAttribute("y", A.y + uy * off - 4); t[1].setAttribute("x", B.x - ux * off); t[1].setAttribute("y", B.y - uy * off - 4); }
     if (t.length === 1 || t.length === 3) { const tt = t[t.length - 1]; tt.setAttribute("x", (A.x + B.x) / 2); tt.setAttribute("y", (A.y + B.y) / 2 + 3); }
@@ -1819,7 +2142,7 @@ function askLabAI(q) {
 
 /* ---------- lab management ---------- */
 function renderLabSelect() { const s = $("#labSelect"); s.innerHTML = ""; Lab.list.forEach(l => s.append(h("option", { value: l.id, text: l.name + (l.demo ? " (mẫu)" : "") }))); s.value = Lab.cur.id; }
-function renderLabAll() { stopSteps(); renderLabSelect(); renderCanvas(); renderInspector(); renderLint(); fillPingSelects(); $("#pOut").innerHTML = T("dim", "Chọn máy nguồn, nhập đích rồi bấm Chạy. Ví dụ trong lab mẫu: từ PC-Khách ping 10.10.40.1"); $("#aiOut").innerHTML = ""; }
+function renderLabAll() { stopSteps(); if ($("#labPresent") && !$("#labPresent").hidden) renderPresent(); else renderStoryEditor(); renderLabSelect(); renderCanvas(); renderInspector(); renderLint(); fillPingSelects(); $("#pOut").innerHTML = T("dim", "Chọn máy nguồn, nhập đích rồi bấm Chạy. Ví dụ trong lab mẫu: từ PC-Khách ping 10.10.40.1"); $("#aiOut").innerHTML = ""; }
 function exportMenu() {
   const lab = Lab.cur; const items = [
     ["Config từng thiết bị", "Cisco IOS, Junos, RouterOS, FRR, Linux theo hệ điều hành đã chọn", () => { const box = h("div", { style: { display: "grid", gap: "6px" } }); lab.devices.forEach(d => box.append(h("button", { class: "btn", type: "button", style: { justifyContent: "space-between" }, onclick: () => { const c = deviceConfig(lab, d); showFile(`Config ${d.name} · ${OS_LABEL[d.os]}`, `${asciiName(d.name)}.${c.ext}`, c.text, cfgNote(d)); } }, h("span", { class: "mono", text: d.name }), h("span", { class: "hint", text: OS_LABEL[d.os] })))); modal("Chọn thiết bị", box); }],
@@ -1861,10 +2184,10 @@ function bindLabBar() {
     modal("Lab: " + Lab.cur.name, h("div", { style: { display: "grid", gap: "8px" } }, B("⧉  Nhân bản lab này", () => $("#labDup").click()), B("✎  Đổi tên", () => $("#labRename").click()), B("★  Mở thêm lab mẫu", () => $("#labSample").click()), B("⇪  Nhập file lab .json", () => $("#labImport").click()), B("🗑  Xoá lab này", () => $("#labDel").click(), "danger"))); };
   ["labDup", "labRename", "labSample", "labDel", "labImport"].forEach(id => { if (!$("#" + id)) document.body.append(h("button", { id, type: "button", hidden: true })); });
   $("#labNew").onclick = () => promptBox("Lab mới", "Tên lab", "Lab " + (Lab.list.length + 1), n => { const l = blankLab(n); Lab.list.push(l); setCurLab(l); saveLabNow(); });
-  $("#labDup").onclick = () => { const l = clone(Lab.cur); l.id = uid("lab"); l.name = Lab.cur.name + " (bản sao)"; l.created = Date.now(); l.demo = false; Lab.list.push(l); setCurLab(l); saveLabNow(); toast("Đã nhân bản"); };
+  $("#labDup").onclick = () => { const l = clone(Lab.cur); l.id = uid("lab"); l.name = Lab.cur.name + " (bản sao)"; l.created = Date.now(); l.demo = false; l.sample = false; Lab.list.push(l); setCurLab(l); saveLabNow(); toast("Đã nhân bản"); };
   $("#labRename").onclick = () => promptBox("Đổi tên lab", "Tên lab", Lab.cur.name, n => { Lab.cur.name = n; saveLabNow(); renderLabSelect(); renderInspector(); });
-  $("#labSample").onclick = () => { const s = sampleLab(); s.name = "Lab mẫu – Chi nhánh HN " + (Lab.list.filter(l => l.name.startsWith("Lab mẫu")).length + 1); Lab.list.push(s); setCurLab(s); saveLabNow(); toast("Đã mở lab mẫu mới"); };
-  $("#labDel").onclick = () => confirmBox(`Xoá lab "${Lab.cur.name}"? Không khôi phục được.`, "Xoá lab", () => { const l = Lab.cur; Store.remove(labKey(l)); Lab.list = Lab.list.filter(x => x !== l); if (!Lab.list.length) { const s = sampleLab(); s.demo = true; Lab.list.push(s); } setCurLab(Lab.list[0]); toast("Đã xoá lab"); });
+  $("#labSample").onclick = () => { const s = sampleLab(); s.sample = false; s.name = "Lab mẫu – Chi nhánh HN " + (Lab.list.filter(l => l.name.startsWith("Lab mẫu")).length + 1); Lab.list.push(s); setCurLab(s); saveLabNow(); toast("Đã mở lab mẫu mới"); };
+  $("#labDel").onclick = () => confirmBox(`Xoá lab "${Lab.cur.name}"? Không khôi phục được.`, "Xoá lab", () => { const l = Lab.cur; Store.remove(labKey(l)); if (l.sample) { const m = Store.get("meta") || {}; Store.put("meta", { ...m, noSample: true }); } Lab.list = Lab.list.filter(x => x !== l); if (!Lab.list.length) { const s = sampleLab(); s.demo = true; Lab.list.push(s); } setCurLab(Lab.list[0]); toast("Đã xoá lab"); });
   $("#labExport").onclick = exportMenu;
   $("#labImport").onclick = () => pickFile($("#labFile"), t => { try { importLab(t); } catch (_) { toast("File lab có thiết bị không hợp lệ"); } });
   $("#mPing").onclick = () => setMode("ping"); $("#mTrace").onclick = () => setMode("trace"); $("#mTcp").onclick = () => setMode("tcp");
@@ -1876,10 +2199,11 @@ function bindLabBar() {
 
 /* ================= STEP-BY-STEP PACKET WALK ================= */
 const Stepper = { steps: [], i: 0, playing: false, timer: null, anim: 0, ok: false, active: false };
-const keyDev = k => devById(Lab.cur, String(k).split(":")[1]);
+const ISO_Y = 8; // visual centre of an isometric node (top of its platform)
+const keyDevL = (lab, k) => devById(lab, String(k).split(":")[1]);
 const routeTxt = rt => rt.type === "C" ? `${IP.str(rt.net)}/${rt.p} connected` : `${rt.type} ${IP.str(rt.net)}/${rt.p} via ${IP.str(rt.nh)}`;
-function frameInfo(x) { // VLAN + tag for one L2 link hop
-  const lab = Lab.cur, l = lab.links.find(y => y.id === x.link); if (!l) return { vlan: null, tagged: false };
+function frameInfo(lab, x) { // VLAN + tag for one L2 link hop
+  const l = lab.links.find(y => y.id === x.link); if (!l) return { vlan: null, tagged: false };
   const sk = [x.from, x.to].find(k => String(k).startsWith("S:")); let vlan = sk ? +String(sk).split(":")[2] : null; let tagged = false;
   for (const e of [l.a, l.b]) {
     const d = devById(lab, e.dev), p = portById(d, e.port); if (!d || !p) continue;
@@ -1888,62 +2212,139 @@ function frameInfo(x) { // VLAN + tag for one L2 link hop
   }
   return { vlan, tagged, l };
 }
-function buildSteps(r, okAll, fail, mode, tcpOpen) {
-  const S = [], lab = Lab.cur; const proto = r.pkt.proto === "tcp" ? `TCP ${r.pkt.dport}` : "ICMP";
+const FAIL_KEY = {
+  fw: "Firewall drop thì máy nguồn chỉ thấy timeout, không nhận được thông báo lỗi nào.",
+  arp: "ARP thất bại thường do sai VLAN, trunk thiếu VLAN, dây đứt hoặc đặt sai IP/subnet.",
+  unreach: "Thiếu route thì router trả ICMP Net Unreachable. Kiểm tra bảng route và default gateway.",
+  nonet: "Máy không có route nào khớp (thường là chưa đặt default gateway).",
+  ttl: "Vòng lặp: các router chỉ route qua lại cho nhau tới khi TTL về 0.",
+  drop: "Máy trạm và switch lớp 2 không chuyển tiếp gói IP giữa các mạng.",
+  off: "Thiết bị tắt thì mọi gói qua nó đều mất."
+};
+function buildSteps(r, okAll, fail, mode, tcpOpen, lab) {
+  lab = lab || Lab.cur; const S = []; const tcp = r.pkt.proto === "tcp";
+  const proto = tcp ? `TCP ${r.pkt.dport}` : "ICMP";
   const sIp = r.pkt.src != null ? IP.str(r.pkt.src) : "?", dIp = IP.str(r.dst);
-  S.push({ at: r.src.id, tag: "Bắt đầu", title: `${r.src.name} tạo gói ${proto}`, detail: `${sIp} → ${dIp}`, pk: proto });
-  const passedFw = new Set();
+  const dName = r.dstDev ? r.dstDev.name : dIp;
+  const st = { hop: 0, ttl: r.src.type === "router" && r.src.os === "ios" ? 255 : 64, vlan: "—", fw: "—", res: "…" };
+  const P = s => S.push({ ...s, m: { ...st } });
+  P({ at: r.src.id, tag: "Bắt đầu", short: "Gửi gói", kind: "req", title: `${r.src.name} gửi ${tcp ? "kết nối TCP " + r.pkt.dport : "ping"} tới ${dName}`, detail: `${sIp} → ${dIp}`, pk: proto,
+    text: `Gói mang IP nguồn ${sIp} và IP đích ${dIp}. Hai địa chỉ này giữ nguyên suốt đường đi, chỉ địa chỉ MAC đổi qua từng chặng.`, key: "IP cho biết đích cuối cùng, MAC cho biết chặng kế tiếp." });
+  const passedFw = new Set(); let backKeyShown = false;
   const walkSteps = (w, back) => {
-    const pk = back ? (r.pkt.proto === "tcp" ? (tcpOpen ? "SYN-ACK" : "RST") : "Reply") : proto;
+    const pk = back ? (tcp ? (tcpOpen ? "SYN-ACK" : "RST") : "Reply") : proto; const kind = back ? "rep" : "req";
     w.hops.forEach((hp, i) => {
       const d = hp.dev;
       if (i > 0 && d.type === "firewall") {
-        if (back && passedFw.has(d.id)) S.push({ at: d.id, tag: "Firewall", tone: "ok", title: `${d.name}: gói trả lời, cho qua`, detail: "ct state established", pk });
-        else { const v = fwVerdict(d, back ? { src: r.pkt.dst, dst: r.pkt.src, proto: r.pkt.proto, dport: 0 } : r.pkt); passedFw.add(d.id); S.push({ at: d.id, tag: "Firewall", tone: "ok", title: `${d.name}: ${v.rule ? "khớp rule #" + v.rule : "policy mặc định"}, cho qua`, detail: v.r ? `${v.r.action} ${v.r.src} → ${v.r.dst} ${v.r.proto}${v.r.port ? " " + v.r.port : ""}` : `policy ${d.policy}`, pk }); }
+        if (back && passedFw.has(d.id)) { st.fw = "cho qua"; P({ at: d.id, tag: "Firewall", short: "Stateful", tone: "ok", kind, title: `${d.name}: gói trả lời được cho qua`, detail: "ct state established", pk, text: "Firewall stateful đã ghi nhận kết nối ở chiều đi, nên gói trả lời thuộc kết nối đó (established) được cho qua mà không cần rule riêng.", key: "Stateful nghĩa là nhớ kết nối: chỉ cần mở rule cho chiều khởi tạo." }); }
+        else {
+          const v = fwVerdict(d, back ? { src: r.pkt.dst, dst: r.pkt.src, proto: r.pkt.proto, dport: 0 } : r.pkt); passedFw.add(d.id); st.fw = "cho qua";
+          const rule = v.r ? `${v.r.action} ${v.r.src} → ${v.r.dst} ${v.r.proto}${v.r.port ? " " + v.r.port : ""}` : `policy ${d.policy}`;
+          P({ at: d.id, tag: "Firewall", short: "Firewall", tone: "ok", kind, title: `${d.name}: ${v.rule ? "rule #" + v.rule : "policy mặc định"} cho qua`, detail: rule, pk,
+            text: v.rule ? `Firewall so gói với danh sách rule từ trên xuống. Gói ${proto} ${IP.str(back ? r.pkt.dst : r.pkt.src)} → ${IP.str(back ? r.pkt.src : r.pkt.dst)} khớp rule #${v.rule} (${rule}) nên được cho qua.` : `Không rule nào khớp, firewall áp dụng policy mặc định ${d.policy}.`,
+            key: "Rule khớp đầu tiên quyết định; các rule phía dưới không được xét nữa." });
+        }
       }
       const rt = hp.route; const host = isHost(d) || (d.type === "switch" && !d.routing);
+      if (i > 0) { st.hop++; st.ttl--; }
       if (back) { // compact: one step per L3 hop
-        const path = [d.id]; let cur = d.id; hp.l2.forEach(x => { const n = keyDev(x.to); if (n && n.id !== cur) { path.push(n.id); cur = n.id; } });
-        S.push({ at: hp.nbr.dev.id, path, links: hp.l2.map(x => x.link), tag: "Chiều về", title: `${d.name} → ${hp.nbr.dev.name}`, detail: routeTxt(rt) + ` · ra ${hp.out.ifname}`, pk });
-        return;
+        const path = [d.id]; let cur = d.id; hp.l2.forEach(x => { const n = keyDevL(lab, x.to); if (n && n.id !== cur) { path.push(n.id); cur = n.id; } });
+        const fi = hp.l2.length ? frameInfo(lab, hp.l2[hp.l2.length - 1]) : {}; st.vlan = fi.vlan != null ? String(fi.vlan) : "—";
+        P({ at: hp.nbr.dev.id, path, links: hp.l2.map(x => x.link), tag: "Chiều về", short: "Về", kind, title: `Trả lời: ${d.name} → ${hp.nbr.dev.name}`, detail: routeTxt(rt) + ` · ra ${hp.out.ifname}`, pk,
+          text: `Gói trả lời tự tìm đường về theo bảng route của từng thiết bị. ${d.name} dùng ${routeTxt(rt)}, ra ${hp.out.ifname}.`, key: backKeyShown ? "" : "Mỗi chiều được định tuyến độc lập. Thiếu route chiều về cũng làm ping thất bại." });
+        backKeyShown = true; return;
       }
-      S.push({ at: d.id, tag: "Định tuyến", title: host ? (rt.nh != null ? "Khác mạng, gửi cho gateway" : "Cùng mạng, gửi thẳng") : `${d.name} tra bảng route`, detail: routeTxt(rt) + ` · ra ${hp.out.ifname}`, pk });
-      S.push({ at: d.id, tag: "ARP", title: `Hỏi MAC của ${IP.str(hp.nh)}`, detail: `${hp.nbr.dev.name} ${hp.nbr.ifname} trả lời`, pk: "ARP" });
+      if (host) P({ at: d.id, tag: "Định tuyến", short: rt.nh != null ? "Gateway" : "Cùng mạng", kind, title: rt.nh != null ? "Khác mạng, gửi cho gateway" : "Cùng mạng, gửi thẳng", detail: routeTxt(rt) + ` · ra ${hp.out.ifname}`, pk,
+        text: rt.nh != null ? `${dIp} không thuộc mạng ${IP.str(hp.out.net)}/${hp.out.p} của ${d.name}, nên máy dùng default route và giao gói cho gateway ${IP.str(rt.nh)}.` : `${dIp} cùng mạng ${IP.str(hp.out.net)}/${hp.out.p} với ${d.name}, nên gửi thẳng, không cần qua router.`,
+        key: "Máy trạm chỉ tự quyết một việc: đích cùng mạng thì gửi thẳng, khác mạng thì giao cho gateway." });
+      else P({ at: d.id, tag: "Định tuyến", short: d.type === "firewall" ? "Định tuyến" : "Router", kind, title: `${d.name} tra bảng route`, detail: routeTxt(rt) + ` · ra ${hp.out.ifname}`, pk,
+        text: `${d.name} tìm route khớp dài nhất cho ${dIp}: ${routeTxt(rt)}. Gói đi ra ${hp.out.ifname}${rt.nh != null ? " tới next-hop " + IP.str(rt.nh) : ""}, TTL giảm 1 còn ${st.ttl}.`,
+        key: "Router chỉ chọn chặng kế tiếp; không thiết bị nào biết trước cả đường đi." });
+      P({ at: d.id, tag: "ARP", short: "ARP", kind: "arp", title: `ARP: ai giữ ${IP.str(hp.nh)}?`, detail: `${hp.nbr.dev.name} ${hp.nbr.ifname} trả lời`, pk: "ARP",
+        text: `Muốn đóng frame Ethernet phải biết MAC của ${IP.str(hp.nh)}. ${d.name} hỏi bằng ARP broadcast, ${hp.nbr.dev.name} (${hp.nbr.ifname}) trả lời MAC của mình và kết quả được lưu vào bảng ARP.`,
+        key: "ARP chỉ chạy trong một mạng LAN/VLAN; broadcast không đi qua router." });
       let cur = d.id;
       hp.l2.forEach(x => {
-        const n = keyDev(x.to); if (!n || n.id === cur) return; const fi = frameInfo(x);
+        const n = keyDevL(lab, x.to); if (!n || n.id === cur) return; const fi = frameInfo(lab, x);
+        st.vlan = fi.vlan != null ? String(fi.vlan) : "—";
         const lbl = fi.vlan != null ? `VLAN ${fi.vlan}${fi.tagged ? " · tag" : ""}` : pk;
         const isSw = n.type === "switch" && n.id !== hp.nbr.dev.id;
-        S.push({ at: n.id, path: [cur, n.id], links: [x.link], tag: "Lớp 2", title: isSw ? `${n.name} chuyển frame${fi.vlan != null ? " trong VLAN " + fi.vlan : ""}` : `Tới ${n.name}`, detail: fi.vlan != null ? (fi.tagged ? `802.1Q tag ${fi.vlan} trên trunk` : `untagged, VLAN ${fi.vlan}`) : (isSw ? "" : `${hp.nbr.ifname} ${IP.str(hp.nbr.ip)}`), pk: lbl });
+        if (isSw) P({ at: n.id, path: [cur, n.id], links: [x.link], tag: "Lớp 2", short: "Switch", kind, title: `${n.name} chuyển frame${fi.vlan != null ? " trong VLAN " + fi.vlan : ""}`, detail: fi.vlan != null ? (fi.tagged ? `802.1Q tag ${fi.vlan} trên trunk` : `untagged, VLAN ${fi.vlan}`) : "", pk: lbl,
+          text: fi.tagged ? `Frame đi trên trunk mang tag 802.1Q VLAN ${fi.vlan}. ${n.name} đọc tag, tra bảng MAC của VLAN ${fi.vlan} rồi chuyển tiếp.` : `Frame vào port access thuộc VLAN ${fi.vlan ?? 1}, không mang tag. ${n.name} tra bảng MAC của VLAN đó để chọn port ra.`,
+          key: "Switch không đọc IP. Nó chuyển frame theo MAC, và mỗi VLAN có bảng MAC riêng." });
+        else P({ at: n.id, path: [cur, n.id], links: [x.link], tag: "Lớp 2", short: n.type === "router" ? "Router" : n.type === "firewall" ? "Firewall" : "Tới", kind, title: `Tới ${n.name}`, detail: fi.vlan != null ? (fi.tagged ? `802.1Q tag ${fi.vlan} trên trunk` : `untagged, VLAN ${fi.vlan}`) : `${hp.nbr.ifname} ${IP.str(hp.nbr.ip)}`, pk: lbl,
+          text: fi.tagged ? `Frame tới ${hp.nbr.ifname} qua trunk; tag VLAN ${fi.vlan} đưa nó vào đúng subinterface ${hp.nbr.ifname}.` : `Frame tới cổng ${hp.nbr.ifname} (${IP.str(hp.nbr.ip)}). MAC đích là của ${n.name} nên nó nhận gói để xử lý tiếp.`, key: "" });
         cur = n.id;
       });
     });
   };
   walkSteps(r.fwd, false);
-  if (r.fwd.ok && r.fwd.at !== r.src) S.push({ at: r.fwd.at.id, tag: "Tới đích", tone: "ok", title: `${r.fwd.at.name} nhận gói`, detail: r.pkt.proto === "tcp" ? (tcpOpen ? `port ${r.pkt.dport} đang mở` : `port ${r.pkt.dport} đóng, trả RST`) : "gửi echo-reply", pk: proto });
+  if (r.fwd.ok && r.fwd.at !== r.src) {
+    const name = r.fwd.at.name;
+    P({ at: r.fwd.at.id, tag: "Tới đích", short: "Tới đích", tone: "ok", kind: "req", title: `${name} nhận gói`, detail: tcp ? (tcpOpen ? `port ${r.pkt.dport} đang mở` : `port ${r.pkt.dport} đóng, trả RST`) : "gửi echo reply", pk: proto,
+      text: tcp ? (tcpOpen ? `Port ${r.pkt.dport} đang mở nên ${name} trả SYN-ACK để tiếp tục bắt tay TCP.` : `Không dịch vụ nào nghe port ${r.pkt.dport} nên ${name} trả RST: mạng thông nhưng dịch vụ đóng.`) : `IP đích khớp với ${name}. Máy nhận echo request và gửi echo reply ngược về ${sIp}.`, key: "" });
+    st.ttl = r.fwd.at.type === "router" && r.fwd.at.os === "ios" ? 255 : 64; st.hop = 0;
+  }
   if (r.back) walkSteps(r.back, true);
-  if (okAll) S.push({ at: r.src.id, tag: "Kết quả", tone: r.pkt.proto === "tcp" && !tcpOpen ? "warn" : "ok", title: r.pkt.proto === "tcp" ? (tcpOpen ? "Kết nối thành công ✓" : "Mạng thông, port đóng") : "Ping thông ✓", detail: `${r.fwd.hops.length} chặng đi · ${r.back.hops.length} chặng về`, pk: "✓" });
-  else if (fail) {
+  if (okAll) {
+    st.res = tcp && !tcpOpen ? "port đóng" : "thông";
+    P({ at: r.src.id, tag: "Kết quả", short: "Kết quả", tone: tcp && !tcpOpen ? "warn" : "ok", kind: "ok", title: tcp ? (tcpOpen ? "Kết nối thành công ✓" : "Mạng thông, port đóng") : "Ping thông ✓", detail: `${r.fwd.hops.length} chặng đi · ${r.back.hops.length} chặng về`, pk: "✓",
+      text: `${r.fwd.hops.length} chặng đi, ${r.back.hops.length} chặng về.${tcp ? "" : ` Máy nguồn nhận echo reply với TTL ${st.ttl}.`}`, key: "Thông nghĩa là cả chiều đi lẫn chiều về đều tới nơi." });
+  } else if (fail) {
     let at = fail.at, why = fail.why;
     if (fail.code === "arp" && fail.egress) { // show the ARP broadcast flooding its L2 segment, then where it dies
       const net = r.net, seg = fail.egress.seg; const sk = Object.keys(net.adj).filter(k => k.startsWith("S:") && net.find(k) === seg);
       let best = []; sk.forEach(k => { const lp = l2path(net, fail.egress.key, k); if (lp.length > best.length) best = lp; });
       if (best.length) {
-        const path = [fail.at.id]; best.forEach(x => { const n = keyDev(x.to); if (n && n.id !== path[path.length - 1]) path.push(n.id); });
-        const fi = frameInfo(best[best.length - 1]); const last = devById(lab, path[path.length - 1]);
-        S.push({ at: last.id, path, links: best.map(x => x.link), tag: "ARP", title: `Broadcast ARP lan tới ${last.name}`, detail: `who-has ${IP.str(fail.nh)}${fi.vlan != null ? " · VLAN " + fi.vlan : ""}`, pk: "ARP" });
+        const path = [fail.at.id]; best.forEach(x => { const n = keyDevL(lab, x.to); if (n && n.id !== path[path.length - 1]) path.push(n.id); });
+        const fi = frameInfo(lab, best[best.length - 1]); const last = devById(lab, path[path.length - 1]); st.vlan = fi.vlan != null ? String(fi.vlan) : "—";
+        P({ at: last.id, path, links: best.map(x => x.link), tag: "ARP", short: "ARP", kind: "arp", title: `Broadcast ARP lan tới ${last.name}`, detail: `who-has ${IP.str(fail.nh)}${fi.vlan != null ? " · VLAN " + fi.vlan : ""}`, pk: "ARP",
+          text: `${fail.at.name} hỏi "ai giữ ${IP.str(fail.nh)}?" bằng broadcast. Broadcast lan khắp ${fi.vlan != null ? "VLAN " + fi.vlan : "mạng LAN"} nhưng không thiết bị nào giữ IP đó trả lời.`, key: "Broadcast chỉ lan trong một VLAN. Thiết bị ở VLAN khác không nghe thấy." });
         at = last; const touch = new Set(path); const w = net.linkWarn.find(x => x.lvl === "bad" && (() => { const l = lab.links.find(y => y.id === x.link); return l && (touch.has(l.a.dev) || touch.has(l.b.dev)); })());
         if (w) why = w.msg;
       }
     }
+    if (fail.code === "fw") st.fw = "chặn";
+    st.res = "lỗi";
     const T0 = { fw: "Firewall chặn", arp: "ARP không ai trả lời", unreach: "Không có route", nonet: "Không có route", drop: "Bị bỏ gói", off: "Thiết bị đang tắt", ttl: "Vòng lặp định tuyến" }[fail.code] || "Không thông";
-    S.push({ at: (fail.code === "arp" ? at : fail.at).id, tag: fail === r.back ? "Kẹt chiều về" : "Lỗi", tone: "bad", title: fail.code === "arp" ? `${T0} ✕` : `${fail.at.name}: ${T0} ✕`, detail: why, pk: "✕", fail: true });
+    P({ at: (fail.code === "arp" ? at : fail.at).id, tag: fail === r.back ? "Kẹt chiều về" : "Lỗi", short: "Lỗi", tone: "bad", kind: "bad", title: fail.code === "arp" ? `${T0} ✕` : `${fail.at.name}: ${T0} ✕`, detail: why, pk: "✕", fail: true,
+      text: why, key: FAIL_KEY[fail.code] || "" });
   }
   return S;
 }
+/* ---------- shared drawer: trail + focus ring + packet on any lab svg ---------- */
+function drawWalk(o) { // o: {svg, layer, lab, steps, i, animate, alive()}
+  const { svg, layer, lab, steps, i } = o; if (!layer) return; const s = steps[i]; if (!s) return;
+  const NS = "http://www.w3.org/2000/svg"; const mk = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+  layer.innerHTML = "";
+  const used = new Map(), cur = new Set(s.links || []), onpath = new Set();
+  steps.slice(0, i + 1).forEach(x => { (x.links || []).forEach(l => used.set(l, x.kind === "rep" ? "back" : "")); if (x.at) onpath.add(x.at); (x.path || []).forEach(p => onpath.add(p)); (x.focus || []).forEach(p => onpath.add(p)); });
+  used.forEach((cls, id) => { const l = lab.links.find(y => y.id === id); if (!l) return; const A = devById(lab, l.a.dev), B = devById(lab, l.b.dev); if (!A || !B) return; layer.append(mk("line", { class: "trail " + cls + (cur.has(id) ? " cur" : ""), x1: A.x, y1: A.y + ISO_Y, x2: B.x, y2: B.y + ISO_Y })); });
+  svg.querySelectorAll(".node").forEach(n => { n.classList.toggle("onpath", onpath.has(n.dataset.dev)); n.classList.toggle("focus", n.dataset.dev === s.at); });
+  svg.classList.toggle("walking", true);
+  (s.focus || []).forEach(id => { const d = devById(lab, id); if (d && id !== s.at) layer.append(mk("ellipse", { class: "focus-ring soft", cx: d.x, cy: d.y + ISO_Y, rx: 46, ry: 24 })); });
+  const at = devById(lab, s.at); if (!at) return;
+  layer.append(mk("ellipse", { class: "focus-ring" + (s.tone ? " " + s.tone : ""), cx: at.x, cy: at.y + ISO_Y, rx: 48, ry: 25 }));
+  if (!s.pk) return; // note steps: no packet
+  const g = mk("g", { class: "pkt-g k-" + (s.kind || "req") });
+  g.append(mk("circle", { class: "pkt-dot", r: 8 }));
+  const label = s.pk; const w = Math.max(30, [...label].length * 6.8 + 16);
+  g.append(mk("rect", { class: "pkt-tag", x: -w / 2, y: -36, width: w, height: 19, rx: 9.5 }));
+  const tx = mk("text", { class: "pkt-txt", y: -22.5, "text-anchor": "middle" }); tx.textContent = label; g.append(tx);
+  layer.append(g);
+  const pts = (s.path || [s.at]).map(id => devById(lab, id)).filter(Boolean);
+  const place = p => g.setAttribute("transform", `translate(${p.x},${p.y + ISO_Y - 26})`);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!o.animate || pts.length < 2 || reduce) { place(pts[pts.length - 1]); return; }
+  const segMs = Math.min(750, 1200 / (pts.length - 1)); let k = 0, t0 = performance.now(); place(pts[0]);
+  const ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  const step = now => { if (!o.alive()) return; const a = pts[k], b = pts[k + 1]; const t = Math.min(1, (now - t0) / segMs), e = ease(t); place({ x: a.x + (b.x - a.x) * e, y: a.y + (b.y - a.y) * e }); if (t >= 1) { k++; t0 = now; if (k >= pts.length - 1) return; } requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+/* ---------- design-mode player under the canvas ---------- */
 function startSteps(r, okAll, fail, mode, tcpOpen) {
   stopSteps(true);
-  Stepper.steps = buildSteps(r, okAll, fail, mode, tcpOpen); Stepper.ok = okAll; Stepper.i = 0; Stepper.active = true;
+  Stepper.steps = buildSteps(r, okAll, fail, mode, tcpOpen, Lab.cur); Stepper.ok = okAll; Stepper.i = 0; Stepper.active = true;
   $("#canvasWrap").classList.add("stepping"); $("#stepper").hidden = false; $("#stAsk").hidden = okAll;
   const dots = $("#stDots"); dots.innerHTML = ""; Stepper.steps.forEach((s, i) => dots.append(h("button", { type: "button", class: "st-dot" + (s.tone ? " " + s.tone : ""), "aria-label": "Bước " + (i + 1), onclick: () => { pauseSteps(); goStep(i); } })));
   const wrap = $("#canvasWrap"), rc = wrap.getBoundingClientRect(), sb = $("#stepper").getBoundingClientRect(); const top = ($(".topbar") || { offsetHeight: 0 }).offsetHeight + 8; if (rc.top < top || sb.bottom > innerHeight) window.scrollTo({ top: Math.max(0, scrollY + rc.top - top), behavior: "smooth" });
@@ -1951,7 +2352,7 @@ function startSteps(r, okAll, fail, mode, tcpOpen) {
 }
 function stopSteps(keepUi) {
   clearTimeout(Stepper.timer); Stepper.playing = false; Stepper.anim++; Stepper.active = false;
-  if (!keepUi) { const st = $("#stepper"); if (st) st.hidden = true; $("#canvasWrap").classList.remove("stepping"); const l = $("#pktLayer"); if (l) l.innerHTML = ""; $$("#labsvg .node").forEach(n => n.classList.remove("onpath", "focus")); }
+  if (!keepUi) { const st = $("#stepper"); if (st) st.hidden = true; $("#canvasWrap").classList.remove("stepping"); const l = $("#pktLayer"); if (l) l.innerHTML = ""; $$("#labsvg .node").forEach(n => n.classList.remove("onpath", "focus")); const sv = $("#labsvg"); if (sv) sv.classList.remove("walking"); }
 }
 function playSteps() { Stepper.playing = true; $("#stPlay").innerHTML = "❚❚"; $("#stPlay").setAttribute("aria-label", "Tạm dừng"); tick(); }
 function pauseSteps() { Stepper.playing = false; clearTimeout(Stepper.timer); $("#stPlay").innerHTML = "▶"; $("#stPlay").setAttribute("aria-label", "Chạy tiếp"); }
@@ -1966,31 +2367,8 @@ function goStep(i) {
   drawStep(true);
 }
 function drawStep(animateMove) {
-  const layer = $("#pktLayer"); if (!layer || !Stepper.active) return; const lab = Lab.cur; const s = Stepper.steps[Stepper.i]; if (!s) return;
-  const my = ++Stepper.anim; const NS = "http://www.w3.org/2000/svg"; const mk = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
-  layer.innerHTML = "";
-  // trail: every link used up to this step
-  const used = new Set(), cur = new Set(s.links || []), onpath = new Set();
-  Stepper.steps.slice(0, Stepper.i + 1).forEach(x => { (x.links || []).forEach(l => used.add(l)); onpath.add(x.at); (x.path || []).forEach(p => onpath.add(p)); });
-  used.forEach(id => { const l = lab.links.find(y => y.id === id); if (!l) return; const A = devById(lab, l.a.dev), B = devById(lab, l.b.dev); if (!A || !B) return; layer.append(mk("line", { class: "trail" + (cur.has(id) ? " cur" : "") + (Stepper.steps[Stepper.i].tag === "Chiều về" || Stepper.steps.slice(0, Stepper.i + 1).some(x => x.tag === "Chiều về" && (x.links || []).includes(id)) ? " back" : ""), x1: A.x, y1: A.y, x2: B.x, y2: B.y })); });
-  $$("#labsvg .node").forEach(n => { n.classList.toggle("onpath", onpath.has(n.dataset.dev)); n.classList.toggle("focus", n.dataset.dev === s.at); });
-  const at = devById(lab, s.at); if (!at) return;
-  layer.append(mk("circle", { class: "focus-ring" + (s.tone ? " " + s.tone : ""), cx: at.x, cy: at.y, r: 34 }));
-  // packet
-  const g = mk("g", { class: "pkt-g" + (s.tone === "bad" ? " bad" : s.pk === "ARP" ? " arp" : "") });
-  g.append(mk("circle", { class: "pkt-dot", r: 8 }));
-  const label = s.pk || ""; const w = Math.max(30, [...label].length * 6.6 + 14);
-  g.append(mk("rect", { class: "pkt-tag", x: -w / 2, y: -34, width: w, height: 18, rx: 9 }));
-  const tx = mk("text", { class: "pkt-txt", y: -21.5, "text-anchor": "middle" }); tx.textContent = label; g.append(tx);
-  layer.append(g);
-  const pts = (s.path || [s.at]).map(id => devById(lab, id)).filter(Boolean); const off = { x: 0, y: -2 };
-  const place = p => g.setAttribute("transform", `translate(${p.x + off.x},${p.y + off.y})`);
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (!animateMove || pts.length < 2 || reduce) { place(pts[pts.length - 1]); return; }
-  const segMs = Math.min(700, 1100 / (pts.length - 1)); let k = 0, t0 = performance.now(); place(pts[0]);
-  const ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-  const step = now => { if (my !== Stepper.anim) return; const a = pts[k], b = pts[k + 1]; const t = Math.min(1, (now - t0) / segMs), e = ease(t); place({ x: a.x + (b.x - a.x) * e, y: a.y + (b.y - a.y) * e }); if (t >= 1) { k++; t0 = now; if (k >= pts.length - 1) return; } requestAnimationFrame(step); };
-  requestAnimationFrame(step);
+  if (!Stepper.active) return; const my = ++Stepper.anim;
+  drawWalk({ svg: $("#labsvg"), layer: $("#pktLayer"), lab: Lab.cur, steps: Stepper.steps, i: Stepper.i, animate: animateMove, alive: () => my === Stepper.anim });
 }
 function demoRun() { // pick two hosts and show a packet walk
   const hosts = Lab.cur.devices.filter(d => isHost(d) && d.on); if (hosts.length < 2) { hint("Cần ít nhất 2 máy PC/Server để chạy thử."); return; }
@@ -2005,7 +2383,263 @@ function bindSteps() {
   $("#stPlay").onclick = () => { if (Stepper.playing) pauseSteps(); else { if (Stepper.i >= Stepper.steps.length - 1) goStep(0); playSteps(); } };
   $("#stClose").onclick = () => stopSteps();
   $("#stAsk").onclick = () => $("#pAsk").click();
+  $("#stSave").onclick = () => saveStepsToStory(Stepper.steps);
   $("#demoRun").onclick = demoRun;
+}
+
+/* ================= ISOMETRIC DEVICE ART ================= */
+const ISO_T = { router: { a: 21, h: 11, c: "blue" }, switch: { a: 27, h: 7, c: "green" }, firewall: { a: 20, h: 24, c: "orange" }, server: { a: 15, h: 36, c: "purple" }, pc: { a: 19, h: 4, c: "cream" } };
+function isoFaces(a, h, gy) {
+  const t = gy - h;
+  return { t, top: `0,${t - a / 2} ${a},${t} 0,${t + a / 2} ${-a},${t}`, left: `${-a},${t} 0,${t + a / 2} 0,${gy + a / 2} ${-a},${gy}`, right: `${a},${t} 0,${t + a / 2} 0,${gy + a / 2} ${a},${gy}` };
+}
+const glyphOf = t => ICONS[t].replace(/^<[^>]*class="ico-bg"[^>]*\/>/, "");
+function isoArt(type) {
+  const T = ISO_T[type] || ISO_T.pc; const gy = ISO_Y, a = T.a, hh = T.h; const P = isoFaces(38, 6, ISO_Y + 6); const F = isoFaces(a, hh, gy);
+  let s = `<g class="iso-plat"><polygon class="f-l" points="${P.left}"/><polygon class="f-r" points="${P.right}"/><polygon class="f-t" points="${P.top}"/></g>`;
+  s += `<g class="iso-dev c-${T.c}"><polygon class="f-l" points="${F.left}"/><polygon class="f-r" points="${F.right}"/><polygon class="f-t" points="${F.top}"/>`;
+  const line = (x1, y1, x2, y2) => `<path class="f-ln" d="M${x1} ${y1}L${x2} ${y2}"/>`;
+  if (type === "switch") for (let k = 1; k <= 5; k++) { const u = k / 6; s += `<circle class="f-led${k === 2 ? " on" : ""}" cx="${a * (1 - u)}" cy="${gy - hh / 2 + a / 2 * u}" r="1.3"/>`; }
+  if (type === "server") { for (let k = 1; k <= 3; k++) { const y = hh * k / 4; s += line(-a, gy - y, 0, gy + a / 2 - y); } s += `<circle class="f-led on" cx="${a * .3}" cy="${gy - hh * .78 + a / 2 * .7}" r="1.5"/><circle class="f-led" cx="${a * .3}" cy="${gy - hh * .53 + a / 2 * .7}" r="1.5"/>`; }
+  if (type === "firewall") { for (let k = 1; k <= 2; k++) { const y = hh * k / 3; s += line(-a, gy - y, 0, gy + a / 2 - y) + line(0, gy + a / 2 - y, a, gy - y); } [[.5, 0], [.25, 1], [.75, 1], [.5, 2]].forEach(([u, b]) => { const y0 = hh * b / 3, y1 = hh * (b + 1) / 3; s += line(-a * (1 - u), gy + a / 2 * u - y0, -a * (1 - u), gy + a / 2 * u - y1) + line(a * (1 - u), gy + a / 2 * u - y0, a * (1 - u), gy + a / 2 * u - y1); }); }
+  if (type === "pc") { // laptop: keyboard + screen on the back-right edge
+    const k = isoFaces(a * .62, 0, F.t + 0); s += `<polygon class="f-kb" points="${k.top}"/>`;
+    const H = 25, p = [[0, F.t - a / 2], [a, F.t], [a, F.t - H], [0, F.t - a / 2 - H]]; const c = [a / 2, F.t - a / 4 - H / 2];
+    s += `<polygon class="f-scr" points="${p.map(q => q.join(",")).join(" ")}"/><polygon class="f-disp" points="${p.map(q => [(c[0] + (q[0] - c[0]) * .8).toFixed(1), (c[1] + (q[1] - c[1]) * .78).toFixed(1)].join(",")).join(" ")}"/>`;
+  } else s += `<g class="f-gl" transform="translate(0 ${F.t}) matrix(.7071 .3536 -.7071 .3536 0 0) scale(${(a / 27).toFixed(3)})">${glyphOf(type)}</g>`;
+  return s + `</g>`;
+}
+function isoNodeSVG(d, cls) {
+  const name = short(d.name || "(chưa đặt tên)", 22); const w = [...name].length * 7.4 + 22; const ip = primaryIP(d);
+  return `<g class="node ${cls || ""}" data-dev="${d.id}" transform="translate(${d.x},${d.y})"><title>${esc(d.name)} · ${DEV_TYPES[d.type].label}${d.on ? "" : " (tắt)"}</title>${isoArt(d.type)}<rect class="n-pill" x="${-w / 2}" y="38" width="${w}" height="22" rx="11"/><text class="n-label" y="53.5" text-anchor="middle">${esc(name)}</text>${ip ? `<text class="n-sub" y="74" text-anchor="middle">${esc(ip)}</text>` : ""}</g>`;
+}
+function linksSVG(lab, opts = {}) {
+  let s = "";
+  for (const l of lab.links) {
+    const A = devById(lab, l.a.dev), B = devById(lab, l.b.dev); if (!A || !B) continue; const pa = portById(A, l.a.port), pb = portById(B, l.b.port);
+    const cls = "link" + (isTrunkLink(lab, l) ? " trunk" : "") + (l.up ? "" : " down") + (l.id === opts.sel ? " sel" : "");
+    const ay = A.y + ISO_Y, by = B.y + ISO_Y; const dx = B.x - A.x, dy = by - ay, len = Math.hypot(dx, dy) || 1, ux = dx / len, uy = dy / len, off = Math.min(66, len / 2 - 10);
+    s += `<g data-link="${l.id}"><line class="${cls}" x1="${A.x}" y1="${ay}" x2="${B.x}" y2="${by}"/>${opts.hit ? `<line class="link-hit" x1="${A.x}" y1="${ay}" x2="${B.x}" y2="${by}"><title>${esc(A.name + " " + pa.name + " ↔ " + B.name + " " + pb.name)}</title></line>` : ""}`;
+    if (len > 170 && pa && pb) s += `<text class="p-label" x="${A.x + ux * off}" y="${ay + uy * off - 5}" text-anchor="middle">${esc(pa.name)}</text><text class="p-label" x="${B.x - ux * off}" y="${by - uy * off - 5}" text-anchor="middle">${esc(pb.name)}</text>`;
+    if (!l.up) s += `<text class="p-label down-t" x="${(A.x + B.x) / 2}" y="${(ay + by) / 2 + 3}" text-anchor="middle">✕ down</text>`;
+    s += `</g>`;
+  }
+  return s;
+}
+
+/* ================= STORIES (bài trình chiếu) ================= */
+const Present = { storyId: null, i: 0, playing: false, timer: null, anim: 0, cam: 0, open: new Set() };
+const labStories = l => (l.stories = Array.isArray(l.stories) ? l.stories : []);
+function curStory() { const st = labStories(Lab.cur); return st.find(s => s.id === Present.storyId) || st[0] || null; }
+function storyFromSim(lab, src, dst, proto = "icmp", port = 0) {
+  const s = devById(lab, src) || lab.devices.find(d => d.name === src); if (!s) return [];
+  const r = simulate(lab, s.id, dst, proto, port); if (r.err) return [];
+  const okAll = r.fwd.ok && r.back && r.back.ok; const fail = !r.fwd.ok ? r.fwd : (r.back && !r.back.ok ? r.back : null);
+  const tcpOpen = okAll && proto === "tcp" && r.dstDev && String(r.dstDev.listen || "").split(/[,\s]+/).includes(String(port));
+  return buildSteps(r, okAll, fail, proto === "tcp" ? "tcp" : "ping", tcpOpen, lab).map(x => ({ ...x }));
+}
+const noteStep = (o) => ({ tag: o.tag || "Ghi chú", short: o.short || "Ghi chú", title: o.title || "", text: o.text || "", key: o.key || "", at: o.at || null, focus: o.focus || [], tone: o.tone || "", m: o.m || null });
+function sampleStories(lab) {
+  const id = n => lab.devices.find(d => d.name === n).id;
+  const S1 = storyFromSim(lab, "PC-Kế-Toán-01", "SRV-Web-01");
+  const S2 = storyFromSim(lab, "PC-Kế-Toán-01", "198.51.100.53");
+  const S3 = storyFromSim(lab, "PC-Khách", "10.10.40.1");
+  const S4 = storyFromSim(lab, "DNS-Public", "10.10.30.10", "tcp", 22);
+  const S5 = storyFromSim(lab, "DNS-Public", "10.10.30.10", "tcp", 443);
+  return [
+    { id: "smp-intervlan", name: "Ping giữa hai VLAN", desc: "Theo gói ping từ phòng Kế toán tới máy chủ web, qua router-on-a-stick.", goals: ["Khi nào máy trạm gửi thẳng, khi nào gửi cho gateway", "ARP tìm MAC của chặng kế tiếp", "Trunk 802.1Q chở nhiều VLAN trên một dây", "Router-on-a-stick định tuyến giữa các VLAN", "Chiều về được định tuyến độc lập"],
+      steps: [noteStep({ tag: "Vấn đề", short: "Vấn đề", title: "Kế toán cần mở web nội bộ", text: "PC-Kế-Toán-01 ở VLAN 10 (10.10.10.0/24), SRV-Web-01 ở VLAN 30 (10.10.30.0/24). Hai VLAN là hai mạng IP khác nhau. Vậy gói ping đi đường nào?", key: "Khác VLAN là khác mạng IP, nên bắt buộc phải qua một thiết bị lớp 3.", at: id("PC-Kế-Toán-01"), focus: [id("SRV-Web-01")] }), ...S1] },
+    { id: "smp-internet", name: "Ra Internet qua firewall", desc: "Gói đi qua router lõi, firewall biên và ISP rồi quay về.", goals: ["Default route dẫn gói ra ngoài", "Firewall xét rule từ trên xuống", "Firewall stateful cho gói trả lời đi qua", "ISP cần route ngược về mạng nội bộ khi không có NAT"],
+      steps: [noteStep({ tag: "Vấn đề", short: "Vấn đề", title: "Máy kế toán cần hỏi DNS ngoài", text: "PC-Kế-Toán-01 ping DNS-Public 198.51.100.53 ngoài Internet. Gói phải đi qua R-Core.HN-01, FW-Biên và ISP-GW.", key: "Mỗi thiết bị trên đường chỉ quyết định chặng kế tiếp của nó.", at: id("PC-Kế-Toán-01"), focus: [id("FW-Biên"), id("DNS-Public")] }), ...S2] },
+    { id: "smp-vlan40", name: "Sự cố: PC-Khách mất mạng", desc: "Mô phỏng lỗi thật: VLAN 40 không được cho qua trunk.", goals: ["Đọc dấu hiệu lỗi ARP", "Kiểm tra allowed VLAN trên trunk", "Sửa đúng lệnh mà không xoá VLAN khác"],
+      steps: [noteStep({ tag: "Vấn đề", short: "Vấn đề", title: "Khách báo không vào được mạng", text: "PC-Khách (VLAN 40) không ping được gateway 10.10.40.1. Các phòng khác vẫn bình thường.", key: "Chỉ một VLAN hỏng thì nghi cấu hình VLAN/trunk trước khi nghi dây.", at: id("PC-Khách") }), ...S3,
+        noteStep({ tag: "Cách sửa", short: "Cách sửa", tone: "ok", title: "Thêm VLAN 40 vào trunk", text: "Trên SW-Tầng3: interface Gi1/0/8 → switchport trunk allowed vlan add 40. Sau đó ping lại từ PC-Khách để kiểm tra.", key: "Luôn dùng 'add'. Gõ 'allowed vlan 40' sẽ ghi đè cả danh sách và làm rớt VLAN 10, 20, 30.", at: id("SW-Tầng3"), focus: [id("R-Core.HN-01")] })] },
+    { id: "smp-ssh", name: "Firewall chặn SSH từ ngoài", desc: "Cùng một máy chủ: HTTPS vào được, SSH bị chặn.", goals: ["Policy mặc định drop", "Rule chỉ mở port cần thiết", "Phân biệt bị chặn (timeout) và port đóng (RST)"],
+      steps: [noteStep({ tag: "Vấn đề", short: "Vấn đề", title: "Mở web được nhưng SSH không vào", text: "Từ Internet, DNS-Public thử SSH (TCP 22) vào SRV-Web-01 rồi thử HTTPS (TCP 443). Hai kết quả khác nhau vì firewall.", key: "Firewall biên nên mở đúng port dịch vụ, còn lại để policy drop.", at: id("DNS-Public"), focus: [id("FW-Biên")] }), ...S4,
+        noteStep({ tag: "So sánh", short: "Thử 443", title: "Thử lại với HTTPS (TCP 443)", text: "Rule #2 cho phép any → 10.10.30.10 tcp 80,443, nên kết nối HTTPS sẽ đi qua.", key: "", at: id("FW-Biên") }), ...S5] }
+  ];
+}
+function saveStepsToStory(steps) {
+  if (!steps || !steps.length) { toast("Chạy ping trước để có các bước."); return; }
+  const list = labStories(Lab.cur); const copy = () => steps.map(x => ({ ...x }));
+  const put = s => { s.steps.push(...copy()); Present.storyId = s.id; saveLab(); renderStoryEditor(); toast(`Đã thêm ${steps.length} bước vào bài "${s.name}".`); };
+  const def = (steps[0].title || "Bài mới").replace(/ tới /, " → ").replace(/ gửi (ping|kết nối TCP \d+)/, " $1");
+  const inp = h("input", { class: "inp", value: def, spellcheck: "false" });
+  const mkNew = () => { const n = nfc(inp.value).trim() || "Bài mới"; closeModal(); const s = { id: uid("st"), name: n, desc: "", goals: [], steps: [] }; list.push(s); put(s); };
+  inp.addEventListener("keydown", e => { if (e.key === "Enter") mkNew(); });
+  const body = h("div", { style: { display: "grid", gap: "12px" } },
+    h("label", { class: "field" }, h("span", { text: "Tạo bài mới" }), h("div", { class: "row" }, h("div", { class: "grow" }, inp), h("button", { class: "btn primary", type: "button", text: "Tạo bài", onclick: mkNew }))),
+    list.length ? h("div", { class: "field" }, h("span", { text: "Hoặc thêm vào cuối bài có sẵn" }), h("div", { style: { display: "grid", gap: "6px" } }, ...list.map(s => h("button", { class: "btn", type: "button", style: { justifyContent: "space-between" }, onclick: () => { closeModal(); put(s); } }, h("span", { text: s.name }), h("span", { class: "tiny muted", text: s.steps.length + " bước" }))))) : null);
+  modal(`Lưu ${steps.length} bước thành bài trình chiếu`, body);
+}
+
+/* ================= PRESENT MODE ================= */
+const LAB_MODE_KEY = "netops.labmode";
+function labMode() { let m = "present"; try { m = localStorage.getItem(LAB_MODE_KEY) || "present"; } catch (_) {} return m === "design" ? "design" : "present"; }
+function renderLabHead() {
+  if ($("#labDesign").hidden) return;
+  $("#lpCrumb").textContent = "Thiết kế lab"; $("#lpTitle").textContent = Lab.cur.name; $("#lpDesc").textContent = "Kéo thả thiết bị · nối dây · ping thử · soạn bài trình chiếu";
+  const st = labStories(Lab.cur); $("#lpChips").innerHTML = ""; $("#lpChips").append(h("span", { class: "chip c-green", text: `${Lab.cur.devices.length} thiết bị` }), h("span", { class: "chip c-blue", text: `${Lab.cur.links.length} dây` }), h("span", { class: "chip c-purple", text: `${st.length} bài` }));
+}
+function setLabMode(m) {
+  try { localStorage.setItem(LAB_MODE_KEY, m); } catch (_) {}
+  $("#labPresent").hidden = m !== "present"; $("#labDesign").hidden = m !== "design";
+  $("#modePresent").setAttribute("aria-pressed", String(m === "present")); $("#modeDesign").setAttribute("aria-pressed", String(m === "design"));
+  if (m === "design") { pausePresent(); renderLabHead(); requestAnimationFrame(() => { fitView(); renderStoryEditor(); }); } else { stopSteps(); renderPresent(); }
+}
+const prog = () => { const m = Store.get("meta") || {}; return { p: m.prog || {}, g: m.goals || {} }; };
+const saveProg = debounce(() => { const m = Store.get("meta") || {}; Store.put("meta", { ...m, prog: Present._p || m.prog || {}, goals: Present._g || m.goals || {} }); }, 600);
+function markSeen(st, i) { const { p, g } = prog(); Present._p = Present._p || p; Present._g = Present._g || g; if ((Present._p[st.id] ?? -1) < i) { Present._p[st.id] = i; saveProg(); } }
+const storyDone = st => { const { p } = prog(); const pp = Present._p || p; return st.steps.length && (pp[st.id] ?? -1) >= st.steps.length - 1; };
+const FOLDER_C = ["green", "purple", "orange", "blue", "pink", "teal", "yellow"];
+const folderSVG = c => `<svg class="fold c-${c}" viewBox="0 0 24 20" aria-hidden="true"><path d="M1.5 4.5a2 2 0 0 1 2-2h5l2 2.2h10a2 2 0 0 1 2 2V16a2 2 0 0 1-2 2h-17a2 2 0 0 1-2-2z"/></svg>`;
+function renderTree() {
+  const box = $("#lpTree"); box.innerHTML = ""; let total = 0, done = 0;
+  Present.open.add(Lab.cur.id);
+  Lab.list.forEach((l, li) => {
+    const st = labStories(l); const dn = st.filter(storyDone).length; total += st.length; done += dn; const open = Present.open.has(l.id);
+    const head = h("button", { type: "button", class: "tr-folder" + (l === Lab.cur ? " cur" : ""), "aria-expanded": String(open), onclick: () => { if (open) Present.open.delete(l.id); else Present.open.add(l.id); if (l !== Lab.cur) { setCurLab(l); return; } renderTree(); } },
+      h("span", { class: "tr-car", text: open ? "▾" : "▸" }), h("span", { class: "tr-ico", html: folderSVG(FOLDER_C[li % FOLDER_C.length]) }), h("span", { class: "tr-name", text: `${String(li + 1).padStart(2, "0")}. ${l.name}` }), h("span", { class: "tr-cnt", text: `${dn}/${st.length}` }));
+    box.append(head);
+    if (open) {
+      const ul = h("div", { class: "tr-items" });
+      st.forEach(s => ul.append(h("button", { type: "button", class: "tr-item" + (l === Lab.cur && curStory() === s ? " on" : "") + (storyDone(s) ? " done" : ""), onclick: () => { if (l !== Lab.cur) { Present.storyId = s.id; setCurLab(l); } else openStory(s.id); } },
+        h("span", { class: "tr-doc", html: storyDone(s) ? "✓" : `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 1.5h5.5L13 5v9.5H4z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>` }), h("span", { text: s.name }))));
+      if (!st.length) ul.append(h("button", { type: "button", class: "tr-item muted", onclick: () => setLabMode("design"), text: "+ Soạn bài đầu tiên" }));
+      box.append(ul);
+    }
+  });
+  $("#lpCount").textContent = `${Lab.list.length} lab · ${total} bài`; $("#lpProg").textContent = `${done} / ${total}`;
+  const pk = $("#lpPick"); pk.innerHTML = ""; Lab.list.forEach(l => labStories(l).forEach(s => pk.append(h("option", { value: l.id + "|" + s.id, text: `${l.name} › ${s.name}`, selected: l === Lab.cur && curStory() === s })))); if (!pk.options.length) pk.append(h("option", { text: "Lab chưa có bài" }));
+}
+function openStory(id) { Present.storyId = id; Present.i = 0; pausePresent(); renderPresent(); }
+function renderPresent() {
+  if ($("#labPresent").hidden) return;
+  const st = curStory(); if (st) Present.storyId = st.id;
+  renderTree();
+  const li = Lab.list.indexOf(Lab.cur); const idx = st ? labStories(Lab.cur).indexOf(st) : -1;
+  $("#lpCrumb").textContent = `${String(li + 1).padStart(2, "0")}. ${Lab.cur.name}` + (st ? `  /  Bài ${idx + 1} / ${labStories(Lab.cur).length}` : "");
+  $("#lpTitle").textContent = st ? st.name : Lab.cur.name; $("#lpDesc").textContent = st ? (st.desc || "") : "Lab này chưa có bài trình chiếu.";
+  const chips = $("#lpChips"); chips.innerHTML = "";
+  if (st) { chips.append(h("span", { class: "chip c-yellow", html: `⏱ ${Math.max(1, Math.round(st.steps.length * 0.5))} phút` }), h("span", { class: "chip c-green", text: `${Lab.cur.devices.length} thiết bị` }), h("span", { class: "chip c-purple", text: `${st.steps.length} bước` })); }
+  $("#lpEmpty").hidden = !!(st && st.steps.length); $("#lpBody").hidden = !(st && st.steps.length);
+  renderStage(); if (!st || !st.steps.length) { $("#lpTrack").innerHTML = ""; $("#lpMetrics").innerHTML = ""; $("#lpGoals").innerHTML = ""; return; }
+  Present.i = Math.min(Present.i, st.steps.length - 1);
+  const tr = $("#lpTrack"); tr.innerHTML = ""; tr.style.setProperty("--n", st.steps.length);
+  st.steps.forEach((s, k) => tr.append(h("button", { type: "button", class: "trk" + (s.tone ? " " + s.tone : ""), onclick: () => { pausePresent(); goPresent(k); } }, h("span", { class: "trk-n", text: String(k + 1) }), h("span", { class: "trk-l", text: s.short || s.tag || "" }))));
+  const gl = $("#lpGoals"); gl.innerHTML = ""; const { g } = prog(); const gg = (Present._g || g)[st.id] || [];
+  (st.goals || []).forEach((t, k) => { const cb = h("input", { type: "checkbox", checked: !!gg[k], onchange: e => { Present._g = Present._g || prog().g; const arr = (Present._g[st.id] = (Present._g[st.id] || []).slice()); arr[k] = e.target.checked; saveProg(); } }); gl.append(h("label", { class: "goal" }, cb, h("span", { text: t }))); });
+  $("#lpGoalsBox").hidden = !(st.goals || []).length;
+  goPresent(Present.i);
+}
+function renderStage() {
+  const svg = $("#stagesvg"), lab = Lab.cur; if (!svg) return;
+  if (!lab.devices.length) { svg.innerHTML = ""; return; }
+  const xs = lab.devices.map(d => d.x), ys = lab.devices.map(d => d.y); let x0 = Math.min(...xs) - 80, x1 = Math.max(...xs) + 80, y0 = Math.min(...ys) - 70, y1 = Math.max(...ys) + 90;
+  if (x1 - x0 < 720) { const c = (x0 + x1) / 2; x0 = c - 360; x1 = c + 360; } if (y1 - y0 < 420) { const c = (y0 + y1) / 2; y0 = c - 210; y1 = c + 210; }
+  Present.full = [x0, y0, x1 - x0, y1 - y0]; Present.vb = null;
+  svg.setAttribute("viewBox", Present.full.join(" ")); svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+  svg.innerHTML = `<g>${linksSVG(lab)}</g><g>${lab.devices.map(d => isoNodeSVG(d, d.on ? "" : "off")).join("")}</g><g id="stageLayer"></g>`;
+}
+function goPresent(i, noAnim) {
+  const st = curStory(); if (!st || !st.steps.length) return;
+  Present.i = Math.max(0, Math.min(st.steps.length - 1, i)); const s = st.steps[Present.i]; const n = st.steps.length;
+  markSeen(st, Present.i);
+  $("#lpN").textContent = `BƯỚC ${Present.i + 1} / ${n}`; $("#lpStepN").textContent = `Bước ${Present.i + 1} / ${n}`;
+  const tag = $("#lpTag"); tag.textContent = s.tag || ""; tag.className = "chip " + (s.tone === "bad" ? "c-red" : s.tone === "ok" ? "c-green" : s.tone === "warn" ? "c-orange" : s.tag === "Vấn đề" ? "c-orange" : "c-purple");
+  $("#lpH").textContent = s.title || ""; $("#lpText").textContent = s.text || s.detail || "";
+  const mono = $("#lpMono"); mono.textContent = s.detail && s.text && s.detail !== s.text ? s.detail : ""; mono.hidden = !mono.textContent;
+  $("#lpKey").hidden = !s.key; $("#lpKeyT").textContent = s.key || "";
+  $("#lpPrev").disabled = Present.i === 0;
+  const nx = st.steps[Present.i + 1]; $("#lpNext").innerHTML = nx ? `<span>Tiếp: ${esc(nx.short || nx.tag || "")}</span><span aria-hidden="true">→</span>` : `<span>Hoàn thành</span><span aria-hidden="true">✓</span>`;
+  $$("#lpTrack .trk").forEach((b, k) => { b.classList.toggle("on", k === Present.i); b.classList.toggle("done", k < Present.i); });
+  const cur = $$("#lpTrack .trk")[Present.i]; if (cur) { const tr = $("#lpTrack"); const r = cur.getBoundingClientRect(), tr2 = tr.getBoundingClientRect(); if (r.left < tr2.left || r.right > tr2.right) tr.scrollLeft += r.left - tr2.left - tr2.width / 2 + r.width / 2; }
+  // metrics: carry the latest known values
+  let m = null; for (let k = Present.i; k >= 0 && !m; k--) m = st.steps[k].m; m = m || { hop: "—", vlan: "—", ttl: "—", fw: "—", res: "…" };
+  const M = [["hop", "CHẶNG L3", m.hop], ["vlan", "VLAN", m.vlan], ["ttl", "TTL", m.ttl], ["fw", "FIREWALL", m.fw], ["res", "KẾT QUẢ", m.res]];
+  $("#lpMetrics").innerHTML = M.map(([k, l, v]) => `<div class="met${k === "res" && v === "lỗi" || k === "fw" && v === "chặn" ? " bad" : k === "res" && v === "thông" ? " ok" : ""}"><span>${esc(l)}</span><b>${esc(String(v))}</b></div>`).join("");
+  stageCamera(s);
+  const my = ++Present.anim; drawWalk({ svg: $("#stagesvg"), layer: $("#stageLayer"), lab: Lab.cur, steps: st.steps, i: Present.i, animate: !noAnim, alive: () => my === Present.anim });
+}
+function stageCamera(s) { // on narrow screens, zoom the stage onto the devices this step is about
+  const svg = $("#stagesvg"); if (!svg || !Present.full) return; const r = svg.getBoundingClientRect(); if (!r.width) return;
+  let target = Present.full;
+  if (r.width < 700) {
+    const ids = [s.at, ...(s.path || []), ...(s.focus || [])].filter(Boolean); const ds = ids.map(id => devById(Lab.cur, id)).filter(Boolean);
+    if (ds.length) {
+      const asp = r.height / r.width; const xs = ds.map(d => d.x), ys = ds.map(d => d.y);
+      let w = Math.max(440, Math.max(...xs) - Math.min(...xs) + 220), hh = Math.max(w * asp, Math.max(...ys) - Math.min(...ys) + 200); w = Math.max(w, hh / asp); hh = w * asp;
+      const [fx, fy, fw, fh] = Present.full; w = Math.min(w, fw); hh = Math.min(hh, Math.max(fh, w * asp));
+      const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2 + 20;
+      const x = Math.max(fx, Math.min(fx + fw - w, cx - w / 2)), y = Math.max(fy, Math.min(fy + Math.max(fh, hh) - hh, cy - hh / 2));
+      target = [x, y, w, hh];
+    }
+  }
+  const from = Present.vb || target; Present.vb = target; const t0 = performance.now(); const my = ++Present.cam;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const step = now => { if (my !== Present.cam) return; const t = reduce ? 1 : Math.min(1, (now - t0) / 450), e = 1 - Math.pow(1 - t, 3); svg.setAttribute("viewBox", from.map((v, k) => (v + (target[k] - v) * e).toFixed(1)).join(" ")); if (t < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+function playPresent() { Present.playing = true; $("#lpPause").innerHTML = "❚❚ Tạm dừng"; tickPresent(); }
+function pausePresent() { Present.playing = false; clearTimeout(Present.timer); const b = $("#lpPause"); if (b) b.innerHTML = "▶ Tự chạy"; }
+function tickPresent() { clearTimeout(Present.timer); if (!Present.playing) return; Present.timer = setTimeout(() => { const st = curStory(); if (!Present.playing || !st) return; if (Present.i >= st.steps.length - 1) { pausePresent(); return; } goPresent(Present.i + 1); tickPresent(); }, 3600); }
+function bindPresent() {
+  $("#modePresent").onclick = () => setLabMode("present"); $("#modeDesign").onclick = () => setLabMode("design");
+  $("#lpPrev").onclick = () => { pausePresent(); goPresent(Present.i - 1); };
+  $("#lpNext").onclick = () => { const st = curStory(); if (st && Present.i >= st.steps.length - 1) { const all = labStories(Lab.cur); const k = all.indexOf(st); if (all[k + 1]) openStory(all[k + 1].id); else toast("Đã xong bài này ✓"); return; } pausePresent(); goPresent(Present.i + 1); };
+  $("#lpReplay").onclick = () => { goPresent(0); playPresent(); };
+  $("#lpPause").onclick = () => { if (Present.playing) pausePresent(); else { const st = curStory(); if (st && Present.i >= st.steps.length - 1) goPresent(0); playPresent(); } };
+  $("#lpPick").onchange = e => { const [lid, sid] = e.target.value.split("|"); const l = Lab.list.find(x => x.id === lid); if (!l) return; Present.storyId = sid; Present.i = 0; if (l !== Lab.cur) setCurLab(l); else renderPresent(); };
+  $("#lpToDesign").onclick = () => setLabMode("design");
+  document.addEventListener("keydown", e => {
+    if ((location.hash || "#home") !== "#lab" || $("#labPresent").hidden) return;
+    if (e.target.closest("input,textarea,select,[contenteditable]") || $("#modalRoot").children.length || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === "ArrowRight") { e.preventDefault(); $("#lpNext").click(); } else if (e.key === "ArrowLeft") { e.preventDefault(); $("#lpPrev").click(); }
+    else if (e.key === " ") { e.preventDefault(); $("#lpPause").click(); } else if (e.key === "r" || e.key === "R") $("#lpReplay").click();
+  });
+  new ResizeObserver(debounce(() => { if (!$("#labPresent").hidden) { const st = curStory(); if (st && st.steps.length) goPresent(Present.i, true); } }, 150)).observe($("#stagesvg"));
+}
+
+/* ================= STORY EDITOR (design mode) ================= */
+function renderStoryEditor() {
+  const box = $("#storyEd"); if (!box || $("#labDesign").hidden) return; box.innerHTML = ""; renderLabHead();
+  const list = labStories(Lab.cur); let st = list.find(s => s.id === Present.storyId) || list[0] || null; if (st) Present.storyId = st.id;
+  const top = h("div", { class: "row" });
+  const pick = h("select", { class: "inp", style: { width: "auto", minWidth: "200px", flex: "1", maxWidth: "360px" }, onchange: e => { Present.storyId = e.target.value; renderStoryEditor(); } });
+  list.forEach(s => pick.append(h("option", { value: s.id, text: s.name, selected: s === st }))); if (!list.length) pick.append(h("option", { text: "(chưa có bài)" }));
+  top.append(pick,
+    h("button", { class: "btn", type: "button", text: "+ Bài mới", onclick: () => promptBox("Bài mới", "Tên bài", "Bài " + (list.length + 1), n => { const s = { id: uid("st"), name: n, desc: "", goals: [], steps: [] }; list.push(s); Present.storyId = s.id; saveLab(); renderStoryEditor(); }) }),
+    st ? h("button", { class: "btn", type: "button", text: "Đổi tên", onclick: () => promptBox("Đổi tên bài", "Tên bài", st.name, n => { st.name = n; saveLab(); renderStoryEditor(); }) }) : null,
+    st ? h("button", { class: "btn danger", type: "button", text: "Xoá bài", onclick: () => confirmBox(`Xoá bài "${st.name}"?`, "Xoá", () => { list.splice(list.indexOf(st), 1); Present.storyId = null; saveLab(); renderStoryEditor(); }) }) : null,
+    st ? h("button", { class: "btn primary", type: "button", text: "▶ Trình chiếu", onclick: () => { Present.i = 0; setLabMode("present"); } }) : null);
+  box.append(top);
+  if (!st) { box.append(h("p", { class: "muted small", text: "Bấm \"+ Bài mới\", hoặc chạy ping rồi bấm \"＋ Lưu vào bài\" ở thanh xem từng bước." })); return; }
+  box.append(h("div", { class: "fgrid", style: { gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))" } },
+    fld("Mô tả ngắn", txtInput(st.desc, v => { st.desc = v; saveLab(); }, "inp", "Một câu giới thiệu bài")),
+    fld("Bạn sẽ học (mỗi dòng một ý)", (() => { const t = h("textarea", { class: "inp", rows: 3 }); t.value = (st.goals || []).join("\n"); t.addEventListener("input", () => { st.goals = t.value.split("\n").map(x => x.trim()).filter(Boolean); saveLab(); }); return t; })())));
+  const ol = h("div", { class: "sted-list" });
+  st.steps.forEach((s, k) => {
+    const card = h("details", { class: "sted" });
+    const sum = h("summary", null, h("span", { class: "trk-n", text: String(k + 1) }), h("span", { class: "chip " + (s.tone === "bad" ? "c-red" : s.tone === "ok" ? "c-green" : "c-purple"), text: s.tag || "Bước" }), h("span", { class: "sted-t", text: s.title || "(chưa có tiêu đề)" }));
+    const mv = (d) => { const j = k + d; if (j < 0 || j >= st.steps.length) return; [st.steps[k], st.steps[j]] = [st.steps[j], st.steps[k]]; saveLab(); renderStoryEditor(); };
+    const tools = h("span", { class: "sted-tools" }, h("button", { class: "btn ghost sm", type: "button", text: "↑", "aria-label": "Lên", onclick: e => { e.preventDefault(); mv(-1); } }), h("button", { class: "btn ghost sm", type: "button", text: "↓", "aria-label": "Xuống", onclick: e => { e.preventDefault(); mv(1); } }), h("button", { class: "btn ghost sm", type: "button", text: "✕", "aria-label": "Xoá bước", onclick: e => { e.preventDefault(); st.steps.splice(k, 1); saveLab(); renderStoryEditor(); } }));
+    sum.append(tools); card.append(sum);
+    const devOpts = [["", "(không)"], ...Lab.cur.devices.map(d => [d.id, d.name])];
+    card.append(h("div", { class: "sted-b" },
+      h("div", { class: "fgrid", style: { gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))" } },
+        fld("Nhãn", txtInput(s.tag, v => { s.tag = v; saveLab(); sum.querySelector(".chip").textContent = v || "Bước"; })),
+        fld("Tên ngắn (thanh bước)", txtInput(s.short, v => { s.short = v; saveLab(); })),
+        fld("Thiết bị nổi bật", sel(devOpts, s.at || "", v => { s.at = v || null; saveLab(); }))),
+      fld("Tiêu đề", txtInput(s.title, v => { s.title = v; saveLab(); sum.querySelector(".sted-t").textContent = v || "(chưa có tiêu đề)"; })),
+      fld("Giải thích", (() => { const t = h("textarea", { class: "inp", rows: 3 }); t.value = s.text || ""; t.addEventListener("input", () => { s.text = t.value; saveLab(); }); return t; })()),
+      fld("Ý chính", txtInput(s.key, v => { s.key = v; saveLab(); }))));
+    ol.append(card);
+  });
+  box.append(ol);
+  box.append(h("div", { class: "row" },
+    h("button", { class: "btn", type: "button", text: "+ Bước ghi chú", onclick: () => { const at = Lab.sel && Lab.sel.kind === "dev" ? Lab.sel.id : null; st.steps.push(noteStep({ title: "Ghi chú mới", at })); saveLab(); renderStoryEditor(); const all = $$("#storyEd details.sted"); if (all.length) all[all.length - 1].open = true; } }),
+    h("button", { class: "btn", type: "button", text: "+ Thêm các bước từ ping vừa chạy", onclick: () => { if (!Stepper.steps.length) { toast("Chạy ping/traceroute/tcp ở khung bên dưới trước."); return; } saveStepsToStory(Stepper.steps); } }),
+    h("span", { class: "hint", text: "Mẹo: chọn một thiết bị trên sơ đồ trước khi thêm ghi chú để làm nổi nó." })));
 }
 
 /* ================= PLAYBOOKS & CHEAT SHEET ================= */
@@ -2647,9 +3281,18 @@ const UI_ICON = {
 };
 const svgI = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${UI_ICON[k]}</svg>`;
 const VIEWS = ["home", "lab", "playbook", "inventory", "log", "renew", "tools"];
+const PASTEL = { home: "cream", lab: "blue", playbook: "purple", inventory: "teal", log: "pink", renew: "orange", tools: "green" };
+function heroArt() {
+  const N = [["pc", 70, 150], ["switch", 180, 95], ["router", 290, 150], ["firewall", 400, 95]];
+  const pts = N.map(([, x, y]) => `${x},${y + ISO_Y}`).join(" ");
+  const path = "M" + N.map(([, x, y]) => `${x} ${y + ISO_Y - 26}`).join("L");
+  return `<polyline points="${pts}" fill="none" class="hero-link"/>${N.map(([t, x, y]) => `<g class="node" transform="translate(${x},${y})">${isoArt(t)}</g>`).join("")}
+  <g class="pkt-g k-req"><circle class="pkt-dot" r="7"/><animateMotion dur="4.8s" repeatCount="indefinite" path="${path}" keyPoints="0;1;1" keyTimes="0;.75;1" calcMode="linear"/></g>
+  <g class="pkt-g k-rep" opacity="0"><set attributeName="opacity" to="1" begin="2.4s"/><circle class="pkt-dot" r="7"/><animateMotion dur="4.8s" begin="2.4s" repeatCount="indefinite" path="${path}" keyPoints="1;0;0" keyTimes="0;.75;1" calcMode="linear"/></g>`;
+}
 function decorate() {
   $$("#tabs .tab").forEach(a => { const v = a.dataset.view; a.style.setProperty("--mc", `var(--c-${v})`); a.insertAdjacentHTML("afterbegin", svgI(v)); });
-  VIEWS.forEach(v => { const sec = $("#view-" + v); sec.style.setProperty("--mc", `var(--c-${v})`); const hd = sec.querySelector(".view-head>div:first-child"); if (hd) { const inner = h("div"); while (hd.firstChild) inner.append(hd.firstChild); hd.append(h("div", { class: "vh-ico", html: svgI(v) }), inner); } });
+  VIEWS.forEach(v => { const sec = $("#view-" + v); sec.style.setProperty("--mc", `var(--c-${v})`); sec.style.setProperty("--pc", `var(--p-${PASTEL[v]})`); const hd = sec.querySelector(".view-head>div:first-child"); if (hd) { const inner = h("div"); while (hd.firstChild) inner.append(hd.firstChild); hd.append(h("div", { class: "vh-ico", html: svgI(v) }), inner); } });
   const tIco = { t4: "calc", t6: "six", tVlsm: "split", tPort: "port", tMac: "mac", tLog: "ai" };
   Object.entries(tIco).forEach(([id, ic]) => { const h2 = $("#" + id).parentElement.querySelector(".panel-h h2"); h2.insertAdjacentHTML("afterbegin", `<span class="pi">${svgI(ic)}</span>`); });
   const pingH = $("#pRun").closest(".panel").querySelector(".panel-h h2"); pingH.insertAdjacentHTML("afterbegin", `<span class="pi">${svgI("ping")}</span>`);
@@ -2657,15 +3300,15 @@ function decorate() {
 }
 function renderHome() {
   const hr = new Date().getHours(); const greet = hr < 11 ? "Chào buổi sáng" : hr < 14 ? "Chào buổi trưa" : hr < 18 ? "Chào buổi chiều" : "Chào buổi tối";
-  $("#heroHi").textContent = `${greet}, ca trực hôm nay thế nào?`;
+  $("#heroHi").textContent = `${greet}, ca trực hôm nay thế nào?`; if (!$("#heroArt").innerHTML.trim()) $("#heroArt").innerHTML = heroArt();
   const d = new Date(); $("#heroClock").textContent = `${["CN", "T2", "T3", "T4", "T5", "T6", "T7"][d.getDay()]} ${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}/${d.getFullYear()} · ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
   const open = LOG.filter(x => x.status !== "Đã xong").length; const exp = (REN ? REN.items : []).filter(r => { const n = daysUntil(r.exp); return n != null && n <= 30; }).length;
   const st = $("#homeStats"); st.innerHTML = "";
   [["log", open, "Sự cố đang mở", open > 0], ["renew", exp, "Sắp/đã hết hạn (30 ngày)", exp > 0], ["inventory", INV ? INV.dev.length : 0, "Thiết bị", false], ["lab", Lab.list.length, "Lab đã lưu", false]].forEach(([v, n, l, al]) =>
-    st.append(h("a", { class: "stat" + (al ? " alert" : ""), href: "#" + v, style: { "--mc": `var(--c-${v})` }, html: `<span class="si">${svgI(v)}</span><div><b>${n}</b><span>${esc(l)}</span></div>` })));
-  const tiles = [["lab", "Lab mạng ảo", ["Kéo thả", "Ping", "VLAN", "Containerlab"]], ["playbook", "Playbook & lệnh", ["Cisco", "Juniper", "MikroTik", "Linux"]], ["inventory", "Inventory", ["Thiết bị", "VLAN", "Dải IP"]], ["log", "Sự cố & ca trực", ["Ghi nhanh", "Bàn giao ca"]], ["renew", "Nhắc gia hạn", ["License", "SSL", "Domain"]], ["tools", "Công cụ nhanh", ["Subnet", "Port", "MAC", "Đọc log AI"]]];
+    st.append(h("a", { class: "stat" + (al ? " alert" : ""), href: "#" + v, style: { "--mc": `var(--c-${v})`, "--pc": `var(--p-${PASTEL[v]})` }, html: `<span class="si">${svgI(v)}</span><div><b>${n}</b><span>${esc(l)}</span></div>` })));
+  const tiles = [["lab", "Lab mạng trực quan", ["Trình chiếu", "Gói tin chạy", "VLAN", "Containerlab"]], ["playbook", "Playbook & lệnh", ["Cisco", "Juniper", "MikroTik", "Linux"]], ["inventory", "Inventory", ["Thiết bị", "VLAN", "Dải IP"]], ["log", "Sự cố & ca trực", ["Ghi nhanh", "Bàn giao ca"]], ["renew", "Nhắc gia hạn", ["License", "SSL", "Domain"]], ["tools", "Công cụ nhanh", ["Subnet", "Port", "MAC", "Đọc log AI"]]];
   const g = $("#homeGrid"); g.innerHTML = "";
-  tiles.forEach(([v, t, tags]) => g.append(h("a", { class: "tile", href: "#" + v, style: { "--mc": `var(--c-${v})` }, html: `<span class="ti">${svgI(v)}</span><h3>${esc(t)}</h3><div class="tags">${tags.map(x => `<span>${esc(x)}</span>`).join("")}</div>` })));
+  tiles.forEach(([v, t, tags]) => g.append(h("a", { class: "tile", href: "#" + v, style: { "--mc": `var(--c-${v})`, "--pc": `var(--p-${PASTEL[v]})` }, html: `<span class="ti">${svgI(v)}</span><h3>${esc(t)}</h3><div class="tags">${tags.map(x => `<span>${esc(x)}</span>`).join("")}</div><span class="go">Mở →</span>` })));
 }
 let curView = null;
 function route() {
@@ -2711,7 +3354,7 @@ async function boot() {
     $("#sync").onclick = () => window.BM_SYNC.open(); window.addEventListener("bm-sync", () => { Store.docs = Store.readLocal(); onRemote(null); });
     Store.docs = Store.readLocal(); up();
   } else await Promise.race([Store.init(onRemote), new Promise(r => setTimeout(r, 50))]);
-  labsInit(); bindCanvas(); bindLabBar(); bindSteps(); renderLabAll();
+  labsInit(); bindCanvas(); bindLabBar(); bindSteps(); bindPresent(); setLabMode(labMode()); renderLabAll();
   initPB(); initInv(); initLog(); initRen(); initTools();
   addEventListener("hashchange", route); route();
   setInterval(() => { if (curView === "home") renderHome(); }, 60000);
